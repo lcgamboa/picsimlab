@@ -27,6 +27,7 @@
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
+#include "math.h"
 
 /* outputs */
 enum { O_P1, O_F1, O_F2, O_PO1 };
@@ -199,14 +200,14 @@ void cpart_ntc::ReadPreferences(std::string value_) {
 void cpart_ntc::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", output_pins[0]);
 
-    SpareParts.WPropCmd("spin4", WPA_SPINSETMAX, "5000");
-    SpareParts.WPropCmd("spin4", WPA_SPINSETMIN, "2500");
-    SpareParts.WPropCmd("spin4", WPA_SPINSETVALUE, std::to_string(Beta).c_str());
+    SpareParts.WPropCmd("spin4", PWA_SPINSETMAX, "5000");
+    SpareParts.WPropCmd("spin4", PWA_SPINSETMIN, "2500");
+    SpareParts.WPropCmd("spin4", PWA_SPINSETVALUE, std::to_string(Beta).c_str());
 }
 
 void cpart_ntc::ReadPropertiesWindow(void) {
     output_pins[0] = GetPWCComboSelectedPin("combo2");
-    SpareParts.WPropCmd("spin4", WPA_SPINGETVALUE, NULL, &Beta);
+    SpareParts.WPropCmd("spin4", PWA_SPINGETVALUE, NULL, &Beta);
 }
 
 part_init(PART_NTC_Name, cpart_ntc, "Input");

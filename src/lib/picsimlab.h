@@ -35,16 +35,8 @@ extern char SERIALDEVICE[100];
 
 #include "board.h"
 #include "draw.h"
+#include "types.h"
 #include "util.h"
-
-enum PICSimlabCPUState { CPU_RUNNING, CPU_STEPPING, CPU_HALTED, CPU_BREAKPOINT, CPU_ERROR, CPU_POWER_OFF, CPU_LAST };
-
-enum PICSimlabStatus { PS_RUN = 0, PS_DEBUG, PS_SERIAL, PS_LAST };
-
-enum PICSimlabGUIType { GT_GAUGE = 0, GT_SCROLL, GT_LABEL, GT_COMBO, GT_BUTTON, GT_LAST };
-enum PICSimlabGUIAction { GA_ADD = 0, GA_DEL, GA_SET, GA_GET, GA_SET_LABEL, GA_LAST };
-
-enum PICSimlabGUIMenu { GMT_HEX, GMT_BIN, GMT_DISABLED, GMT_LAST };
 
 class CPICSimLab {
 public:
@@ -263,6 +255,9 @@ public:
 
     static int CanvasCmd(const CanvasCmd_t cmd);
 
+    static int ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                              const char* Value, void* ReturnBuff = NULL);
+
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
     lxMutex* cpu_mutex;
@@ -289,10 +284,8 @@ public:
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
     void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
     int (*OnCanvasCmd)(const CanvasCmd_t cmd);
-
-    void (CControl::*board_Event)(CControl* control);
-    void (CControl::*board_ButtonEvent)(CControl* control, const uint button, const uint x, const uint y,
-                                        const uint mask);
+    int (*OnExtraWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                            const char* Value, void* ReturnBuff);
 
 private:
     void StartRControl(void);

@@ -249,19 +249,19 @@ void cpart_LCD_hd44780::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo14", input_pins[9]);
     SetPCWComboWithPinNames("combo5", input_pins[10]);
 
-    SpareParts.WPropCmd("combo15", WPA_COMBOSETITEMS, "16x2,16x4,20x2,20x4,");
+    SpareParts.WPropCmd("combo15", PWA_COMBOSETITEMS, "16x2,16x4,20x2,20x4,");
     switch (model) {
         case LCD16x2:
-            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "16x2");
+            SpareParts.WPropCmd("combo15", PWA_COMBOSETTEXT, "16x2");
             break;
         case LCD16x4:
-            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "16x4");
+            SpareParts.WPropCmd("combo15", PWA_COMBOSETTEXT, "16x4");
             break;
         case LCD20x2:
-            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "20x2");
+            SpareParts.WPropCmd("combo15", PWA_COMBOSETTEXT, "20x2");
             break;
         case LCD20x4:
-            SpareParts.WPropCmd("combo15", WPA_COMBOSETTEXT, "20x4");
+            SpareParts.WPropCmd("combo15", PWA_COMBOSETTEXT, "20x4");
             break;
     }
 }
@@ -280,7 +280,7 @@ void cpart_LCD_hd44780::ReadPropertiesWindow(void) {
     input_pins[10] = GetPWCComboSelectedPin("combo5");
 
     char buff[64];
-    SpareParts.WPropCmd("combo15", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo15", PWA_COMBOGETTEXT, NULL, buff);
 
     model = LCD16x2;
     if (!strcmp(buff, "16x4"))

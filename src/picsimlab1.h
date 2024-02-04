@@ -170,12 +170,15 @@ public:
                              const void* arg);
     static void OnConfigMenuGUI(const PICSimlabGUIMenu type);
     static int OnCanvasCmd(const CanvasCmd_t cmd);
+    static int OnExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                                const char* Value, void* ReturnBuff);
 
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };
     void SetNeedClkUpdate(const int ncu) { need_clkupdate = ncu; };
 
     lxBitmap* Bitmaps[BOARDS_MAX];
+    CPWindow* Windows[BOARDS_MAX];
 
 private:
     CItemMenu MBoard[BOARDS_MAX];

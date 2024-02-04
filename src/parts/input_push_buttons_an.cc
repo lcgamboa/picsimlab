@@ -359,18 +359,18 @@ void cpart_pbuttons_an::ReadPreferences(std::string value) {
 void cpart_pbuttons_an::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", output_pins[0]);
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, "HIGH,LOW,");
+    SpareParts.WPropCmd("combo4", PWA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "HIGH");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "HIGH");
     else
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "LOW ");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "LOW ");
 }
 
 void cpart_pbuttons_an::ReadPropertiesWindow(void) {
     output_pins[0] = GetPWCComboSelectedPin("combo2");
 
     char buff[64];
-    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo4", PWA_COMBOGETTEXT, NULL, buff);
     active = (strcmp(buff, "HIGH") == 0);
 
     output_value = active * vmax;

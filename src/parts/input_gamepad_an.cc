@@ -331,18 +331,18 @@ void cpart_gamepad_an::ReadPreferences(std::string value) {
 void cpart_gamepad_an::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo1", output_pins[0]);
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, "HIGH,LOW,");
+    SpareParts.WPropCmd("combo4", PWA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "HIGH");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "HIGH");
     else
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "LOW");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "LOW");
 }
 
 void cpart_gamepad_an::ReadPropertiesWindow(void) {
     output_pins[0] = GetPWCComboSelectedPin("combo1");
 
     char buff[64];
-    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo4", PWA_COMBOGETTEXT, NULL, buff);
     active = (strcmp(buff, "HIGH") == 0);
 }
 

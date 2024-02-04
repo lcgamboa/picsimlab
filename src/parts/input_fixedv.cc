@@ -144,16 +144,16 @@ void cpart_fixedv::ReadPreferences(std::string value_) {
 void cpart_fixedv::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", output_pins[0]);
 
-    SpareParts.WPropCmd("spind4", WPA_SPINDSETMAX, "5.0");
-    SpareParts.WPropCmd("spind4", WPA_SPINDSETMIN, "0.0");
-    SpareParts.WPropCmd("spind4", WPA_SPINDSETVALUE, std::to_string(value / 40.0).c_str());
+    SpareParts.WPropCmd("spind4", PWA_SPINDSETMAX, "5.0");
+    SpareParts.WPropCmd("spind4", PWA_SPINDSETMIN, "0.0");
+    SpareParts.WPropCmd("spind4", PWA_SPINDSETVALUE, std::to_string(value / 40.0).c_str());
 }
 
 void cpart_fixedv::ReadPropertiesWindow(void) {
     output_pins[0] = GetPWCComboSelectedPin("combo2");
 
     float valuef;
-    SpareParts.WPropCmd("spind4", WPA_SPINDGETVALUE, NULL, &valuef);
+    SpareParts.WPropCmd("spind4", PWA_SPINDGETVALUE, NULL, &valuef);
 
     value = valuef * 40.0;
 }

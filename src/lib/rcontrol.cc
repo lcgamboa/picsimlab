@@ -61,6 +61,8 @@
 #include "rcontrol.h"
 #include "spareparts.h"
 
+#include <lxrad.h>
+
 static int sockfd = -1;
 static int listenfd = -1;
 static int server_started = 0;

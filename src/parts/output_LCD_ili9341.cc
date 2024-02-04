@@ -307,323 +307,323 @@ void cpart_LCD_ili9341::ConfigurePropertiesWindow(void) {
     std::string spin;
     char name[100];
 
-    SpareParts.WPropCmd("combo1", WPA_COMBOSETITEMS, Items.c_str());
+    SpareParts.WPropCmd("combo1", PWA_COMBOSETITEMS, Items.c_str());
     if (input_pins[0] == 0)
-        SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, "0  NC");
+        SpareParts.WPropCmd("combo1", PWA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[0]);
-        SpareParts.WPropCmd("combo1", WPA_COMBOSETTEXT, (std::to_string(input_pins[0]) + "  " + spin).c_str());
+        SpareParts.WPropCmd("combo1", PWA_COMBOSETTEXT, (std::to_string(input_pins[0]) + "  " + spin).c_str());
     }
 
-    SpareParts.WPropCmd("combo2", WPA_COMBOSETITEMS, Items.c_str());
+    SpareParts.WPropCmd("combo2", PWA_COMBOSETITEMS, Items.c_str());
     if (input_pins[1] == 0)
-        SpareParts.WPropCmd("combo2", WPA_COMBOSETTEXT, "0  NC");
+        SpareParts.WPropCmd("combo2", PWA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[1]);
-        SpareParts.WPropCmd("combo2", WPA_COMBOSETTEXT, (std::to_string(input_pins[1]) + "  " + spin).c_str());
+        SpareParts.WPropCmd("combo2", PWA_COMBOSETTEXT, (std::to_string(input_pins[1]) + "  " + spin).c_str());
     }
 
-    SpareParts.WPropCmd("combo3", WPA_COMBOSETITEMS, Items.c_str());
+    SpareParts.WPropCmd("combo3", PWA_COMBOSETITEMS, Items.c_str());
     if (input_pins[2] == 0)
-        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "0  NC");
+        SpareParts.WPropCmd("combo3", PWA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[2]);
-        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, (std::to_string(input_pins[2]) + "  " + spin).c_str());
+        SpareParts.WPropCmd("combo3", PWA_COMBOSETTEXT, (std::to_string(input_pins[2]) + "  " + spin).c_str());
     }
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, Items.c_str());
+    SpareParts.WPropCmd("combo4", PWA_COMBOSETITEMS, Items.c_str());
     if (input_pins[3] == 0)
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "0  NC");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[3]);
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, (std::to_string(input_pins[3]) + "  " + spin).c_str());
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, (std::to_string(input_pins[3]) + "  " + spin).c_str());
     }
 
-    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, Items.c_str());
+    SpareParts.WPropCmd("combo5", PWA_COMBOSETITEMS, Items.c_str());
     if (input_pins[4] == 0)
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "0  NC");
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, "0  NC");
     else {
         spin = SpareParts.GetPinName(input_pins[4]);
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, (std::to_string(input_pins[4]) + "  " + spin).c_str());
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, (std::to_string(input_pins[4]) + "  " + spin).c_str());
     }
 
     switch (type_com) {
         case TC_SPI:
 
-            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "389");
-            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "370");
+            SpareParts.WPropCmd(NULL, PWA_SETWIDTH, "389");
+            SpareParts.WPropCmd(NULL, PWA_SETHEIGHT, "370");
 
-            SpareParts.WPropCmd("button1", WPA_SETX, "104");
-            SpareParts.WPropCmd("button2", WPA_SETX, "185");
-            SpareParts.WPropCmd("button1", WPA_SETY, "286");
-            SpareParts.WPropCmd("button2", WPA_SETY, "286");
+            SpareParts.WPropCmd("button1", PWA_SETX, "104");
+            SpareParts.WPropCmd("button2", PWA_SETX, "185");
+            SpareParts.WPropCmd("button1", PWA_SETY, "286");
+            SpareParts.WPropCmd("button2", PWA_SETY, "286");
 
-            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "SPI");
+            SpareParts.WPropCmd("combo6", PWA_COMBOSETTEXT, "SPI");
 
-            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo7", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo8", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo9", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo10", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo11", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo12", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo13", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo14", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo15", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo16", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo17", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo18", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo19", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label9", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label10", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label11", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label12", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label13", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label14", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label15", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label16", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label17", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label18", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label19", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label20", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label21", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - CLK");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - DIN");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "Pin 3 - CLK");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "Pin 4 - DIN");
             break;
         case TC_8BITS:
 
-            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "740");
-            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "370");
+            SpareParts.WPropCmd(NULL, PWA_SETWIDTH, "740");
+            SpareParts.WPropCmd(NULL, PWA_SETHEIGHT, "370");
 
-            SpareParts.WPropCmd("button1", WPA_SETX, "154");
-            SpareParts.WPropCmd("button2", WPA_SETX, "235");
-            SpareParts.WPropCmd("button1", WPA_SETY, "286");
-            SpareParts.WPropCmd("button2", WPA_SETY, "286");
+            SpareParts.WPropCmd("button1", PWA_SETX, "154");
+            SpareParts.WPropCmd("button2", PWA_SETX, "235");
+            SpareParts.WPropCmd("button1", PWA_SETY, "286");
+            SpareParts.WPropCmd("button2", PWA_SETY, "286");
 
-            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "8Bits");
+            SpareParts.WPropCmd("combo6", PWA_COMBOSETTEXT, "8Bits");
 
-            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo7", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo8", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo9", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo10", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo11", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo12", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo13", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo14", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo15", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo16", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo17", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo18", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo19", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label9", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label10", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label11", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label12", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label13", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label14", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label15", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label16", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label17", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label18", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label19", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label20", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label21", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - /WR");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - /RD");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "Pin 3 - /WR");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "Pin 4 - /RD");
 
             for (int i = 0; i < 8; i++) {
                 snprintf(name, 100, "combo%i", i + 7);
-                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
+                SpareParts.WPropCmd(name, PWA_COMBOSETITEMS, Items.c_str());
                 if (input_pins[5 + i] == 0)
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(input_pins[5 + i]);
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT,
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT,
                                         (std::to_string(input_pins[5 + i]) + "  " + spin).c_str());
                 }
             }
             break;
         case TC_SPI_TOUCH:
 
-            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "389");
-            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "570");
+            SpareParts.WPropCmd(NULL, PWA_SETWIDTH, "389");
+            SpareParts.WPropCmd(NULL, PWA_SETHEIGHT, "570");
 
-            SpareParts.WPropCmd("button1", WPA_SETX, "104");
-            SpareParts.WPropCmd("button2", WPA_SETX, "185");
-            SpareParts.WPropCmd("button1", WPA_SETY, "486");
-            SpareParts.WPropCmd("button2", WPA_SETY, "486");
+            SpareParts.WPropCmd("button1", PWA_SETX, "104");
+            SpareParts.WPropCmd("button2", PWA_SETX, "185");
+            SpareParts.WPropCmd("button1", PWA_SETY, "486");
+            SpareParts.WPropCmd("button2", PWA_SETY, "486");
 
-            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "SPI+Touch");
+            SpareParts.WPropCmd("combo6", PWA_COMBOSETTEXT, "SPI+Touch");
 
-            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo7", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo8", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo9", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo10", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo11", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo12", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo13", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("combo14", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo15", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo16", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo17", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo18", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo19", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "0");
-            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label9", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label10", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label11", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label12", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label13", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label14", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label15", PWA_SETVISIBLE, "0");
+            SpareParts.WPropCmd("label16", PWA_SETVISIBLE, "0");
 
-            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label17", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label18", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label19", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label20", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label21", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - CLK");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - DIN");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "Pin 3 - CLK");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "Pin 4 - DIN");
 
             for (int i = 0; i < 5; i++) {
                 snprintf(name, 100, "combo%i", i + 15);
-                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
+                SpareParts.WPropCmd(name, PWA_COMBOSETITEMS, Items.c_str());
                 if (touch_pins[i] == 0)
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(touch_pins[i]);
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, (std::to_string(touch_pins[i]) + "  " + spin).c_str());
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT, (std::to_string(touch_pins[i]) + "  " + spin).c_str());
                 }
             }
 
             break;
         case TC_8BITS_TOUCH:
 
-            SpareParts.WPropCmd(NULL, WPA_SETWIDTH, "740");
-            SpareParts.WPropCmd(NULL, WPA_SETHEIGHT, "570");
+            SpareParts.WPropCmd(NULL, PWA_SETWIDTH, "740");
+            SpareParts.WPropCmd(NULL, PWA_SETHEIGHT, "570");
 
-            SpareParts.WPropCmd("button1", WPA_SETX, "154");
-            SpareParts.WPropCmd("button2", WPA_SETX, "235");
-            SpareParts.WPropCmd("button1", WPA_SETY, "486");
-            SpareParts.WPropCmd("button2", WPA_SETY, "486");
+            SpareParts.WPropCmd("button1", PWA_SETX, "154");
+            SpareParts.WPropCmd("button2", PWA_SETX, "235");
+            SpareParts.WPropCmd("button1", PWA_SETY, "486");
+            SpareParts.WPropCmd("button2", PWA_SETY, "486");
 
-            SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, "8Bits+Touch");
+            SpareParts.WPropCmd("combo6", PWA_COMBOSETTEXT, "8Bits+Touch");
 
-            SpareParts.WPropCmd("combo7", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo8", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo9", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo10", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo11", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo12", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo13", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo14", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo7", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo8", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo9", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo10", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo11", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo12", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo13", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo14", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("combo15", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo16", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo17", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo18", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("combo19", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo15", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo16", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo17", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo18", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("combo19", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("label9", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label10", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label11", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label12", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label13", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label14", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label15", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label16", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label9", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label10", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label11", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label12", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label13", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label14", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label15", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label16", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("label17", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label18", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label19", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label20", WPA_SETVISIBLE, "1");
-            SpareParts.WPropCmd("label21", WPA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label17", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label18", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label19", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label20", PWA_SETVISIBLE, "1");
+            SpareParts.WPropCmd("label21", PWA_SETVISIBLE, "1");
 
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "Pin 3 - /WR");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "Pin 4 - /RD");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "Pin 3 - /WR");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "Pin 4 - /RD");
 
             for (int i = 0; i < 8; i++) {
                 snprintf(name, 100, "combo%i", i + 7);
-                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
+                SpareParts.WPropCmd(name, PWA_COMBOSETITEMS, Items.c_str());
                 if (input_pins[5 + i] == 0)
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(input_pins[5 + i]);
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT,
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT,
                                         (std::to_string(input_pins[5 + i]) + "  " + spin).c_str());
                 }
             }
 
             for (int i = 0; i < 5; i++) {
                 snprintf(name, 100, "combo%i", i + 15);
-                SpareParts.WPropCmd(name, WPA_COMBOSETITEMS, Items.c_str());
+                SpareParts.WPropCmd(name, PWA_COMBOSETITEMS, Items.c_str());
                 if (touch_pins[i] == 0)
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, "0  NC");
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT, "0  NC");
                 else {
                     spin = SpareParts.GetPinName(touch_pins[i]);
-                    SpareParts.WPropCmd(name, WPA_COMBOSETTEXT, (std::to_string(touch_pins[i]) + "  " + spin).c_str());
+                    SpareParts.WPropCmd(name, PWA_COMBOSETTEXT, (std::to_string(touch_pins[i]) + "  " + spin).c_str());
                 }
             }
             break;
     }
 
-    SpareParts.WPropCmd("combo6", WPA_COMBOENABLEEV, "1");
+    SpareParts.WPropCmd("combo6", PWA_COMBOPROPEV, "1");
 }
 
 void cpart_LCD_ili9341::ReadPropertiesWindow(void) {
     char buff[64];
-    SpareParts.WPropCmd("combo1", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo1", PWA_COMBOGETTEXT, NULL, buff);
     input_pins[0] = std::stoi(buff);
-    SpareParts.WPropCmd("combo2", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo2", PWA_COMBOGETTEXT, NULL, buff);
     input_pins[1] = std::stoi(buff);
-    SpareParts.WPropCmd("combo3", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo3", PWA_COMBOGETTEXT, NULL, buff);
     input_pins[2] = std::stoi(buff);
-    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo4", PWA_COMBOGETTEXT, NULL, buff);
     input_pins[3] = std::stoi(buff);
-    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo5", PWA_COMBOGETTEXT, NULL, buff);
     input_pins[4] = std::stoi(buff);
 
     if ((type_com == TC_8BITS) || (type_com == TC_8BITS_TOUCH)) {
-        SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo7", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[5] = std::stoi(buff);
-        SpareParts.WPropCmd("combo8", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo8", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[6] = std::stoi(buff);
-        SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo9", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[7] = std::stoi(buff);
-        SpareParts.WPropCmd("combo10", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo10", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[8] = std::stoi(buff);
-        SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo11", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[9] = std::stoi(buff);
-        SpareParts.WPropCmd("combo12", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo12", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[10] = std::stoi(buff);
-        SpareParts.WPropCmd("combo13", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo13", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[11] = std::stoi(buff);
-        SpareParts.WPropCmd("combo14", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo14", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[12] = std::stoi(buff);
     }
 
     if ((type_com == TC_8BITS_TOUCH) || (type_com == TC_SPI_TOUCH)) {
-        SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo11", PWA_COMBOGETTEXT, NULL, buff);
         input_pins[9] = std::stoi(buff);
-        SpareParts.WPropCmd("combo15", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo15", PWA_COMBOGETTEXT, NULL, buff);
         touch_pins[0] = std::stoi(buff);
-        SpareParts.WPropCmd("combo16", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo16", PWA_COMBOGETTEXT, NULL, buff);
         touch_pins[1] = std::stoi(buff);
-        SpareParts.WPropCmd("combo17", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo17", PWA_COMBOGETTEXT, NULL, buff);
         touch_pins[2] = std::stoi(buff);
-        SpareParts.WPropCmd("combo18", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo18", PWA_COMBOGETTEXT, NULL, buff);
         touch_pins[3] = std::stoi(buff);
-        SpareParts.WPropCmd("combo19", WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd("combo19", PWA_COMBOGETTEXT, NULL, buff);
         touch_pins[4] = std::stoi(buff);
     }
 }
@@ -732,7 +732,7 @@ void cpart_LCD_ili9341::PostProcess(void) {
         output_ids[O_LCD]->update = 1;
 }
 
-void cpart_LCD_ili9341::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
+void cpart_LCD_ili9341::ComboChange(const char* controlname, std::string value) {
     if (!value.compare("SPI")) {
         ChangeType(TC_SPI);
     } else if (!value.compare("8Bits")) {

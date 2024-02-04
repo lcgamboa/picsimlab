@@ -165,11 +165,11 @@ void cpart_rgb_led::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", input_pins[1]);
     SetPCWComboWithPinNames("combo3", input_pins[2]);
 
-    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, "HIGH,LOW,");
+    SpareParts.WPropCmd("combo5", PWA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "HIGH");
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, "HIGH");
     else
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "LOW ");
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, "LOW ");
 }
 
 void cpart_rgb_led::ReadPropertiesWindow(void) {
@@ -178,7 +178,7 @@ void cpart_rgb_led::ReadPropertiesWindow(void) {
     input_pins[2] = GetPWCComboSelectedPin("combo3");
 
     char buff[64];
-    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo5", PWA_COMBOGETTEXT, NULL, buff);
 
     active = (strcmp(buff, "HIGH") == 0);
 }

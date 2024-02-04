@@ -331,10 +331,10 @@ void cpart_IO_MCP23S17::ConfigurePropertiesWindow(void) {
                 value = std::to_string(output_pins[pinv - 10]);
         }
 
-        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT,
+        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), PWA_LABELSETTEXT,
                             (std::to_string(i + 1) + "-" + pin_names[i]).c_str());
 
-        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT, value.c_str());
+        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), PWA_LABELSETTEXT, value.c_str());
     }
 
     SetPCWComboWithPinNames("combo11", input_pins[0]);

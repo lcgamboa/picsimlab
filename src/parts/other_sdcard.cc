@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* outputs */
 enum { O_P3, O_P4, O_P5, O_P6, O_FILE };
 

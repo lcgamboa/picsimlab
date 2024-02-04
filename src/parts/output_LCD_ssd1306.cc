@@ -169,11 +169,11 @@ void cpart_LCD_ssd1306::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo6", input_pins[3]);
     SetPCWComboWithPinNames("combo7", input_pins[4]);
 
-    SpareParts.WPropCmd("combo8", WPA_COMBOSETITEMS, "SPI,I2C,");
+    SpareParts.WPropCmd("combo8", PWA_COMBOSETITEMS, "SPI,I2C,");
     if (!type_com) {
-        SpareParts.WPropCmd("combo8", WPA_COMBOSETTEXT, "SPI");
+        SpareParts.WPropCmd("combo8", PWA_COMBOSETTEXT, "SPI");
     } else {
-        SpareParts.WPropCmd("combo8", WPA_COMBOSETTEXT, "I2C");
+        SpareParts.WPropCmd("combo8", PWA_COMBOSETTEXT, "I2C");
     }
 }
 
@@ -185,7 +185,7 @@ void cpart_LCD_ssd1306::ReadPropertiesWindow(void) {
     input_pins[4] = GetPWCComboSelectedPin("combo7");
 
     char buff[64];
-    SpareParts.WPropCmd("combo8", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo8", PWA_COMBOGETTEXT, NULL, buff);
 
     if (!strcmp(buff, "SPI")) {
         type_com = 0;

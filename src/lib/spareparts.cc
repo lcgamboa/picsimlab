@@ -29,6 +29,8 @@
 #include "oscilloscope.h"
 #include "picsimlab.h"
 
+#include <lxrad.h>
+
 // Global objects;
 CSpareParts SpareParts;
 
@@ -43,12 +45,8 @@ CSpareParts::CSpareParts() {
     fdtype = -1;
     PartOnDraw = -1;
 
-    PartEvent = NULL;
-    PartKeyEvent = NULL;
-    PartButtonEvent = NULL;
-
     OnCanvasCmd = NULL;
-    OnWPropCmd = NULL;
+    OnExtraWindowCmd = NULL;
 }
 
 void CSpareParts::Init(CWindow* win) {
@@ -678,10 +676,18 @@ int CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {
     return -1;
 }
 
-int CSpareParts::WPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
+int CSpareParts::WPropCmd(const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                           void* ReturnBuff) {
-    if (SpareParts.OnWPropCmd) {
-        return (*SpareParts.OnWPropCmd)(ControlName, action, Value, ReturnBuff);
+    if (SpareParts.OnExtraWindowCmd) {
+        return (*SpareParts.OnExtraWindowCmd)(0, ControlName, action, Value, ReturnBuff);
+    }
+    return -1;
+}
+
+int CSpareParts::ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                                const char* Value, void* ReturnBuff) {
+    if (SpareParts.OnExtraWindowCmd) {
+        return (*SpareParts.OnExtraWindowCmd)(id, ControlName, action, Value, ReturnBuff);
     }
     return -1;
 }

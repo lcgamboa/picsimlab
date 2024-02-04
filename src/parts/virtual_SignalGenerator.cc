@@ -27,6 +27,7 @@
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
+#include "math.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_PO1, O_PO2, O_PO3, O_TP, O_AMPL, O_OFFS, O_FREQ, O_MF };

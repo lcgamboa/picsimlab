@@ -104,6 +104,7 @@ public:
 
     /*#Others*/
     CPWindow5(void);
+    ~CPWindow5(void);
     // lxrad automatic generated block end, don't edit above!
     void menu1_EvMenuActive(CControl* control);
 
@@ -117,11 +118,12 @@ public:
     void DeleteParts(void);
 
     static int OnCanvasCmd(const CanvasCmd_t cmd);
-    static int OnWPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
-                          void* ReturnBuff);
+    static int OnExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                                const char* Value, void* ReturnBuff);
 
     CCanvas Canvas[MAX_PARTS];
     lxBitmap* Bitmaps[MAX_PARTS * 2];
+    CPWindow* Windows[MAX_PARTS];
 
 private:
     CItemMenu MParts[MAX_PARTS];
@@ -129,7 +131,6 @@ private:
     int PartSelected;
     int PartToMove;
     int mdx, mdy;
-    CPWindow wprop;
     int offsetx;
     int offsety;
     int mouse_scroll;

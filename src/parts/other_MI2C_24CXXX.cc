@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -211,8 +213,8 @@ void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo5", input_pins[3]);
     SetPCWComboWithPinNames("combo6", input_pins[4]);
 
-    SpareParts.WPropCmd("combo9", WPA_COMBOSETITEMS, "4,512,");
-    SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, std::to_string(kbits).c_str());
+    SpareParts.WPropCmd("combo9", PWA_COMBOSETITEMS, "4,512,");
+    SpareParts.WPropCmd("combo9", PWA_COMBOSETTEXT, std::to_string(kbits).c_str());
 }
 
 void cpart_MI2C_24CXXX::ReadPropertiesWindow(void) {
@@ -223,7 +225,7 @@ void cpart_MI2C_24CXXX::ReadPropertiesWindow(void) {
     input_pins[4] = GetPWCComboSelectedPin("combo6");
 
     char buff[64];
-    SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo9", PWA_COMBOGETTEXT, NULL, buff);
 
     int nkbits = std::stoi(buff);
 

@@ -228,8 +228,8 @@ void cpart_sht3x::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", output_pins[0]);
     SetPCWComboWithPinNames("combo3", output_pins[1]);
 
-    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, "Analog,");
-    SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, "Analog");
+    SpareParts.WPropCmd("combo5", PWA_COMBOSETITEMS, "Analog,");
+    SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, "Analog");
 }
 
 void cpart_sht3x::ReadPropertiesWindow(void) {

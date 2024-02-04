@@ -37,7 +37,7 @@ class cboard_DevKitC : public bsim_qemu {
 private:
     unsigned char p_BOOT;
     void RegisterRemoteControl(void) override;
-    CPWindow* wconfig;
+    int wconfigId;
     int ConfEnableWifi;
     int ConfDisableWdt;
     int ConfEnableEthernet;
@@ -81,8 +81,8 @@ public:
     // return the output ids numbers of names used in output map
     unsigned short GetOutputId(char* name) override;
     // board combo events
-    void board_Event(CControl* control) override;
-    void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) override;
+    void board_Event(const char* controlname) override;
+    void board_ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) override;
     void MSetAPin(int pin, float value) override;
     std::string MGetPinName(int pin) override;
     int MGetPinCount(void) override;

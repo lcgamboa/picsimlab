@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* inputs */
 enum { I_TEXTB };
 
@@ -230,43 +232,43 @@ void cpart_TEXT::ConfigurePropertiesWindow(void) {
         Colors += ",";
     }
 
-    SpareParts.WPropCmd("text1", WPA_TEXTCLEAR, NULL);
+    SpareParts.WPropCmd("text1", PWA_TEXTCLEAR, NULL);
     for (unsigned int l = 0; l < Lines.size(); l++) {
-        SpareParts.WPropCmd("text1", WPA_TEXTADDLINE, Lines.at(l).c_str());
+        SpareParts.WPropCmd("text1", PWA_TEXTADDLINE, Lines.at(l).c_str());
     }
 
-    SpareParts.WPropCmd("spin2", WPA_SPINSETMAX, "100");
-    SpareParts.WPropCmd("spin2", WPA_SPINSETMIN, "6");
-    SpareParts.WPropCmd("spin2", WPA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin2", PWA_SPINSETMAX, "100");
+    SpareParts.WPropCmd("spin2", PWA_SPINSETMIN, "6");
+    SpareParts.WPropCmd("spin2", PWA_SPINSETVALUE, std::to_string(Size).c_str());
 
-    SpareParts.WPropCmd("combo3", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, Colorname[Textcolor]);
+    SpareParts.WPropCmd("combo3", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo3", PWA_COMBOSETTEXT, Colorname[Textcolor]);
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, Colorname[Bgcolor]);
+    SpareParts.WPropCmd("combo4", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, Colorname[Bgcolor]);
 
-    SpareParts.WPropCmd("edit5", WPA_EDITSETTEXT, Link.c_str());
+    SpareParts.WPropCmd("edit5", PWA_EDITSETTEXT, Link.c_str());
 }
 
 void cpart_TEXT::ReadPropertiesWindow(void) {
     Lines.clear();
     unsigned int linecount;
-    SpareParts.WPropCmd("text1", WPA_TEXTGETLINECOUNT, NULL, &linecount);
+    SpareParts.WPropCmd("text1", PWA_TEXTGETLINECOUNT, NULL, &linecount);
     for (unsigned int l = 0; l < linecount; l++) {
         char buff[64];
-        SpareParts.WPropCmd("text1", WPA_TEXTGETLINE, std::to_string(l).c_str(), buff);
+        SpareParts.WPropCmd("text1", PWA_TEXTGETLINE, std::to_string(l).c_str(), buff);
         if (strlen(buff) > 0) {
             Lines.push_back(buff);
         }
     }
 
     int size;
-    SpareParts.WPropCmd("spin2", WPA_SPINGETVALUE, NULL, &size);
+    SpareParts.WPropCmd("spin2", PWA_SPINGETVALUE, NULL, &size);
 
     Size = size;
 
     char buff[64];
-    SpareParts.WPropCmd("combo3", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo3", PWA_COMBOGETTEXT, NULL, buff);
 
     std::string val = buff;
     for (int j = 0; j < C_END; j++) {
@@ -276,7 +278,7 @@ void cpart_TEXT::ReadPropertiesWindow(void) {
         }
     }
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo4", PWA_COMBOGETTEXT, NULL, buff);
 
     val = buff;
     for (int j = 0; j < C_END; j++) {
@@ -286,7 +288,7 @@ void cpart_TEXT::ReadPropertiesWindow(void) {
         }
     }
 
-    SpareParts.WPropCmd("edit5", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit5", PWA_EDITGETTEXT, NULL, buff);
 
     Link = buff;
 

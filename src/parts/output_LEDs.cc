@@ -256,35 +256,35 @@ void cpart_leds::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo7", input_pins[6]);
     SetPCWComboWithPinNames("combo8", input_pins[7]);
 
-    SpareParts.WPropCmd("combo9", WPA_COMBOSETITEMS, "HIGH,LOW,");
+    SpareParts.WPropCmd("combo9", PWA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, "HIGH");
+        SpareParts.WPropCmd("combo9", PWA_COMBOSETTEXT, "HIGH");
     else
-        SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, "LOW ");
+        SpareParts.WPropCmd("combo9", PWA_COMBOSETTEXT, "LOW ");
 
-    SpareParts.WPropCmd("spin10", WPA_SPINSETMAX, "8");
-    SpareParts.WPropCmd("spin10", WPA_SPINSETMIN, "1");
-    SpareParts.WPropCmd("spin10", WPA_SPINSETVALUE, std::to_string(Size).c_str());
-    SpareParts.WPropCmd("spin10", WPA_SPINENABLEEV, "1");
+    SpareParts.WPropCmd("spin10", PWA_SPINSETMAX, "8");
+    SpareParts.WPropCmd("spin10", PWA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin10", PWA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin10", PWA_SPINPROPEV, "1");
 
-    SpareParts.WPropCmd("combo_1", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_1", WPA_COMBOSETTEXT, Colorname[colors[0]]);
-    SpareParts.WPropCmd("combo_2", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_2", WPA_COMBOSETTEXT, Colorname[colors[1]]);
-    SpareParts.WPropCmd("combo_3", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_3", WPA_COMBOSETTEXT, Colorname[colors[2]]);
-    SpareParts.WPropCmd("combo_4", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_4", WPA_COMBOSETTEXT, Colorname[colors[3]]);
-    SpareParts.WPropCmd("combo_5", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_5", WPA_COMBOSETTEXT, Colorname[colors[4]]);
-    SpareParts.WPropCmd("combo_6", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_6", WPA_COMBOSETTEXT, Colorname[colors[5]]);
-    SpareParts.WPropCmd("combo_7", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_7", WPA_COMBOSETTEXT, Colorname[colors[6]]);
-    SpareParts.WPropCmd("combo_8", WPA_COMBOSETITEMS, Colors.c_str());
-    SpareParts.WPropCmd("combo_8", WPA_COMBOSETTEXT, Colorname[colors[7]]);
+    SpareParts.WPropCmd("combo_1", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_1", PWA_COMBOSETTEXT, Colorname[colors[0]]);
+    SpareParts.WPropCmd("combo_2", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_2", PWA_COMBOSETTEXT, Colorname[colors[1]]);
+    SpareParts.WPropCmd("combo_3", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_3", PWA_COMBOSETTEXT, Colorname[colors[2]]);
+    SpareParts.WPropCmd("combo_4", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_4", PWA_COMBOSETTEXT, Colorname[colors[3]]);
+    SpareParts.WPropCmd("combo_5", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_5", PWA_COMBOSETTEXT, Colorname[colors[4]]);
+    SpareParts.WPropCmd("combo_6", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_6", PWA_COMBOSETTEXT, Colorname[colors[5]]);
+    SpareParts.WPropCmd("combo_7", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_7", PWA_COMBOSETTEXT, Colorname[colors[6]]);
+    SpareParts.WPropCmd("combo_8", PWA_COMBOSETITEMS, Colors.c_str());
+    SpareParts.WPropCmd("combo_8", PWA_COMBOSETTEXT, Colorname[colors[7]]);
 
-    SpinChange(NULL, NULL, Size);
+    SpinChange(NULL, Size);
 }
 
 void cpart_leds::ReadPropertiesWindow(void) {
@@ -298,7 +298,7 @@ void cpart_leds::ReadPropertiesWindow(void) {
     input_pins[7] = GetPWCComboSelectedPin("combo8");
 
     char buff[64];
-    SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo9", PWA_COMBOGETTEXT, NULL, buff);
 
     active = (strcmp(buff, "HIGH") == 0);
 
@@ -307,7 +307,7 @@ void cpart_leds::ReadPropertiesWindow(void) {
         snprintf(cname, 100, "combo_%i", 1 + i);
 
         char buff[64];
-        SpareParts.WPropCmd(cname, WPA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WPropCmd(cname, PWA_COMBOGETTEXT, NULL, buff);
         std::string val = buff;
         for (int j = 0; j < C_END; j++) {
             if (!val.compare(Colorname[j])) {
@@ -318,15 +318,15 @@ void cpart_leds::ReadPropertiesWindow(void) {
     }
 
     int size;
-    SpareParts.WPropCmd("spin10", WPA_SPINGETVALUE, NULL, &size);
+    SpareParts.WPropCmd("spin10", PWA_SPINGETVALUE, NULL, &size);
     ChangeSize(size);
 }
 
-void cpart_leds::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+void cpart_leds::SpinChange(const char* controlname, int value) {
     for (int i = 0; i < 8; i++) {
         char name[20];
         sprintf(name, "combo%i", i + 1);
-        SpareParts.WPropCmd(name, WPA_SETENABLE, std::to_string(i < value).c_str());
+        SpareParts.WPropCmd(name, PWA_SETENABLE, std::to_string(i < value).c_str());
     }
 }
 

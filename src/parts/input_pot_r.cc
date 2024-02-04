@@ -27,6 +27,7 @@
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
+#include "math.h"
 
 /* outputs */
 enum { O_PO1, O_PO2, O_PO3, O_PO4, O_P1, O_P2, O_P3, O_P4 };
@@ -290,12 +291,12 @@ void cpart_pot_r::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo4", output_pins[2]);
     SetPCWComboWithPinNames("combo5", output_pins[3]);
 
-    SpareParts.WPropCmd("spin7", WPA_SPINSETMAX, "4");
-    SpareParts.WPropCmd("spin7", WPA_SPINSETMIN, "1");
-    SpareParts.WPropCmd("spin7", WPA_SPINSETVALUE, std::to_string(Size).c_str());
-    SpareParts.WPropCmd("spin7", WPA_SPINENABLEEV, "1");
+    SpareParts.WPropCmd("spin7", PWA_SPINSETMAX, "4");
+    SpareParts.WPropCmd("spin7", PWA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin7", PWA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin7", PWA_SPINPROPEV, "1");
 
-    SpinChange(NULL, NULL, Size);
+    SpinChange(NULL, Size);
 }
 
 void cpart_pot_r::ReadPropertiesWindow(void) {
@@ -305,15 +306,15 @@ void cpart_pot_r::ReadPropertiesWindow(void) {
     output_pins[3] = GetPWCComboSelectedPin("combo5");
 
     int size;
-    SpareParts.WPropCmd("spin7", WPA_SPINGETVALUE, NULL, &size);
+    SpareParts.WPropCmd("spin7", PWA_SPINGETVALUE, NULL, &size);
     ChangeSize(size);
 }
 
-void cpart_pot_r::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+void cpart_pot_r::SpinChange(const char* controlname, int value) {
     for (int i = 0; i < 4; i++) {
         char name[20];
         sprintf(name, "combo%i", i + 2);
-        SpareParts.WPropCmd(name, WPA_SETENABLE, std::to_string(i < value).c_str());
+        SpareParts.WPropCmd(name, PWA_SETENABLE, std::to_string(i < value).c_str());
     }
 }
 

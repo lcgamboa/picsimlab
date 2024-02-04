@@ -25,6 +25,8 @@
 
 // Spare parts
 
+#define WPROP 0
+
 #include "lib/oscilloscope.h"
 #include "lib/picsimlab.h"
 #include "lib/spareparts.h"
@@ -42,6 +44,10 @@
 CPWindow5 Window5;
 
 // Implementation
+
+CPWindow5::~CPWindow5(void) {
+    delete Windows[WPROP];
+}
 
 static void Setfdtype(int value) {}
 
@@ -70,7 +76,7 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 
 void CPWindow5::_EvOnCreate(CControl* control) {
     SpareParts.OnCanvasCmd = &CPWindow5::OnCanvasCmd;
-    SpareParts.OnWPropCmd = &CPWindow5::OnWPropCmd;
+    SpareParts.OnExtraWindowCmd = &CPWindow5::OnExtraWindowCmd;
 
     if (SpareParts.GetLoadConfigFile().length() > 0)
         SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
@@ -160,11 +166,11 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
     int itemc = SpareParts.GetPart(PartSelected)->GetPCWCount();
     if (itemc) {
         const PCWProp* items = SpareParts.GetPart(PartSelected)->GetPCWProperties();
-        wprop.SetName("window1");  // must be the same as in xml
-        Application->ACreateWindow(&wprop);
-        wprop.DestroyChilds();
-        wprop.SetTitle(SpareParts.GetPart(PartSelected)->GetName());
-        wprop.SetWidth(370);
+        Windows[WPROP]->SetName("window1");  // must be the same as in xml
+        Application->ACreateWindow(Windows[WPROP]);
+        Windows[WPROP]->DestroyChilds();
+        Windows[WPROP]->SetTitle(SpareParts.GetPart(PartSelected)->GetName());
+        Windows[WPROP]->SetWidth(370);
 
         CLabel* label;
         CCombo* combo;
@@ -183,23 +189,23 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     sprintf(name, "label%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(items[i].label);
                     label->SetWidth(60);
                     label->SetHeight(20);
                     label->SetX(x);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
 
                     sprintf(name, "combo%i", i + 1);
                     combo = new CCombo;
                     combo->SetName(name);
-                    combo->SetFOwner(&wprop);
+                    combo->SetFOwner(Windows[WPROP]);
                     combo->SetWidth(200);
                     combo->SetHeight(26);
                     combo->SetX(x + 68);
                     combo->SetY(y);
-                    wprop.CreateChild(combo);
+                    Windows[WPROP]->CreateChild(combo);
                     break;
                 case PCW_LABEL: {
                     char lb[21];
@@ -211,136 +217,136 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                     sprintf(name, "label%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(lb1);
                     label->SetWidth(60);
                     label->SetHeight(20);
                     label->SetX(x);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
 
                     sprintf(name, "label_%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(lb2);
                     label->SetWidth(200);
                     label->SetHeight(20);
                     label->SetX(x + 76);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
                 } break;
                 case PCW_SPIND:
                     sprintf(name, "label%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(items[i].label);
                     label->SetWidth(60);
                     label->SetHeight(20);
                     label->SetX(x);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
 
                     sprintf(name, "spind%i", i + 1);
                     spind = new CSpind;
                     spind->SetName(name);
-                    spind->SetFOwner(&wprop);
+                    spind->SetFOwner(Windows[WPROP]);
                     spind->SetWidth(200);
                     spind->SetHeight(30);
                     spind->SetX(x + 68);
                     spind->SetY(y);
-                    wprop.CreateChild(spind);
+                    Windows[WPROP]->CreateChild(spind);
                     break;
                 case PCW_SPIN:
                     sprintf(name, "label%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(items[i].label);
                     label->SetWidth(60);
                     label->SetHeight(20);
                     label->SetX(x);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
 
                     sprintf(name, "spin%i", i + 1);
                     spin = new CSpin;
                     spin->SetName(name);
-                    spin->SetFOwner(&wprop);
+                    spin->SetFOwner(Windows[WPROP]);
                     spin->SetWidth(200);
                     spin->SetHeight(30);
                     spin->SetX(x + 68);
                     spin->SetY(y);
-                    wprop.CreateChild(spin);
+                    Windows[WPROP]->CreateChild(spin);
                     break;
                 case PCW_EDIT:
                     sprintf(name, "label%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(items[i].label);
                     label->SetWidth(60);
                     label->SetHeight(20);
                     label->SetX(x);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
 
                     sprintf(name, "edit%i", i + 1);
                     edit = new CEdit;
                     edit->SetName(name);
-                    edit->SetFOwner(&wprop);
+                    edit->SetFOwner(Windows[WPROP]);
                     edit->SetWidth(200);
                     edit->SetHeight(26);
                     edit->SetX(x + 68);
                     edit->SetY(y);
-                    wprop.CreateChild(edit);
+                    Windows[WPROP]->CreateChild(edit);
                     break;
                 case PCW_TEXT:
                     sprintf(name, "text%i", i + 1);
                     text = new CText;
                     text->SetName(name);
-                    text->SetFOwner(&wprop);
+                    text->SetFOwner(Windows[WPROP]);
                     text->SetWidth(340);
                     text->SetHeight(128);
                     text->SetX(x - 44);
                     text->SetY(y);
-                    wprop.CreateChild(text);
+                    Windows[WPROP]->CreateChild(text);
                     y += 110;
                     break;
                 case PCW_DCOMBO:
                     sprintf(name, "label%i", i + 1);
                     label = new CLabel;
                     label->SetName(name);
-                    label->SetFOwner(&wprop);
+                    label->SetFOwner(Windows[WPROP]);
                     label->SetText(items[i].label);
                     label->SetWidth(60);
                     label->SetHeight(20);
                     label->SetX(x);
                     label->SetY(y + 3);
-                    wprop.CreateChild(label);
+                    Windows[WPROP]->CreateChild(label);
 
                     sprintf(name, "combo%i", i + 1);
                     combo = new CCombo;
                     combo->SetName(name);
-                    combo->SetFOwner(&wprop);
+                    combo->SetFOwner(Windows[WPROP]);
                     combo->SetWidth(200);
                     combo->SetHeight(26);
                     combo->SetX(x + 68);
                     combo->SetY(y);
-                    wprop.CreateChild(combo);
+                    Windows[WPROP]->CreateChild(combo);
 
                     sprintf(name, "combo_%i", i + 1);
                     combo = new CCombo;
                     combo->SetName(name);
-                    combo->SetFOwner(&wprop);
+                    combo->SetFOwner(Windows[WPROP]);
                     combo->SetWidth(150);
                     combo->SetHeight(26);
                     combo->SetX(x + 278);
                     combo->SetY(y);
-                    wprop.CreateChild(combo);
+                    Windows[WPROP]->CreateChild(combo);
 
-                    wprop.SetWidth(540);
+                    Windows[WPROP]->SetWidth(540);
                     break;
                 default:
                     printf("PICSimLab: Unknown PCW type number %i\n", items[i].pcw_type);
@@ -353,73 +359,73 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
                 dual = 2 * itemc;
                 y = 32;
                 x = 54 + 370;
-                wprop.SetWidth(370 * 2);
+                Windows[WPROP]->SetWidth(370 * 2);
             }
         }
 
         CButton* button;
         button = new CButton;
         button->SetName("button1");
-        button->SetFOwner(&wprop);
+        button->SetFOwner(Windows[WPROP]);
         button->SetText("Ok");
         button->SetWidth(65);
         button->SetHeight(28);
-        button->SetX((wprop.GetWidth() / 2) - 75);
+        button->SetX((Windows[WPROP]->GetWidth() / 2) - 75);
         button->SetY(y + 32);
         button->SetTag(1);
         button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
-        wprop.CreateChild(button);
+        Windows[WPROP]->CreateChild(button);
 
         button = new CButton;
         button->SetName("button2");
-        button->SetFOwner(&wprop);
+        button->SetFOwner(Windows[WPROP]);
         button->SetText("Cancel");
         button->SetWidth(65);
         button->SetHeight(28);
-        button->SetX((wprop.GetWidth() / 2) + 10);
+        button->SetX((Windows[WPROP]->GetWidth() / 2) + 10);
         button->SetY(y + 32);
         button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
-        wprop.CreateChild(button);
+        Windows[WPROP]->CreateChild(button);
 
-        wprop.SetHeight(y + 130);
+        Windows[WPROP]->SetHeight(y + 130);
 
         SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow();
 
-        wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
-        wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
+        Windows[WPROP]->SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
+        Windows[WPROP]->SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
 
-        wprop.Draw();
-        wprop.ShowExclusive();
+        Windows[WPROP]->Draw();
+        Windows[WPROP]->ShowExclusive();
     } else {
         std::string fname =
             PICSimLab.GetSharePath() + "parts/" + SpareParts.GetPart(PartSelected)->GetPropertiesWindowFile();
 
         if (lxFileExists(fname)) {
             CButton* button;
-            wprop.SetName("window1");  // must be the same as in xml
-            Application->ACreateWindow(&wprop);
-            wprop.DestroyChilds();
-            if (wprop.LoadXMLContextAndCreateChilds(fname)) {
-                // wprop.SetCanDestroy (false);
+            Windows[WPROP]->SetName("window1");  // must be the same as in xml
+            Application->ACreateWindow(Windows[WPROP]);
+            Windows[WPROP]->DestroyChilds();
+            if (Windows[WPROP]->LoadXMLContextAndCreateChilds(fname)) {
+                // Windows[WPROP]->SetCanDestroy (false);
 
                 SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow();
 
-                button = (CButton*)wprop.GetChildByName("button1");
+                button = (CButton*)Windows[WPROP]->GetChildByName("button1");
                 if (button) {
                     button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
                     button->SetTag(1);
                 }
 
-                button = (CButton*)wprop.GetChildByName("button2");
+                button = (CButton*)Windows[WPROP]->GetChildByName("button2");
                 if (button) {
                     button->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PropButtonRelease;
                 }
 
-                wprop.SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
-                wprop.SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
+                Windows[WPROP]->SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
+                Windows[WPROP]->SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
 
-                wprop.Draw();
-                wprop.ShowExclusive();
+                Windows[WPROP]->Draw();
+                Windows[WPROP]->ShowExclusive();
             }
 
         } else {
@@ -434,9 +440,9 @@ void CPWindow5::PropClose(int tag) {
     if (tag) {
         SpareParts.GetPart(PartSelected)->ReadPropertiesWindow();
     }
-    wprop.HideExclusive();
-    // wprop.SetCanDestroy (true);
-    wprop.WDestroy();
+    Windows[WPROP]->HideExclusive();
+    // Windows[WPROP]->SetCanDestroy (true);
+    Windows[WPROP]->WDestroy();
     update_all = 1;
 }
 
@@ -456,34 +462,34 @@ void CPWindow5::PropButtonRelease(CControl* control, uint button, uint x, uint y
 }
 
 void CPWindow5::PropComboChange(CCombo* control) {
-    Window5.wprop.HideExclusive();
-    Window5.wprop.WDestroy();
+    Window5.Windows[WPROP]->HideExclusive();
+    Window5.Windows[WPROP]->WDestroy();
 
     SpareParts.GetPart(Window5.PartSelected)
-        ->ComboChange(&Window5.wprop, control, (const char*)control->GetText().c_str());
+        ->ComboChange(control->GetName().c_str(), (const char*)control->GetText().c_str());
 
     Window5.pmenu2_Properties_EvMenuActive(this);
 }
 
 void CPWindow5::PropSpinChange(CSpin* control) {
-    SpareParts.GetPart(Window5.PartSelected)->SpinChange(&Window5.wprop, control, control->GetValue());
+    SpareParts.GetPart(Window5.PartSelected)->SpinChange(control->GetName().c_str(), control->GetValue());
 }
 
 void CPWindow5::PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
     if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
-        SpareParts.GetPart(control->GetTag())->ButtonEvent(control, button, x, y, state);
+        SpareParts.GetPart(control->GetTag())->ButtonEvent(control->GetName().c_str(), button, x, y, state);
     }
 }
 
 void CPWindow5::PartKeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) {
     if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
-        SpareParts.GetPart(control->GetTag())->KeyEvent(control, keysym, ukeysym, state);
+        SpareParts.GetPart(control->GetTag())->KeyEvent(control->GetName().c_str(), keysym, ukeysym, state);
     }
 }
 
 void CPWindow5::PartEvent(CControl* control) {
     if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
-        SpareParts.GetPart(control->GetTag())->Event(control);
+        SpareParts.GetPart(control->GetTag())->Event(control->GetName().c_str());
     }
 }
 
@@ -503,7 +509,7 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     need_resize++;
 
     for (int i = 0; i < SpareParts.GetCount(); i++) {
-        SpareParts.SetPartOnDraw(i);
+        SpareParts.SetPartOnDraw(SpareParts.GetPart(i)->GetId());
         SpareParts.GetPart(i)->Draw();
         if (SpareParts.GetPart(i)->GetUpdate())
             update++;
@@ -1076,65 +1082,86 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
     return -1;
 }
 
-int CPWindow5::OnWPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
-                          void* ReturnBuff) {
-    CControl* ctrl;
+int CPWindow5::OnExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                                const char* Value, void* ReturnBuff) {
+    CControl* ctrl = NULL;
+    int wid = -1;
 
-    if (ControlName) {
-        ctrl = Window5.wprop.GetChildByName(ControlName);
-    } else {
-        ctrl = &Window5.wprop;
-    }
+    if (id >= 0) {
+        if (ControlName) {
+            ctrl = Window5.Windows[id]->GetChildByName(ControlName);
+        } else {
+            ctrl = Window5.Windows[id];
+        }
 
-    if (ctrl == NULL) {
-        return -1;
+        if (ctrl == NULL) {
+            return -1;
+        }
+    } else {  // find empty window
+        for (int i = 0; i < MAX_PARTS; i++) {
+            if (Window5.Windows[i] == NULL) {
+                wid = i;
+                break;
+            }
+        }
+
+        if (wid == -1) {
+            return -1;
+        }
     }
 
     switch (action) {
-        case WPA_COMBOSETITEMS:
+        case PWA_COMBOSETITEMS:
             ((CCombo*)ctrl)->SetItems(Value);
             break;
-        case WPA_COMBOSETTEXT:
+        case PWA_COMBOSETTEXT:
             ((CCombo*)ctrl)->SetText(Value);
             break;
-        case WPA_COMBOGETTEXT:
+        case PWA_COMBOGETTEXT:
             strcpy((char*)ReturnBuff, ((CCombo*)ctrl)->GetText().c_str());
             return strlen((char*)ReturnBuff);
             break;
-        case WPA_COMBOENABLEEV:
+        case PWA_COMBOPROPEV:
             if (!strcmp(Value, "1")) {
                 ((CCombo*)ctrl)->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
             } else {
                 ((CCombo*)ctrl)->EvOnComboChange = NULL;
             }
             break;
+        case PWA_COMBOPARTEV:
+            if (!strcmp(Value, "1")) {
+                ((CCombo*)ctrl)->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PartEvent;
+            } else {
+                ((CCombo*)ctrl)->EvOnComboChange = NULL;
+            }
+            break;
 
-        case WPA_SPINDSETMAX:
+        case PWA_SPINDSETMAX:
             ((CSpind*)ctrl)->SetMax(std::stof(Value));
             break;
-        case WPA_SPINDSETMIN:
+        case PWA_SPINDSETMIN:
             ((CSpind*)ctrl)->SetMin(std::stof(Value));
             break;
-        case WPA_SPINDSETVALUE:
+        case PWA_SPINDSETVALUE:
             ((CSpind*)ctrl)->SetValue(std::stof(Value));
             break;
-        case WPA_SPINDGETVALUE:
+        case PWA_SPINDGETVALUE:
             *((float*)ReturnBuff) = ((CSpind*)ctrl)->GetValue();
             break;
 
-        case WPA_SPINSETMAX:
+        case PWA_SPINSETMAX:
             ((CSpin*)ctrl)->SetMax(std::stoi(Value));
             break;
-        case WPA_SPINSETMIN:
+        case PWA_SPINSETMIN:
             ((CSpin*)ctrl)->SetMin(std::stoi(Value));
             break;
-        case WPA_SPINSETVALUE:
+        case PWA_SPINSETVALUE:
             ((CSpin*)ctrl)->SetValue(std::stoi(Value));
             break;
-        case WPA_SPINGETVALUE:
+        case PWA_SPINGETVALUE:
             *((int*)ReturnBuff) = ((CSpin*)ctrl)->GetValue();
             break;
-        case WPA_SPINENABLEEV:
+        case PWA_SPINPROPEV:
             if (!strcmp(Value, "1")) {
                 ((CSpin*)ctrl)->EvOnChangeSpin = EVONCHANGESPIN & CPWindow5::PropSpinChange;
             } else {
@@ -1142,49 +1169,152 @@ int CPWindow5::OnWPropCmd(const char* ControlName, const PICSimLabWPropAction ac
             }
             break;
 
-        case WPA_TEXTCLEAR:
+        case PWA_TEXTCLEAR:
             ((CText*)ctrl)->Clear();
             break;
-        case WPA_TEXTADDLINE:
+        case PWA_TEXTADDLINE:
             ((CText*)ctrl)->AddLine(lxString::FromUTF8(Value));
             break;
-        case WPA_TEXTGETLINE:
+        case PWA_TEXTGETLINE:
             strcpy((char*)ReturnBuff, ((CText*)ctrl)->GetLine(std::stoi(Value)).utf8_str());
             return strlen((char*)ReturnBuff);
             break;
-        case WPA_TEXTGETLINECOUNT:
+        case PWA_TEXTGETLINECOUNT:
             *((int*)ReturnBuff) = ((CText*)ctrl)->GetCountLines();
             break;
+        case PWA_TEXTAPPEND:
+            ((CText*)ctrl)->Append(lxString::FromUTF8(Value));
+            if (((CText*)ctrl)->GetLine(((CText*)ctrl)->GetCountLines() - 1).length() > 1024) {
+                ((CText*)ctrl)->Append("\n");  // TODO break line with exact size
+            }
 
-        case WPA_EDITSETTEXT:
+            while (((CText*)ctrl)->GetCountLines() > 1000) {
+                ((CText*)ctrl)->SetCursorPos(0);
+                ((CText*)ctrl)->DelLine();
+            }
+            break;
+        case PWA_TEXTTELETYPE:
+            ((CText*)ctrl)->SetFontFamily(lxFONTFAMILY_TELETYPE);
+            break;
+
+        case PWA_CHECKBOXSETCHECK:
+            ((CCheckBox*)ctrl)->SetCheck(std::stoi(Value));
+            break;
+        case PWA_CHECKBOXGETCHECK:
+            *((int*)ReturnBuff) = ((CCheckBox*)ctrl)->GetCheck();
+            break;
+
+        case PWA_EDITSETTEXT:
             ((CEdit*)ctrl)->SetText(Value);
             break;
-        case WPA_EDITGETTEXT:
+        case PWA_EDITGETTEXT:
             strcpy((char*)ReturnBuff, ((CEdit*)ctrl)->GetText().utf8_str());
             return strlen((char*)ReturnBuff);
             break;
+        case PWA_EDITPARTEV:
+            if (!strcmp(Value, "1")) {
+                ((CEdit*)ctrl)->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow5::PartKeyEvent;
+            } else {
+                ((CEdit*)ctrl)->EvKeyboardPress = NULL;
+            }
+            break;
 
-        case WPA_LABELSETTEXT:
+        case PWA_LABELSETTEXT:
             ((CLabel*)ctrl)->SetText(Value);
             break;
-        case WPA_SETENABLE:
+        case PWA_SETENABLE:
             ctrl->SetEnable(std::stoi(Value));
             break;
-        case WPA_SETWIDTH:
+        case PWA_SETWIDTH:
             ctrl->SetWidth(std::stoi(Value));
             break;
-        case WPA_SETHEIGHT:
+        case PWA_SETHEIGHT:
             ctrl->SetHeight(std::stoi(Value));
             break;
-        case WPA_SETVISIBLE:
+        case PWA_SETVISIBLE:
             ctrl->SetVisible(std::stoi(Value));
             break;
-        case WPA_SETX:
+        case PWA_SETX:
             ctrl->SetX(std::stoi(Value));
             break;
-        case WPA_SETY:
+        case PWA_SETY:
             ctrl->SetY(std::stoi(Value));
             break;
+        case PWA_SETTAG:
+            ctrl->SetTag(std::stoi(Value));
+            break;
+        case PWA_GETWIDTH:
+            *((int*)ReturnBuff) = ctrl->GetWidth();
+            break;
+        case PWA_GETHEIGHT:
+            *((int*)ReturnBuff) = ctrl->GetHeight();
+            break;
+        case PWA_GETX:
+            *((int*)ReturnBuff) = ctrl->GetX();
+            break;
+        case PWA_GETY:
+            *((int*)ReturnBuff) = ctrl->GetY();
+            break;
+        case PWA_GETTAG:
+            *((int*)ReturnBuff) = ctrl->GetTag();
+            break;
+
+        case PWA_WINDOWCREATE: {
+            Window5.Windows[wid] = new CPWindow();
+            ctrl = Window5.Windows[wid];
+            ctrl->SetName(ControlName);  // must be the same as in xml
+            ctrl->SetVisible(0);
+            ((CPWindow*)ctrl)->SetCanDestroy(false);
+            Application->ACreateWindow(((CPWindow*)ctrl));
+            return wid;
+        } break;
+        case PWA_WINDOWDESTROY:
+            ((CPWindow*)ctrl)->Hide();
+            ((CPWindow*)ctrl)->DestroyChilds();
+            ((CPWindow*)ctrl)->WDestroy();
+            delete ctrl;
+            ctrl = NULL;
+            break;
+        case PWA_WINDOWLOADXML:
+            ((CPWindow*)ctrl)->DestroyChilds();
+            return ((CPWindow*)ctrl)->LoadXMLContextAndCreateChilds(Value);
+            break;
+        case PWA_WINDOWSHOW:
+            ((CPWindow*)ctrl)->Show();
+            break;
+        case PWA_WINDOWHIDE:
+            ((CPWindow*)ctrl)->Hide();
+            break;
+        case PWA_WINDOWPARTEV:
+            if (!strcmp(Value, "1")) {
+                ((CPWindow*)ctrl)->EvOnShow = EVONCOMBOCHANGE & CPWindow5::PartEvent;
+            } else {
+                ((CPWindow*)ctrl)->EvOnShow = NULL;
+            }
+            break;
+        case PWA_WINDOWSHOWEX:
+            ((CPWindow*)ctrl)->Draw();
+            ((CPWindow*)ctrl)->ShowExclusive();
+            break;
+        case PWA_WINDOWHIDEEX:
+            ((CPWindow*)ctrl)->HideExclusive();
+            break;
+
+        case PWA_BUTTONPARTEV:
+            if (!strcmp(Value, "1")) {
+                ((CButton*)ctrl)->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow5::PartButtonEvent;
+            } else {
+                ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
+            }
+            break;
+        case PWA_BUTTONBOARDEV:
+            if (!strcmp(Value, "1")) {
+                //((CButton*)ctrl)->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+            } else {
+                ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
+            }
+            break;
+
         default:
             return -1;
             break;

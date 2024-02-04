@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* outputs */
 enum { O_RX, O_TX, O_LTX, O_LRX, O_VT };
 
@@ -59,62 +61,37 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
 
     lending = LE_NL;
 
-    vttext = NULL;
-    vtedit = NULL;
-    vtbtn_send = NULL;
-    vtbtn_clear = NULL;
-    vtcmb_ending = NULL;
-    vtcmb_speed = NULL;
+    wvtermId = SpareParts.ExtraWindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
 
-    if (PICSimLab.GetWindow()) {
-        wvterm = new CPWindow();
-        wvterm->SetName("window1");  // must be the same as in xml
-        wvterm->SetVisible(0);
-        Application->ACreateWindow(wvterm);
-        std::string fname =
-            (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Virtual/IO Virtual Term/terminal_1.lxrad")
-                .c_str();
-        if (wvterm->LoadXMLContextAndCreateChilds(fname)) {
-            wvterm->SetVisible(0);
-            wvterm->Hide();
-            wvterm->SetCanDestroy(false);
+    std::string fname =
+        (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Virtual/IO Virtual Term/terminal_1.lxrad")
+            .c_str();
 
-            wvterm->EvOnShow = SpareParts.PartEvent;
+    if (SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
 
-            // wvterm.Draw ();
-            // wvterm.Show ();
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWPARTEV, "1");
+        SpareParts.ExtraWindowCmd(wvtermId, "button1", PWA_BUTTONPARTEV, "1");
+        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_BUTTONPARTEV, "1");
+        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOPARTEV, "1");
+        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_COMBOPARTEV, "1");
+        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITPARTEV, "1");
 
-            vttext = (CText*)wvterm->GetChildByName("text1");
-            vtedit = (CEdit*)wvterm->GetChildByName("edit1");
+        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_TEXTTELETYPE, NULL);
 
-            vttext->SetFontFamily(lxFONTFAMILY_TELETYPE);
-
-            vtbtn_send = ((CButton*)wvterm->GetChildByName("button1"));
-            vtbtn_clear = ((CButton*)wvterm->GetChildByName("button2"));
-            vtcmb_ending = ((CCombo*)wvterm->GetChildByName("combo1"));
-            vtcmb_speed = ((CCombo*)wvterm->GetChildByName("combo2"));
-
-            vtbtn_send->EvMouseButtonRelease = SpareParts.PartButtonEvent;
-            vtbtn_clear->EvMouseButtonRelease = SpareParts.PartButtonEvent;
-            vtcmb_speed->EvOnComboChange = SpareParts.PartEvent;
-            vtcmb_ending->EvOnComboChange = SpareParts.PartEvent;
-            vtedit->EvKeyboardPress = SpareParts.PartKeyEvent;
-
-            vtbtn_send->SetTag(id);
-            vtbtn_clear->SetTag(id);
-            vtcmb_speed->SetTag(id);
-            vtcmb_ending->SetTag(id);
-            vtedit->SetTag(id);
-            wvterm->SetTag(id);
-        } else {
-            printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
-            PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
-            wvterm->SetVisible(0);
-            wvterm->Hide();
-            wvterm->SetCanDestroy(false);
-        }
+        SpareParts.ExtraWindowCmd(wvtermId, "button1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETTAG, std::to_string(id).c_str());
     } else {
-        wvterm = NULL;
+        printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
+        PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
     }
 
     SetPCWProperties(pcwprop);
@@ -132,12 +109,10 @@ cpart_vterm::~cpart_vterm(void) {
     SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     SpareParts.CanvasCmd({CC_DESTROY});
     vterm_end(&vt);
-    if (wvterm) {
-        wvterm->Hide();
-        wvterm->DestroyChilds();
-        wvterm->SetCanDestroy(true);
-        wvterm->WDestroy();
-    }
+
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWDESTROY, NULL);
+    wvtermId = -1;
+
     count--;
 }
 
@@ -148,54 +123,67 @@ void cpart_vterm::RegisterRemoteControl(void) {
     output_ids[O_VT]->status = &vt;
 }
 
-void cpart_vterm::ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
-    if (control == vtbtn_send) {
-        text_to_send = vtedit->GetText();
-        vtedit->SetText("");
+void cpart_vterm::ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) {
+    if (!strcmp(controlname, "button1")) {
+        char buff[256];
+        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
+        text_to_send = buff;
+        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITSETTEXT, "");
         send_text = 1;
-    } else if (control == vtbtn_clear) {
-        vttext->Clear();
+    } else if (!strcmp(controlname, "button2")) {
+        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_TEXTCLEAR, NULL);
     }
 }
 
-void cpart_vterm::KeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) {
-    if (control == vtedit) {
+void cpart_vterm::KeyEvent(const char* controlname, uint keysym, uint ukeysym, uint state) {
+    if (!strcmp(controlname, "edit1")) {
         if (ukeysym == 13) {
-            text_to_send = vtedit->GetText();
-            vtedit->SetText("");
+            char buff[256];
+            SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
+            text_to_send = buff;
+            SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITSETTEXT, "");
             send_text = 1;
         }
     }
 }
 
-void cpart_vterm::Event(CControl* control) {
-    if (control == vtcmb_speed) {
-        vterm_speed = atoi(vtcmb_speed->GetText());
+void cpart_vterm::Event(const char* controlname) {
+    if (!strcmp(controlname, "combo2")) {
+        char buff[32];
+        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_COMBOGETTEXT, NULL, buff);
+        vterm_speed = std::stoi(buff);
         vterm_set_speed(&vt, vterm_speed);
-    } else if (control == vtcmb_ending) {
-        if (!vtcmb_ending->GetText().compare("No line ending")) {
+    } else if (!strcmp(controlname, "combo1")) {
+        char buff[32];
+        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOGETTEXT, NULL, buff);
+
+        if (!strcmp(buff, "No line ending")) {
             lending = LE_NONE;
-        } else if (!vtcmb_ending->GetText().compare("New line")) {
+        } else if (!strcmp(buff, "New line")) {
             lending = LE_NL;
-        } else if (!vtcmb_ending->GetText().compare("Carriage return")) {
+        } else if (!strcmp(buff, "Carriage return")) {
             lending = LE_CR;
-        } else if (!vtcmb_ending->GetText().compare("Both NL and CR")) {
+        } else if (!strcmp(buff, "Both NL and CR")) {
             lending = LE_NL_CR;
         }
-    } else if (control == wvterm) {
-        vtedit->SetWidth(wvterm->GetWidth() - 100);
-        vttext->SetWidth(wvterm->GetWidth() - 29);
+    } else if (!strcmp(controlname, "window1")) {
+        int w, h;
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
+        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
 
-        vtbtn_send->SetX(wvterm->GetWidth() - 87);
-        vtbtn_clear->SetX(wvterm->GetWidth() - 90);
-        vtcmb_ending->SetX(wvterm->GetWidth() - 405);
-        vtcmb_speed->SetX(wvterm->GetWidth() - 215);
+        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_SETWIDTH, std::to_string(w - 100).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_SETWIDTH, std::to_string(w - 29).c_str());
 
-        vttext->SetHeight(wvterm->GetHeight() - 119);
+        SpareParts.ExtraWindowCmd(wvtermId, "button1", PWA_SETX, std::to_string(w - 87).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_SETX, std::to_string(w - 90).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_SETX, std::to_string(w - 405).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_SETX, std::to_string(w - 215).c_str());
 
-        vtbtn_clear->SetY(wvterm->GetHeight() - 74);
-        vtcmb_ending->SetY(wvterm->GetHeight() - 73);
-        vtcmb_speed->SetY(wvterm->GetHeight() - 73);
+        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_SETHEIGHT, std::to_string(h - 119).c_str());
+
+        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_SETY, std::to_string(h - 74).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_SETY, std::to_string(h - 73).c_str());
+        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_SETY, std::to_string(h - 73).c_str());
     }
 }
 
@@ -203,22 +191,20 @@ void cpart_vterm::Reset(void) {
     vterm_rst(&vt);
     vterm_set_speed(&vt, vterm_speed);
 
-    if (!vtcmb_speed)
-        return;
-    vtcmb_speed->SetText(std::to_string(vterm_speed));
+    SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
 
     switch (lending) {
         case LE_NONE:
-            vtcmb_ending->SetText("No line ending");
+            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "No line ending");
             break;
         case LE_NL:
-            vtcmb_ending->SetText("New line");
+            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "New line");
             break;
         case LE_CR:
-            vtcmb_ending->SetText("Carriage return");
+            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "Carriage return");
             break;
         case LE_NL_CR:
-            vtcmb_ending->SetText("Both NL and CR");
+            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "Both NL and CR");
             break;
     }
 }
@@ -242,9 +228,9 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
 
             if (show & 0x80) {
                 if (show & 0x01) {
-                    wvterm->Show();
+                    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWSHOW, NULL);
                 } else {
-                    wvterm->Hide();
+                    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
                 }
                 show &= ~0x80;
             }
@@ -255,16 +241,8 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             vt.count_in = 0;
             // printf("Data recv: \n[\n%s]\n", str);
             vt.inMutex->Unlock();
-            vttext->Append(str);
 
-            if (vttext->GetLine(vttext->GetCountLines() - 1).length() > 1024) {
-                vttext->Append("\n");  // TODO break line with exact size
-            }
-
-            while (vttext->GetCountLines() > 1000) {
-                vttext->SetCursorPos(0);
-                vttext->DelLine();
-            }
+            SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_TEXTAPPEND, str);
             break;
         default:
             SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
@@ -325,13 +303,14 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
 std::string cpart_vterm::WritePreferences(void) {
     char prefs[256];
 
-    if (wvterm) {
-        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show,
-                wvterm->GetX(), wvterm->GetY(), wvterm->GetWidth(), wvterm->GetHeight());
-    } else {
-        sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show, 100, 100,
-                530, 400);
-    }
+    int x, y, w, h;
+
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETX, NULL, &x);
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETY, NULL, &y);
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
+
+    sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show, x, y, w, h);
 
     return prefs;
 }
@@ -341,22 +320,23 @@ void cpart_vterm::ReadPreferences(std::string value) {
     int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", &pins[0], &pins[1], &lending, &vterm_speed,
                      &show, &x, &y, &w, &h);
     show |= 0x80;
-    if (wvterm) {
-        wvterm->SetX(x);
-        wvterm->SetY(y);
-        if (ret != 9) {  // for compatibility with older versions
-            w = 530;
-            h = 400;
-        }
-        if (w < 100) {
-            w = 100;
-        }
-        if (h < 100) {
-            h = 100;
-        }
-        wvterm->SetWidth(w);
-        wvterm->SetHeight(h);
+
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETX, std::to_string(x).c_str());
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETY, std::to_string(y).c_str());
+
+    if (ret != 9) {  // for compatibility with older versions
+        w = 530;
+        h = 400;
     }
+    if (w < 100) {
+        w = 100;
+    }
+    if (h < 100) {
+        h = 100;
+    }
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
+    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
+
     Reset();
 }
 
@@ -364,8 +344,8 @@ void cpart_vterm::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", pins[0]);
     SetPCWComboWithPinNames("combo3", pins[1]);
 
-    SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, "1200,2400,4800,9600,19200,38400,57600,115200,");
-    SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
+    SpareParts.WPropCmd("combo5", PWA_COMBOSETITEMS, "1200,2400,4800,9600,19200,38400,57600,115200,");
+    SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
 }
 
 void cpart_vterm::ReadPropertiesWindow(void) {
@@ -373,7 +353,7 @@ void cpart_vterm::ReadPropertiesWindow(void) {
     pins[1] = GetPWCComboSelectedPin("combo3");
 
     char buff[64];
-    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo5", PWA_COMBOGETTEXT, NULL, buff);
 
     vterm_speed = std::stoi(buff);
     Reset();

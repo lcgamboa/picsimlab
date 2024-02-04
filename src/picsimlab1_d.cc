@@ -499,4 +499,5 @@ CPWindow1::CPWindow1(void) {
 #endif
 
     memset(Bitmaps, 0, sizeof(Bitmaps));
+    memset(Windows, 0, sizeof(Windows));
 }

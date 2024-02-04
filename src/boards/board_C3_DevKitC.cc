@@ -29,6 +29,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector
@@ -261,13 +263,7 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
 
     PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_ADD, (void*)"Config Qemu");
 
-    if (PICSimLab.GetWindow()) {
-        wconfig = new CPWindow();
-        wconfig->SetCanDestroy(false);
-        wconfig->SetVisible(false);
-        wconfig->SetName("window1");  // must be the same as in xml
-        Application->ACreateWindow(wconfig);
-    }
+    wconfigId = PICSimLab.ExtraWindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
 }
 
 // Destructor called once on board destruction
@@ -275,11 +271,7 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
 cboard_C3_DevKitC::~cboard_C3_DevKitC(void) {
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_DEL, NULL);
     PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_DEL, NULL);
-
-    if (PICSimLab.GetWindow()) {
-        wconfig->SetCanDestroy(true);
-        wconfig->WDestroy();
-    }
+    PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWDESTROY, NULL);
     bitbang_pwm_end(&pwm_out);
 }
 
@@ -642,7 +634,7 @@ void cboard_C3_DevKitC::Run_CPU(void) {
     }
 }
 
-void cboard_C3_DevKitC::board_Event(CControl* control) {
+void cboard_C3_DevKitC::board_Event(const char* controlname) {
     char line[128] = "";
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_GET, (void*)line);
     icount = MipsStrToIcount(line);
@@ -672,115 +664,117 @@ void cboard_C3_DevKitC::BoardOptions(int* argc, char** argv) {
     }
 }
 
-void cboard_C3_DevKitC::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
-    switch (control->GetTag()) {
-        case 4: {
-            std::string fname = PICSimLab.GetSharePath() +
-                                "boards"
-                                "/" BOARD_C3_DevKitC_Name +
-                                "/config.lxrad";
+void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) {
+    if (!strcmp(controlname, "b_button2")) {
+        std::string fname = PICSimLab.GetSharePath() +
+                            "boards"
+                            "/" BOARD_C3_DevKitC_Name +
+                            "/config.lxrad";
 
-            if (lxFileExists(fname)) {
-                wconfig->DestroyChilds();
-                if (wconfig->LoadXMLContextAndCreateChilds(fname)) {
-                    CText* Text1 = (CText*)wconfig->GetChildByName("text1");
-                    char buff[2048];
-                    char line[1024];
-                    strncpy(buff, (const char*)cmdline.c_str(), 2047);
+        if (lxFileExists(fname)) {
+            if (PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
+                char buff[2048];
+                char line[1024];
+                strncpy(buff, (const char*)cmdline.c_str(), 2047);
 
-                    char* arg = strtok(buff, " \n");
+                char* arg = strtok(buff, " \n");
+                line[0] = 0;
+
+                while (arg) {
+                    if (!line[0]) {
+                        strcpy(line, arg);
+                        if (line[0] != '-') {
+                            PICSimLab.ExtraWindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
+                    } else {
+                        if (arg[0] == '-') {
+                            PICSimLab.ExtraWindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            strcpy(line, arg);
+                        } else {
+                            strcat(line, " ");
+                            strcat(line, arg);
+                            PICSimLab.ExtraWindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
+                    }
+                    arg = strtok(NULL, " \n");
+                }
+
+                if (cmdline_extra.length()) {
+                    strncpy(buff, (const char*)cmdline_extra.c_str(), 2047);
+
+                    arg = strtok(buff, " \n");
                     line[0] = 0;
 
                     while (arg) {
                         if (!line[0]) {
                             strcpy(line, arg);
                             if (line[0] != '-') {
-                                Text1->AddLine(line);
+                                PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
                                 line[0] = 0;
                             }
                         } else {
                             if (arg[0] == '-') {
-                                Text1->AddLine(line);
+                                PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
                                 strcpy(line, arg);
                             } else {
                                 strcat(line, " ");
                                 strcat(line, arg);
-                                Text1->AddLine(line);
+                                PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
                                 line[0] = 0;
                             }
                         }
                         arg = strtok(NULL, " \n");
                     }
-
-                    CText* Text2 = (CText*)wconfig->GetChildByName("text2");
-                    if (cmdline_extra.length()) {
-                        strncpy(buff, (const char*)cmdline_extra.c_str(), 2047);
-
-                        arg = strtok(buff, " \n");
-                        line[0] = 0;
-
-                        while (arg) {
-                            if (!line[0]) {
-                                strcpy(line, arg);
-                                if (line[0] != '-') {
-                                    Text2->AddLine(line);
-                                    line[0] = 0;
-                                }
-                            } else {
-                                if (arg[0] == '-') {
-                                    Text2->AddLine(line);
-                                    strcpy(line, arg);
-                                } else {
-                                    strcat(line, " ");
-                                    strcat(line, arg);
-                                    Text2->AddLine(line);
-                                    line[0] = 0;
-                                }
-                            }
-                            arg = strtok(NULL, " \n");
-                        }
-                    } else {
-                        Text2->Clear();
-                    }
-
-                    ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->SetCheck(ConfEnableSerial);
-                    ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->SetCheck(ConfEnableWifi);
-                    ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->SetCheck(ConfDisableWdt);
-                    ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->SetCheck(ConfEnableEthernet);
-                    ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->SetCheck(use_cmdline_extra);
-
-                    ((CButton*)wconfig->GetChildByName("button1"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
-
-                    ((CButton*)wconfig->GetChildByName("button2"))->EvMouseButtonRelease = PICSimLab.board_ButtonEvent;
-
-                    wconfig->SetX(PICSimLab.GetWindow()->GetX() + 50);
-                    wconfig->SetY(PICSimLab.GetWindow()->GetY() + 50);
-
-                    wconfig->Draw();
-                    wconfig->ShowExclusive();
+                } else {
+                    PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTCLEAR, NULL);
                 }
-            } else {
-                PICSimLab.RegisterError("File " + fname + " not found!");
+
+                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXSETCHECK,
+                                         std::to_string(ConfEnableWifi).c_str());
+                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox2", PWA_CHECKBOXSETCHECK,
+                                         std::to_string(ConfDisableWdt).c_str());
+                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXSETCHECK,
+                                         std::to_string(use_cmdline_extra).c_str());
+                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXSETCHECK,
+                                         std::to_string(ConfEnableEthernet).c_str());
+                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXSETCHECK,
+                                         std::to_string(ConfEnableSerial).c_str());
+
+                PICSimLab.ExtraWindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
+                PICSimLab.ExtraWindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
+
+                PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_SETX,
+                                         std::to_string(PICSimLab.GetWindow()->GetX() + 50).c_str());
+                PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_SETY,
+                                         std::to_string(PICSimLab.GetWindow()->GetY() + 50).c_str());
+
+                PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
             }
-        } break;
-        case 5: {
-            ConfEnableSerial = ((CCheckBox*)wconfig->GetChildByName("checkbox5"))->GetCheck();
-            ConfEnableWifi = ((CCheckBox*)wconfig->GetChildByName("checkbox1"))->GetCheck();
-            ConfDisableWdt = ((CCheckBox*)wconfig->GetChildByName("checkbox2"))->GetCheck();
-            ConfEnableEthernet = ((CCheckBox*)wconfig->GetChildByName("checkbox4"))->GetCheck();
-            use_cmdline_extra = ((CCheckBox*)wconfig->GetChildByName("checkbox3"))->GetCheck();
-            CText* Text2 = (CText*)wconfig->GetChildByName("text2");
-            cmdline_extra = "";
-            for (unsigned int i = 0; i < Text2->GetCountLines(); i++) {
-                cmdline_extra += Text2->GetLine(i);
-                cmdline_extra += " ";
-            }
-            wconfig->HideExclusive();
-            PICSimLab.EndSimulation();
-        } break;
-        case 6:
-            wconfig->HideExclusive();
-            break;
+        } else {
+            PICSimLab.RegisterError("File " + fname + " not found!");
+        }
+    } else if (!strcmp(controlname, "button1")) {
+        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableWifi);
+        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox2", PWA_CHECKBOXGETCHECK, NULL, &ConfDisableWdt);
+        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXGETCHECK, NULL, &use_cmdline_extra);
+        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableEthernet);
+        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableSerial);
+
+        cmdline_extra = "";
+        unsigned int lc;
+        PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTGETLINECOUNT, NULL, &lc);
+        for (unsigned int i = 0; i < lc; i++) {
+            char buff[256];
+            PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTGETLINE, std::to_string(i).c_str(), buff);
+            cmdline_extra += buff;
+            cmdline_extra += " ";
+        }
+        PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
+        PICSimLab.EndSimulation();
+    } else if (!strcmp(controlname, "button2")) {
+        PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
     }
 }
 

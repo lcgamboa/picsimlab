@@ -29,6 +29,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector
@@ -532,7 +534,7 @@ void cboard_Blue_Pill::Run_CPU_ns(uint64_t time) {
     }
 }
 
-void cboard_Blue_Pill::board_Event(CControl* control) {
+void cboard_Blue_Pill::board_Event(const char* controlname) {
     char line[128] = "";
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_GET, (void*)line);
     icount = MipsStrToIcount(line);

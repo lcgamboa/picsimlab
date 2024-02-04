@@ -277,17 +277,17 @@ void cpart_tempsys::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo3", input_pins[2]);
     SetPCWComboWithPinNames("combo4", input_pins[3]);
 
-    SpareParts.WPropCmd("combo7", WPA_COMBOSETITEMS, "0V,1.2V,");
+    SpareParts.WPropCmd("combo7", PWA_COMBOSETITEMS, "0V,1.2V,");
 
     if (tvoff == 0) {
-        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "0V");
+        SpareParts.WPropCmd("combo7", PWA_COMBOSETTEXT, "0V");
     } else {
-        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "1.2V");
+        SpareParts.WPropCmd("combo7", PWA_COMBOSETTEXT, "1.2V");
     }
 
-    SpareParts.WPropCmd("spind8", WPA_SPINDSETMAX, "150");
-    SpareParts.WPropCmd("spind8", WPA_SPINDSETMIN, "-55");
-    SpareParts.WPropCmd("spind8", WPA_SPINDSETVALUE, std::to_string(ambient).c_str());
+    SpareParts.WPropCmd("spind8", PWA_SPINDSETMAX, "150");
+    SpareParts.WPropCmd("spind8", PWA_SPINDSETMIN, "-55");
+    SpareParts.WPropCmd("spind8", PWA_SPINDSETVALUE, std::to_string(ambient).c_str());
 }
 
 void cpart_tempsys::ReadPropertiesWindow(void) {
@@ -297,14 +297,14 @@ void cpart_tempsys::ReadPropertiesWindow(void) {
     input_pins[3] = GetPWCComboSelectedPin("combo4");
 
     char buff[64];
-    SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo7", PWA_COMBOGETTEXT, NULL, buff);
     if (strcmp(buff, "0V") == 0) {
         tvoff = 0;
     } else {
         tvoff = 1.2;
     }
 
-    SpareParts.WPropCmd("spind8", WPA_SPINDGETVALUE, NULL, &ambient);
+    SpareParts.WPropCmd("spind8", PWA_SPINDGETVALUE, NULL, &ambient);
     temp[0] = ambient;
     temp[1] = ambient;
 }

@@ -28,45 +28,9 @@
 
 #include "draw.h"
 #include "part.h"
+#include "types.h"
 
 #define IOINIT 110
-
-enum PICSimLabWPropAction {
-    WPA_COMBOSETITEMS,
-    WPA_COMBOSETTEXT,
-    WPA_COMBOGETTEXT,
-    WPA_COMBOENABLEEV,
-
-    WPA_SPINDSETMAX,
-    WPA_SPINDSETMIN,
-    WPA_SPINDSETVALUE,
-    WPA_SPINDGETVALUE,
-
-    WPA_SPINSETMAX,
-    WPA_SPINSETMIN,
-    WPA_SPINSETVALUE,
-    WPA_SPINGETVALUE,
-    WPA_SPINENABLEEV,
-
-    WPA_TEXTCLEAR,
-    WPA_TEXTADDLINE,
-    WPA_TEXTGETLINE,
-    WPA_TEXTGETLINECOUNT,
-
-    WPA_EDITSETTEXT,
-    WPA_EDITGETTEXT,
-
-    WPA_LABELSETTEXT,
-
-    WPA_SETENABLE,
-    WPA_SETWIDTH,
-    WPA_SETHEIGHT,
-    WPA_SETVISIBLE,
-    WPA_SETX,
-    WPA_SETY,
-
-    WPA_LAST,
-};
 
 class CSpareParts {
 public:
@@ -132,12 +96,6 @@ public:
     CFileDialog* GetFileDialog(void) { return filedialog; }
     void Reset(void);
 
-    void (CControl::*PartButtonEvent)(CControl* control, const uint button, const uint x, const uint y,
-                                      const uint mask);
-    void (CControl::*PartEvent)(CControl* control);
-
-    void (CControl::*PartKeyEvent)(CControl* control, const uint keyval, const uint hardware_keycode, const uint state);
-
     void Setfdtype(int value);
 
     int Getfdtype(void) { return fdtype; };
@@ -158,12 +116,16 @@ public:
 
     static int CanvasCmd(const CanvasCmd_t cmd);
 
-    static int WPropCmd(const char* ControlName, const PICSimLabWPropAction action, const char* Value,
+    static int WPropCmd(const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                         void* ReturnBuff = NULL);
+
+    static int ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                              const char* Value, void* ReturnBuff = NULL);
 
     int (*OnCanvasCmd)(const CanvasCmd_t cmd);
 
-    int (*OnWPropCmd)(const char* ControlName, const PICSimLabWPropAction action, const char* Value, void* ReturnBuff);
+    int (*OnExtraWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                            const char* Value, void* ReturnBuff);
 
 private:
     float scale;

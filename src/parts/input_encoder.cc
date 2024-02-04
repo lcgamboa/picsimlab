@@ -27,6 +27,7 @@
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
+#include "math.h"
 
 #define dprintf \
     if (1) {    \

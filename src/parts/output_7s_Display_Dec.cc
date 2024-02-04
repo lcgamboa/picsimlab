@@ -554,12 +554,12 @@ void cpart_7s_display_dec::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo7", input_pins[6]);
     SetPCWComboWithPinNames("combo8", input_pins[7]);
 
-    SpareParts.WPropCmd("combo9", WPA_COMBOSETITEMS, "MUX,LATCH,");
+    SpareParts.WPropCmd("combo9", PWA_COMBOSETITEMS, "MUX,LATCH,");
 
     if (dtype == 0)
-        SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, "MUX");
+        SpareParts.WPropCmd("combo9", PWA_COMBOSETTEXT, "MUX");
     else {
-        SpareParts.WPropCmd("combo9", WPA_COMBOSETTEXT, "LATCH");
+        SpareParts.WPropCmd("combo9", PWA_COMBOSETTEXT, "LATCH");
     }
 }
 
@@ -574,7 +574,7 @@ void cpart_7s_display_dec::ReadPropertiesWindow(void) {
     input_pins[7] = GetPWCComboSelectedPin("combo8");
 
     char buff[64];
-    SpareParts.WPropCmd("combo9", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo9", PWA_COMBOGETTEXT, NULL, buff);
 
     unsigned char type_ = strcmp(buff, "MUX") != 0;
 

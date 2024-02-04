@@ -573,30 +573,30 @@ void cpart_7s_display::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo11", input_pins[10]);
     SetPCWComboWithPinNames("combo12", input_pins[11]);
 
-    SpareParts.WPropCmd("combo13", WPA_COMBOSETITEMS, "HIGH,LOW,");
+    SpareParts.WPropCmd("combo13", PWA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        SpareParts.WPropCmd("combo13", WPA_COMBOSETTEXT, "HIGH");
+        SpareParts.WPropCmd("combo13", PWA_COMBOSETTEXT, "HIGH");
     else
-        SpareParts.WPropCmd("combo13", WPA_COMBOSETTEXT, "LOW ");
+        SpareParts.WPropCmd("combo13", PWA_COMBOSETTEXT, "LOW ");
 
-    SpareParts.WPropCmd("combo14", WPA_COMBOSETITEMS, "4 Mux.,Single,");
-    SpareParts.WPropCmd("combo14", WPA_COMBOENABLEEV, "1");
+    SpareParts.WPropCmd("combo14", PWA_COMBOSETITEMS, "4 Mux.,Single,");
+    SpareParts.WPropCmd("combo14", PWA_COMBOPROPEV, "1");
     if (dtype == 0)
-        SpareParts.WPropCmd("combo14", WPA_COMBOSETTEXT, "4 Mux.");
+        SpareParts.WPropCmd("combo14", PWA_COMBOSETTEXT, "4 Mux.");
     else {
-        SpareParts.WPropCmd("combo14", WPA_COMBOSETTEXT, "Single");
+        SpareParts.WPropCmd("combo14", PWA_COMBOSETTEXT, "Single");
     }
 
     if (dtype == 0) {
-        SpareParts.WPropCmd("combo9", WPA_SETENABLE, "1");
-        SpareParts.WPropCmd("combo10", WPA_SETENABLE, "1");
-        SpareParts.WPropCmd("combo11", WPA_SETENABLE, " 1");
-        SpareParts.WPropCmd("combo12", WPA_SETENABLE, " 1");
+        SpareParts.WPropCmd("combo9", PWA_SETENABLE, "1");
+        SpareParts.WPropCmd("combo10", PWA_SETENABLE, "1");
+        SpareParts.WPropCmd("combo11", PWA_SETENABLE, " 1");
+        SpareParts.WPropCmd("combo12", PWA_SETENABLE, " 1");
     } else {
-        SpareParts.WPropCmd("combo9", WPA_SETENABLE, "0");
-        SpareParts.WPropCmd("combo10", WPA_SETENABLE, "0");
-        SpareParts.WPropCmd("combo11", WPA_SETENABLE, "0");
-        SpareParts.WPropCmd("combo12", WPA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo9", PWA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo10", PWA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo11", PWA_SETENABLE, "0");
+        SpareParts.WPropCmd("combo12", PWA_SETENABLE, "0");
     }
 }
 
@@ -615,10 +615,10 @@ void cpart_7s_display::ReadPropertiesWindow(void) {
     input_pins[11] = GetPWCComboSelectedPin("combo12");
 
     char buff[64];
-    SpareParts.WPropCmd("combo13", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo13", PWA_COMBOGETTEXT, NULL, buff);
     active = (strcmp(buff, "HIGH") == 0);
 
-    SpareParts.WPropCmd("combo14", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo14", PWA_COMBOGETTEXT, NULL, buff);
 
     unsigned char dtype_ = (strcmp(buff, "4 Mux.")) != 0;
 
@@ -710,7 +710,7 @@ void cpart_7s_display::PostProcess(void) {
     }
 }
 
-void cpart_7s_display::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
+void cpart_7s_display::ComboChange(const char* controlname, std::string value) {
     unsigned char dtype_ = (value.compare("4 Mux.")) != 0;
     ChangeType(dtype_);
 }

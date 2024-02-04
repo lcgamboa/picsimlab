@@ -206,27 +206,27 @@ public:
     /**
      * @brief  Used by properties window combos
      */
-    virtual void ComboChange(CPWindow* WProp, CCombo* control, std::string value){};
+    virtual void ComboChange(const char* controlname, std::string value){};
 
     /**
      * @brief  Used by properties window spin
      */
-    virtual void SpinChange(CPWindow* WProp, CSpin* control, int value){};
+    virtual void SpinChange(const char* controlname, int value){};
 
     /**
      * @brief  Used by windows of parts
      */
-    virtual void ButtonEvent(CControl* control, uint button, uint x, uint y, uint state){};
+    virtual void ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state){};
 
     /**
      * @brief  Used by windows of parts
      */
-    virtual void KeyEvent(CControl* control, uint keysym, uint ukeysym, uint state){};
+    virtual void KeyEvent(const char* controlname, uint keysym, uint ukeysym, uint state){};
 
     /**
      * @brief  Used by windows of parts
      */
-    virtual void Event(CControl* control){};
+    virtual void Event(const char* controlname){};
 
     /**
      * @brief  Used by properties window filedialogs

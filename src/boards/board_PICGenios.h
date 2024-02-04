@@ -118,7 +118,7 @@ public:
     void ReadPreferences(char* name, char* value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void board_Event(CControl* control) override;
+    void board_Event(const char* controlname) override;
     void SetScale(double scale) override;
     void OnTime(void);
 };

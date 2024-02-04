@@ -633,51 +633,51 @@ void cpart_keypad::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo7", output_pins[6]);
     SetPCWComboWithPinNames("combo8", output_pins[7]);
 
-    SpareParts.WPropCmd("combo11", WPA_COMBOSETITEMS, "UP,DOWN,");
+    SpareParts.WPropCmd("combo11", PWA_COMBOSETITEMS, "UP,DOWN,");
     if (!pull)
-        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "UP");
+        SpareParts.WPropCmd("combo11", PWA_COMBOSETTEXT, "UP");
     else
-        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "DOWN");
+        SpareParts.WPropCmd("combo11", PWA_COMBOSETTEXT, "DOWN");
 
-    SpareParts.WPropCmd("combo12", WPA_COMBOSETITEMS, "4x4,4x3,2x5,");
-    SpareParts.WPropCmd("combo12", WPA_COMBOENABLEEV, "1");
+    SpareParts.WPropCmd("combo12", PWA_COMBOSETITEMS, "4x4,4x3,2x5,");
+    SpareParts.WPropCmd("combo12", PWA_COMBOPROPEV, "1");
 
     switch (type) {
         case KT4x4:
-            SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
-            SpareParts.WPropCmd("label2", WPA_LABELSETTEXT, "P2 - L2");
-            SpareParts.WPropCmd("label3", WPA_LABELSETTEXT, "P3 - L3");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "P4 - L4");
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "P5 - C1");
-            SpareParts.WPropCmd("label6", WPA_LABELSETTEXT, "P6 - C2");
-            SpareParts.WPropCmd("label7", WPA_LABELSETTEXT, "P7 - C3");
-            SpareParts.WPropCmd("label8", WPA_LABELSETTEXT, "P8 - C4");
-            SpareParts.WPropCmd("combo8", WPA_SETENABLE, "1");
-            SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "4x4");
+            SpareParts.WPropCmd("label1", PWA_LABELSETTEXT, "P1 - L1");
+            SpareParts.WPropCmd("label2", PWA_LABELSETTEXT, "P2 - L2");
+            SpareParts.WPropCmd("label3", PWA_LABELSETTEXT, "P3 - L3");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "P4 - L4");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "P5 - C1");
+            SpareParts.WPropCmd("label6", PWA_LABELSETTEXT, "P6 - C2");
+            SpareParts.WPropCmd("label7", PWA_LABELSETTEXT, "P7 - C3");
+            SpareParts.WPropCmd("label8", PWA_LABELSETTEXT, "P8 - C4");
+            SpareParts.WPropCmd("combo8", PWA_SETENABLE, "1");
+            SpareParts.WPropCmd("combo12", PWA_COMBOSETTEXT, "4x4");
             break;
         case KT4x3:
-            SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
-            SpareParts.WPropCmd("label2", WPA_LABELSETTEXT, "P2 - L2");
-            SpareParts.WPropCmd("label3", WPA_LABELSETTEXT, "P3 - L3");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "P4 - L4");
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "P5 - C1");
-            SpareParts.WPropCmd("label6", WPA_LABELSETTEXT, "P6 - C2");
-            SpareParts.WPropCmd("label7", WPA_LABELSETTEXT, "P7 - C3");
-            SpareParts.WPropCmd("label8", WPA_LABELSETTEXT, "P8 - NC");
-            SpareParts.WPropCmd("combo8", WPA_SETENABLE, "0");
-            SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "4x3");
+            SpareParts.WPropCmd("label1", PWA_LABELSETTEXT, "P1 - L1");
+            SpareParts.WPropCmd("label2", PWA_LABELSETTEXT, "P2 - L2");
+            SpareParts.WPropCmd("label3", PWA_LABELSETTEXT, "P3 - L3");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "P4 - L4");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "P5 - C1");
+            SpareParts.WPropCmd("label6", PWA_LABELSETTEXT, "P6 - C2");
+            SpareParts.WPropCmd("label7", PWA_LABELSETTEXT, "P7 - C3");
+            SpareParts.WPropCmd("label8", PWA_LABELSETTEXT, "P8 - NC");
+            SpareParts.WPropCmd("combo8", PWA_SETENABLE, "0");
+            SpareParts.WPropCmd("combo12", PWA_COMBOSETTEXT, "4x3");
             break;
         case KT2x5:
-            SpareParts.WPropCmd("label1", WPA_LABELSETTEXT, "P1 - L1");
-            SpareParts.WPropCmd("label2", WPA_LABELSETTEXT, "P2 - L2");
-            SpareParts.WPropCmd("label3", WPA_LABELSETTEXT, "P3 - C1");
-            SpareParts.WPropCmd("label4", WPA_LABELSETTEXT, "P4 - C2");
-            SpareParts.WPropCmd("label5", WPA_LABELSETTEXT, "P5 - C3");
-            SpareParts.WPropCmd("label6", WPA_LABELSETTEXT, "P6 - C4");
-            SpareParts.WPropCmd("label7", WPA_LABELSETTEXT, "P7 - C5");
-            SpareParts.WPropCmd("label8", WPA_LABELSETTEXT, "P8 - NC");
-            SpareParts.WPropCmd("combo8", WPA_SETENABLE, "0");
-            SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "2x5");
+            SpareParts.WPropCmd("label1", PWA_LABELSETTEXT, "P1 - L1");
+            SpareParts.WPropCmd("label2", PWA_LABELSETTEXT, "P2 - L2");
+            SpareParts.WPropCmd("label3", PWA_LABELSETTEXT, "P3 - C1");
+            SpareParts.WPropCmd("label4", PWA_LABELSETTEXT, "P4 - C2");
+            SpareParts.WPropCmd("label5", PWA_LABELSETTEXT, "P5 - C3");
+            SpareParts.WPropCmd("label6", PWA_LABELSETTEXT, "P6 - C4");
+            SpareParts.WPropCmd("label7", PWA_LABELSETTEXT, "P7 - C5");
+            SpareParts.WPropCmd("label8", PWA_LABELSETTEXT, "P8 - NC");
+            SpareParts.WPropCmd("combo8", PWA_SETENABLE, "0");
+            SpareParts.WPropCmd("combo12", PWA_COMBOSETTEXT, "2x5");
             break;
     }
 }
@@ -693,19 +693,19 @@ void cpart_keypad::ReadPropertiesWindow(void) {
     output_pins[7] = GetPWCComboSelectedPin("combo8");
 
     char buff[64];
-    SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo11", PWA_COMBOGETTEXT, NULL, buff);
 
     pull = !(strcmp(buff, "UP") == 0);
 
-    SpareParts.WPropCmd("combo12", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo12", PWA_COMBOGETTEXT, NULL, buff);
 
-    ComboChange(NULL, NULL, buff);
+    ComboChange(NULL, buff);
 
     memset(keys, 0, 16);
     memset(keys2, 0, 10);
 }
 
-void cpart_keypad::ComboChange(CPWindow* WProp, CCombo* control, std::string value) {
+void cpart_keypad::ComboChange(const char* controlname, std::string value) {
     if (!value.compare("4x3")) {
         ChangeType(KT4x3);
     } else if (!value.compare("2x5")) {

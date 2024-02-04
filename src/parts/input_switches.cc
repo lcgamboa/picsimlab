@@ -392,24 +392,24 @@ void cpart_switches::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo8", output_pins[6]);
     SetPCWComboWithPinNames("combo9", output_pins[7]);
 
-    SpareParts.WPropCmd("combo11", WPA_COMBOSETITEMS, "Up,Down,");
+    SpareParts.WPropCmd("combo11", PWA_COMBOSETITEMS, "Up,Down,");
     if (active)
-        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "Up");
+        SpareParts.WPropCmd("combo11", PWA_COMBOSETTEXT, "Up");
     else
-        SpareParts.WPropCmd("combo11", WPA_COMBOSETTEXT, "Down");
+        SpareParts.WPropCmd("combo11", PWA_COMBOSETTEXT, "Down");
 
-    SpareParts.WPropCmd("combo12", WPA_COMBOSETITEMS, "Ideal,Normal,");
+    SpareParts.WPropCmd("combo12", PWA_COMBOSETITEMS, "Ideal,Normal,");
     if (mode)
-        SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "Ideal");
+        SpareParts.WPropCmd("combo12", PWA_COMBOSETTEXT, "Ideal");
     else
-        SpareParts.WPropCmd("combo12", WPA_COMBOSETTEXT, "Normal");
+        SpareParts.WPropCmd("combo12", PWA_COMBOSETTEXT, "Normal");
 
-    SpareParts.WPropCmd("spin13", WPA_SPINSETMAX, "8");
-    SpareParts.WPropCmd("spin13", WPA_SPINSETMIN, "1");
-    SpareParts.WPropCmd("spin13", WPA_SPINSETVALUE, std::to_string(Size).c_str());
-    SpareParts.WPropCmd("spin13", WPA_SPINENABLEEV, "1");
+    SpareParts.WPropCmd("spin13", PWA_SPINSETMAX, "8");
+    SpareParts.WPropCmd("spin13", PWA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin13", PWA_SPINSETVALUE, std::to_string(Size).c_str());
+    SpareParts.WPropCmd("spin13", PWA_SPINPROPEV, "1");
 
-    SpinChange(NULL, NULL, Size);
+    SpinChange(NULL, Size);
 }
 
 void cpart_switches::ReadPropertiesWindow(void) {
@@ -423,23 +423,23 @@ void cpart_switches::ReadPropertiesWindow(void) {
     output_pins[7] = GetPWCComboSelectedPin("combo9");
 
     char buff[64];
-    SpareParts.WPropCmd("combo11", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo11", PWA_COMBOGETTEXT, NULL, buff);
     active = (strcmp(buff, "Up") == 0);
 
-    SpareParts.WPropCmd("combo12", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo12", PWA_COMBOGETTEXT, NULL, buff);
 
     mode = (strcmp(buff, "Ideal") == 0);
 
     int size;
-    SpareParts.WPropCmd("spin13", WPA_SPINGETVALUE, NULL, &size);
+    SpareParts.WPropCmd("spin13", PWA_SPINGETVALUE, NULL, &size);
     ChangeSize(size);
 }
 
-void cpart_switches::SpinChange(CPWindow* WProp, CSpin* control, int value) {
+void cpart_switches::SpinChange(const char* controlname, int value) {
     for (int i = 0; i < 8; i++) {
         char name[20];
         sprintf(name, "combo%i", i + 2);
-        SpareParts.WPropCmd(name, WPA_SETENABLE, std::to_string(i < value).c_str());
+        SpareParts.WPropCmd(name, PWA_SETENABLE, std::to_string(i < value).c_str());
     }
 }
 

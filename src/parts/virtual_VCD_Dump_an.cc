@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif

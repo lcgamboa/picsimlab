@@ -251,21 +251,21 @@ void cpart_led_ws2812b::RegisterRemoteControl(void) {
 void cpart_led_ws2812b::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo4", input_pins[0]);
 
-    SpareParts.WPropCmd("label_2", WPA_LABELSETTEXT, std::to_string(output_pins[0]).c_str());
+    SpareParts.WPropCmd("label_2", PWA_LABELSETTEXT, std::to_string(output_pins[0]).c_str());
 
-    SpareParts.WPropCmd("spin5", WPA_SPINSETMAX, std::to_string(MAXROWS).c_str());
-    SpareParts.WPropCmd("spin5", WPA_SPINSETMIN, "1");
-    SpareParts.WPropCmd("spin5", WPA_SPINSETVALUE, std::to_string(led.nrows).c_str());
+    SpareParts.WPropCmd("spin5", PWA_SPINSETMAX, std::to_string(MAXROWS).c_str());
+    SpareParts.WPropCmd("spin5", PWA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin5", PWA_SPINSETVALUE, std::to_string(led.nrows).c_str());
 
-    SpareParts.WPropCmd("spin6", WPA_SPINSETMAX, std::to_string(MAXCOLS).c_str());
-    SpareParts.WPropCmd("spin6", WPA_SPINSETMIN, "1");
-    SpareParts.WPropCmd("spin6", WPA_SPINSETVALUE, std::to_string(led.ncols).c_str());
+    SpareParts.WPropCmd("spin6", PWA_SPINSETMAX, std::to_string(MAXCOLS).c_str());
+    SpareParts.WPropCmd("spin6", PWA_SPINSETMIN, "1");
+    SpareParts.WPropCmd("spin6", PWA_SPINSETVALUE, std::to_string(led.ncols).c_str());
 
-    SpareParts.WPropCmd("combo7", WPA_COMBOSETITEMS, "On,Off,");
+    SpareParts.WPropCmd("combo7", PWA_COMBOSETITEMS, "On,Off,");
     if (led.diffuser) {
-        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "On");
+        SpareParts.WPropCmd("combo7", PWA_COMBOSETTEXT, "On");
     } else {
-        SpareParts.WPropCmd("combo7", WPA_COMBOSETTEXT, "Off");
+        SpareParts.WPropCmd("combo7", PWA_COMBOSETTEXT, "Off");
     }
 }
 
@@ -275,11 +275,11 @@ void cpart_led_ws2812b::ReadPropertiesWindow(void) {
 
     input_pins[0] = GetPWCComboSelectedPin("combo4");
 
-    SpareParts.WPropCmd("spin5", WPA_SPINGETVALUE, NULL, &rows);
-    SpareParts.WPropCmd("spin6", WPA_SPINGETVALUE, NULL, &cols);
+    SpareParts.WPropCmd("spin5", PWA_SPINGETVALUE, NULL, &rows);
+    SpareParts.WPropCmd("spin6", PWA_SPINGETVALUE, NULL, &cols);
 
     char buff[64];
-    SpareParts.WPropCmd("combo7", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo7", PWA_COMBOGETTEXT, NULL, buff);
 
     if (!strcmp(buff, "On")) {
         diffuser = 1;

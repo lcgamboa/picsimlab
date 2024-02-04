@@ -30,6 +30,8 @@
 
 #define PART_BUZZER_Name "Buzzer"
 
+#include <lxrad.h>
+
 class cpart_Buzzer : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };

@@ -294,20 +294,20 @@ void cpart_dtfunc::ConfigurePropertiesWindow(void) {
         strncat(eq, buff, 199);
     }
 
-    SpareParts.WPropCmd("edit3", WPA_EDITSETTEXT, eq);
+    SpareParts.WPropCmd("edit3", PWA_EDITSETTEXT, eq);
 
     eq[0] = 0;
     for (int i = 0; i < orderd; i++) {
         snprintf(buff, 19, "%+f ", den[i]);
         strncat(eq, buff, 199);
     }
-    SpareParts.WPropCmd("edit4", WPA_EDITSETTEXT, eq);
+    SpareParts.WPropCmd("edit4", PWA_EDITSETTEXT, eq);
 
-    SpareParts.WPropCmd("edit5", WPA_EDITSETTEXT, std::to_string(sample).c_str());
-    SpareParts.WPropCmd("edit6", WPA_EDITSETTEXT, std::to_string(in_gain).c_str());
-    SpareParts.WPropCmd("edit7", WPA_EDITSETTEXT, std::to_string(in_off).c_str());
-    SpareParts.WPropCmd("edit8", WPA_EDITSETTEXT, std::to_string(out_gain).c_str());
-    SpareParts.WPropCmd("edit9", WPA_EDITSETTEXT, std::to_string(out_off).c_str());
+    SpareParts.WPropCmd("edit5", PWA_EDITSETTEXT, std::to_string(sample).c_str());
+    SpareParts.WPropCmd("edit6", PWA_EDITSETTEXT, std::to_string(in_gain).c_str());
+    SpareParts.WPropCmd("edit7", PWA_EDITSETTEXT, std::to_string(in_off).c_str());
+    SpareParts.WPropCmd("edit8", PWA_EDITSETTEXT, std::to_string(out_gain).c_str());
+    SpareParts.WPropCmd("edit9", PWA_EDITSETTEXT, std::to_string(out_off).c_str());
 }
 
 void cpart_dtfunc::ReadPropertiesWindow(void) {
@@ -318,7 +318,7 @@ void cpart_dtfunc::ReadPropertiesWindow(void) {
     pins[1] = GetPWCComboSelectedPin("combo2");
 
     char buff[255];
-    SpareParts.WPropCmd("edit3", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit3", PWA_EDITGETTEXT, NULL, buff);
 
     strncpy(line, buff, 255);
     T[0] = strtok(line, " ");
@@ -336,7 +336,7 @@ void cpart_dtfunc::ReadPropertiesWindow(void) {
         }
     }
 
-    SpareParts.WPropCmd("edit4", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit4", PWA_EDITGETTEXT, NULL, buff);
 
     strncpy(line, buff, 255);
     T[0] = strtok(line, " ");
@@ -364,19 +364,19 @@ void cpart_dtfunc::ReadPropertiesWindow(void) {
         }
     }
 
-    SpareParts.WPropCmd("edit5", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit5", PWA_EDITGETTEXT, NULL, buff);
     sample = std::stof(buff);
 
-    SpareParts.WPropCmd("edit6", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit6", PWA_EDITGETTEXT, NULL, buff);
     in_gain = std::stof(buff);
 
-    SpareParts.WPropCmd("edit7", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit7", PWA_EDITGETTEXT, NULL, buff);
     in_off = std::stof(buff);
 
-    SpareParts.WPropCmd("edit8", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit8", PWA_EDITGETTEXT, NULL, buff);
     out_gain = std::stof(buff);
 
-    SpareParts.WPropCmd("edit9", WPA_EDITGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("edit9", PWA_EDITGETTEXT, NULL, buff);
     out_off = std::stof(buff);
 
     Reset();

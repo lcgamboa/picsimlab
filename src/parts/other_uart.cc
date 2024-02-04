@@ -192,17 +192,17 @@ void cpart_UART::ConfigurePropertiesWindow(void) {
 
     char* resp = serial_port_list();
     if (resp) {
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETITEMS, resp);
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETITEMS, resp);
         free(resp);
     }
     if (uart_name[0] == '*')
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, " ");
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, " ");
     else {
-        SpareParts.WPropCmd("combo5", WPA_COMBOSETTEXT, uart_name);
+        SpareParts.WPropCmd("combo5", PWA_COMBOSETTEXT, uart_name);
     }
 
-    SpareParts.WPropCmd("combo6", WPA_COMBOSETITEMS, "1200,2400,4800,9600,19200,38400,57600,115200,");
-    SpareParts.WPropCmd("combo6", WPA_COMBOSETTEXT, std::to_string(uart_speed).c_str());
+    SpareParts.WPropCmd("combo6", PWA_COMBOSETITEMS, "1200,2400,4800,9600,19200,38400,57600,115200,");
+    SpareParts.WPropCmd("combo6", PWA_COMBOSETTEXT, std::to_string(uart_speed).c_str());
 }
 
 void cpart_UART::ReadPropertiesWindow(void) {
@@ -210,10 +210,10 @@ void cpart_UART::ReadPropertiesWindow(void) {
     pins[1] = GetPWCComboSelectedPin("combo3");
 
     char buff[200];
-    SpareParts.WPropCmd("combo5", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo5", PWA_COMBOGETTEXT, NULL, buff);
     strncpy(uart_name, buff, 199);
 
-    SpareParts.WPropCmd("combo6", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo6", PWA_COMBOGETTEXT, NULL, buff);
     uart_speed = std::stoi(buff);
 
     uart_set_port(&sr, uart_name, uart_speed);

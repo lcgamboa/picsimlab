@@ -29,6 +29,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector

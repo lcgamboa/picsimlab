@@ -27,6 +27,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 part::part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int _id,
            const int fsize) {
     always_update = 0;
@@ -318,19 +320,16 @@ void part::LoadPartImage(void) {
     int bmp = SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
 
     if (bmp >= 0) {
-        if (SpareParts.GetWindow()) {
-            BitmapId = bmp;
-            SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
-        }
+        BitmapId = bmp;
+        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
     } else if ((bmp = SpareParts.CanvasCmd(
                     {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Common/notfound.svg").c_str(), Scale,
                                               0, Orientation}})) >= 0) {
-        if (SpareParts.GetWindow()) {
-            BitmapId = bmp;
-            SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
-        }
+        BitmapId = bmp;
+        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+
         printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
         PICSimLab.RegisterError("Error loading image:\n " + iname);
     } else {
@@ -513,19 +512,19 @@ const PCWProp* part::GetPCWProperties(void) {
 void part::SetPCWComboWithPinNames(const char* combo_name, const unsigned char pin) {
     std::string spin;
 
-    SpareParts.WPropCmd(combo_name, WPA_COMBOSETITEMS, SpareParts.GetPinsNames().c_str());
+    SpareParts.WPropCmd(combo_name, PWA_COMBOSETITEMS, SpareParts.GetPinsNames().c_str());
 
     if (pin == 0) {
-        SpareParts.WPropCmd(combo_name, WPA_COMBOSETTEXT, "0  NC");
+        SpareParts.WPropCmd(combo_name, PWA_COMBOSETTEXT, "0  NC");
     } else {
         spin = SpareParts.GetPinName(pin);
-        SpareParts.WPropCmd(combo_name, WPA_COMBOSETTEXT, (std::to_string(pin) + "  " + spin).c_str());
+        SpareParts.WPropCmd(combo_name, PWA_COMBOSETTEXT, (std::to_string(pin) + "  " + spin).c_str());
     }
 }
 
 unsigned char part::GetPWCComboSelectedPin(const char* combo_name) {
     char buff[64];
-    SpareParts.WPropCmd(combo_name, WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd(combo_name, PWA_COMBOGETTEXT, NULL, buff);
     return atoi(buff);
 }
 

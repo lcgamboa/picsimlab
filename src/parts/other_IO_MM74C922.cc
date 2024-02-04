@@ -297,10 +297,10 @@ void cpart_IO_MM74C922::ConfigurePropertiesWindow(void) {
                                                                 // (output_pins[pinv - 4]);
         }
 
-        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT,
+        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), PWA_LABELSETTEXT,
                             (std::to_string(i + 1) + "-" + pin_names[i]).c_str());
 
-        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT, value.c_str());
+        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), PWA_LABELSETTEXT, value.c_str());
     }
 
     SetPCWComboWithPinNames("combo12", output_pins[4]);

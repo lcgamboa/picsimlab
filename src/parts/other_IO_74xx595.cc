@@ -238,9 +238,9 @@ void cpart_IO_74xx595::ConfigurePropertiesWindow(void) {
                     std::to_string(output_pins[pinv - 4]);  // + " " + SpareParts.GetPinName (output_pins[pinv - 4]);
         }
 
-        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT,
+        SpareParts.WPropCmd(("label" + std::to_string(i + 1)).c_str(), PWA_LABELSETTEXT,
                             (std::to_string(i + 1) + "-" + pin_names[i]).c_str());
-        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), WPA_LABELSETTEXT, value.c_str());
+        SpareParts.WPropCmd(("label_" + std::to_string(i + 1)).c_str(), PWA_LABELSETTEXT, value.c_str());
     }
 
     SetPCWComboWithPinNames("combo10", input_pins[0]);

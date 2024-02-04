@@ -27,6 +27,7 @@
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
+#include "math.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_F1, O_F2, O_PO1, O_LED };
@@ -230,16 +231,16 @@ void cpart_LDR::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo2", output_pins[0]);
     SetPCWComboWithPinNames("combo3", output_pins[1]);
 
-    SpareParts.WPropCmd("spind5", WPA_SPINDSETMAX, std::to_string(vmax).c_str());
-    SpareParts.WPropCmd("spind5", WPA_SPINDSETMIN, "0");
-    SpareParts.WPropCmd("spind5", WPA_SPINDSETVALUE, std::to_string(vthreshold).c_str());
+    SpareParts.WPropCmd("spind5", PWA_SPINDSETMAX, std::to_string(vmax).c_str());
+    SpareParts.WPropCmd("spind5", PWA_SPINDSETMIN, "0");
+    SpareParts.WPropCmd("spind5", PWA_SPINDSETVALUE, std::to_string(vthreshold).c_str());
 }
 
 void cpart_LDR::ReadPropertiesWindow(void) {
     output_pins[0] = GetPWCComboSelectedPin("combo2");
     output_pins[1] = GetPWCComboSelectedPin("combo3");
 
-    SpareParts.WPropCmd("spind5", WPA_SPINDGETVALUE, NULL, &vthreshold);
+    SpareParts.WPropCmd("spind5", PWA_SPINDGETVALUE, NULL, &vthreshold);
 }
 
 part_init(PART_LDR_Name, cpart_LDR, "Input");

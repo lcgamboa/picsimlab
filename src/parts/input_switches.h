@@ -49,7 +49,7 @@ public:
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void SpinChange(CPWindow* WProp, CSpin* control, int value) override;
+    void SpinChange(const char* controlname, int value) override;
 
 private:
     void RegisterRemoteControl(void) override;

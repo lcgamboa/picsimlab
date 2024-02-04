@@ -28,6 +28,8 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#include <lxrad.h>
+
 /* outputs */
 enum { O_P1, O_P2, O_L1 };
 
@@ -178,21 +180,21 @@ void cpart_Buzzer::RegisterRemoteControl(void) {
 void cpart_Buzzer::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo1", input_pins[0]);
 
-    SpareParts.WPropCmd("combo3", WPA_COMBOSETITEMS, "Active,Passive,Tone,");
+    SpareParts.WPropCmd("combo3", PWA_COMBOSETITEMS, "Active,Passive,Tone,");
     if (btype == ACTIVE)
-        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "Active");
+        SpareParts.WPropCmd("combo3", PWA_COMBOSETTEXT, "Active");
     else if (btype == PASSIVE) {
-        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "Passive");
+        SpareParts.WPropCmd("combo3", PWA_COMBOSETTEXT, "Passive");
     } else  // TONE
     {
-        SpareParts.WPropCmd("combo3", WPA_COMBOSETTEXT, "Tone");
+        SpareParts.WPropCmd("combo3", PWA_COMBOSETTEXT, "Tone");
     }
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOSETITEMS, "HIGH,LOW,");
+    SpareParts.WPropCmd("combo4", PWA_COMBOSETITEMS, "HIGH,LOW,");
     if (active)
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "HIGH");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "HIGH");
     else
-        SpareParts.WPropCmd("combo4", WPA_COMBOSETTEXT, "LOW ");
+        SpareParts.WPropCmd("combo4", PWA_COMBOSETTEXT, "LOW ");
 }
 
 void cpart_Buzzer::ReadPropertiesWindow(void) {
@@ -201,7 +203,7 @@ void cpart_Buzzer::ReadPropertiesWindow(void) {
     unsigned char tp = 0;
 
     char buff[64];
-    SpareParts.WPropCmd("combo3", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo3", PWA_COMBOGETTEXT, NULL, buff);
 
     std::string mode = buff;
     if (mode.compare("Active") == 0) {
@@ -212,7 +214,7 @@ void cpart_Buzzer::ReadPropertiesWindow(void) {
         tp = TONE;
     }
 
-    SpareParts.WPropCmd("combo4", WPA_COMBOGETTEXT, NULL, buff);
+    SpareParts.WPropCmd("combo4", PWA_COMBOGETTEXT, NULL, buff);
 
     active = (strcmp(buff, "HIGH") == 0);
 

@@ -27,6 +27,8 @@
 #include "oscilloscope.h"
 #include "spareparts.h"
 
+#include <lxrad.h>
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -93,9 +95,7 @@ CPICSimLab::CPICSimLab() {
     OnUpdateGUI = NULL;
     OnConfigMenuGUI = NULL;
     OnCanvasCmd = NULL;
-
-    board_Event = NULL;
-    board_ButtonEvent = NULL;
+    OnExtraWindowCmd = NULL;
 }
 
 void CPICSimLab::Init(CWindow* w) {
@@ -459,6 +459,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     if (Oscilloscope.GetWindow()) {
         Oscilloscope.GetWindow()->Hide();
     }
+
     if (SpareParts.GetWindow()) {
         SpareParts.GetWindow()->Hide();
     }
@@ -1218,4 +1219,12 @@ void* CPICSimLab::UpdateGUI(const int id, const PICSimlabGUIType type, const PIC
         return (*OnUpdateGUI)(id, type, action, arg);
     }
     return NULL;
+}
+
+int CPICSimLab::ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                               const char* Value, void* ReturnBuff) {
+    if (PICSimLab.OnExtraWindowCmd) {
+        return (*PICSimLab.OnExtraWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+    }
+    return -1;
 }

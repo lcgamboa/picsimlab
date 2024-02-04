@@ -2486,7 +2486,7 @@ void cboard_PICGenios::ReadPreferences(char* name, char* value) {
 
 // Change lcd
 
-void cboard_PICGenios::board_Event(CControl* control) {
+void cboard_PICGenios::board_Event(const char* controlname) {
     char text[128] = "";
     PICSimLab.UpdateGUI(LCD_TYPE, GT_COMBO, GA_GET, (void*)text);
 

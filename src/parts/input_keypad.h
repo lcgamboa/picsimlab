@@ -47,7 +47,7 @@ public:
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
-    void ComboChange(CPWindow* WProp, CCombo* control, std::string value) override;
+    void ComboChange(const char* controlname, std::string value) override;
 
 private:
     void ChangeType(unsigned char tp);
