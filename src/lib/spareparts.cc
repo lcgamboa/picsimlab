@@ -46,14 +46,11 @@ CSpareParts::CSpareParts() {
     PartOnDraw = -1;
 
     OnCanvasCmd = NULL;
-    OnExtraWindowCmd = NULL;
+    OnWindowCmd = NULL;
 }
 
 void CSpareParts::Init(CWindow* win) {
     Window = win;
-    if (Window) {
-        filedialog = (CFileDialog*)win->GetChildByName("filedialog1");
-    }
 }
 
 void CSpareParts::UpdateAll(const int force) {
@@ -662,7 +659,9 @@ bool CSpareParts::SaveConfig(std::string fname) {
 
 void CSpareParts::Setfdtype(int value) {
     fdtype = value;
-    oldfname = filedialog->GetFileName();
+    char buff[512];
+    WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
+    oldfname = buff;
 }
 
 void CSpareParts::SetfdOldFilename(const std::string ofn) {
@@ -678,16 +677,16 @@ int CSpareParts::CanvasCmd(const CanvasCmd_t cmd) {
 
 int CSpareParts::WPropCmd(const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                           void* ReturnBuff) {
-    if (SpareParts.OnExtraWindowCmd) {
-        return (*SpareParts.OnExtraWindowCmd)(0, ControlName, action, Value, ReturnBuff);
+    if (SpareParts.OnWindowCmd) {
+        return (*SpareParts.OnWindowCmd)(PW_WPROP, ControlName, action, Value, ReturnBuff);
     }
     return -1;
 }
 
-int CSpareParts::ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                                const char* Value, void* ReturnBuff) {
-    if (SpareParts.OnExtraWindowCmd) {
-        return (*SpareParts.OnExtraWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+int CSpareParts::WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                           void* ReturnBuff) {
+    if (SpareParts.OnWindowCmd) {
+        return (*SpareParts.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
     }
     return -1;
 }

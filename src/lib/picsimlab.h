@@ -255,8 +255,8 @@ public:
 
     static int CanvasCmd(const CanvasCmd_t cmd);
 
-    static int ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                              const char* Value, void* ReturnBuff = NULL);
+    static int WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                         void* ReturnBuff = NULL);
 
 #ifndef _NOTHREAD
     lxCondition* cpu_cond;
@@ -284,8 +284,8 @@ public:
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
     void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
     int (*OnCanvasCmd)(const CanvasCmd_t cmd);
-    int (*OnExtraWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                            const char* Value, void* ReturnBuff);
+    int (*OnWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                       void* ReturnBuff);
 
 private:
     void StartRControl(void);

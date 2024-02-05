@@ -61,37 +61,37 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
 
     lending = LE_NL;
 
-    wvtermId = SpareParts.ExtraWindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
+    wvtermId = SpareParts.WindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
 
     std::string fname =
         (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Virtual/IO Virtual Term/terminal_1.lxrad")
             .c_str();
 
-    if (SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
+    if (SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
 
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWPARTEV, "1");
-        SpareParts.ExtraWindowCmd(wvtermId, "button1", PWA_BUTTONPARTEV, "1");
-        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_BUTTONPARTEV, "1");
-        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOPARTEV, "1");
-        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_COMBOPARTEV, "1");
-        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITPARTEV, "1");
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWPARTEV, "1");
+        SpareParts.WindowCmd(wvtermId, "button1", PWA_BUTTONPARTEV, "1");
+        SpareParts.WindowCmd(wvtermId, "button2", PWA_BUTTONPARTEV, "1");
+        SpareParts.WindowCmd(wvtermId, "combo1", PWA_COMBOPARTEV, "1");
+        SpareParts.WindowCmd(wvtermId, "combo2", PWA_COMBOPARTEV, "1");
+        SpareParts.WindowCmd(wvtermId, "edit1", PWA_EDITPARTEV, "1");
 
-        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_TEXTTELETYPE, NULL);
+        SpareParts.WindowCmd(wvtermId, "text1", PWA_TEXTTELETYPE, NULL);
 
-        SpareParts.ExtraWindowCmd(wvtermId, "button1", PWA_SETTAG, std::to_string(id).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_SETTAG, std::to_string(id).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_SETTAG, std::to_string(id).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_SETTAG, std::to_string(id).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_SETTAG, std::to_string(id).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_SETTAG, std::to_string(id).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, "button1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, "button2", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, "combo1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, "combo2", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, "text1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, "edit1", PWA_SETTAG, std::to_string(id).c_str());
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_SETTAG, std::to_string(id).c_str());
     } else {
         printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
         PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
     }
 
     SetPCWProperties(pcwprop);
@@ -110,7 +110,7 @@ cpart_vterm::~cpart_vterm(void) {
     SpareParts.CanvasCmd({CC_DESTROY});
     vterm_end(&vt);
 
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWDESTROY, NULL);
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWDESTROY, NULL);
     wvtermId = -1;
 
     count--;
@@ -126,12 +126,12 @@ void cpart_vterm::RegisterRemoteControl(void) {
 void cpart_vterm::ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) {
     if (!strcmp(controlname, "button1")) {
         char buff[256];
-        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
+        SpareParts.WindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
         text_to_send = buff;
-        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITSETTEXT, "");
+        SpareParts.WindowCmd(wvtermId, "edit1", PWA_EDITSETTEXT, "");
         send_text = 1;
     } else if (!strcmp(controlname, "button2")) {
-        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_TEXTCLEAR, NULL);
+        SpareParts.WindowCmd(wvtermId, "text1", PWA_TEXTCLEAR, NULL);
     }
 }
 
@@ -139,9 +139,9 @@ void cpart_vterm::KeyEvent(const char* controlname, uint keysym, uint ukeysym, u
     if (!strcmp(controlname, "edit1")) {
         if (ukeysym == 13) {
             char buff[256];
-            SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
+            SpareParts.WindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
             text_to_send = buff;
-            SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_EDITSETTEXT, "");
+            SpareParts.WindowCmd(wvtermId, "edit1", PWA_EDITSETTEXT, "");
             send_text = 1;
         }
     }
@@ -150,12 +150,12 @@ void cpart_vterm::KeyEvent(const char* controlname, uint keysym, uint ukeysym, u
 void cpart_vterm::Event(const char* controlname) {
     if (!strcmp(controlname, "combo2")) {
         char buff[32];
-        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WindowCmd(wvtermId, "combo2", PWA_COMBOGETTEXT, NULL, buff);
         vterm_speed = std::stoi(buff);
         vterm_set_speed(&vt, vterm_speed);
     } else if (!strcmp(controlname, "combo1")) {
         char buff[32];
-        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOGETTEXT, NULL, buff);
+        SpareParts.WindowCmd(wvtermId, "combo1", PWA_COMBOGETTEXT, NULL, buff);
 
         if (!strcmp(buff, "No line ending")) {
             lending = LE_NONE;
@@ -168,22 +168,22 @@ void cpart_vterm::Event(const char* controlname) {
         }
     } else if (!strcmp(controlname, "window1")) {
         int w, h;
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
-        SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
+        SpareParts.WindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
 
-        SpareParts.ExtraWindowCmd(wvtermId, "edit1", PWA_SETWIDTH, std::to_string(w - 100).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_SETWIDTH, std::to_string(w - 29).c_str());
+        SpareParts.WindowCmd(wvtermId, "edit1", PWA_SETWIDTH, std::to_string(w - 100).c_str());
+        SpareParts.WindowCmd(wvtermId, "text1", PWA_SETWIDTH, std::to_string(w - 29).c_str());
 
-        SpareParts.ExtraWindowCmd(wvtermId, "button1", PWA_SETX, std::to_string(w - 87).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_SETX, std::to_string(w - 90).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_SETX, std::to_string(w - 405).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_SETX, std::to_string(w - 215).c_str());
+        SpareParts.WindowCmd(wvtermId, "button1", PWA_SETX, std::to_string(w - 87).c_str());
+        SpareParts.WindowCmd(wvtermId, "button2", PWA_SETX, std::to_string(w - 90).c_str());
+        SpareParts.WindowCmd(wvtermId, "combo1", PWA_SETX, std::to_string(w - 405).c_str());
+        SpareParts.WindowCmd(wvtermId, "combo2", PWA_SETX, std::to_string(w - 215).c_str());
 
-        SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_SETHEIGHT, std::to_string(h - 119).c_str());
+        SpareParts.WindowCmd(wvtermId, "text1", PWA_SETHEIGHT, std::to_string(h - 119).c_str());
 
-        SpareParts.ExtraWindowCmd(wvtermId, "button2", PWA_SETY, std::to_string(h - 74).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_SETY, std::to_string(h - 73).c_str());
-        SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_SETY, std::to_string(h - 73).c_str());
+        SpareParts.WindowCmd(wvtermId, "button2", PWA_SETY, std::to_string(h - 74).c_str());
+        SpareParts.WindowCmd(wvtermId, "combo1", PWA_SETY, std::to_string(h - 73).c_str());
+        SpareParts.WindowCmd(wvtermId, "combo2", PWA_SETY, std::to_string(h - 73).c_str());
     }
 }
 
@@ -191,20 +191,20 @@ void cpart_vterm::Reset(void) {
     vterm_rst(&vt);
     vterm_set_speed(&vt, vterm_speed);
 
-    SpareParts.ExtraWindowCmd(wvtermId, "combo2", PWA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
+    SpareParts.WindowCmd(wvtermId, "combo2", PWA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
 
     switch (lending) {
         case LE_NONE:
-            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "No line ending");
+            SpareParts.WindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "No line ending");
             break;
         case LE_NL:
-            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "New line");
+            SpareParts.WindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "New line");
             break;
         case LE_CR:
-            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "Carriage return");
+            SpareParts.WindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "Carriage return");
             break;
         case LE_NL_CR:
-            SpareParts.ExtraWindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "Both NL and CR");
+            SpareParts.WindowCmd(wvtermId, "combo1", PWA_COMBOSETTEXT, "Both NL and CR");
             break;
     }
 }
@@ -228,9 +228,9 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
 
             if (show & 0x80) {
                 if (show & 0x01) {
-                    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWSHOW, NULL);
+                    SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWSHOW, NULL);
                 } else {
-                    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
+                    SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
                 }
                 show &= ~0x80;
             }
@@ -242,7 +242,7 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             // printf("Data recv: \n[\n%s]\n", str);
             vt.inMutex->Unlock();
 
-            SpareParts.ExtraWindowCmd(wvtermId, "text1", PWA_TEXTAPPEND, str);
+            SpareParts.WindowCmd(wvtermId, "text1", PWA_TEXTAPPEND, str);
             break;
         default:
             SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
@@ -305,10 +305,10 @@ std::string cpart_vterm::WritePreferences(void) {
 
     int x, y, w, h;
 
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETX, NULL, &x);
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETY, NULL, &y);
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_GETX, NULL, &x);
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_GETY, NULL, &y);
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show, x, y, w, h);
 
@@ -321,8 +321,8 @@ void cpart_vterm::ReadPreferences(std::string value) {
                      &show, &x, &y, &w, &h);
     show |= 0x80;
 
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETX, std::to_string(x).c_str());
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETY, std::to_string(y).c_str());
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_SETX, std::to_string(x).c_str());
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_SETY, std::to_string(y).c_str());
 
     if (ret != 9) {  // for compatibility with older versions
         w = 530;
@@ -334,8 +334,8 @@ void cpart_vterm::ReadPreferences(std::string value) {
     if (h < 100) {
         h = 100;
     }
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
-    SpareParts.ExtraWindowCmd(wvtermId, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
 
     Reset();
 }

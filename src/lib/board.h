@@ -33,17 +33,14 @@
 #include <string.h>
 #include <string>
 
-/*
 class CControl;
 class CWindow;
-class CPWindow;
 class CThread;
-class CFileDialog;
 class CToggleButton;
 class lxMutex;
 class lxCondition;
-*/
-#include <lxrad.h>  //FIXME remove lxrad
+
+// #include <lxrad.h>  //FIXME remove lxrad
 
 #define INCOMPLETE                                                      \
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \

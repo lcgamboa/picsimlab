@@ -326,6 +326,7 @@ CPWindow5::CPWindow5(void) {
     memset(Bitmaps, 0, sizeof(Bitmaps));
     memset(Windows, 0, sizeof(Windows));
 
-    Windows[WPROP] = new CPWindow;
-    Windows[WPROP]->SetCanDestroy(false);
+    Windows[PW_MAIN] = this;
+    Windows[PW_WPROP] = new CPWindow;
+    Windows[PW_WPROP]->SetCanDestroy(false);
 }

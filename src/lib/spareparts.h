@@ -93,7 +93,6 @@ public:
     float GetScale(void) { return scale; };
     void SetScale(float s) { scale = s; };
     CWindow* GetWindow(void) { return Window; }
-    CFileDialog* GetFileDialog(void) { return filedialog; }
     void Reset(void);
 
     void Setfdtype(int value);
@@ -119,19 +118,18 @@ public:
     static int WPropCmd(const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                         void* ReturnBuff = NULL);
 
-    static int ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                              const char* Value, void* ReturnBuff = NULL);
+    static int WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                         void* ReturnBuff = NULL);
 
     int (*OnCanvasCmd)(const CanvasCmd_t cmd);
 
-    int (*OnExtraWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                            const char* Value, void* ReturnBuff);
+    int (*OnWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                       void* ReturnBuff);
 
 private:
     float scale;
     board* pboard;
     CWindow* Window;
-    CFileDialog* filedialog;
     std::string PinNames[256];
     std::string PinAlias[256];
     std::string alias_fname;

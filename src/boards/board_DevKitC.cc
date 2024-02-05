@@ -322,7 +322,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
 
     PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_ADD, (void*)"Config Qemu");
 
-    wconfigId = PICSimLab.ExtraWindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
+    wconfigId = PICSimLab.WindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
 }
 
 // Destructor called once on board destruction
@@ -330,7 +330,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
 cboard_DevKitC::~cboard_DevKitC(void) {
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_DEL, NULL);
     PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_DEL, NULL);
-    PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWDESTROY, NULL);
+    PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWDESTROY, NULL);
     bitbang_pwm_end(&pwm_out);
 }
 
@@ -728,7 +728,7 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, uint button, uin
                             "/config.lxrad";
 
         if (lxFileExists(fname)) {
-            if (PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
+            if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
                 char buff[2048];
                 char line[1024];
                 strncpy(buff, (const char*)cmdline.c_str(), 2047);
@@ -740,17 +740,17 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, uint button, uin
                     if (!line[0]) {
                         strcpy(line, arg);
                         if (line[0] != '-') {
-                            PICSimLab.ExtraWindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
                             line[0] = 0;
                         }
                     } else {
                         if (arg[0] == '-') {
-                            PICSimLab.ExtraWindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
                             strcpy(line, arg);
                         } else {
                             strcat(line, " ");
                             strcat(line, arg);
-                            PICSimLab.ExtraWindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
                             line[0] = 0;
                         }
                     }
@@ -767,70 +767,70 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, uint button, uin
                         if (!line[0]) {
                             strcpy(line, arg);
                             if (line[0] != '-') {
-                                PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                                PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
                                 line[0] = 0;
                             }
                         } else {
                             if (arg[0] == '-') {
-                                PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                                PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
                                 strcpy(line, arg);
                             } else {
                                 strcat(line, " ");
                                 strcat(line, arg);
-                                PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                                PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
                                 line[0] = 0;
                             }
                         }
                         arg = strtok(NULL, " \n");
                     }
                 } else {
-                    PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTCLEAR, NULL);
+                    PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTCLEAR, NULL);
                 }
 
-                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXSETCHECK,
-                                         std::to_string(ConfEnableWifi).c_str());
-                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox2", PWA_CHECKBOXSETCHECK,
-                                         std::to_string(ConfDisableWdt).c_str());
-                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXSETCHECK,
-                                         std::to_string(use_cmdline_extra).c_str());
-                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXSETCHECK,
-                                         std::to_string(ConfEnableEthernet).c_str());
-                PICSimLab.ExtraWindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXSETCHECK,
-                                         std::to_string(ConfEnableSerial).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfEnableWifi).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox2", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfDisableWdt).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(use_cmdline_extra).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfEnableEthernet).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfEnableSerial).c_str());
 
-                PICSimLab.ExtraWindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
-                PICSimLab.ExtraWindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
+                PICSimLab.WindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
+                PICSimLab.WindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
 
-                PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_SETX,
-                                         std::to_string(PICSimLab.GetWindow()->GetX() + 50).c_str());
-                PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_SETY,
-                                         std::to_string(PICSimLab.GetWindow()->GetY() + 50).c_str());
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETX,
+                                    std::to_string(PICSimLab.GetWindow()->GetX() + 50).c_str());
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETY,
+                                    std::to_string(PICSimLab.GetWindow()->GetY() + 50).c_str());
 
-                PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
             }
         } else {
             PICSimLab.RegisterError("File " + fname + " not found!");
         }
     } else if (!strcmp(controlname, "button1")) {
-        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableWifi);
-        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox2", PWA_CHECKBOXGETCHECK, NULL, &ConfDisableWdt);
-        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXGETCHECK, NULL, &use_cmdline_extra);
-        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableEthernet);
-        PICSimLab.ExtraWindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableSerial);
+        PICSimLab.WindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableWifi);
+        PICSimLab.WindowCmd(wconfigId, "checkbox2", PWA_CHECKBOXGETCHECK, NULL, &ConfDisableWdt);
+        PICSimLab.WindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXGETCHECK, NULL, &use_cmdline_extra);
+        PICSimLab.WindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableEthernet);
+        PICSimLab.WindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableSerial);
 
         cmdline_extra = "";
         unsigned int lc;
-        PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTGETLINECOUNT, NULL, &lc);
+        PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTGETLINECOUNT, NULL, &lc);
         for (unsigned int i = 0; i < lc; i++) {
             char buff[256];
-            PICSimLab.ExtraWindowCmd(wconfigId, "text2", PWA_TEXTGETLINE, std::to_string(i).c_str(), buff);
+            PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTGETLINE, std::to_string(i).c_str(), buff);
             cmdline_extra += buff;
             cmdline_extra += " ";
         }
-        PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
+        PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
         PICSimLab.EndSimulation();
     } else if (!strcmp(controlname, "button2")) {
-        PICSimLab.ExtraWindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
+        PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
     }
 }
 

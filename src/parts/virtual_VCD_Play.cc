@@ -329,15 +329,17 @@ void cpart_VCD_Play::PostProcess(void) {
 void cpart_VCD_Play::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
     switch (inputId) {
         case I_LOAD:
-            SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter("Value change dump (*.vcd)|*.vcd");
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
+                                 std::to_string(lxFD_OPEN | lxFD_CHANGE_DIR).c_str());
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER, "Value change dump (*.vcd)|*.vcd");
+
             if (f_vcd_name[0] == '*') {
-                SpareParts.GetFileDialog()->SetFileName("untitled.vcd");
+                SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.vcd");
             } else {
-                SpareParts.GetFileDialog()->SetFileName(f_vcd_name);
+                SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, f_vcd_name);
             }
             SpareParts.Setfdtype(id);
-            SpareParts.GetFileDialog()->Run();
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGRUN, NULL);
             break;
         case I_PLAY:
             if (f_vcd_name[0] != '*') {
@@ -378,8 +380,10 @@ void cpart_VCD_Play::OnMouseButtonPress(uint inputId, uint button, uint x, uint 
 
 void cpart_VCD_Play::filedialog_EvOnClose(int retId) {
     if (retId) {
-        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            strncpy(f_vcd_name, SpareParts.GetFileDialog()->GetFileName().c_str(), 199);
+        int type;
+        SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
+        if ((type == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, f_vcd_name);
             LoadVCD(f_vcd_name);
         }
         output_ids[O_NAME]->update = 1;

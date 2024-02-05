@@ -500,4 +500,6 @@ CPWindow1::CPWindow1(void) {
 
     memset(Bitmaps, 0, sizeof(Bitmaps));
     memset(Windows, 0, sizeof(Windows));
+
+    Windows[PW_MAIN] = this;
 }

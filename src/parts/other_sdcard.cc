@@ -234,24 +234,29 @@ void cpart_SDCard::Process(void) {
 void cpart_SDCard::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
     switch (inputId) {
         case I_CONN:
-            SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter("SD Card image (*.img)|*.img");
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
+                                 std::to_string(lxFD_OPEN | lxFD_CHANGE_DIR).c_str());
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER, "SD Card image (*.img)|*.img");
             if (sdcard_fname[0] == '*') {
-                SpareParts.GetFileDialog()->SetFileName("untitled.img");
+                SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.img");
             } else {
-                SpareParts.GetFileDialog()->SetFileName(sdcard_fname);
+                SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, sdcard_fname);
             }
             SpareParts.Setfdtype(id);
-            SpareParts.GetFileDialog()->Run();
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGRUN, NULL);
             break;
     }
 }
 
 void cpart_SDCard::filedialog_EvOnClose(int retId) {
     if (retId) {
-        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            if (lxFileExists(SpareParts.GetFileDialog()->GetFileName())) {
-                strncpy(sdcard_fname, SpareParts.GetFileDialog()->GetFileName().c_str(), 199);
+        int type;
+        SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
+        if ((type == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+            char buff[256];
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
+            if (lxFileExists(buff)) {
+                strcpy(sdcard_fname, buff);
                 sdcard_set_filename(&sd, sdcard_fname);
                 sdcard_set_card_present(&sd, 1);
             } else {

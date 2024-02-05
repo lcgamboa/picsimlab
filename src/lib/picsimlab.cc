@@ -95,7 +95,7 @@ CPICSimLab::CPICSimLab() {
     OnUpdateGUI = NULL;
     OnConfigMenuGUI = NULL;
     OnCanvasCmd = NULL;
-    OnExtraWindowCmd = NULL;
+    OnWindowCmd = NULL;
 }
 
 void CPICSimLab::Init(CWindow* w) {
@@ -1221,10 +1221,10 @@ void* CPICSimLab::UpdateGUI(const int id, const PICSimlabGUIType type, const PIC
     return NULL;
 }
 
-int CPICSimLab::ExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                               const char* Value, void* ReturnBuff) {
-    if (PICSimLab.OnExtraWindowCmd) {
-        return (*PICSimLab.OnExtraWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+int CPICSimLab::WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                          void* ReturnBuff) {
+    if (PICSimLab.OnWindowCmd) {
+        return (*PICSimLab.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
     }
     return -1;
 }

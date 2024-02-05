@@ -274,18 +274,22 @@ void cpart_MI2C_24CXXX::Process(void) {
 void cpart_MI2C_24CXXX::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
     switch (inputId) {
         case I_LOAD:
-            SpareParts.GetFileDialog()->SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter("PICSimLab Binary File (*.bin)|*.bin");
-            SpareParts.GetFileDialog()->SetFileName("untitled.bin");
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
+                                 std::to_string(lxFD_OPEN | lxFD_CHANGE_DIR).c_str());
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER,
+                                 "PICSimLab Binary File (*.bin)|*.bin");
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.bin");
             SpareParts.Setfdtype(id);
-            SpareParts.GetFileDialog()->Run();
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGRUN, NULL);
             break;
         case I_SAVE:
-            SpareParts.GetFileDialog()->SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-            SpareParts.GetFileDialog()->SetFilter("PICSimLab Binary File (*.bin)|*.bin");
-            SpareParts.GetFileDialog()->SetFileName("untitled.bin");
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
+                                 std::to_string(lxFD_SAVE | lxFD_CHANGE_DIR).c_str());
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER,
+                                 "PICSimLab Binary File (*.bin)|*.bin");
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.bin");
             SpareParts.Setfdtype(id);
-            SpareParts.GetFileDialog()->Run();
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGRUN, NULL);
             break;
         case I_VIEW:
             FILE* fout;
@@ -332,34 +336,37 @@ void cpart_MI2C_24CXXX::OnMouseButtonPress(uint inputId, uint button, uint x, ui
 
 void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
     if (retId) {
-        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
-            if (lxFileExists(SpareParts.GetFileDialog()->GetFileName())) {
-                if (!Dialog_sz(std::string("Overwriting file: ") +
-                                   ((const char*)basename(SpareParts.GetFileDialog()->GetFileName()).c_str()) + "?",
-                               400, 200))
+        int type;
+        SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
+        if ((type == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+            char buff[256];
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
+            if (lxFileExists(buff)) {
+                if (!Dialog_sz(std::string("Overwriting file: ") + ((const char*)basename(buff)) + "?", 400, 200))
                     return;
             }
 
             FILE* fout;
-            fout = fopen_UTF8(SpareParts.GetFileDialog()->GetFileName(), "wb");
+            fout = fopen_UTF8(buff, "wb");
             if (fout) {
                 fwrite(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);
-                strncpy(f_mi2c_name, SpareParts.GetFileDialog()->GetFileName(), 199);
+                strncpy(f_mi2c_name, buff, 199);
             } else {
-                printf("Error saving to file: %s \n", (const char*)SpareParts.GetFileDialog()->GetFileName().c_str());
+                printf("Error saving to file: %s \n", (const char*)buff);
             }
         }
 
-        if ((SpareParts.GetFileDialog()->GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+        if (type == (lxFD_OPEN | lxFD_CHANGE_DIR)) {
             FILE* fout;
-            fout = fopen_UTF8(SpareParts.GetFileDialog()->GetFileName(), "rb");
+            char buff[256];
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
+            fout = fopen_UTF8(buff, "rb");
             if (fout) {
                 fread(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);
             } else {
-                printf("Error loading from file: %s \n",
-                       (const char*)SpareParts.GetFileDialog()->GetFileName().c_str());
+                printf("Error loading from file: %s \n", buff);
             }
         }
     }

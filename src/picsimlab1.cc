@@ -682,7 +682,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.OnUpdateGUI = &CPWindow1::OnUpdateGUI;
     PICSimLab.OnConfigMenuGUI = &CPWindow1::OnConfigMenuGUI;
     PICSimLab.OnCanvasCmd = &CPWindow1::OnCanvasCmd;
-    PICSimLab.OnExtraWindowCmd = &CPWindow1::OnExtraWindowCmd;
+    PICSimLab.OnWindowCmd = &CPWindow1::OnWindowCmd;
 
     PICSimLab.Init(this);
 
@@ -1956,8 +1956,8 @@ void file_ready(const char* fname, const char* dir) {
     }
 }
 
-int CPWindow1::OnExtraWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
-                                const char* Value, void* ReturnBuff) {
+int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                           void* ReturnBuff) {
     CControl* ctrl = NULL;
     int wid = -1;
 
@@ -2190,6 +2190,26 @@ int CPWindow1::OnExtraWindowCmd(const int id, const char* ControlName, const PIC
             } else {
                 ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
             }
+            break;
+
+        case PWA_FILEDIALOGGETFNAME:
+            strcpy((char*)ReturnBuff, ((CFileDialog*)ctrl)->GetFileName().utf8_str());
+            return strlen((char*)ReturnBuff);
+            break;
+        case PWA_FILEDIALOGSETFNAME:
+            ((CFileDialog*)ctrl)->SetFileName(lxString::FromUTF8(Value));
+            break;
+        case PWA_FILEDIALOGSETFILTER:
+            ((CFileDialog*)ctrl)->SetFilter(Value);
+            break;
+        case PWA_FILEDIALOGSETTYPE:
+            ((CFileDialog*)ctrl)->SetType(std::stoi(Value));
+            break;
+        case PWA_FILEDIALOGRUN:
+            ((CFileDialog*)ctrl)->Run();
+            break;
+        case PWA_FILEDIALOGGETTYPE:
+            *((int*)ReturnBuff) = ((CFileDialog*)ctrl)->GetType();
             break;
 
         default:
