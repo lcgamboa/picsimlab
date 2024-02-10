@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#define _USE_MATH_DEFINES
+
 #include "output_step.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"

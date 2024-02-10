@@ -54,7 +54,8 @@ void CPWindow3::_EvOnCreate(CControl* control) {
 #endif
 }
 
-void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow3::button1_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     int osc_on = PICSimLab.GetBoard()->GetUseOscilloscope();
     int spare_on = PICSimLab.GetBoard()->GetUseSpareParts();
 
@@ -95,11 +96,13 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, uint button, uint 
     WDestroy();
 }
 
-void CPWindow3::button2_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow3::button2_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     WDestroy();
 }
 
-void CPWindow3::button3_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow3::button3_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
 #ifdef _WIN_
     std::string cmd = "explorer ";
 #else

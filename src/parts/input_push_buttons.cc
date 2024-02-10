@@ -225,7 +225,8 @@ void cpart_pbuttons::Process(void) {
     }
 }
 
-void cpart_pbuttons::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pbuttons::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                        unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value[0] = active;
@@ -262,7 +263,8 @@ void cpart_pbuttons::OnMouseButtonPress(uint inputId, uint button, uint x, uint 
     }
 }
 
-void cpart_pbuttons::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pbuttons::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                          unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value[0] = !active;

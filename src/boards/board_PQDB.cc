@@ -959,7 +959,7 @@ void cboard_PQDB::RegisterRemoteControl(void) {
     output_ids[O_E4]->status = &lm7seg[31];
 }
 
-void cboard_PQDB::EvMouseMove(uint button, uint x, uint y, uint state) {
+void cboard_PQDB::EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -978,7 +978,7 @@ void cboard_PQDB::EvMouseMove(uint button, uint x, uint y, uint state) {
     }
 }
 
-void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_PQDB::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1059,7 +1059,7 @@ void cboard_PQDB::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
     }
 }
 
-void cboard_PQDB::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_PQDB::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1130,7 +1130,7 @@ void cboard_PQDB::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
     }
 }
 
-void cboard_PQDB::EvKeyPress(uint key, uint mask) {
+void cboard_PQDB::EvKeyPress(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_KEY[0] = 1;
         output_ids[O_TC1]->update = 1;
@@ -1173,7 +1173,7 @@ void cboard_PQDB::EvKeyPress(uint key, uint mask) {
     }
 }
 
-void cboard_PQDB::EvKeyRelease(uint key, uint mask) {
+void cboard_PQDB::EvKeyRelease(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_KEY[0] = 0;
         output_ids[O_TC1]->update = 1;

@@ -134,7 +134,8 @@ void cpart_sht3x::PostProcess(void) {
     }
 }
 
-void cpart_sht3x::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_sht3x::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                     unsigned int state) {
     switch (inputId) {
         case I_PO1:
             values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
@@ -153,7 +154,8 @@ void cpart_sht3x::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, 
     }
 }
 
-void cpart_sht3x::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_sht3x::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active[0] = 0;
@@ -166,7 +168,8 @@ void cpart_sht3x::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y
     }
 }
 
-void cpart_sht3x::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_sht3x::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                              unsigned int state) {
     switch (inputId) {
         case I_PO1:
             if (active[0]) {

@@ -38,7 +38,8 @@ public:
     ~cpart_TEXT(void);
     void PostInit(void) override;
     void DrawOutput(const unsigned int index) override;
-    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
     std::string WritePreferences(void) override;

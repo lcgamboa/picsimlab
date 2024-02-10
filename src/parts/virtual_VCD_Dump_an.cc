@@ -359,7 +359,8 @@ void cpart_VCD_Dump_an::PostProcess(void) {
     }
 }
 
-void cpart_VCD_Dump_an::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_VCD_Dump_an::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     switch (inputId) {
         case I_START:
             rec ^= 1;

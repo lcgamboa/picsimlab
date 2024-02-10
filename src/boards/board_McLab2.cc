@@ -931,7 +931,7 @@ void cboard_McLab2::RegisterRemoteControl(void) {
     output_ids[O_P4]->status = &lm4[29];
 }
 
-void cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_McLab2::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1057,7 +1057,7 @@ void cboard_McLab2::EvMouseButtonPress(uint button, uint x, uint y, uint state) 
     }
 }
 
-void cboard_McLab2::EvMouseMove(uint button, uint x, uint y, uint state) {
+void cboard_McLab2::EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1076,7 +1076,7 @@ void cboard_McLab2::EvMouseMove(uint button, uint x, uint y, uint state) {
     }
 }
 
-void cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_McLab2::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1120,7 +1120,7 @@ void cboard_McLab2::EvMouseButtonRelease(uint button, uint x, uint y, uint state
     }
 }
 
-void cboard_McLab2::EvKeyPress(uint key, uint mask) {
+void cboard_McLab2::EvKeyPress(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_BT[0] = 0;
         output_ids[O_BRB0]->update = 1;
@@ -1139,7 +1139,7 @@ void cboard_McLab2::EvKeyPress(uint key, uint mask) {
     }
 }
 
-void cboard_McLab2::EvKeyRelease(uint key, uint mask) {
+void cboard_McLab2::EvKeyRelease(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_BT[0] = 1;
         output_ids[O_BRB0]->update = 1;

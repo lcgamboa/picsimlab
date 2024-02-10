@@ -178,7 +178,8 @@ void cpart_gamepad::PreProcess(void) {
     SpareParts.SetAPin(output_pins[7], 2.5 * (value[1]) / jr);
 }
 
-void cpart_gamepad::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_gamepad::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value[0] = 0;
@@ -224,7 +225,8 @@ void cpart_gamepad::OnMouseButtonPress(uint inputId, uint button, uint x, uint y
     }
 }
 
-void cpart_gamepad::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_gamepad::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value[0] = 1;
@@ -259,7 +261,8 @@ void cpart_gamepad::OnMouseButtonRelease(uint inputId, uint button, uint x, uint
     }
 }
 
-void cpart_gamepad::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_gamepad::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                unsigned int state) {
     switch (inputId) {
         case I_J1:
             if (active) {
@@ -284,7 +287,7 @@ void cpart_gamepad::OnMouseMove(uint inputId, uint button, uint x, uint y, uint 
     }
 }
 
-void cpart_gamepad::EvKeyPress(uint key, uint mask) {
+void cpart_gamepad::EvKeyPress(unsigned int key, unsigned int mask) {
     switch (key) {
         case 'W':
         case 'w':
@@ -373,7 +376,7 @@ void cpart_gamepad::EvKeyPress(uint key, uint mask) {
     }
 }
 
-void cpart_gamepad::EvKeyRelease(uint key, uint mask) {
+void cpart_gamepad::EvKeyRelease(unsigned int key, unsigned int mask) {
     switch (key) {
         case 'W':
         case 'A':

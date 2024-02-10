@@ -124,7 +124,8 @@ void cpart_ntc::PostProcess(void) {
     }
 }
 
-void cpart_ntc::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ntc::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                   unsigned int state) {
     switch (inputId) {
         case I_PO1:
             value = (y - input_ids[I_PO1]->y1) * 1.66;
@@ -136,7 +137,8 @@ void cpart_ntc::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, ui
     }
 }
 
-void cpart_ntc::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ntc::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                     unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active = 0;
@@ -145,7 +147,8 @@ void cpart_ntc::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, 
     }
 }
 
-void cpart_ntc::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ntc::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) {
     switch (inputId) {
         case I_PO1:
             if (active) {

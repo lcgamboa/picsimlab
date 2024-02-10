@@ -36,7 +36,8 @@ public:
     CButton button1;
     /*#Events*/
     void _EvOnShow(CControl* control);
-    void button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button1_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
 #endif
     /*#Others*/
     CPWindow2(void);

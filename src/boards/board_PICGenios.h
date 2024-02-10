@@ -107,11 +107,11 @@ public:
     int MInit(const char* processor, const char* fname, float freq) override;
     void Reset(void) override;
     int MDumpMemory(const char* mfname) override;
-    void EvMouseMove(uint button, uint x, uint y, uint state) override;
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
-    void EvKeyPress(uint key, uint mask) override;
-    void EvKeyRelease(uint key, uint mask) override;
+    void EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
+    void EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
+    void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
+    void EvKeyPress(unsigned int key, unsigned int mask) override;
+    void EvKeyRelease(unsigned int key, unsigned int mask) override;
     void EvOnShow(void) override;
     void RefreshStatus(void) override;
     void WritePreferences(void) override;

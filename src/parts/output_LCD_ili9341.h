@@ -44,9 +44,12 @@ public:
     void PostProcess(void) override;
     std::string GetPictureFileName(void) override;
     std::string GetMapFile(void) override;
-    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
-    void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) override;
-    void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) override;
+    void OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                              unsigned int state) override;
+    void OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                     unsigned int state) override;
     void Reset(void) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;

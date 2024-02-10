@@ -295,7 +295,8 @@ void cpart_TEXT::ReadPropertiesWindow(void) {
     ChangeText(Size, Textcolor, Bgcolor);
 }
 
-void cpart_TEXT::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_TEXT::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                    unsigned int state) {
     if ((button == 1) && Link.length()) {
         lxLaunchDefaultBrowser(Link);
     }

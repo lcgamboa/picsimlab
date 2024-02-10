@@ -53,13 +53,13 @@ public:
     // Reset board status
     void Reset(void) override;
     // Event on the board
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
     // Event on the board
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
     // Event on the board
-    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyPress(unsigned int key, unsigned int mask) override;
     // Event on the board
-    void EvKeyRelease(uint key, uint mask) override;
+    void EvKeyRelease(unsigned int key, unsigned int mask) override;
     // Called ever 1s to refresh status
     void RefreshStatus(void) override;
     // Called to save board preferences in configuration file

@@ -105,7 +105,8 @@ void CPWindow5::_EvOnCreate(CControl* control) {
     PICSimLab.GetBoard()->Reset();
 }
 
-void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow5::draw1_EvMouseButtonPress(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     x = x / SpareParts.GetScale();
     y = y / SpareParts.GetScale();
 
@@ -139,7 +140,8 @@ void CPWindow5::draw1_EvMouseButtonPress(CControl* control, uint button, uint x,
     }
 }
 
-void CPWindow5::draw1_EvMouseButtonRelease(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow5::draw1_EvMouseButtonRelease(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     x = x / SpareParts.GetScale();
     y = y / SpareParts.GetScale();
 
@@ -444,7 +446,8 @@ void CPWindow5::PropClose(int tag) {
     update_all = 1;
 }
 
-void CPWindow5::PropButtonRelease(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow5::PropButtonRelease(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                  unsigned int state) {
     switch (control->GetTag()) {
         case 0:
         case 1:
@@ -473,13 +476,14 @@ void CPWindow5::PropSpinChange(CSpin* control) {
     SpareParts.GetPart(Window5.PartSelected)->SpinChange(control->GetName().c_str(), control->GetValue());
 }
 
-void CPWindow5::PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow5::PartButtonEvent(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                unsigned int state) {
     if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
         SpareParts.GetPart(control->GetTag())->ButtonEvent(control->GetName().c_str(), button, x, y, state);
     }
 }
 
-void CPWindow5::PartKeyEvent(CControl* control, uint keysym, uint ukeysym, uint state) {
+void CPWindow5::PartKeyEvent(CControl* control, unsigned int keysym, unsigned int ukeysym, unsigned int state) {
     if (control->GetTag() < (unsigned int)SpareParts.GetCount()) {
         SpareParts.GetPart(control->GetTag())->KeyEvent(control->GetName().c_str(), keysym, ukeysym, state);
     }
@@ -570,7 +574,8 @@ void CPWindow5::draw1_EvMouseWheel(CControl* control, const int rotation) {
     }
 }
 
-void CPWindow5::draw1_EvMouseMove(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow5::draw1_EvMouseMove(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                  unsigned int state) {
     x = x / SpareParts.GetScale();
     y = y / SpareParts.GetScale();
 
@@ -600,7 +605,8 @@ void CPWindow5::draw1_EvMouseMove(CControl* control, uint button, uint x, uint y
     }
 }
 
-void CPWindow5::draw1_EvKeyboardPress(CControl* control, const uint key, const uint hkey, const uint mask) {
+void CPWindow5::draw1_EvKeyboardPress(CControl* control, const unsigned int key, const unsigned int hkey,
+                                      const unsigned int mask) {
     switch (key) {
         case 'P':
         case 'p':
@@ -638,7 +644,8 @@ void CPWindow5::draw1_EvKeyboardPress(CControl* control, const uint key, const u
     }
 }
 
-void CPWindow5::draw1_EvKeyboardRelease(CControl* control, const uint key, const uint hkey, const uint mask) {
+void CPWindow5::draw1_EvKeyboardRelease(CControl* control, const unsigned int key, const unsigned int hkey,
+                                        const unsigned int mask) {
     for (int i = 0; i < SpareParts.GetCount(); i++) {
         SpareParts.GetPart(i)->EvKeyRelease(key, mask);
     }

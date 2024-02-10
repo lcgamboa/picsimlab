@@ -130,15 +130,15 @@ void cboard_uCboard::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_uCboard::EvKeyPress(uint key, uint mask) {}
+void cboard_uCboard::EvKeyPress(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_uCboard::EvKeyRelease(uint key, uint mask) {}
+void cboard_uCboard::EvKeyRelease(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_uCboard::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -183,7 +183,7 @@ void cboard_uCboard::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
 // Event on the board
 
-void cboard_uCboard::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_uCboard::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event

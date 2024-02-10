@@ -108,7 +108,8 @@ void cpart_lm35::PostProcess(void) {
     }
 }
 
-void cpart_lm35::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_lm35::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                    unsigned int state) {
     switch (inputId) {
         case I_PO1:
             value = (y - input_ids[I_PO1]->y1) * 1.66;
@@ -120,7 +121,8 @@ void cpart_lm35::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, u
     }
 }
 
-void cpart_lm35::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_lm35::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                      unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active = 0;
@@ -129,7 +131,8 @@ void cpart_lm35::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y,
     }
 }
 
-void cpart_lm35::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_lm35::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                             unsigned int state) {
     switch (inputId) {
         case I_PO1:
             if (active) {

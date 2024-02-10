@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#define _USE_MATH_DEFINES
+
 #include "input_pot_r.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
@@ -146,7 +148,8 @@ void cpart_pot_r::PreProcess(void) {
     }
 }
 
-void cpart_pot_r::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pot_r::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                     unsigned int state) {
     switch (inputId) {
         case I_PO1:
             values[0] = CalcAngle(inputId, x, y);
@@ -171,7 +174,8 @@ void cpart_pot_r::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, 
     }
 }
 
-void cpart_pot_r::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pot_r::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active[0] = 0;
@@ -192,7 +196,8 @@ void cpart_pot_r::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y
     }
 }
 
-void cpart_pot_r::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pot_r::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                              unsigned int state) {
     switch (inputId) {
         case I_PO1 ... I_PO4:
             if (active[inputId - I_PO1]) {

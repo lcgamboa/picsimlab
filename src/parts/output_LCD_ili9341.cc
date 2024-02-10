@@ -764,7 +764,8 @@ void cpart_LCD_ili9341::ChangeType(unsigned char tp) {
     LoadPartImage();
 }
 
-void cpart_LCD_ili9341::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_LCD_ili9341::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     switch (inputId) {
         case I_LCD:
             tsc_XPT2046_set_pos(&touch, x - input_ids[I_LCD]->x1, y - input_ids[I_LCD]->y1);
@@ -773,7 +774,8 @@ void cpart_LCD_ili9341::OnMouseButtonPress(uint inputId, uint button, uint x, ui
     }
 }
 
-void cpart_LCD_ili9341::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_LCD_ili9341::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                             unsigned int state) {
     switch (inputId) {
         case I_LCD:
             tsc_XPT2046_set_pos(&touch, -1, -1);
@@ -782,7 +784,8 @@ void cpart_LCD_ili9341::OnMouseButtonRelease(uint inputId, uint button, uint x, 
     }
 }
 
-void cpart_LCD_ili9341::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_LCD_ili9341::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                    unsigned int state) {
     switch (inputId) {
         case I_LCD:
             if (active[0]) {

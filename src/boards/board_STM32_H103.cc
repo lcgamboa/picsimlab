@@ -361,15 +361,15 @@ void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_STM32_H103::EvKeyPress(uint key, uint mask) {}
+void cboard_STM32_H103::EvKeyPress(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_STM32_H103::EvKeyRelease(uint key, uint mask) {}
+void cboard_STM32_H103::EvKeyRelease(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_STM32_H103::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -415,7 +415,7 @@ void cboard_STM32_H103::EvMouseButtonPress(uint button, uint x, uint y, uint sta
 
 // Event on the board
 
-void cboard_STM32_H103::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_STM32_H103::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event

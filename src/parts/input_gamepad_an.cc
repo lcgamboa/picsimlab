@@ -170,7 +170,8 @@ void cpart_gamepad_an::PreProcess(void) {
     output_value_an_ = output_value_an;
 }
 
-void cpart_gamepad_an::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_gamepad_an::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                          unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value[0] = 0;
@@ -195,7 +196,8 @@ void cpart_gamepad_an::OnMouseButtonPress(uint inputId, uint button, uint x, uin
     }
 }
 
-void cpart_gamepad_an::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_gamepad_an::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                            unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value[0] = 1;
@@ -220,7 +222,7 @@ void cpart_gamepad_an::OnMouseButtonRelease(uint inputId, uint button, uint x, u
     }
 }
 
-void cpart_gamepad_an::EvKeyPress(uint key, uint mask) {
+void cpart_gamepad_an::EvKeyPress(unsigned int key, unsigned int mask) {
     switch (key) {
         case 'I':
         case 'i':
@@ -250,7 +252,7 @@ void cpart_gamepad_an::EvKeyPress(uint key, uint mask) {
     }
 }
 
-void cpart_gamepad_an::EvKeyRelease(uint key, uint mask) {
+void cpart_gamepad_an::EvKeyRelease(unsigned int key, unsigned int mask) {
     switch (key) {
         case 'I':
         case 'i':

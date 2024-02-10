@@ -194,7 +194,8 @@ void cpart_pbuttons_an::PreProcess(void) {
     SpareParts.SetAPin(output_pins[0], output_value);
 }
 
-void cpart_pbuttons_an::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pbuttons_an::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value_[0] = active;
@@ -231,7 +232,8 @@ void cpart_pbuttons_an::OnMouseButtonPress(uint inputId, uint button, uint x, ui
     }
 }
 
-void cpart_pbuttons_an::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pbuttons_an::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                             unsigned int state) {
     switch (inputId) {
         case I_B1:
             output_value_[0] = !active;

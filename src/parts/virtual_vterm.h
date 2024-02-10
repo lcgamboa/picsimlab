@@ -41,11 +41,13 @@ public:
     void Process(void) override;
     void PostProcess(void) override;
     void Reset(void) override;
-    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
-    void ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) override;
-    void KeyEvent(const char* controlname, uint keysym, uint ukeysym, uint state) override;
+    void ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                     unsigned int state) override;
+    void KeyEvent(const char* controlname, unsigned int keysym, unsigned int ukeysym, unsigned int state) override;
     void Event(const char* controlname) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;

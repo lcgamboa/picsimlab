@@ -333,7 +333,8 @@ unsigned char cpart_ADXL345::getValues(unsigned char addr) {
     return value;
 }
 
-void cpart_ADXL345::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ADXL345::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     unsigned char value;
 
     switch (inputId) {
@@ -364,7 +365,8 @@ void cpart_ADXL345::OnMouseButtonPress(uint inputId, uint button, uint x, uint y
     }
 }
 
-void cpart_ADXL345::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ADXL345::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     switch (inputId) {
         case I_VS1:
             active[0] = 0;
@@ -381,7 +383,8 @@ void cpart_ADXL345::OnMouseButtonRelease(uint inputId, uint button, uint x, uint
     }
 }
 
-void cpart_ADXL345::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ADXL345::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                unsigned int state) {
     unsigned char value;
 
     switch (inputId) {

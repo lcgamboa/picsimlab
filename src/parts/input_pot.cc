@@ -129,7 +129,8 @@ void cpart_pot::PreProcess(void) {
     }
 }
 
-void cpart_pot::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pot::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                   unsigned int state) {
     switch (inputId) {
         case I_PO1:
             values[0] = 200 - ((y - input_ids[I_PO1]->y1) * 1.66);
@@ -162,7 +163,8 @@ void cpart_pot::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, ui
     }
 }
 
-void cpart_pot::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pot::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                     unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active[0] = 0;
@@ -183,7 +185,8 @@ void cpart_pot::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, 
     }
 }
 
-void cpart_pot::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_pot::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) {
     switch (inputId) {
         case I_PO1:
         case I_PO2:

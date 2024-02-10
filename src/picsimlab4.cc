@@ -266,7 +266,8 @@ void CPWindow4::DrawScreen(void) {
     draw1.Canvas.End();
 }
 
-void CPWindow4::button1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow4::button1_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
 #ifndef __WXX11__
     colordialog1.SetColor(button1.GetColor());
     ctrl = &button1;
@@ -274,7 +275,8 @@ void CPWindow4::button1_EvMouseButtonClick(CControl* control, uint button, uint 
 #endif
 }
 
-void CPWindow4::button2_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow4::button2_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
 #ifndef __WXX11__
     colordialog1.SetColor(button2.GetColor());
     ctrl = &button2;
@@ -282,7 +284,8 @@ void CPWindow4::button2_EvMouseButtonClick(CControl* control, uint button, uint 
 #endif
 }
 
-void CPWindow4::draw1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow4::draw1_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     // code here:)
     mprint("draw1_EvMouseButtonClick\n");
 }
@@ -379,7 +382,8 @@ void CPWindow4::spind6_EvOnChangeSpinDouble(CControl* control) {
 
 // autoset
 
-void CPWindow4::button3_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow4::button3_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     int ce = togglebutton1.GetCheck() + togglebutton2.GetCheck() * 2;
 
     togglebutton5.SetCheck(1);  // trigguer
@@ -441,7 +445,8 @@ void CPWindow4::togglebutton6_EvOnToggleButton(CControl* control) {
 
 // save PNG
 
-void CPWindow4::button4_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow4::button4_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     filedialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
     filedialog1.Run();
 }
@@ -458,28 +463,28 @@ void CPWindow4::colordialog1_EvOnClose(int retId) {
     }
 }
 
-void CPWindow4::button5_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
-                                           const uint state) {
+void CPWindow4::button5_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                           const unsigned int y, const unsigned int state) {
     Oscilloscope.NextMeasure(0);
 }
 
-void CPWindow4::button6_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
-                                           const uint state) {
+void CPWindow4::button6_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                           const unsigned int y, const unsigned int state) {
     Oscilloscope.NextMeasure(1);
 }
 
-void CPWindow4::button7_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
-                                           const uint state) {
+void CPWindow4::button7_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                           const unsigned int y, const unsigned int state) {
     Oscilloscope.NextMeasure(2);
 }
 
-void CPWindow4::button8_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
-                                           const uint state) {
+void CPWindow4::button8_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                           const unsigned int y, const unsigned int state) {
     Oscilloscope.NextMeasure(3);
 }
 
-void CPWindow4::button9_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
-                                           const uint state) {
+void CPWindow4::button9_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                           const unsigned int y, const unsigned int state) {
     Oscilloscope.NextMeasure(4);
 }
 

@@ -234,7 +234,7 @@ void cboard_x::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_x::EvKeyPress(uint key, uint mask) {
+void cboard_x::EvKeyPress(unsigned int key, unsigned int mask) {
     // if keyboard key 1 is pressed then activate button (state=0)
     if (key == '1') {
         p_BT1 = 0;
@@ -250,7 +250,7 @@ void cboard_x::EvKeyPress(uint key, uint mask) {
 
 // Event on the board
 
-void cboard_x::EvKeyRelease(uint key, uint mask) {
+void cboard_x::EvKeyRelease(unsigned int key, unsigned int mask) {
     // if keyboard key 1 is pressed then deactivate button (state=1)
     if (key == '1') {
         p_BT1 = 1;
@@ -260,7 +260,7 @@ void cboard_x::EvKeyRelease(uint key, uint mask) {
 
 // Event on the board
 
-void cboard_x::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_x::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -320,7 +320,7 @@ void cboard_x::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
 
 // Event on the board
 
-void cboard_x::EvMouseMove(uint button, uint x, uint y, uint state) {
+void cboard_x::EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -343,7 +343,7 @@ void cboard_x::EvMouseMove(uint button, uint x, uint y, uint state) {
 
 // Event on the board
 
-void cboard_x::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_x::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event

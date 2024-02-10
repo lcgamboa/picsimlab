@@ -143,27 +143,27 @@ public:
     /**
      * @brief  Event on the board
      */
-    virtual void EvMouseButtonPress(uint button, uint x, uint y, uint state) = 0;
+    virtual void EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) = 0;
 
     /**
      * @brief  Event on the board
      */
-    virtual void EvMouseButtonRelease(uint button, uint x, uint y, uint state) = 0;
+    virtual void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) = 0;
 
     /**
      * @brief  Event on the board
      */
-    virtual void EvMouseMove(uint button, uint x, uint y, uint state){};
+    virtual void EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state){};
 
     /**
      * @brief  Event on the board
      */
-    virtual void EvKeyPress(uint key, uint mask) = 0;
+    virtual void EvKeyPress(unsigned int key, unsigned int mask) = 0;
 
     /**
      * @brief  Event on the board
      */
-    virtual void EvKeyRelease(uint key, uint mask) = 0;
+    virtual void EvKeyRelease(unsigned int key, unsigned int mask) = 0;
 
     /**
      * @brief  Event on the board
@@ -208,7 +208,8 @@ public:
     /**
      * @brief  Called when window side controls are activated
      */
-    virtual void board_ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state){};
+    virtual void board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                                   unsigned int state){};
 
     /**
      * @brief  Called once on board creation

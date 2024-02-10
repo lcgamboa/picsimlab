@@ -85,26 +85,36 @@ public:
     void _EvOnDestroy(CControl* control);
     void _EvOnShow(CControl* control);
     void _EvOnHide(CControl* control);
-    void draw1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void draw1_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                  const unsigned int y, const unsigned int state);
     void spind5_EvOnChangeSpinDouble(CControl* control);
     void spind6_EvOnChangeSpinDouble(CControl* control);
-    void button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button1_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button2_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
     void togglebutton5_EvOnToggleButton(CControl* control);
     void spind7_EvOnChangeSpinDouble(CControl* control);
     void timer1_EvOnTime(CControl* control);
     void combo2_EvOnComboChange(CControl* control);
     void combo3_EvOnComboChange(CControl* control);
-    void button3_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button3_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
     void togglebutton6_EvOnToggleButton(CControl* control);
-    void button4_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button4_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
     void filedialog1_EvOnClose(const int retId);
     void colordialog1_EvOnClose(const int retId);
-    void button5_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button6_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button7_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button8_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button9_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button5_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button6_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button7_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button8_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button9_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
 
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!

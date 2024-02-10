@@ -51,10 +51,10 @@ public:
     void Run_CPU(void) override;
     std::string GetSupportedDevices(void) override { return "PIC16F628A,PIC16F648A,PIC16F84A,"; };
     void Reset(void) override;
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
-    void EvKeyPress(uint key, uint mask) override;
-    void EvKeyRelease(uint key, uint mask) override;
+    void EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
+    void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
+    void EvKeyPress(unsigned int key, unsigned int mask) override;
+    void EvKeyRelease(unsigned int key, unsigned int mask) override;
     void WritePreferences(void) override;
     void ReadPreferences(char* name, char* value) override;
     unsigned short GetInputId(char* name) override;

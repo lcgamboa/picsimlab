@@ -190,15 +190,16 @@ void cboard_Franzininho_DIY::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_Franzininho_DIY::EvKeyPress(uint key, uint mask) {}
+void cboard_Franzininho_DIY::EvKeyPress(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_Franzininho_DIY::EvKeyRelease(uint key, uint mask) {}
+void cboard_Franzininho_DIY::EvKeyRelease(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_Franzininho_DIY::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_Franzininho_DIY::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y,
+                                                unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -239,7 +240,8 @@ void cboard_Franzininho_DIY::EvMouseButtonPress(uint button, uint x, uint y, uin
 
 // Event on the board
 
-void cboard_Franzininho_DIY::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_Franzininho_DIY::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y,
+                                                  unsigned int state) {
     int i;
 
     // search for the input area which owner the event

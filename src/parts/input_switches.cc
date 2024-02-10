@@ -263,7 +263,8 @@ void cpart_switches::Process(void) {
     }
 }
 
-void cpart_switches::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_switches::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                        unsigned int state) {
     switch (inputId) {
         case I_S1:
             output_value[0] ^= 1;

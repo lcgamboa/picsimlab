@@ -1455,7 +1455,7 @@ void cboard_PICGenios::RegisterRemoteControl(void) {
     output_ids[O_P4]->status = &lm4[29];
 }
 
-void cboard_PICGenios::EvMouseMove(uint button, uint x, uint y, uint state) {
+void cboard_PICGenios::EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1475,7 +1475,7 @@ void cboard_PICGenios::EvMouseMove(uint button, uint x, uint y, uint state) {
     }
 }
 
-void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_PICGenios::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1771,7 +1771,7 @@ void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint stat
     }
 }
 
-void cboard_PICGenios::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_PICGenios::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -1881,7 +1881,7 @@ void cboard_PICGenios::EvMouseButtonRelease(uint button, uint x, uint y, uint st
     }
 }
 
-void cboard_PICGenios::EvKeyPress(uint key, uint mask) {
+void cboard_PICGenios::EvKeyPress(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_KEY[0] = 1;
         output_ids[O_TC1]->update = 1;
@@ -1964,7 +1964,7 @@ void cboard_PICGenios::EvKeyPress(uint key, uint mask) {
     }
 }
 
-void cboard_PICGenios::EvKeyRelease(uint key, uint mask) {
+void cboard_PICGenios::EvKeyRelease(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_KEY[0] = 0;
         output_ids[O_TC1]->update = 1;

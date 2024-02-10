@@ -39,11 +39,14 @@ public:
     void PostInit(void) override;
     void DrawOutput(const unsigned int index) override;
     void PreProcess(void) override;
-    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
-    void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) override;
-    void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) override;
-    void EvKeyPress(uint key, uint mask) override;
-    void EvKeyRelease(uint key, uint mask) override;
+    void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) override;
+    void OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                              unsigned int state) override;
+    void OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                     unsigned int state) override;
+    void EvKeyPress(unsigned int key, unsigned int mask) override;
+    void EvKeyRelease(unsigned int key, unsigned int mask) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
     std::string WritePreferences(void) override;

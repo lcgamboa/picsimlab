@@ -433,15 +433,15 @@ void cboard_DevKitC::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_DevKitC::EvKeyPress(uint key, uint mask) {}
+void cboard_DevKitC::EvKeyPress(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_DevKitC::EvKeyRelease(uint key, uint mask) {}
+void cboard_DevKitC::EvKeyRelease(unsigned int key, unsigned int mask) {}
 
 // Event on the board
 
-void cboard_DevKitC::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_DevKitC::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -486,7 +486,7 @@ void cboard_DevKitC::EvMouseButtonPress(uint button, uint x, uint y, uint state)
 
 // Event on the board
 
-void cboard_DevKitC::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_DevKitC::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -720,7 +720,8 @@ void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
     }
 }
 
-void cboard_DevKitC::board_ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) {
+void cboard_DevKitC::board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     if (!strcmp(controlname, "b_button2")) {
         std::string fname = PICSimLab.GetSharePath() +
                             "boards"

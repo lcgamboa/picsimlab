@@ -171,7 +171,8 @@ void cpart_hx711::Reset(void) {
     sen_hx711_rst(&hx711);
 }
 
-void cpart_hx711::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_hx711::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                     unsigned int state) {
     switch (inputId) {
         case I_PO1:
             values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
@@ -183,7 +184,8 @@ void cpart_hx711::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, 
     }
 }
 
-void cpart_hx711::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_hx711::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active[0] = 0;
@@ -192,7 +194,8 @@ void cpart_hx711::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y
     }
 }
 
-void cpart_hx711::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_hx711::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                              unsigned int state) {
     switch (inputId) {
         case I_PO1:
             if (active[0]) {

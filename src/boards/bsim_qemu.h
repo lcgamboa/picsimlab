@@ -26,14 +26,14 @@
 #ifndef BOARD_QEMU_H
 #define BOARD_QEMU_H
 
+#include "lxrad.h"
+
 #include "../devices/bitbang_i2c.h"
 #include "../devices/bitbang_pwm.h"
 #include "../devices/bitbang_spi.h"
 #include "../devices/bitbang_uart.h"
 #include "../lib/board.h"
 #include "qemu.h"
-
-#include "lxrad.h"
 
 typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32, QEMU_SIM_ESP32_C3 } QEMUSimType;
 

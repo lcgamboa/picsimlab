@@ -231,7 +231,8 @@ void cpart_SDCard::Process(void) {
     }
 }
 
-void cpart_SDCard::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_SDCard::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                      unsigned int state) {
     switch (inputId) {
         case I_CONN:
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,

@@ -45,7 +45,8 @@ public:
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
-    void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) override;
+    void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                            unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void filedialog_EvOnClose(int retId) override;
     void ReadPropertiesWindow(void) override;

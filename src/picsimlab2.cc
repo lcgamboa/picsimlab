@@ -38,7 +38,8 @@ void CPWindow2::_EvOnShow(CControl* control) {
     html1.SetHeight(Window2.GetHeight() - 82);
 }
 
-void CPWindow2::button1_EvMouseButtonClick(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow2::button1_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     html1.HistoryBack();
 }
 

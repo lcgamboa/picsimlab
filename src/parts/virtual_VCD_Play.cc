@@ -327,7 +327,8 @@ void cpart_VCD_Play::PostProcess(void) {
     }
 }
 
-void cpart_VCD_Play::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_VCD_Play::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                        unsigned int state) {
     switch (inputId) {
         case I_LOAD:
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,

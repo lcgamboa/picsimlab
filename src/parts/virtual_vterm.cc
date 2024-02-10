@@ -120,7 +120,8 @@ void cpart_vterm::RegisterRemoteControl(void) {
     output_ids[O_VT]->status = &vt;
 }
 
-void cpart_vterm::ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) {
+void cpart_vterm::ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                              unsigned int state) {
     if (!strcmp(controlname, "button1")) {
         char buff[256];
         SpareParts.WindowCmd(wvtermId, "edit1", PWA_EDITGETTEXT, NULL, buff);
@@ -132,7 +133,7 @@ void cpart_vterm::ButtonEvent(const char* controlname, uint button, uint x, uint
     }
 }
 
-void cpart_vterm::KeyEvent(const char* controlname, uint keysym, uint ukeysym, uint state) {
+void cpart_vterm::KeyEvent(const char* controlname, unsigned int keysym, unsigned int ukeysym, unsigned int state) {
     if (!strcmp(controlname, "edit1")) {
         if (ukeysym == 13) {
             char buff[256];
@@ -396,7 +397,8 @@ void cpart_vterm::Process(void) {
     SpareParts.SetPin(pins[1], ret);
 }
 
-void cpart_vterm::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_vterm::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                     unsigned int state) {
     switch (inputId) {
         case I_TERM:
             if (button == 1) {

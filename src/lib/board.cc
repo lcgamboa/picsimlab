@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#define _USE_MATH_DEFINES
+
 #include "board.h"
 #include <math.h>
 #include "picsimlab.h"

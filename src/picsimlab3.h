@@ -48,9 +48,12 @@ public:
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
-    void button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void button3_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button1_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button2_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void button3_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
     /*#Others*/
     CPWindow3(void);
 };

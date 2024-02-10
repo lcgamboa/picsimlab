@@ -558,7 +558,7 @@ void part::Draw(void) {
     }
 }
 
-void part::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void part::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     for (int i = 0; i < inputc; i++) {
         if (PointInside(x, y, input[i])) {
             unsigned int xr = x;
@@ -569,7 +569,7 @@ void part::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
     }
 }
 
-void part::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void part::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     for (int i = 0; i < inputc; i++) {
         if (PointInside(x, y, input[i])) {
             unsigned int xr = x;
@@ -580,7 +580,7 @@ void part::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
     }
 }
 
-void part::EvMouseMove(uint button, uint x, uint y, uint state) {
+void part::EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int none = 1;
     for (int i = 0; i < inputc; i++) {
         if (PointInside(x, y, input[i])) {

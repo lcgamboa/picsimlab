@@ -110,11 +110,16 @@ public:
     void timer1_EvOnTime(CControl* control);
     void timer2_EvOnTime(CControl* control);
     void filedialog1_EvOnClose(const int retId);
-    void draw1_EvMouseMove(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvMouseButtonRelease(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvKeyboardPress(CControl* control, const uint key, const uint hkey, const uint mask);
-    void draw1_EvKeyboardRelease(CControl* control, const uint key, const uint hkey, const uint mask);
+    void draw1_EvMouseMove(CControl* control, const unsigned int button, const unsigned int x, const unsigned int y,
+                           const unsigned int state);
+    void draw1_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                  const unsigned int y, const unsigned int state);
+    void draw1_EvMouseButtonRelease(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void draw1_EvKeyboardPress(CControl* control, const unsigned int key, const unsigned int hkey,
+                               const unsigned int mask);
+    void draw1_EvKeyboardRelease(CControl* control, const unsigned int key, const unsigned int hkey,
+                                 const unsigned int mask);
     void combo1_EvOnComboChange(CControl* control);
     void menu1_File_LoadHex_EvMenuActive(CControl* control);
     void menu1_File_ReloadLast_EvMenuActive(CControl* control);
@@ -147,7 +152,7 @@ public:
     ~CPWindow1(void);
 
     void board_Event(CControl* control);
-    void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
+    void board_ButtonEvent(CControl* control, unsigned int button, unsigned int x, unsigned int y, unsigned int state);
     void thread1_EvThreadRun(CControl* control);
     void thread2_EvThreadRun(CControl* control);
     void thread3_EvThreadRun(CControl* control);

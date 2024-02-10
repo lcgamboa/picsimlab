@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#define _USE_MATH_DEFINES
+
 #include "input_encoder.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
@@ -223,7 +225,8 @@ void cpart_encoder::Process(void) {
     }
 }
 
-void cpart_encoder::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_encoder::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                       unsigned int state) {
     switch (inputId) {
         case I_RT1:
             if (p_BTN) {
@@ -240,7 +243,8 @@ void cpart_encoder::OnMouseButtonPress(uint inputId, uint button, uint x, uint y
     }
 }
 
-void cpart_encoder::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_encoder::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     switch (inputId) {
         case I_RT1:
             active = 0;
@@ -254,7 +258,8 @@ void cpart_encoder::OnMouseButtonRelease(uint inputId, uint button, uint x, uint
     }
 }
 
-void cpart_encoder::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_encoder::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                unsigned int state) {
     switch (inputId) {
         case I_RT1:
             if (active) {

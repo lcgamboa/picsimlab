@@ -350,32 +350,37 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
     }
 }
 
-void CPWindow1::draw1_EvMouseMove(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow1::draw1_EvMouseMove(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                  unsigned int state) {
     x = x / PICSimLab.GetScale();
     y = y / PICSimLab.GetScale();
 
     PICSimLab.GetBoard()->EvMouseMove(button, x, y, state);
 }
 
-void CPWindow1::draw1_EvMouseButtonPress(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow1::draw1_EvMouseButtonPress(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     x = x / PICSimLab.GetScale();
     y = y / PICSimLab.GetScale();
 
     PICSimLab.GetBoard()->EvMouseButtonPress(button, x, y, state);
 }
 
-void CPWindow1::draw1_EvMouseButtonRelease(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow1::draw1_EvMouseButtonRelease(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                           unsigned int state) {
     x = x / PICSimLab.GetScale();
     y = y / PICSimLab.GetScale();
 
     PICSimLab.GetBoard()->EvMouseButtonRelease(button, x, y, state);
 }
 
-void CPWindow1::draw1_EvKeyboardPress(CControl* control, const uint key, const uint hkey, const uint mask) {
+void CPWindow1::draw1_EvKeyboardPress(CControl* control, const unsigned int key, const unsigned int hkey,
+                                      const unsigned int mask) {
     PICSimLab.GetBoard()->EvKeyPress(key, mask);
 }
 
-void CPWindow1::draw1_EvKeyboardRelease(CControl* control, const uint key, const uint hkey, const uint mask) {
+void CPWindow1::draw1_EvKeyboardRelease(CControl* control, const unsigned int key, const unsigned int hkey,
+                                        const unsigned int mask) {
     PICSimLab.GetBoard()->EvKeyRelease(key, mask);
 }
 
@@ -1268,7 +1273,8 @@ void CPWindow1::board_Event(CControl* control) {
     PICSimLab.GetBoard()->board_Event(control->GetName().c_str());
 }
 
-void CPWindow1::board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state) {
+void CPWindow1::board_ButtonEvent(CControl* control, unsigned int button, unsigned int x, unsigned int y,
+                                  unsigned int state) {
     PICSimLab.GetBoard()->board_ButtonEvent(control->GetName().c_str(), button, x, y, state);
 }
 

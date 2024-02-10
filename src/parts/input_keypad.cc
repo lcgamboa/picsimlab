@@ -313,7 +313,8 @@ void cpart_keypad::Process(void) {
     refresh++;
 }
 
-void cpart_keypad::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_keypad::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                      unsigned int state) {
     switch (inputId) {
         case I_K1:
             keys[0][0] = 1;
@@ -408,7 +409,8 @@ void cpart_keypad::OnMouseButtonPress(uint inputId, uint button, uint x, uint y,
     }
 }
 
-void cpart_keypad::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_keypad::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                        unsigned int state) {
     switch (inputId) {
         case I_K1:
             keys[0][0] = 0;

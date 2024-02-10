@@ -370,7 +370,8 @@ void cpart_ETH_w5500::Process(void) {
     }
 }
 
-void cpart_ETH_w5500::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_ETH_w5500::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                         unsigned int state) {
     switch (inputId) {
         case I_CONN:
             link ^= 1;

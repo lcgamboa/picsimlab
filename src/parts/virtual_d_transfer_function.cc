@@ -191,7 +191,7 @@ void cpart_dtfunc::Reset(void) {
 }
 
 void
-cpart_dtfunc::EvKeyPress(uint key, uint mask) {
+cpart_dtfunc::EvKeyPress(unsigned int key, unsigned int mask) {
  /*
  if(key == '1')
  {
@@ -212,7 +212,7 @@ cpart_dtfunc::EvKeyPress(uint key, uint mask) {
   */ };
 
 void
-cpart_dtfunc::EvKeyRelease(uint key, uint mask) {
+cpart_dtfunc::EvKeyRelease(unsigned int key, unsigned int mask) {
  /*
  if(key == '1')
  {

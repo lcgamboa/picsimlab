@@ -61,13 +61,13 @@ public:
     // Reset board status
     void Reset(void) override;
     // Event on the board
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
     // Event on the board
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state) override;
+    void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
     // Event on the board
-    void EvKeyPress(uint key, uint mask) override;
+    void EvKeyPress(unsigned int key, unsigned int mask) override;
     // Event on the board
-    void EvKeyRelease(uint key, uint mask) override;
+    void EvKeyRelease(unsigned int key, unsigned int mask) override;
     // Called ever 1s to refresh status
     void RefreshStatus(void) override;
     // Called to save board preferences in configuration file
@@ -80,7 +80,8 @@ public:
     unsigned short GetOutputId(char* name) override;
     // board combo events
     void board_Event(const char* controlname) override;
-    void board_ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state) override;
+    void board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                           unsigned int state) override;
     void MSetAPin(int pin, float value) override;
     std::string MGetPinName(int pin) override;
     int MGetPinCount(void) override;

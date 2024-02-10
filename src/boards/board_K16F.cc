@@ -516,7 +516,7 @@ void cboard_K16F::RegisterRemoteControl(void) {
     output_ids[O_LCD]->status = &lcd;
 }
 
-void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_K16F::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -646,7 +646,7 @@ void cboard_K16F::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
     }
 }
 
-void cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_K16F::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -718,7 +718,7 @@ void cboard_K16F::EvMouseButtonRelease(uint button, uint x, uint y, uint state) 
     }
 }
 
-void cboard_K16F::EvKeyPress(uint key, uint mask) {
+void cboard_K16F::EvKeyPress(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_KEY[0] = 1;
         output_ids[O_TC1]->update = 1;
@@ -770,7 +770,7 @@ void cboard_K16F::EvKeyPress(uint key, uint mask) {
     }
 }
 
-void cboard_K16F::EvKeyRelease(uint key, uint mask) {
+void cboard_K16F::EvKeyRelease(unsigned int key, unsigned int mask) {
     if (key == '1') {
         p_KEY[0] = 0;
         output_ids[O_TC1]->update = 1;

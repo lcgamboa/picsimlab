@@ -136,42 +136,45 @@ public:
     /**
      * @brief  Event handler on the part
      */
-    void EvMouseButtonPress(uint button, uint x, uint y, uint state);
+    void EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state);
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state){};
+    virtual void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                    unsigned int state){};
 
     /**
      * @brief  Event handler on the part
      */
-    void EvMouseButtonRelease(uint button, uint x, uint y, uint state);
+    void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state);
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state){};
+    virtual void OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                      unsigned int state){};
 
     /**
      * @brief  Event handler on the part
      */
-    void EvMouseMove(uint button, uint x, uint y, uint state);
+    void EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state);
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void OnMouseMove(uint inputId, uint button, uint x, uint y, uint state){};
+    virtual void OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                             unsigned int state){};
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvKeyPress(uint key, uint mask){};
+    virtual void EvKeyPress(unsigned int key, unsigned int mask){};
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvKeyRelease(uint key, uint mask){};
+    virtual void EvKeyRelease(unsigned int key, unsigned int mask){};
 
     /**
      * @brief  Called to save part preferences in configuration file
@@ -216,12 +219,13 @@ public:
     /**
      * @brief  Used by windows of parts
      */
-    virtual void ButtonEvent(const char* controlname, uint button, uint x, uint y, uint state){};
+    virtual void ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                             unsigned int state){};
 
     /**
      * @brief  Used by windows of parts
      */
-    virtual void KeyEvent(const char* controlname, uint keysym, uint ukeysym, uint state){};
+    virtual void KeyEvent(const char* controlname, unsigned int keysym, unsigned int ukeysym, unsigned int state){};
 
     /**
      * @brief  Used by windows of parts

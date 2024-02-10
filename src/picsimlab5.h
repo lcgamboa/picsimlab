@@ -74,11 +74,16 @@ public:
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
     void _EvOnHide(CControl* control);
-    void draw1_EvMouseMove(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvMouseButtonRelease(CControl* control, const uint button, const uint x, const uint y, const uint state);
-    void draw1_EvKeyboardPress(CControl* control, const uint key, const uint hkey, const uint mask);
-    void draw1_EvKeyboardRelease(CControl* control, const uint key, const uint hkey, const uint mask);
+    void draw1_EvMouseMove(CControl* control, const unsigned int button, const unsigned int x, const unsigned int y,
+                           const unsigned int state);
+    void draw1_EvMouseButtonPress(CControl* control, const unsigned int button, const unsigned int x,
+                                  const unsigned int y, const unsigned int state);
+    void draw1_EvMouseButtonRelease(CControl* control, const unsigned int button, const unsigned int x,
+                                    const unsigned int y, const unsigned int state);
+    void draw1_EvKeyboardPress(CControl* control, const unsigned int key, const unsigned int hkey,
+                               const unsigned int mask);
+    void draw1_EvKeyboardRelease(CControl* control, const unsigned int key, const unsigned int hkey,
+                                 const unsigned int mask);
     void draw1_EvMouseWheel(CControl* control, const int rotation);
     void pmenu2_Properties_EvMenuActive(CControl* control);
     void timer1_EvOnTime(CControl* control);
@@ -108,12 +113,12 @@ public:
     // lxrad automatic generated block end, don't edit above!
     void menu1_EvMenuActive(CControl* control);
 
-    void PropButtonRelease(CControl* control, uint button, uint x, uint y, uint state);
+    void PropButtonRelease(CControl* control, unsigned int button, unsigned int x, unsigned int y, unsigned int state);
     void PropComboChange(CCombo* control);
     void PropSpinChange(CSpin* control);
     void PropClose(int tag);
-    void PartButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
-    void PartKeyEvent(CControl* control, uint keysm, uint ukeysym, uint state);
+    void PartButtonEvent(CControl* control, unsigned int button, unsigned int x, unsigned int y, unsigned int state);
+    void PartKeyEvent(CControl* control, unsigned int keysm, unsigned int ukeysym, unsigned int state);
     void PartEvent(CControl* control);
     void DeleteParts(void);
 

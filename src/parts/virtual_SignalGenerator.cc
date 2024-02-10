@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#define _USE_MATH_DEFINES
+
 #include "virtual_SignalGenerator.h"
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
@@ -221,7 +223,8 @@ void cpart_SignalGenerator::Process(void) {
     }
 }
 
-void cpart_SignalGenerator::OnMouseButtonPress(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_SignalGenerator::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x,
+                                               unsigned int y, unsigned int state) {
     switch (inputId) {
         case I_PO1:
             values[0] = (y - input_ids[I_PO1]->y1) * 1.66;
@@ -262,7 +265,8 @@ void cpart_SignalGenerator::OnMouseButtonPress(uint inputId, uint button, uint x
     }
 }
 
-void cpart_SignalGenerator::OnMouseButtonRelease(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_SignalGenerator::OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x,
+                                                 unsigned int y, unsigned int state) {
     switch (inputId) {
         case I_PO1:
             active[0] = 0;
@@ -282,7 +286,8 @@ void cpart_SignalGenerator::OnMouseButtonRelease(uint inputId, uint button, uint
     }
 }
 
-void cpart_SignalGenerator::OnMouseMove(uint inputId, uint button, uint x, uint y, uint state) {
+void cpart_SignalGenerator::OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
+                                        unsigned int state) {
     switch (inputId) {
         case I_PO1:
             if (active[0]) {

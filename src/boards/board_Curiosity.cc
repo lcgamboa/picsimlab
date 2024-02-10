@@ -238,7 +238,7 @@ void cboard_Curiosity::ReadPreferences(char* name, char* value) {
 
 // Event on the board
 
-void cboard_Curiosity::EvKeyPress(uint key, uint mask) {
+void cboard_Curiosity::EvKeyPress(unsigned int key, unsigned int mask) {
     // if keyboard key 1 is pressed then activate button (state=0)
     if (key == '1') {
         p_BT1 = 0;
@@ -247,7 +247,7 @@ void cboard_Curiosity::EvKeyPress(uint key, uint mask) {
 
 // Event on the board
 
-void cboard_Curiosity::EvKeyRelease(uint key, uint mask) {
+void cboard_Curiosity::EvKeyRelease(unsigned int key, unsigned int mask) {
     // if keyboard key 1 is pressed then deactivate button (state=1)
     if (key == '1') {
         p_BT1 = 1;
@@ -256,7 +256,7 @@ void cboard_Curiosity::EvKeyRelease(uint key, uint mask) {
 
 // Event on the board
 
-void cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint state) {
+void cboard_Curiosity::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
@@ -307,7 +307,7 @@ void cboard_Curiosity::EvMouseButtonPress(uint button, uint x, uint y, uint stat
     }
 }
 
-void cboard_Curiosity::EvMouseMove(uint button, uint x, uint y, uint state) {
+void cboard_Curiosity::EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     for (i = 0; i < inputc; i++) {
@@ -327,7 +327,7 @@ void cboard_Curiosity::EvMouseMove(uint button, uint x, uint y, uint state) {
 
 // Event on the board
 
-void cboard_Curiosity::EvMouseButtonRelease(uint button, uint x, uint y, uint state) {
+void cboard_Curiosity::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {
     int i;
 
     // search for the input area which owner the event
