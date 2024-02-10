@@ -143,11 +143,8 @@ public:
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 
-    CThread thread1;  // main simulation
-    CThread thread2;  // rcontrol
-    CThread thread3;  // boards
-
     CPWindow1(void);
+    ~CPWindow1(void);
 
     void board_Event(CControl* control);
     void board_ButtonEvent(CControl* control, uint button, uint x, uint y, uint state);
@@ -172,6 +169,7 @@ public:
     static int OnCanvasCmd(const CanvasCmd_t cmd);
     static int OnWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                            void* ReturnBuff);
+    static int OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff);
 
     void Configure(void);
     int GetNeedClkUpdate(void) { return need_clkupdate; };
@@ -179,6 +177,8 @@ public:
 
     lxBitmap* Bitmaps[BOARDS_MAX];
     CPWindow* Windows[BOARDS_MAX];
+
+    int WinCmd(CControl* ctrl, const PICSimLabWindowAction action, const char* Value, void* ReturnBuff);
 
 private:
     CItemMenu MBoard[BOARDS_MAX];
@@ -188,6 +188,15 @@ private:
     int crt;
     int zerocount;
     int need_clkupdate;
+
+    CThread thread1;  // main simulation
+    CThread thread2;  // rcontrol
+    CThread thread3;  // boards
+
+#ifndef _NOTHREAD
+    lxMutex* cpu_mutex;
+    lxCondition* cpu_cond;
+#endif
 };
 
 extern CPWindow1 Window1;

@@ -23,12 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "oscilloscope.h"
 #include "picsimlab.h"
 #include "spareparts.h"
 
+#include <math.h>
 #include <picsim/picsim.h>
 
 COscilloscope Oscilloscope;
@@ -58,8 +57,7 @@ COscilloscope::COscilloscope() {
 
     vmax = 5.0;
 
-    tbstop = NULL;
-    tbsingle = NULL;
+    OnWindowCmd = NULL;
 }
 
 void COscilloscope::SetSample(void) {
@@ -67,7 +65,7 @@ void COscilloscope::SetSample(void) {
 
     const picpin* ppins = pboard->MGetPinsValues();
 
-    if ((!run) || (tbsingle == NULL))
+    if (!run)
         return;
 
     if ((ppins[chpin[0]].ptype == PT_ANALOG) && (ppins[chpin[0]].dir == PD_IN))
@@ -88,8 +86,10 @@ void COscilloscope::SetSample(void) {
         is++;
         if (is >= NPOINTS)  // buffer full
         {
-            if (tr && tbsingle->GetCheck()) {
-                tbstop->SetCheck(1);
+            int checked;
+            WindowCmd(PW_MAIN, "togglebutton7", PWA_TOGGLEBGETCHECK, NULL, &checked);
+            if (tr && checked) {
+                WindowCmd(PW_MAIN, "togglebutton6", PWA_TOGGLEBSETCHECK, "1");
             }
             is = 0;
             tr = 0;
@@ -225,46 +225,61 @@ void COscilloscope::Reset(void) {
     vmax = pboard->MGetVCC();
 }
 
-void COscilloscope::Init(CWindow* win) {
-    Window = win;
-    tbstop = (CToggleButton*)Window->GetChildByName("togglebutton6");
-    tbsingle = (CToggleButton*)Window->GetChildByName("togglebutton7");
-}
+void COscilloscope::Init(void) {}
 
 void COscilloscope::WritePreferences(void) {
-    if (!Window) {
+    int created = 0;
+    WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
         return;
     }
 
-    PICSimLab.SavePrefs("osc_scale1", std::to_string(((CSpind*)Window->GetChildByName("spind1"))->GetValue()));
-    PICSimLab.SavePrefs("osc_offset1", std::to_string(((CSpind*)Window->GetChildByName("spind2"))->GetValue()));
-    PICSimLab.SavePrefs("osc_on1",
-                        std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()));
-    PICSimLab.SavePrefs(
-        "osc_color1",
-        (const char*)((CButton*)Window->GetChildByName("button1"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX).c_str());
-    PICSimLab.SavePrefs("osc_inv1",
-                        std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()));
-    PICSimLab.SavePrefs("osc_ch1", (const char*)((CCombo*)Window->GetChildByName("combo2"))->GetText().c_str());
+    char buff[256];
+    int value;
+    float fvalue;
+    WindowCmd(PW_MAIN, "spind1", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_scale1", std::to_string(fvalue));
+    WindowCmd(PW_MAIN, "spind2", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_offset1", std::to_string(fvalue));
+    WindowCmd(PW_MAIN, "togglebutton1", PWA_TOGGLEBGETCHECK, NULL, &value);
+    PICSimLab.SavePrefs("osc_on1", std::to_string(value));
+    WindowCmd(PW_MAIN, "button1", PWA_GETCOLOR, NULL, &buff);
+    PICSimLab.SavePrefs("osc_color1", buff);
+    WindowCmd(PW_MAIN, "togglebutton3", PWA_TOGGLEBGETCHECK, NULL, &value);
+    PICSimLab.SavePrefs("osc_inv1", std::to_string(value));
+    WindowCmd(PW_MAIN, "combo2", PWA_COMBOGETTEXT, NULL, &buff);
+    PICSimLab.SavePrefs("osc_ch1", buff);
 
-    PICSimLab.SavePrefs("osc_scale2", std::to_string(((CSpind*)Window->GetChildByName("spind3"))->GetValue()));
-    PICSimLab.SavePrefs("osc_offset2", std::to_string(((CSpind*)Window->GetChildByName("spind4"))->GetValue()));
-    PICSimLab.SavePrefs("osc_on2",
-                        std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton2"))->GetCheck()));
-    PICSimLab.SavePrefs(
-        "osc_color2",
-        (const char*)((CButton*)Window->GetChildByName("button2"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX).c_str());
-    PICSimLab.SavePrefs("osc_inv2",
-                        std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton4"))->GetCheck()));
-    PICSimLab.SavePrefs("osc_ch2", (const char*)((CCombo*)Window->GetChildByName("combo3"))->GetText().c_str());
+    WindowCmd(PW_MAIN, "spind3", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_scale2", std::to_string(fvalue));
+    WindowCmd(PW_MAIN, "spind4", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_offset2", std::to_string(fvalue));
+    WindowCmd(PW_MAIN, "togglebutton2", PWA_TOGGLEBGETCHECK, NULL, &value);
+    PICSimLab.SavePrefs("osc_on2", std::to_string(value));
+    WindowCmd(PW_MAIN, "button2", PWA_GETCOLOR, NULL, &buff);
+    PICSimLab.SavePrefs("osc_color2", buff);
+    WindowCmd(PW_MAIN, "togglebutton4", PWA_TOGGLEBGETCHECK, NULL, &value);
+    PICSimLab.SavePrefs("osc_inv2", std::to_string(value));
+    WindowCmd(PW_MAIN, "combo3", PWA_COMBOGETTEXT, NULL, &buff);
+    PICSimLab.SavePrefs("osc_ch2", buff);
 
-    PICSimLab.SavePrefs("osc_tscale", std::to_string(((CSpind*)Window->GetChildByName("spind5"))->GetValue()));
-    PICSimLab.SavePrefs("osc_toffset", std::to_string(((CSpind*)Window->GetChildByName("spind6"))->GetValue()));
-    PICSimLab.SavePrefs("osc_usetrigger",
-                        std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton5"))->GetCheck()));
-    PICSimLab.SavePrefs("osc_tch", (const char*)((CCombo*)Window->GetChildByName("combo1"))->GetText().c_str());
-    PICSimLab.SavePrefs("osc_tlevel", std::to_string(((CSpind*)Window->GetChildByName("spind7"))->GetValue()));
-    PICSimLab.SavePrefs("osc_position", std::to_string(Window->GetX()) + "," + std::to_string(Window->GetY()));
+    WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_tscale", std::to_string(fvalue));
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_toffset", std::to_string(fvalue));
+    WindowCmd(PW_MAIN, "togglebutton5", PWA_TOGGLEBGETCHECK, NULL, &value);
+    PICSimLab.SavePrefs("osc_usetrigger", std::to_string(value));
+    WindowCmd(PW_MAIN, "combo1", PWA_COMBOGETTEXT, NULL, &buff);
+    PICSimLab.SavePrefs("osc_tch", buff);
+    WindowCmd(PW_MAIN, "spind7", PWA_SPINDGETVALUE, NULL, &fvalue);
+    PICSimLab.SavePrefs("osc_tlevel", std::to_string(fvalue));
+
+    int x, y;
+    WindowCmd(PW_MAIN, "NULL", PWA_GETX, NULL, &x);
+    WindowCmd(PW_MAIN, "NULL", PWA_GETY, NULL, &y);
+
+    PICSimLab.SavePrefs("osc_position", std::to_string(x) + "," + std::to_string(y));
 
     PICSimLab.SavePrefs("osc_measures", std::to_string(GetMeasures(0)) + "," + std::to_string(GetMeasures(1)) + "," +
                                             std::to_string(GetMeasures(2)) + "," + std::to_string(GetMeasures(3)) +
@@ -272,86 +287,89 @@ void COscilloscope::WritePreferences(void) {
 }
 
 void COscilloscope::ReadPreferences(char* name, char* value) {
-    if (!Window) {
+    int created = 0;
+    WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
         return;
     }
 
     if (!strcmp(name, "osc_scale1")) {
-        ((CSpind*)Window->GetChildByName("spind1"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind1", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_offset1")) {
-        ((CSpind*)Window->GetChildByName("spind2"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind2", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_on1")) {
-        ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(atoi(value));
+        WindowCmd(PW_MAIN, "togglebutton1", PWA_TOGGLEBSETCHECK, value);
     }
 
     if (!strcmp(name, "osc_color1")) {
-        ((CButton*)Window->GetChildByName("button1"))->SetColor(lxColor(value));
+        WindowCmd(PW_MAIN, "button1", PWA_SETCOLOR, value);
     }
 
     if (!strcmp(name, "osc_inv1")) {
-        ((CToggleButton*)Window->GetChildByName("togglebutton3"))->SetCheck(atoi(value));
+        WindowCmd(PW_MAIN, "togglebutton3", PWA_TOGGLEBSETCHECK, value);
     }
 
     if (!strcmp(name, "osc_ch1")) {
-        ((CCombo*)Window->GetChildByName("combo2"))->SetText(value);
-        SetChannelPin(0, atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText()) - 1);
+        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, value);
+        SetChannelPin(0, atoi(value) - 1);
     }
 
     if (!strcmp(name, "osc_scale2")) {
-        ((CSpind*)Window->GetChildByName("spind3"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind3", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_offset2")) {
-        ((CSpind*)Window->GetChildByName("spind4"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind4", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_on2")) {
-        ((CToggleButton*)Window->GetChildByName("togglebutton2"))->SetCheck(atoi(value));
+        WindowCmd(PW_MAIN, "togglebutton2", PWA_TOGGLEBSETCHECK, value);
     }
 
     if (!strcmp(name, "osc_color2")) {
-        ((CButton*)Window->GetChildByName("button2"))->SetColor(lxColor(value));
+        WindowCmd(PW_MAIN, "button2", PWA_SETCOLOR, value);
     }
 
     if (!strcmp(name, "osc_inv2")) {
-        ((CToggleButton*)Window->GetChildByName("togglebutton4"))->SetCheck(atoi(value));
+        WindowCmd(PW_MAIN, "togglebutton4", PWA_TOGGLEBSETCHECK, value);
     }
 
     if (!strcmp(name, "osc_ch2")) {
-        ((CCombo*)Window->GetChildByName("combo3"))->SetText(value);
-        SetChannelPin(1, atoi(((CCombo*)Window->GetChildByName("combo3"))->GetText()) - 1);
+        WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, value);
+        SetChannelPin(1, atoi(value) - 1);
     }
 
     if (!strcmp(name, "osc_tscale")) {
-        ((CSpind*)Window->GetChildByName("spind5"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind5", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_toffset")) {
-        ((CSpind*)Window->GetChildByName("spind6"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_usetrigger")) {
-        ((CToggleButton*)Window->GetChildByName("togglebutton5"))->SetCheck(atoi(value));
+        WindowCmd(PW_MAIN, "togglebutton5", PWA_TOGGLEBSETCHECK, value);
         SetUseTrigger(atoi(value));
     }
 
     if (!strcmp(name, "osc_tch")) {
-        ((CCombo*)Window->GetChildByName("combo1"))->SetText(value);
+        WindowCmd(PW_MAIN, "combo1", PWA_COMBOSETTEXT, value);
     }
 
     if (!strcmp(name, "osc_tlevel")) {
-        ((CSpind*)Window->GetChildByName("spind7"))->SetValue(atof(value));
+        WindowCmd(PW_MAIN, "spind7", PWA_SPINDSETVALUE, value);
     }
 
     if (!strcmp(name, "osc_position")) {
         int i, j;
         sscanf(value, "%i,%i", &i, &j);
-        Window->SetX(i);
-        Window->SetY(j);
+        WindowCmd(PW_MAIN, NULL, PWA_SETX, std::to_string(i).c_str());
+        WindowCmd(PW_MAIN, NULL, PWA_SETY, std::to_string(j).c_str());
     }
 
     if (!strcmp(name, "osc_measures")) {
@@ -367,21 +385,36 @@ std::vector<std::string> COscilloscope::WritePreferencesList(void) {
     std::vector<std::string> list;
     std::string line;
 
-    if (!Window) {
+    int created = 0;
+    Oscilloscope.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
         return list;
     }
+    int x, y;
+    float fvalue;
+    int value;
+    char buff[256];
 
-    line = "osc_cfg," + std::to_string(Window->GetX()) + "," + std::to_string(Window->GetY()) + ",0:";
+    WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
+    WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
+    line = "osc_cfg," + std::to_string(x) + "," + std::to_string(y) + ",0:";
     // osc_tscale
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind5"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_toffset
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind6"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_usetrigger
-    line += std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton5"))->GetCheck()) + ",";
+    WindowCmd(PW_MAIN, "togglebutton5", PWA_TOGGLEBGETCHECK, NULL, &value);
+    line += std::to_string(value) + ",";
     // osc_tch
-    line += ((CCombo*)Window->GetChildByName("combo1"))->GetText() + ",";
+    WindowCmd(PW_MAIN, "combo1", PWA_COMBOGETTEXT, NULL, &buff);
+    line += buff;
+    line += ",";
     // osc_tlevel
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind7"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind7", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_measures
     line += std::to_string(GetMeasures(0)) + "," + std::to_string(GetMeasures(1)) + +"," +
             std::to_string(GetMeasures(2)) + +"," + std::to_string(GetMeasures(3)) + +"," +
@@ -390,32 +423,46 @@ std::vector<std::string> COscilloscope::WritePreferencesList(void) {
 
     line = "osc_ch1,0,0,0:";
     // osc_scale1
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind1"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind1", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_offset1
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind2"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind2", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_on1
-    line += std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton1"))->GetCheck()) + ",";
+    WindowCmd(PW_MAIN, "togglebutton1", PWA_TOGGLEBGETCHECK, NULL, &value);
+    line += std::to_string(value) + ",";
     // osc_color1
-    line += ((CButton*)Window->GetChildByName("button1"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX) + ",";
+    WindowCmd(PW_MAIN, "button1", PWA_GETCOLOR, NULL, &buff);
+    line += buff;
+    line += ",";
     // osc_inv1
-    line += std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton3"))->GetCheck()) + ",";
+    WindowCmd(PW_MAIN, "togglebutton3", PWA_TOGGLEBGETCHECK, NULL, &value);
+    line += std::to_string(value) + ",";
     // osc_ch1
-    line += ((CCombo*)Window->GetChildByName("combo2"))->GetText();
+    WindowCmd(PW_MAIN, "combo2", PWA_COMBOGETTEXT, NULL, &buff);
+    line += buff;
     list.push_back(line);
 
     line = "osc_ch2,0,0,0:";
     // osc_scale2
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind3"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind3", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_offset2
-    line += std::to_string(((CSpind*)Window->GetChildByName("spind4"))->GetValue()) + ",";
+    WindowCmd(PW_MAIN, "spind4", PWA_SPINDGETVALUE, NULL, &fvalue);
+    line += std::to_string(fvalue) + ",";
     // osc_on2
-    line += std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton2"))->GetCheck()) + ",";
+    WindowCmd(PW_MAIN, "togglebutton2", PWA_TOGGLEBGETCHECK, NULL, &value);
+    line += std::to_string(value) + ",";
     // osc_color2
-    line += ((CButton*)Window->GetChildByName("button2"))->GetColor().GetAsString(lxC2S_HTML_SYNTAX) + ",";
+    WindowCmd(PW_MAIN, "button2", PWA_GETCOLOR, NULL, &buff);
+    line += buff;
+    line += ",";
     // osc_inv2
-    line += std::to_string(((CToggleButton*)Window->GetChildByName("togglebutton4"))->GetCheck()) + ",";
+    WindowCmd(PW_MAIN, "togglebutton4", PWA_TOGGLEBGETCHECK, NULL, &value);
+    line += std::to_string(value) + ",";
     // osc_ch2
-    line += ((CCombo*)Window->GetChildByName("combo3"))->GetText();
+    WindowCmd(PW_MAIN, "combo3", PWA_COMBOGETTEXT, NULL, &buff);
+    line += buff;
     list.push_back(line);
 
     return list;
@@ -425,7 +472,10 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
     char line[1024];
     char* tokens[15];
 
-    if (!Window) {
+    int created = 0;
+    WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
         return;
     }
 
@@ -439,24 +489,24 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
     }
 
     // cfg
-    Window->SetX(atoi(tokens[1]));
-    Window->SetY(atoi(tokens[2]));
+    WindowCmd(PW_MAIN, NULL, PWA_SETX, tokens[1]);
+    WindowCmd(PW_MAIN, NULL, PWA_SETY, tokens[2]);
 
     // osc_tscale
-    ((CSpind*)Window->GetChildByName("spind5"))->SetValue(atof(tokens[4]));
+    WindowCmd(PW_MAIN, "spind5", PWA_SPINDSETVALUE, tokens[4]);
 
     // osc_toffset
-    ((CSpind*)Window->GetChildByName("spind6"))->SetValue(atof(tokens[5]));
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETVALUE, tokens[5]);
 
     // osc_usetrigger
-    ((CToggleButton*)Window->GetChildByName("togglebutton5"))->SetCheck(atoi(tokens[6]));
+    WindowCmd(PW_MAIN, "togglebutton5", PWA_TOGGLEBSETCHECK, tokens[6]);
     SetUseTrigger(atoi(tokens[6]));
 
     // osc_tch
-    ((CCombo*)Window->GetChildByName("combo1"))->SetText(tokens[7]);
+    WindowCmd(PW_MAIN, "combo1", PWA_COMBOSETTEXT, tokens[7]);
 
     // osc_tlevel
-    ((CSpind*)Window->GetChildByName("spind7"))->SetValue(atof(tokens[8]));
+    WindowCmd(PW_MAIN, "spind7", PWA_SPINDSETVALUE, tokens[8]);
 
     // osc_measures
     for (int i = 0; i < 5; i++) {
@@ -474,23 +524,23 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
 
     // ch1
     // osc_scale1
-    ((CSpind*)Window->GetChildByName("spind1"))->SetValue(atof(tokens[4]));
+    WindowCmd(PW_MAIN, "spind1", PWA_SPINDSETVALUE, tokens[4]);
 
     // osc_offset1
-    ((CSpind*)Window->GetChildByName("spind2"))->SetValue(atof(tokens[5]));
+    WindowCmd(PW_MAIN, "spind2", PWA_SPINDSETVALUE, tokens[5]);
 
     // osc_on1
-    ((CToggleButton*)Window->GetChildByName("togglebutton1"))->SetCheck(atoi(tokens[6]));
+    WindowCmd(PW_MAIN, "togglebutton1", PWA_TOGGLEBSETCHECK, tokens[6]);
 
     // osc_color1
-    ((CButton*)Window->GetChildByName("button1"))->SetColor(lxColor(tokens[7]));
+    WindowCmd(PW_MAIN, "button1", PWA_SETCOLOR, tokens[7]);
 
     // osc_inv1
-    ((CToggleButton*)Window->GetChildByName("togglebutton3"))->SetCheck(atoi(tokens[8]));
+    WindowCmd(PW_MAIN, "togglebutton3", PWA_TOGGLEBSETCHECK, tokens[8]);
 
     // osc_ch1
-    ((CCombo*)Window->GetChildByName("combo2"))->SetText(tokens[9]);
-    SetChannelPin(0, atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText()) - 1);
+    WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, tokens[9]);
+    SetChannelPin(0, atoi(tokens[9]) - 1);
 
     strncpy(line, (const char*)pl.at(2).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
@@ -502,29 +552,32 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
     }
     // ch2
     // osc_scale2
-    ((CSpind*)Window->GetChildByName("spind3"))->SetValue(atof(tokens[4]));
+    WindowCmd(PW_MAIN, "spind3", PWA_SPINDSETVALUE, tokens[4]);
 
     // osc_offset2
-    ((CSpind*)Window->GetChildByName("spind4"))->SetValue(atof(tokens[5]));
+    WindowCmd(PW_MAIN, "spind4", PWA_SPINDSETVALUE, tokens[5]);
 
     // osc_on2
-    ((CToggleButton*)Window->GetChildByName("togglebutton2"))->SetCheck(atoi(tokens[6]));
+    WindowCmd(PW_MAIN, "togglebutton2", PWA_TOGGLEBSETCHECK, tokens[6]);
 
     // osc_color2
-    ((CButton*)Window->GetChildByName("button2"))->SetColor(lxColor(tokens[7]));
+    WindowCmd(PW_MAIN, "button2", PWA_SETCOLOR, tokens[7]);
 
     // osc_inv2
-    ((CToggleButton*)Window->GetChildByName("togglebutton4"))->SetCheck(atoi(tokens[8]));
+    WindowCmd(PW_MAIN, "togglebutton4", PWA_TOGGLEBSETCHECK, tokens[8]);
 
     // osc_ch2
-    ((CCombo*)Window->GetChildByName("combo3"))->SetText(tokens[9]);
-    SetChannelPin(1, atoi(((CCombo*)Window->GetChildByName("combo3"))->GetText()) - 1);
+    WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, tokens[9]);
+    SetChannelPin(1, atoi(tokens[9]) - 1);
 }
 
 void COscilloscope::SetBaseTimer(void) {
     board* pboard = PICSimLab.GetBoard();
 
-    if (!Window) {
+    int created = 0;
+    WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
         return;
     }
 
@@ -542,11 +595,14 @@ void COscilloscope::SetBaseTimer(void) {
 
     // printf("Dt=%e  Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt);
 
-    chp[0] = atoi(((CCombo*)Window->GetChildByName("combo2"))->GetText());
-    chp[1] = atoi(((CCombo*)Window->GetChildByName("combo3"))->GetText());
+    char buff[128];
+    WindowCmd(PW_MAIN, "combo2", PWA_COMBOGETTEXT, NULL, buff);
+    chp[0] = atoi(buff);
+    WindowCmd(PW_MAIN, "combo3", PWA_COMBOGETTEXT, NULL, buff);
+    chp[1] = atoi(buff);
 
-    ((CCombo*)Window->GetChildByName("combo2"))->DeleteItems();
-    ((CCombo*)Window->GetChildByName("combo3"))->DeleteItems();
+    WindowCmd(PW_MAIN, "combo2", PWA_COMBODELETEITEMS, NULL);
+    WindowCmd(PW_MAIN, "combo3", PWA_COMBODELETEITEMS, NULL);
     for (int i = 1; i <= PinCount; i++) {
         std::string spin;
         if (pboard->GetUseSpareParts()) {
@@ -555,8 +611,8 @@ void COscilloscope::SetBaseTimer(void) {
             spin = pboard->MGetPinName(i);
         }
         if (spin.compare("error")) {
-            ((CCombo*)Window->GetChildByName("combo2"))->AddItem(std::to_string(i) + "  " + spin);
-            ((CCombo*)Window->GetChildByName("combo3"))->AddItem(std::to_string(i) + "  " + spin);
+            WindowCmd(PW_MAIN, "combo2", PWM_COMBOADDITEM, (std::to_string(i) + "  " + spin).c_str());
+            WindowCmd(PW_MAIN, "combo3", PWM_COMBOADDITEM, (std::to_string(i) + "  " + spin).c_str());
         }
     }
 
@@ -567,9 +623,9 @@ void COscilloscope::SetBaseTimer(void) {
         } else {
             spin = pboard->MGetPinName(chp[0]);
         }
-        ((CCombo*)Window->GetChildByName("combo2"))->SetText(std::to_string(chp[0]) + "  " + spin);
+        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, (std::to_string(chp[0]) + "  " + spin).c_str());
     } else
-        ((CCombo*)Window->GetChildByName("combo2"))->SetText("1");
+        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, "1");
 
     if (chp[1] <= PinCount) {
         std::string spin;
@@ -578,10 +634,33 @@ void COscilloscope::SetBaseTimer(void) {
         } else {
             spin = pboard->MGetPinName(chp[1]);
         }
-        ((CCombo*)Window->GetChildByName("combo3"))->SetText(std::to_string(chp[1]) + "  " + spin);
+        WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, (std::to_string(chp[1]) + "  " + spin).c_str());
     } else
-        ((CCombo*)Window->GetChildByName("combo3"))->SetText("2");
+        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, "2");
 
-    CSpind* spind = (CSpind*)Window->GetChildByName("spind5");
-    (Window->*(spind->EvOnChangeSpinDouble))(NULL);
+    float tscale;
+    WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &tscale);
+
+    SetRT((tscale * 1e-3 * 10) / WMAX);
+
+    if ((GetRT() / GetDT()) < 1.0) {
+        xz = GetDT() / GetRT();
+    } else
+        xz = 1.0;
+
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMIN, std::to_string(-5 * tscale).c_str());
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMAX, std::to_string(5 * tscale).c_str());
+
+    float toffset;
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDGETVALUE, NULL, &toffset);
+
+    Oscilloscope.SetTimeOffset((WMAX / 2) - (((WMAX / 2) * toffset) / (5 * tscale)));
+}
+
+int COscilloscope::WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,
+                             const char* Value, void* ReturnBuff) {
+    if (Oscilloscope.OnWindowCmd) {
+        return (*Oscilloscope.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+    }
+    return -1;
 }

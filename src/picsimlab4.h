@@ -28,6 +28,7 @@
 
 #include <lxrad.h>
 #include <picsim/picsim.h>
+#include "lib/types.h"
 
 /**
  * @brief CPWindow4 class
@@ -109,10 +110,11 @@ public:
     // lxrad automatic generated block end, don't edit above!
     CPWindow4(void);
     void DrawScreen(void);
+    static int OnWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                           void* ReturnBuff);
 
 private:
     CButton* ctrl;
-    double xz;
 };
 
 extern CPWindow4 Window4;

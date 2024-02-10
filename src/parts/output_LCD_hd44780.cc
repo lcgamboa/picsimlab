@@ -396,12 +396,11 @@ void cpart_LCD_hd44780::LoadPartImage(void) {
             break;
     }
 
-    if (SpareParts.GetWindow()) {
-        SpareParts.SetPartOnDraw(id);
-        BitmapId = bmp;
-        SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
-    }
+    SpareParts.SetPartOnDraw(id);
+    BitmapId = bmp;
+    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+
     for (int i = 0; i < outputc; i++) {
         output[i].update = 1;
     }

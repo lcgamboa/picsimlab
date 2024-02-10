@@ -174,24 +174,22 @@ void cpart_servo::ReadPropertiesWindow(void) {
 }
 
 void cpart_servo::LoadPartImage(void) {
-    if (SpareParts.GetWindow()) {
-        SpareParts.SetPartOnDraw(id);
-        BitmapId = SpareParts.CanvasCmd(
-            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
-                                      Scale, 0, Orientation}});
+    SpareParts.SetPartOnDraw(id);
+    BitmapId = SpareParts.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
+                                  Scale, 0, Orientation}});
 
-        int bmp = SpareParts.CanvasCmd(
-            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
-                                      Scale, 0, Orientation}});
+    int bmp = SpareParts.CanvasCmd(
+        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
+                                  Scale, 0, Orientation}});
 
-        if (BackGround >= 0) {
-            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackGround}});
-        }
-        BackGround = bmp;
-
-        SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+    if (BackGround >= 0) {
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackGround}});
     }
+    BackGround = bmp;
+
+    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 }
 
 // Register the part in PICSimLab spare parts list

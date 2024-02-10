@@ -26,8 +26,6 @@
 #ifndef BOARD_uCboard_H
 #define BOARD_uCboard_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_ucsim.h"
 
 #define BOARD_uCboard_Name "uCboard"

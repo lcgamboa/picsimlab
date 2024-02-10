@@ -55,6 +55,13 @@ enum PICSimLabCanvasCmd {
     CC_LAST
 };
 
+#define CC_FONTWEIGHT_BOLD 92
+
+#define CC_ALIGN_LEFT 0x0000
+#define CC_ALIGN_RIGHT 0x0200
+#define CC_ALIGN_CENTER_VERTICAL 0x0800
+#define CC_ALIGN_CENTER 0x0900
+
 #include <string>
 
 #include "board.h"

@@ -341,28 +341,26 @@ void cpart_pot_r::LoadPartImage(void) {
         Width = OWidth - xoff;
         Height = OHeight;
 
-        if (SpareParts.GetWindow()) {
-            SpareParts.SetPartOnDraw(id);
-            BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
+        SpareParts.SetPartOnDraw(id);
+        BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
-            SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 
-            int BackBitmap = SpareParts.CanvasCmd(
-                {CC_LOADIMAGE,
-                 .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
-                            Orientation}});
+        int BackBitmap = SpareParts.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
+                                      Scale, 0, Orientation}});
 
-            SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
-            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
-            SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
-            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
-            SpareParts.CanvasCmd({CC_END});
+        SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
+        SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+        SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
+        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+        SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
+        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+        SpareParts.CanvasCmd({CC_END});
 
-            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
-        }
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
+
     } else {
         Width = OWidth;
         Height = OHeight;

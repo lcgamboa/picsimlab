@@ -25,11 +25,10 @@
 
 // include files
 #include "board_Arduino_Uno.h"
+#include <math.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-
-#include <lxrad.h>
 
 /* ids of inputs of input map*/
 enum {
@@ -314,7 +313,7 @@ void cboard_Arduino_Uno::Draw(void) {
 
             if (!update) {
                 PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;          // set to update buffer
             if (!output[i].r)  // if output shape is a rectangle

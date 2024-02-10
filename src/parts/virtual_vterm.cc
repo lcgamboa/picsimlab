@@ -28,8 +28,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#include <lxrad.h>
-
 /* outputs */
 enum { O_RX, O_TX, O_LTX, O_LRX, O_VT };
 
@@ -64,8 +62,7 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
     wvtermId = SpareParts.WindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
 
     std::string fname =
-        (const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/Virtual/IO Virtual Term/terminal_1.lxrad")
-            .c_str();
+        (const char*)GetLocalFile(PICSimLab.GetSharePath() + "parts/Virtual/IO Virtual Term/terminal_1.lxrad").c_str();
 
     if (SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
         SpareParts.WindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");

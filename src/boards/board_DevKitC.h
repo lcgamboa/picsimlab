@@ -26,8 +26,6 @@
 #ifndef BOARD_DevKitC_H
 #define BOARD_DevKitC_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_qemu.h"
 
 #define BOARD_DevKitC_Name "ESP32-DevKitC"

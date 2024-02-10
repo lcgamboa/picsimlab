@@ -36,7 +36,7 @@ class CSpareParts {
 public:
     CSpareParts();
 
-    void Init(CWindow* win);
+    void Init(void);
 
     void UpdateAll(const int force = 0);
     int GetCount(void) { return partsc; };
@@ -92,7 +92,6 @@ public:
     std::string GetAliasFname(void) { return alias_fname; };
     float GetScale(void) { return scale; };
     void SetScale(float s) { scale = s; };
-    CWindow* GetWindow(void) { return Window; }
     void Reset(void);
 
     void Setfdtype(int value);
@@ -129,7 +128,6 @@ public:
 private:
     float scale;
     board* pboard;
-    CWindow* Window;
     std::string PinNames[256];
     std::string PinAlias[256];
     std::string alias_fname;

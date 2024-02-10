@@ -25,6 +25,7 @@
 
 // include files
 #include "board_x.h"
+#include <math.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -393,7 +394,7 @@ void cboard_x::Draw(void) {
 
             if (!update) {
                 PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 

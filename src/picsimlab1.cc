@@ -143,9 +143,9 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
 
     PICSimLab.tgo++;
 #ifndef _NOTHREAD
-    PICSimLab.cpu_mutex->Lock();
-    PICSimLab.cpu_cond->Signal();
-    PICSimLab.cpu_mutex->Unlock();
+    cpu_mutex->Lock();
+    cpu_cond->Signal();
+    cpu_mutex->Unlock();
 #endif
 
     if (PICSimLab.tgo > 3) {
@@ -158,6 +158,11 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
     DrawBoard();
 
     PICSimLab.status.st[0] &= ~ST_T1;
+}
+
+CPWindow1::~CPWindow1(void) {
+    delete cpu_cond;
+    delete cpu_mutex;
 }
 
 void CPWindow1::DrawBoard(void) {
@@ -198,7 +203,7 @@ void CPWindow1::DrawBoard(void) {
 
             draw1.SetVisible(0);
             draw1.SetImgFileName(
-                lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
+                GetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
                 PICSimLab.GetScale(), PICSimLab.GetScale());
         }
 
@@ -265,9 +270,9 @@ void CPWindow1::thread1_EvThreadRun(CControl*) {
                 PICSimLab.SetIdleMs(0);
         } else {
 #ifndef _NOTHREAD
-            PICSimLab.cpu_mutex->Lock();
-            PICSimLab.cpu_cond->Wait();
-            PICSimLab.cpu_mutex->Unlock();
+            cpu_mutex->Lock();
+            cpu_cond->Wait();
+            cpu_mutex->Unlock();
 #endif
         }
 
@@ -284,7 +289,7 @@ void CPWindow1::thread2_EvThreadRun(CControl*) {
 }
 
 void CPWindow1::thread3_EvThreadRun(CControl*) {
-    PICSimLab.GetBoard()->EvThreadRun(&thread3);
+    PICSimLab.GetBoard()->EvThreadRun();
 }
 
 void CPWindow1::timer2_EvOnTime(CControl* control) {
@@ -683,8 +688,9 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.OnConfigMenuGUI = &CPWindow1::OnConfigMenuGUI;
     PICSimLab.OnCanvasCmd = &CPWindow1::OnCanvasCmd;
     PICSimLab.OnWindowCmd = &CPWindow1::OnWindowCmd;
+    PICSimLab.OnSystemCmd = &CPWindow1::OnSystemCmd;
 
-    PICSimLab.Init(this);
+    PICSimLab.Init();
 
     // board menu
     for (int i = 0; i < BOARDS_LAST; i++) {
@@ -695,9 +701,9 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         menu1_Board.CreateChild(&MBoard[i]);
     }
 
-    Oscilloscope.Init(&Window4);
+    Oscilloscope.Init();
 
-    SpareParts.Init(&Window5);
+    SpareParts.Init();
 
 #ifndef _SHARE_
 #error Define the _SHARE_ path is necessary
@@ -958,9 +964,9 @@ void CPWindow1::OnEndSimulation(void) {
     }
     PICSimLab.tgo = 100000;
 #ifndef _NOTHREAD
-    PICSimLab.cpu_mutex->Lock();
-    PICSimLab.cpu_cond->Signal();
-    PICSimLab.cpu_mutex->Unlock();
+    Window1.cpu_mutex->Lock();
+    Window1.cpu_cond->Signal();
+    Window1.cpu_mutex->Unlock();
 #endif
 
     Window1.thread1.Destroy();
@@ -1003,7 +1009,7 @@ void CPWindow1::Configure(void) {
 
     draw1.SetVisible(0);
     draw1.SetImgFileName(
-        lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
+        GetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
         PICSimLab.GetScale(), PICSimLab.GetScale());
 
 #ifndef NO_TOOLS
@@ -1487,7 +1493,7 @@ int CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
         } break;
         case CC_LOADIMAGE: {
             lxImage image(&Window1);
-            if (image.LoadFile(lxGetLocalFile(cmd.LoadImage.fname), cmd.LoadImage.orientation, cmd.LoadImage.scale,
+            if (image.LoadFile(GetLocalFile(cmd.LoadImage.fname), cmd.LoadImage.orientation, cmd.LoadImage.scale,
                                cmd.LoadImage.scale, cmd.LoadImage.usealpha)) {
                 // find enpty bitmap
                 int bid = -1;
@@ -1956,6 +1962,57 @@ void file_ready(const char* fname, const char* dir) {
     }
 }
 
+int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff) {
+    switch (cmd) {
+        case PSC_FILEEXISTS:
+            return lxFileExists(lxString::FromUTF8(Arg));
+            break;
+        case PSC_GETUSERDATADIR:
+            strcpy((char*)ReturnBuff, (const char*)lxGetUserDataDir(Arg).utf8_str());
+            break;
+        case PSC_GETEXECUTABLEPATH:
+            strcpy((char*)ReturnBuff, (const char*)lxGetExecutablePath().utf8_str());
+            break;
+        case PSC_GETTEMPDIR:
+            strcpy((char*)ReturnBuff, (const char*)lxGetTempDir(Arg).utf8_str());
+            break;
+        case PSC_REMOVEDIR:
+            return lxRemoveDir(Arg);
+            break;
+        case PSC_CREATEDIR:
+            return lxCreateDir(Arg);
+            break;
+        case PSC_EXECUTE:
+            return lxExecute(Arg);
+            break;
+        case PSC_ZIPDIR:
+            return lxZipDir(Arg, lxString::FromUTF8((const char*)ReturnBuff));
+            break;
+        case PSC_UNZIPDIR:
+            return lxUnzipDir(lxString::FromUTF8(Arg), (char*)ReturnBuff);
+            break;
+        case PSC_RENAMEFILE:
+            return lxRenameFile(Arg, (const char*)ReturnBuff);
+            break;
+        case PSC_LAUNCHDEFAULTBROWSER:
+            return lxLaunchDefaultBrowser(Arg);
+            break;
+        case PSC_LAUNCHDEFAULAPPLICATION:
+            return lxLaunchDefaultApplication(Arg);
+            break;
+        case PSC_SHOWDIALOG:
+            return Dialog_sz(lxString::FromUTF8(Arg), 400, 200);
+            break;
+        case PSC_BASENAME:
+            basename(lxString::FromUTF8(Arg));
+            break;
+        default:
+            return 0;
+            break;
+    }
+    return 0;
+}
+
 int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                            void* ReturnBuff) {
     CControl* ctrl = NULL;
@@ -1971,7 +2028,7 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         if (ctrl == NULL) {
             return -1;
         }
-    } else {  // find empty window
+    } else if (action == PWA_WINDOWCREATE) {  // find empty window
         for (int i = 0; i < MAX_PARTS; i++) {
             if (Window1.Windows[i] == NULL) {
                 wid = i;
@@ -1982,8 +2039,38 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         if (wid == -1) {
             return -1;
         }
+    } else {
+        return -1;
     }
 
+    switch (action) {
+        case PWA_WINDOWCREATE: {
+            Window1.Windows[wid] = new CPWindow();
+            ctrl = Window1.Windows[wid];
+            ctrl->SetName(ControlName);  // must be the same as in xml
+            ctrl->SetVisible(0);
+            ((CPWindow*)ctrl)->SetCanDestroy(false);
+            Application->ACreateWindow(((CPWindow*)ctrl));
+            return wid;
+        } break;
+
+        case PWA_BUTTONBOARDEV:
+            if (!strcmp(Value, "1")) {
+                ((CButton*)ctrl)->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
+            } else {
+                ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
+            }
+            break;
+
+        default:
+            return Window1.WinCmd(ctrl, action, Value, ReturnBuff);
+            break;
+    }
+
+    return 0;
+}
+
+int CPWindow1::WinCmd(CControl* ctrl, const PICSimLabWindowAction action, const char* Value, void* ReturnBuff) {
     switch (action) {
         case PWA_COMBOSETITEMS:
             ((CCombo*)ctrl)->SetItems(Value);
@@ -1995,21 +2082,11 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             strcpy((char*)ReturnBuff, ((CCombo*)ctrl)->GetText().c_str());
             return strlen((char*)ReturnBuff);
             break;
-        case PWA_COMBOPROPEV:
-            /*
-            if (!strcmp(Value, "1")) {
-                ((CCombo*)ctrl)->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::PropComboChange;
-            } else {
-                ((CCombo*)ctrl)->EvOnComboChange = NULL;
-            }
-            */
+        case PWA_COMBODELETEITEMS:
+            ((CCombo*)ctrl)->DeleteItems();
             break;
-        case PWA_COMBOPARTEV:
-            if (!strcmp(Value, "1")) {
-                //     ((CCombo*)ctrl)->EvOnComboChange = EVONCOMBOCHANGE & CPWindow1::PartEvent;
-            } else {
-                ((CCombo*)ctrl)->EvOnComboChange = NULL;
-            }
+        case PWM_COMBOADDITEM:
+            ((CCombo*)ctrl)->AddItem(Value);
             break;
 
         case PWA_SPINDSETMAX:
@@ -2037,15 +2114,7 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         case PWA_SPINGETVALUE:
             *((int*)ReturnBuff) = ((CSpin*)ctrl)->GetValue();
             break;
-        case PWA_SPINPROPEV:
-            /*
-            if (!strcmp(Value, "1")) {
-                ((CSpin*)ctrl)->EvOnChangeSpin = EVONCHANGESPIN & CPWindow1::PropSpinChange;
-            } else {
-                ((CSpin*)ctrl)->EvOnChangeSpin = NULL;
-            }
-            */
-            break;
+
         case PWA_TEXTCLEAR:
             ((CText*)ctrl)->Clear();
             break;
@@ -2088,17 +2157,11 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             strcpy((char*)ReturnBuff, ((CEdit*)ctrl)->GetText().utf8_str());
             return strlen((char*)ReturnBuff);
             break;
-        case PWA_EDITPARTEV:
-            if (!strcmp(Value, "1")) {
-                //   ((CEdit*)ctrl)->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow1::PartKeyEvent;
-            } else {
-                ((CEdit*)ctrl)->EvKeyboardPress = NULL;
-            }
-            break;
 
         case PWA_LABELSETTEXT:
             ((CLabel*)ctrl)->SetText(Value);
             break;
+
         case PWA_SETENABLE:
             ctrl->SetEnable(std::stoi(Value));
             break;
@@ -2120,6 +2183,9 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         case PWA_SETTAG:
             ctrl->SetTag(std::stoi(Value));
             break;
+        case PWA_SETCOLOR:
+            ctrl->SetColor(lxColor(Value));
+            break;
         case PWA_GETWIDTH:
             *((int*)ReturnBuff) = ctrl->GetWidth();
             break;
@@ -2135,16 +2201,11 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         case PWA_GETTAG:
             *((int*)ReturnBuff) = ctrl->GetTag();
             break;
+        case PWA_GETCOLOR:
+            strcpy((char*)ReturnBuff, ctrl->GetColor().GetAsString(lxC2S_HTML_SYNTAX));
+            return strlen((char*)ReturnBuff);
+            break;
 
-        case PWA_WINDOWCREATE: {
-            Window1.Windows[wid] = new CPWindow();
-            ctrl = Window1.Windows[wid];
-            ctrl->SetName(ControlName);  // must be the same as in xml
-            ctrl->SetVisible(0);
-            ((CPWindow*)ctrl)->SetCanDestroy(false);
-            Application->ACreateWindow(((CPWindow*)ctrl));
-            return wid;
-        } break;
         case PWA_WINDOWDESTROY:
             ((CPWindow*)ctrl)->Hide();
             ((CPWindow*)ctrl)->DestroyChilds();
@@ -2162,13 +2223,6 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         case PWA_WINDOWHIDE:
             ((CPWindow*)ctrl)->Hide();
             break;
-        case PWA_WINDOWPARTEV:
-            if (!strcmp(Value, "1")) {
-                //  ((CPWindow*)ctrl)->EvOnShow = EVONCOMBOCHANGE & CPWindow1::PartEvent;
-            } else {
-                ((CPWindow*)ctrl)->EvOnShow = NULL;
-            }
-            break;
         case PWA_WINDOWSHOWEX:
             ((CPWindow*)ctrl)->Draw();
             ((CPWindow*)ctrl)->ShowExclusive();
@@ -2176,20 +2230,19 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         case PWA_WINDOWHIDEEX:
             ((CPWindow*)ctrl)->HideExclusive();
             break;
-
-        case PWA_BUTTONPARTEV:
-            if (!strcmp(Value, "1")) {
-                //  ((CButton*)ctrl)->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::PartButtonEvent;
-            } else {
-                ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
-            }
+        case PWA_WINDOWHASCREATED:
+            *((int*)ReturnBuff) = (((CPWindow*)ctrl)->GetWin() != NULL);
             break;
-        case PWA_BUTTONBOARDEV:
-            if (!strcmp(Value, "1")) {
-                ((CButton*)ctrl)->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
-            } else {
-                ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
-            }
+
+        case PWA_GETDISPLAYWIDTH:
+            *((unsigned int*)ReturnBuff) = lxGetDisplayWidth(0);
+            break;
+        case PWA_GETDISPLAYHEIGHT:
+            *((unsigned int*)ReturnBuff) = lxGetDisplayHeight(0);
+            break;
+
+        case PWA_APPPROCESSEVENTS:
+            Application->ProcessEvents();
             break;
 
         case PWA_FILEDIALOGGETFNAME:
@@ -2212,11 +2265,34 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             *((int*)ReturnBuff) = ((CFileDialog*)ctrl)->GetType();
             break;
 
+        case PWA_THREADGETRUNSTATE:
+            *((int*)ReturnBuff) = ((CThread*)ctrl)->GetRunState();
+            break;
+        case PWA_THREADTESTDESTROY:
+            *((int*)ReturnBuff) = ((CThread*)ctrl)->TestDestroy();
+            break;
+        case PWA_THREADRUN:
+            ((CThread*)ctrl)->Run();
+            break;
+        case PWA_THREADDESTROY:
+            ((CThread*)ctrl)->Destroy();
+            break;
+
+        case PWA_TIMERGETTIME:
+            *((int*)ReturnBuff) = ((CTimer*)ctrl)->GetTime();
+            break;
+
+        case PWA_TOGGLEBSETCHECK:
+            ((CToggleButton*)ctrl)->SetCheck(std::stoi(Value));
+            break;
+        case PWA_TOGGLEBGETCHECK:
+            *((int*)ReturnBuff) = ((CToggleButton*)ctrl)->GetCheck();
+            break;
+
         default:
             return -1;
             break;
     }
-
     return 0;
 }
 

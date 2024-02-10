@@ -26,8 +26,6 @@
 #ifndef BOARD_Breadboard_H
 #define BOARD_Breadboard_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_picsim.h"
 #include "bsim_simavr.h"
 

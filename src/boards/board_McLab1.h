@@ -26,8 +26,6 @@
 #ifndef BOARD_McLab1_H
 #define BOARD_McLab1_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "../devices/swbounce.h"
 #include "bsim_picsim.h"
 

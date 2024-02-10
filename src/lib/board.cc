@@ -23,9 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "board.h"
+#include <math.h>
 #include "picsimlab.h"
 
 int ioupdated = 0;
@@ -60,8 +59,8 @@ board::~board(void) {}
 void board::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + GetMapFile()).c_str());
-    ReadOutputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "boards/" + GetMapFile()).c_str());
+    ReadInputMap((const char*)GetLocalFile(PICSimLab.GetSharePath() + "boards/" + GetMapFile()).c_str());
+    ReadOutputMap((const char*)GetLocalFile(PICSimLab.GetSharePath() + "boards/" + GetMapFile()).c_str());
 
     for (int i = 0; i < inputc; i++) {
         input_ids[GetInputId(input[i].name)] = &input[i];
@@ -103,21 +102,22 @@ void board::ReadInputMap(std::string fname) {
                         PICSimLab.SetplWidth(board_w);
 
                         unsigned int ww = 185 + board_w * PICSimLab.GetScale();
-                        if (ww > lxGetDisplayWidth(0)) {
-                            float scalex = ((lxGetDisplayWidth(0) - 185) * 1.0) / board_w;
-                            if (PICSimLab.GetWindow()) {
-                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetWidth(board_w * scalex);
-                                PICSimLab.GetWindow()->SetWidth(lxGetDisplayWidth(0));
-                            }
+                        unsigned int dwidth;
+                        PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETDISPLAYWIDTH, NULL, &dwidth);
+
+                        if (ww > dwidth) {
+                            float scalex = ((dwidth - 185) * 1.0) / board_w;
+
+                            PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETWIDTH,
+                                                std::to_string(board_w * scalex).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(dwidth).c_str());
                             if (scalex < Scale) {
                                 Scale = scalex;
                             }
                         } else {
-                            if (PICSimLab.GetWindow()) {
-                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
-                                    ->SetWidth(board_w * PICSimLab.GetScale());
-                                PICSimLab.GetWindow()->SetWidth(ww);
-                            }
+                            PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETWIDTH,
+                                                std::to_string(board_w * PICSimLab.GetScale()).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(ww).c_str());
                         }
                     }
 
@@ -126,24 +126,24 @@ void board::ReadInputMap(std::string fname) {
                         PICSimLab.SetplHeight(board_h);
 
                         unsigned int wh = 90 + board_h * PICSimLab.GetScale();
+                        unsigned int dheight;
+                        PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETDISPLAYHEIGHT, NULL, &dheight);
 
-                        if (wh > lxGetDisplayHeight(0)) {
-                            float scaley = ((lxGetDisplayHeight(0) - 90) * 1.0) / board_h;
+                        if (wh > dheight) {
+                            float scaley = ((dheight - 90) * 1.0) / board_h;
 
-                            if (PICSimLab.GetWindow()) {
-                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))->SetHeight(board_h * scaley);
-                                PICSimLab.GetWindow()->SetHeight(lxGetDisplayHeight(0));
-                                PICSimLab.GetWindow()->SetWidth(185 + board_w * scaley);
-                            }
+                            PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETHEIGHT,
+                                                std::to_string(board_h * scaley).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(dheight).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH,
+                                                std::to_string(185 + board_w * scaley).c_str());
                             if (scaley < Scale) {
                                 Scale = scaley;
                             }
                         } else {
-                            if (PICSimLab.GetWindow()) {
-                                ((CDraw*)PICSimLab.GetWindow()->GetChildByName("draw1"))
-                                    ->SetHeight(board_h * PICSimLab.GetScale());
-                                PICSimLab.GetWindow()->SetHeight(wh);
-                            }
+                            PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETHEIGHT,
+                                                std::to_string(board_h * PICSimLab.GetScale()).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(wh).c_str());
                         }
                     }
 
@@ -375,18 +375,20 @@ std::string board::GetMapFile(void) {
 
 void board::StartThread(void) {
 #ifndef __EMSCRIPTEN__
-    CThread* thread3 = ((CThread*)PICSimLab.GetWindow()->GetChildByName("thread3"));
-    if (!thread3->GetRunState()) {
-        thread3->Run();
+    int state = 0;
+    PICSimLab.WindowCmd(PW_MAIN, "thread3", PWA_THREADGETRUNSTATE, NULL, &state);
+    if (!state) {
+        PICSimLab.WindowCmd(PW_MAIN, "thread3", PWA_THREADRUN, NULL);
     }
 #endif
 }
 
 void board::StopThread(void) {
 #ifndef __EMSCRIPTEN__
-    CThread* thread3 = ((CThread*)PICSimLab.GetWindow()->GetChildByName("thread3"));
-    if (thread3->GetRunState()) {
-        thread3->Destroy();
+    int state = 0;
+    PICSimLab.WindowCmd(PW_MAIN, "thread3", PWA_THREADGETRUNSTATE, NULL, &state);
+    if (state) {
+        PICSimLab.WindowCmd(PW_MAIN, "thread3", PWA_THREADDESTROY, NULL);
     }
 #endif
 }
@@ -541,7 +543,7 @@ board* create_board(int* lab, int* lab_) {
     if ((*lab >= 0) && (*lab < BOARDS_LAST)) {
         pboard = boards_list[*lab].bcreate();
     } else {
-        mprint("PICSimLab: Invalid board! Using default!\n");
+        printf("PICSimLab: Invalid board! Using default!\n");
         *lab = 0;   // default
         *lab_ = 0;  // default
         pboard = boards_list[0].bcreate();

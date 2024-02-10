@@ -27,8 +27,6 @@
 #ifndef BOARD_Curiosity_HPC_H
 #define BOARD_Curiosity_HPC_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_picsim.h"
 
 #define BOARD_Curiosity_HPC_Name "Curiosity HPC"

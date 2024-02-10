@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include "bitbang_uart.h"
 
+#include <lxrad.h>
+
 #define SBUFFMAX 2048
 
 typedef struct {

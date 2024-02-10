@@ -79,44 +79,42 @@ void cpart_led_ws2812b::LoadPartImage(void) {
         Width = OWidth + xoff;
         Height = OHeight + yoff;
 
-        if (SpareParts.GetWindow()) {
-            SpareParts.SetPartOnDraw(id);
-            BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
+        SpareParts.SetPartOnDraw(id);
+        BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
-            SpareParts.CanvasCmd({CC_DESTROY});
-            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 
-            int BackBitmap = SpareParts.CanvasCmd(
-                {CC_LOADIMAGE,
-                 .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
-                            Orientation}});
+        int BackBitmap = SpareParts.CanvasCmd(
+            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
+                                      Scale, 0, Orientation}});
 
-            int LEDBitmap = SpareParts.CanvasCmd(
-                {CC_LOADIMAGE,
-                 .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg").c_str(), Scale,
-                            0, Orientation}});
+        int LEDBitmap = SpareParts.CanvasCmd(
+            {CC_LOADIMAGE,
+             .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg").c_str(), Scale, 0,
+                        Orientation}});
 
-            SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
+        SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
+        SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+        SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
 
-            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
-            SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, 0, yoff * Scale}});
+        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+        SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, 0, yoff * Scale}});
 
-            if (!led.diffuser) {
-                for (unsigned int r = 0; r < led.nrows; r++)
-                    for (unsigned int c = 0; c < led.ncols; c++) {
-                        SpareParts.CanvasCmd(
-                            {CC_PUTBITMAP, .PutBitmap{LEDBitmap, (output_ids[O_LED]->x1 + (40 * c)) * Scale,
-                                                      (output_ids[O_LED]->y1 - (40 * r) + yoff) * Scale}});
-                    }
-            }
-            SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
-            SpareParts.CanvasCmd({CC_END});
-
-            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
-            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{LEDBitmap}});
+        if (!led.diffuser) {
+            for (unsigned int r = 0; r < led.nrows; r++)
+                for (unsigned int c = 0; c < led.ncols; c++) {
+                    SpareParts.CanvasCmd(
+                        {CC_PUTBITMAP, .PutBitmap{LEDBitmap, (output_ids[O_LED]->x1 + (40 * c)) * Scale,
+                                                  (output_ids[O_LED]->y1 - (40 * r) + yoff) * Scale}});
+                }
         }
+        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+        SpareParts.CanvasCmd({CC_END});
+
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
+        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{LEDBitmap}});
+
     } else {
         Width = OWidth;
         Height = OHeight;

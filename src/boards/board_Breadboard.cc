@@ -25,6 +25,7 @@
 
 // include files
 #include "board_Breadboard.h"
+#include <math.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -337,7 +338,7 @@ void cboard_Breadboard::Draw(void) {
 
             if (!update) {
                 PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
@@ -368,7 +369,7 @@ void cboard_Breadboard::Draw(void) {
                     rec.width = w / Scale;
                     rec.height = h / Scale;
                     PICSimLab.CanvasCmd(
-                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
+                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
                     PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});

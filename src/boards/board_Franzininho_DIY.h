@@ -26,8 +26,6 @@
 #ifndef BOARD_Franzininho_DIY_H
 #define BOARD_Franzininho_DIY_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_simavr.h"
 
 #define BOARD_Franzininho_DIY_Name "Franzininho DIY"

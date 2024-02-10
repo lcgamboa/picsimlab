@@ -69,7 +69,6 @@ private:
     float oftone;
     float in[3];
     float out[3];
-    CTimer* timer;
 };
 
 #endif /* PART_BUZZER */

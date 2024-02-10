@@ -502,4 +502,7 @@ CPWindow1::CPWindow1(void) {
     memset(Windows, 0, sizeof(Windows));
 
     Windows[PW_MAIN] = this;
+
+    cpu_mutex = new lxMutex;
+    cpu_cond = new lxCondition(*cpu_mutex);
 }

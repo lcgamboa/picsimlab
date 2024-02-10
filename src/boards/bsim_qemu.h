@@ -33,6 +33,8 @@
 #include "../lib/board.h"
 #include "qemu.h"
 
+#include "lxrad.h"
+
 typedef enum { QEMU_SIM_NONE = 0, QEMU_SIM_STM32, QEMU_SIM_ESP32, QEMU_SIM_ESP32_C3 } QEMUSimType;
 
 #define TTIMEOUT (BASETIMER * 1000000L)
@@ -63,7 +65,7 @@ public:
     void MStep(void) override;
     void MStepResume(void) override{};
     void MReset(int flags) override;
-    void EvThreadRun(CThread* thread) override;
+    void EvThreadRun(void) override;
     int GetDefaultClock(void) override { return 1; };
     int GetInc_ns(void) { return inc_ns; };
     virtual void PinsExtraConfig(int cfg){};

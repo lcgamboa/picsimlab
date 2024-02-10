@@ -29,8 +29,6 @@
 #include "oscilloscope.h"
 #include "picsimlab.h"
 
-#include <lxrad.h>
-
 // Global objects;
 CSpareParts SpareParts;
 
@@ -49,9 +47,7 @@ CSpareParts::CSpareParts() {
     OnWindowCmd = NULL;
 }
 
-void CSpareParts::Init(CWindow* win) {
-    Window = win;
-}
+void CSpareParts::Init(void) {}
 
 void CSpareParts::UpdateAll(const int force) {
     for (int i = 0; i < partsc; i++) {
@@ -73,7 +69,7 @@ part* CSpareParts::AddPart(const char* partname, const int x, const int y, const
     part* newpart = create_part(partname, x, y, pboard_, partsc);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
-        Message_sz("Erro creating part: " + std::string(partname), 400, 200);
+        PICSimLab.RegisterError("Erro creating part: " + std::string(partname));
     } else {
         parts[partsc]->SetScale(scale);
         parts[partsc]->Reset();
@@ -299,7 +295,7 @@ bool CSpareParts::SavePinAlias(std::string fname) {
 
 bool CSpareParts::LoadPinAlias(std::string fname, unsigned char show_error_msg) {
     if (!show_error_msg) {
-        if (!lxFileExists(fname)) {
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str())) {
             return 0;
         }
     }
@@ -339,12 +335,11 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
 
     pboard = PICSimLab.GetBoard();
 
-    if ((Window) && (Window->GetWin() == NULL)) {
+    int created = 0;
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
         LoadConfigFile = fname;
-        CItemMenu* imenu = (CItemMenu*)Window->GetChildByName("menu1")
-                               ->GetChildByName("menu1_Edit")
-                               ->GetChildByName("menu1_Edit_Clearpinalias");
-        (Window->*(imenu->EvMenuActive))(NULL);
         return 0;
     } else {
         LoadConfigFile = "";
@@ -375,7 +370,7 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
         Pins[i].oavalue = 55;
     }
 
-    bool ret = lxFileExists(fname);
+    bool ret = PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str());
 
     if (ret) {
         int partsc_;
@@ -421,48 +416,45 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 int w, h;
                 w = orient;
                 sscanf(temp, "%i", &h);
-                if (Window) {
-                    Window->SetX(x);
-                    Window->SetY(y);
-                    if (w > 5000)
-                        w = 5000;
-                    if (h > 5000)
-                        h = 5000;
-                    Window->SetWidth(w);
-                    Window->SetHeight(h);
-                    Window->GetChildByName("draw1")->SetWidth(w - 15);
-                    Window->GetChildByName("draw1")->SetHeight(h - 40);
-                }
+                if (w > 5000)
+                    w = 5000;
+                if (h > 5000)
+                    h = 5000;
+
+                SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETX, std::to_string(x).c_str());
+                SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETY, std::to_string(y).c_str());
+                SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
+                SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
+
+                SpareParts.WindowCmd(PW_MAIN, "draw1", PWA_SETWIDTH, std::to_string(w - 15).c_str());
+                SpareParts.WindowCmd(PW_MAIN, "draw1", PWA_SETHEIGHT, std::to_string(h - 40).c_str());
+
             } else if (!strcmp(name, "boardp")) {
                 int w, h;
                 w = orient;
                 sscanf(temp, "%i", &h);
-                if (PICSimLab.GetWindow()) {
-                    PICSimLab.GetWindow()->SetX(x);
-                    PICSimLab.GetWindow()->SetY(y);
-                    PICSimLab.GetWindow()->SetWidth(w);
-                    PICSimLab.GetWindow()->SetHeight(h);
-                }
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETX, std::to_string(x).c_str());
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETY, std::to_string(y).c_str());
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
             } else if (!strcmp(name, "spare_on")) {
                 unsigned char spare_on;
                 sscanf(temp, "%hhu", &spare_on);
                 PICSimLab.GetBoard()->SetUseSpareParts(spare_on);
-                if (Window) {
-                    if (spare_on) {
-                        Window->Show();
-                        PICSimLab.GetBoard()->Reset();
-                    } else {
-                        Window->Hide();
-                    }
+
+                if (spare_on) {
+                    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSHOW, NULL);
+                    PICSimLab.GetBoard()->Reset();
+                } else {
+                    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHIDE, NULL);
                 }
+
             } else if (!strcmp(name, "debug")) {
 #ifndef NO_DEBUG
                 if (disable_debug) {
                     x = 0;
                 }
-                if (PICSimLab.GetWindow()) {
-                    ((CToggleButton*)PICSimLab.GetWindow()->GetChildByName("togglebutton1"))->SetCheck(x);
-                }
+                PICSimLab.WindowCmd(PW_MAIN, "togglebutton1", PWA_TOGGLEBSETCHECK, std::to_string(x).c_str());
 #endif
                 PICSimLab.SetDebugStatus(x);
                 PICSimLab.SetDebugType(y);
@@ -470,13 +462,13 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 unsigned char osc_on;
                 sscanf(temp, "%hhu", &osc_on);
                 PICSimLab.GetBoard()->SetUseOscilloscope(osc_on);
-                if (Oscilloscope.GetWindow()) {
-                    if (osc_on) {
-                        Oscilloscope.GetWindow()->Show();
-                    } else {
-                        Oscilloscope.GetWindow()->Hide();
-                    }
+
+                if (osc_on) {
+                    Oscilloscope.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSHOW, NULL);
+                } else {
+                    Oscilloscope.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHIDE, NULL);
                 }
+
             } else if (!strcmp(name, "osc_cfg")) {
                 osc_list.clear();
                 osc_list.push_back(prefs.at(i));
@@ -586,20 +578,20 @@ void CSpareParts::Reset(void) {
 
 void CSpareParts::ReadPreferences(char* name, char* value) {
     if (!strcmp(name, "spare_position")) {
-        if (Window) {
-            int x, y, w, h;
-            sscanf(value, "%i,%i,%i,%i", &x, &y, &w, &h);
-            Window->SetX(x);
-            Window->SetY(y);
-            if (w > 5000)
-                w = 5000;
-            if (h > 5000)
-                h = 5000;
-            Window->SetWidth(w);
-            Window->SetHeight(h);
-            Window->GetChildByName("draw1")->SetWidth(w - 15);
-            Window->GetChildByName("draw1")->SetHeight(h - 40);
-        }
+        int x, y, w, h;
+        sscanf(value, "%i,%i,%i,%i", &x, &y, &w, &h);
+        if (w > 5000)
+            w = 5000;
+        if (h > 5000)
+            h = 5000;
+
+        SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETX, std::to_string(x).c_str());
+        SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETY, std::to_string(y).c_str());
+        SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
+        SpareParts.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
+
+        SpareParts.WindowCmd(PW_MAIN, "draw1", PWA_SETWIDTH, std::to_string(w - 15).c_str());
+        SpareParts.WindowCmd(PW_MAIN, "draw1", PWA_SETHEIGHT, std::to_string(h - 40).c_str());
     }
 }
 
@@ -624,16 +616,25 @@ bool CSpareParts::SaveConfig(std::string fname) {
     prefs.push_back(temp);
     snprintf(temp, 256, "scale,0,0,0:%f", scale);
     prefs.push_back(temp);
-    if (Window) {
-        snprintf(temp, 256, "position,%i,%i,%i:%i", Window->GetX(), Window->GetY(), Window->GetWidth(),
-                 Window->GetHeight());
-        prefs.push_back(temp);
-    }
-    if (PICSimLab.GetWindow()) {
-        snprintf(temp, 256, "boardp,%i,%i,%i:%i", PICSimLab.GetWindow()->GetX(), PICSimLab.GetWindow()->GetY(),
-                 PICSimLab.GetWindow()->GetWidth(), PICSimLab.GetWindow()->GetHeight());
-        prefs.push_back(temp);
-    }
+
+    int x, y, w, h;
+
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_GETWIDTH, NULL, &w);
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_GETHEIGHT, NULL, &h);
+
+    snprintf(temp, 256, "position,%i,%i,%i:%i", x, y, w, h);
+    prefs.push_back(temp);
+
+    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
+    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
+    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETWIDTH, NULL, &w);
+    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETHEIGHT, NULL, &h);
+
+    snprintf(temp, 256, "boardp,%i,%i,%i:%i", x, y, w, h);
+    prefs.push_back(temp);
+
     snprintf(temp, 256, "spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
     prefs.push_back(temp);
     snprintf(temp, 256, "osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());

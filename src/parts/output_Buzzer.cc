@@ -23,12 +23,12 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "output_Buzzer.h"
+#include <lxrad.h>
+
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-
-#include <lxrad.h>
+#include "output_Buzzer.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_L1 };
@@ -78,9 +78,6 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
     out[1] = 0;
     out[2] = 0;
 
-    if (PICSimLab.GetWindow()) {
-        timer = (CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1");
-    }
     SetPCWProperties(pcwprop);
 
     PinCount = 1;
@@ -223,8 +220,10 @@ void cpart_Buzzer::ReadPropertiesWindow(void) {
 
 void cpart_Buzzer::PreProcess(void) {
     if (btype == PASSIVE) {
+        int time;
+        PICSimLab.WindowCmd(PW_MAIN, "timer1", PWA_TIMERGETTIME, NULL, &time);
         JUMPSTEPS_ = (pboard->MGetInstClockFreq() / samplerate);
-        JUMPSTEPS_ *= ((float)BASETIMER) / timer->GetTime();  // Adjust to sample at the same time to the timer
+        JUMPSTEPS_ *= ((float)BASETIMER) / time;  // Adjust to sample at the same time to the timer
         mcount = JUMPSTEPS_;
     } else if (btype == TONE) {
         JUMPSTEPS_ = (pboard->MGetInstClockFreq() / samplerate);
@@ -306,9 +305,9 @@ void cpart_Buzzer::PostProcess(void) {
         }
     } else if (btype == PASSIVE) {
         buffer[buffercount - 1] = 0;
-        int ret = buzzer.SoundPlay(buffer, buffercount);
-        printf("ret=%i buffercount=%i sample=%i time=%f timer=%i\n", ret, buffercount, samplerate,
-               ((float)(buffercount)) / samplerate, timer->GetTime());
+        /*int ret =*/buzzer.SoundPlay(buffer, buffercount);
+        // printf("ret=%i buffercount=%i sample=%i time=%f timer=%i\n", ret, buffercount, samplerate,
+        //        ((float)(buffercount)) / samplerate, timer->GetTime());
         buffercount = 0;
     } else  // TONE
     {

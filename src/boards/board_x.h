@@ -26,8 +26,6 @@
 #ifndef BOARD_x_H
 #define BOARD_x_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "../devices/swbounce.h"
 #include "bsim_picsim.h"
 

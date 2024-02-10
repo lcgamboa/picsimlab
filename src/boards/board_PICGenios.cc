@@ -190,6 +190,49 @@ enum {
     I_VIEW
 };
 
+enum {
+    PIN_RE3 = 1,
+    PIN_RA0,
+    PIN_RA1,
+    PIN_RA2,
+    PIN_RA3,
+    PIN_RA4,
+    PIN_RA5,
+    PIN_RE0,
+    PIN_RE1,
+    PIN_RE2,
+    PIN_VDD1,
+    PIN_GND1,
+    PIN_RA7,
+    PIN_RA6,
+    PIN_RC0,
+    PIN_RC1,
+    PIN_RC2,
+    PIN_RC3,
+    PIN_RD0,
+    PIN_RD1,
+    PIN_RD2,
+    PIN_RD3,
+    PIN_RC4,
+    PIN_RC5,
+    PIN_RC6,
+    PIN_RC7,
+    PIN_RD4,
+    PIN_RD5,
+    PIN_RD6,
+    PIN_RD7,
+    PIN_GND2,
+    PIN_VDD2,
+    PIN_RB0,
+    PIN_RB1,
+    PIN_RB2,
+    PIN_RB3,
+    PIN_RB4,
+    PIN_RB5,
+    PIN_RB6,
+    PIN_RB7,
+};
+
 // TODO TEMP cooler must don't work with AQUE=0
 
 enum { LCD_TYPE = 0, HEATER = 3, COOLER, TEMP };
@@ -357,17 +400,17 @@ void cboard_PICGenios::Draw(void) {
     int i;
     int update = 0;
 
-    pic_set_pin(&pic, 39, 1);
-    pic_set_pin(&pic, 40, 1);
+    pic_set_pin(&pic, PIN_RB6, 1);
+    pic_set_pin(&pic, PIN_RB7, 1);
 
-    pic_set_pin(&pic, 19, 1);
-    pic_set_pin(&pic, 20, 1);
-    pic_set_pin(&pic, 21, 1);
-    pic_set_pin(&pic, 22, 1);
-    pic_set_pin(&pic, 27, 1);
-    pic_set_pin(&pic, 28, 1);
-    pic_set_pin(&pic, 29, 1);
-    pic_set_pin(&pic, 30, 1);
+    pic_set_pin(&pic, PIN_RD0, 1);
+    pic_set_pin(&pic, PIN_RD1, 1);
+    pic_set_pin(&pic, PIN_RD2, 1);
+    pic_set_pin(&pic, PIN_RD3, 1);
+    pic_set_pin(&pic, PIN_RD4, 1);
+    pic_set_pin(&pic, PIN_RD5, 1);
+    pic_set_pin(&pic, PIN_RD6, 1);
+    pic_set_pin(&pic, PIN_RD7, 1);
 
     // lab4 draw
     for (i = 0; i < outputc; i++) {
@@ -376,7 +419,7 @@ void cboard_PICGenios::Draw(void) {
 
             if (!update) {
                 PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;
 
@@ -678,56 +721,72 @@ void cboard_PICGenios::Draw(void) {
                 if (dip[9])
                     switch (output[i].id) {
                         case O_RB0:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[32].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB0 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[33].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB1 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[34].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB2 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB3:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[35].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB3 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB4:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[36].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB4 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB5:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[37].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB5 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB6:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[38].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB6 - 1].oavalue, 0, 0}});
                             break;
                         case O_RB7:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[39].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RB7 - 1].oavalue, 0, 0}});
                             break;
                     }
 
                 if (dip[8])
                     switch (output[i].id) {
                         case O_RD0:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[18].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD0 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[19].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD1 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[20].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD2 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD3:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[21].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD3 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD4:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[26].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD4 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD5:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[27].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD5 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD6:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[28].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD6 - 1].oavalue, 0, 0}});
                             break;
                         case O_RD7:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[29].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[PIN_RD7 - 1].oavalue, 0, 0}});
                             break;
                     }
 
@@ -735,14 +794,16 @@ void cboard_PICGenios::Draw(void) {
                     case O_RL1:
                         PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
                         if (dip[3])
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[14].oavalue, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[PIN_RC0 - 1].oavalue, 0}});
                         else
                             PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, 15, 0}});
                         break;
                     case O_RL2:
                         PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
                         if (dip[4])
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[7].oavalue, 0}});
+                            PICSimLab.CanvasCmd(
+                                {CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[PIN_RE0 - 1].oavalue, 0}});
                         else
                             PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, 15, 0}});
                         break;
@@ -789,7 +850,7 @@ void cboard_PICGenios::Draw(void) {
     }
 
     // buzzer
-    if ((((pic.pins[15].oavalue - 55) / 2) > 10) && (PICSimLab.GetMcuPwr()) && jmp[0]) {
+    if ((((pic.pins[PIN_RC1 - 1].oavalue - 55) / 2) > 10) && (PICSimLab.GetMcuPwr()) && jmp[0]) {
         if (!sound_on) {
             buzzer.BeepStart();
             sound_on = 1;
@@ -801,7 +862,7 @@ void cboard_PICGenios::Draw(void) {
 
     // Cooler
     if (dip[17]) {
-        cooler_pwr = pic.pins[16].oavalue - 55;
+        cooler_pwr = pic.pins[PIN_RC2 - 1].oavalue - 55;
     } else {
         cooler_pwr = 0;
     }
@@ -810,7 +871,7 @@ void cboard_PICGenios::Draw(void) {
 
     // Heater
     if (dip[15]) {
-        heater_pwr = pic.pins[23].oavalue - 55;
+        heater_pwr = pic.pins[PIN_RC5 - 1].oavalue - 55;
     } else {
         heater_pwr = 0;
     }
@@ -848,7 +909,7 @@ void cboard_PICGenios::OnTime(void) {
         temp[0] = 27.5;
 
     if (dip[16])
-        pic_set_apin(&pic, 4, temp[0] / 100.0);
+        pic_set_apin(&pic, PIN_RA2, temp[0] / 100.0);
 }
 
 void cboard_PICGenios::Run_CPU(void) {
@@ -859,20 +920,11 @@ void cboard_PICGenios::Run_CPU(void) {
     const picpin* pins;
     int bret;
 
-    unsigned int alm[40];   // luminosidade
-                            // media
-    unsigned int alm1[40];  // luminosidade
-                            // media
-                            // display
-    unsigned int alm2[40];  // luminosidade
-                            // media
-                            // display
-    unsigned int alm3[40];  // luminosidade
-                            // media
-                            // display
-    unsigned int alm4[40];  // luminosidade
-                            // media
-                            // display
+    unsigned int alm[40];   // valor medio pinos
+    unsigned int alm1[40];  // luminosidade media display 1
+    unsigned int alm2[40];  // luminosidade media display 2
+    unsigned int alm3[40];  // luminosidade media display 3
+    unsigned int alm4[40];  // luminosidade media display 4
 
     const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();
     const long int NSTEPJ = PICSimLab.GetNSTEPJ();
@@ -895,7 +947,7 @@ void cboard_PICGenios::Run_CPU(void) {
 
     SWBounce_prepare(&bounce, PICSimLab.GetBoard()->MGetInstClockFreq());
     for (int pl = 0; pl < 6; pl++) {
-        if ((pins[33 + pl - 1].dir == PD_IN) && (pins[33 + pl - 1].value != p_BT_[pl])) {
+        if ((pins[PIN_RB0 + pl - 1].dir == PD_IN) && (pins[33 + pl - 1].value != p_BT_[pl])) {
             switch (pl) {
                 case 0:
                     if (!(p_KEY[0] | p_KEY[3] | p_KEY[6] | p_KEY[9])) {
@@ -918,7 +970,7 @@ void cboard_PICGenios::Run_CPU(void) {
             }
         }
     }
-    if ((pins[7 - 1].dir == PD_IN) && (pins[7 - 1].value != p_BT_[6])) {
+    if ((pins[PIN_RA5 - 1].dir == PD_IN) && (pins[PIN_RA5 - 1].value != p_BT_[6])) {
         SWBounce_bounce(&bounce, 6);
     }
 
@@ -930,100 +982,88 @@ void cboard_PICGenios::Run_CPU(void) {
                 pic_set_pin(&pic, pic.mclr, p_RST);
 
                 if (!bounce.do_bounce) {
-                    pic_set_pin(&pic, 33, p_BT_[0]);
-                    pic_set_pin(&pic, 34, p_BT_[1]);
-                    pic_set_pin(&pic, 35, p_BT_[2]);
-                    pic_set_pin(&pic, 36, p_BT_[3]);
-                    pic_set_pin(&pic, 37, p_BT_[4]);
-                    pic_set_pin(&pic, 38, p_BT_[5]);
-                    pic_set_pin(&pic, 7, p_BT_[6]);
+                    pic_set_pin(&pic, PIN_RB0, p_BT_[0]);
+                    pic_set_pin(&pic, PIN_RB1, p_BT_[1]);
+                    pic_set_pin(&pic, PIN_RB2, p_BT_[2]);
+                    pic_set_pin(&pic, PIN_RB3, p_BT_[3]);
+                    pic_set_pin(&pic, PIN_RB4, p_BT_[4]);
+                    pic_set_pin(&pic, PIN_RB5, p_BT_[5]);
+                    pic_set_pin(&pic, PIN_RA5, p_BT_[6]);
                 }
 
                 /*
-                    pic_set_pin(&pic,
-                   39,
-                   1);
-                    pic_set_pin(&pic,
-                   40,
-                   1);
-                    pic_set_pin(&pic,
-                   19,1);
-                    pic_set_pin(&pic,
-                   20,1);
-                    pic_set_pin(&pic,
-                   21,1);
-                    pic_set_pin(&pic,
-                   22,1);
-                    pic_set_pin(&pic,
-                   27,1);
-                    pic_set_pin(&pic,
-                   28,1);
-                    pic_set_pin(&pic,
-                   29,1);
-                    pic_set_pin(&pic,
-                   30,1);
+                    pic_set_pin(&pic, PIN_RB6, 1);
+                    pic_set_pin(&pic, PIN_RB7,1);
+                    pic_set_pin(&pic, PIN_RD0,1);
+                    pic_set_pin(&pic, PIN_RD1,1);
+                    pic_set_pin(&pic, PIN_RD2,1);
+                    pic_set_pin(&pic, PIN_RD3,1);
+                    pic_set_pin(&pic, PIN_RD4,1);
+                    pic_set_pin(&pic, PIN_RD5,1);
+                    pic_set_pin(&pic, PIN_RD6,1);
+                    pic_set_pin(&pic, PIN_RD7,1);
                      */
 
                 // keyboard
 
                 if (p_KEY[0]) {
-                    pic_set_pin(&pic, 22, pic_get_pin(&pic, 33));
-                    pic_set_pin(&pic, 33, pic_get_pin(&pic, 22));
+                    pic_set_pin(&pic, PIN_RD3, pic_get_pin(&pic, PIN_RB0));
+                    pic_set_pin(&pic, PIN_RB0, pic_get_pin(&pic, PIN_RD3));
                 }
 
                 if (p_KEY[1]) {
-                    pic_set_pin(&pic, 22, pic_get_pin(&pic, 34));
-                    pic_set_pin(&pic, 34, pic_get_pin(&pic, 22));
+                    pic_set_pin(&pic, PIN_RD3, pic_get_pin(&pic, PIN_RB1));
+                    pic_set_pin(&pic, PIN_RB1, pic_get_pin(&pic, PIN_RD3));
                 }
 
                 if (p_KEY[2]) {
-                    pic_set_pin(&pic, 22, pic_get_pin(&pic, 35));
-                    pic_set_pin(&pic, 35, pic_get_pin(&pic, 22));
+                    pic_set_pin(&pic, PIN_RD3, pic_get_pin(&pic, PIN_RB2));
+                    pic_set_pin(&pic, PIN_RB2, pic_get_pin(&pic, PIN_RD3));
                 }
 
                 if (p_KEY[3]) {
-                    pic_set_pin(&pic, 21, pic_get_pin(&pic, 33));
-                    pic_set_pin(&pic, 33, pic_get_pin(&pic, 21));
+                    pic_set_pin(&pic, PIN_RD2, pic_get_pin(&pic, PIN_RB0));
+                    pic_set_pin(&pic, PIN_RB0, pic_get_pin(&pic, PIN_RD2));
                 }
 
                 if (p_KEY[4]) {
-                    pic_set_pin(&pic, 21, pic_get_pin(&pic, 34));
-                    pic_set_pin(&pic, 34, pic_get_pin(&pic, 21));
+                    pic_set_pin(&pic, PIN_RD2, pic_get_pin(&pic, PIN_RB1));
+                    pic_set_pin(&pic, PIN_RB1, pic_get_pin(&pic, PIN_RD2));
                 }
 
                 if (p_KEY[5]) {
-                    pic_set_pin(&pic, 21, pic_get_pin(&pic, 35));
-                    pic_set_pin(&pic, 35, pic_get_pin(&pic, 21));
+                    pic_set_pin(&pic, PIN_RD2, pic_get_pin(&pic, PIN_RB2));
+                    pic_set_pin(&pic, PIN_RB2, pic_get_pin(&pic, PIN_RD2));
                 }
 
                 if (p_KEY[6]) {
-                    pic_set_pin(&pic, 20, pic_get_pin(&pic, 33));
-                    pic_set_pin(&pic, 33, pic_get_pin(&pic, 20));
+                    pic_set_pin(&pic, PIN_RD1, pic_get_pin(&pic, PIN_RB0));
+                    pic_set_pin(&pic, PIN_RB0, pic_get_pin(&pic, PIN_RD1));
                 }
 
                 if (p_KEY[7]) {
-                    pic_set_pin(&pic, 20, pic_get_pin(&pic, 34));
-                    pic_set_pin(&pic, 34, pic_get_pin(&pic, 20));
+                    pic_set_pin(&pic, PIN_RD1, pic_get_pin(&pic, PIN_RB1));
+                    pic_set_pin(&pic, PIN_RB1, pic_get_pin(&pic, PIN_RD1));
                 }
 
                 if (p_KEY[8]) {
-                    pic_set_pin(&pic, 20, pic_get_pin(&pic, 35));
-                    pic_set_pin(&pic, 35, pic_get_pin(&pic, 20));
+                    pic_set_pin(&pic, PIN_RD1, pic_get_pin(&pic, PIN_RB2));
+                    pic_set_pin(&pic, PIN_RB2, pic_get_pin(&pic, PIN_RD1));
                 }
 
                 if (p_KEY[9]) {
-                    pic_set_pin(&pic, 19, pic_get_pin(&pic, 33));
-                    pic_set_pin(&pic, 33, pic_get_pin(&pic, 19));
+                    pic_set_pin(&pic, PIN_RD0, pic_get_pin(&pic, PIN_RB0));
+                    pic_set_pin(&pic, PIN_RB0, pic_get_pin(&pic, PIN_RD0));
                 }
 
                 if (p_KEY[10]) {
-                    pic_set_pin(&pic, 19, pic_get_pin(&pic, 34));
-                    pic_set_pin(&pic, 34, pic_get_pin(&pic, 19));
+                    pic_set_pin(&pic, PIN_RD0, pic_get_pin(&pic, PIN_RB1));
+                    pic_set_pin(&pic, PIN_RB1, pic_get_pin(&pic, PIN_RD0));
                 }
 
                 if (p_KEY[11]) {
-                    pic_set_pin(&pic, 19, pic_get_pin(&pic, 35));
-                    pic_set_pin(&pic, 35, pic_get_pin(&pic, 19));
+                    pic_set_pin(&pic, PIN_RD0, pic_get_pin(&pic, PIN_RB2));
+                    pic_set_pin(&pic, PIN_RB2, pic_get_pin(&pic, PIN_RD0));
                 }
 
                 if (dip[14]) {
@@ -1031,10 +1071,10 @@ void cboard_PICGenios::Run_CPU(void) {
                         rpmc++;
                         if (rpmc > rpmstp) {
                             rpmc = 0;
-                            pic_set_pin(&pic, 15, !pins[14].value);
+                            pic_set_pin(&pic, PIN_RC0, !pins[PIN_RC0 - 1].value);
                         }
                     } else
-                        pic_set_pin(&pic, 15, 0);
+                        pic_set_pin(&pic, PIN_RC0, 0);
                 }
             }
 
@@ -1052,9 +1092,9 @@ void cboard_PICGenios::Run_CPU(void) {
                     }
                     if (bounce.bounce[6]) {
                         if (bret == 1) {
-                            pic_set_pin(&pic, 7, !pins[7 - 1].value);
+                            pic_set_pin(&pic, PIN_RA5, !pins[7 - 1].value);
                         } else {
-                            pic_set_pin(&pic, 7, p_BT_[6]);
+                            pic_set_pin(&pic, PIN_RA5, p_BT_[6]);
                         }
                     }
                 }
@@ -1083,13 +1123,13 @@ void cboard_PICGenios::Run_CPU(void) {
             if (j >= JUMPSTEPS) {
                 for (pj = 18; pj < 30; pj++) {
                     pinv = pins[pj].value;
-                    if ((pinv) && (pins[3].value) && (dip[10]))
+                    if ((pinv) && (pins[PIN_RA2 - 1].value) && (dip[10]))
                         alm1[pj]++;
-                    if ((pinv) && (pins[4].value) && (dip[11]))
+                    if ((pinv) && (pins[PIN_RA3 - 1].value) && (dip[11]))
                         alm2[pj]++;
-                    if ((pinv) && (pins[5].value) && (dip[12]))
+                    if ((pinv) && (pins[PIN_RA4 - 1].value) && (dip[12]))
                         alm3[pj]++;
-                    if ((pinv) && (pins[6].value) && (dip[13]))
+                    if ((pinv) && (pins[PIN_RA5 - 1].value) && (dip[13]))
                         alm4[pj]++;
                 }
 
@@ -1100,9 +1140,9 @@ void cboard_PICGenios::Run_CPU(void) {
                 // p1 e
                 // p2
                 if (dip[18])
-                    pic_set_apin(&pic, 2, vp1in);
+                    pic_set_apin(&pic, PIN_RA0, vp1in);
                 if (dip[19])
-                    pic_set_apin(&pic, 3, vp2in);
+                    pic_set_apin(&pic, PIN_RA1, vp2in);
 
                 j = -1;
             }
@@ -1113,29 +1153,29 @@ void cboard_PICGenios::Run_CPU(void) {
                 // dipins[2].display
                 // code
 
-                if ((!pins[8].dir) && (!pins[8].value)) {
+                if ((!pins[PIN_RE1 - 1].dir) && (!pins[PIN_RE1 - 1].value)) {
                     if (!lcde) {
                         d = 0;
-                        if (pins[29].value)
+                        if (pins[PIN_RD7 - 1].value)
                             d |= 0x80;
-                        if (pins[28].value)
+                        if (pins[PIN_RD6 - 1].value)
                             d |= 0x40;
-                        if (pins[27].value)
+                        if (pins[PIN_RD5 - 1].value)
                             d |= 0x20;
-                        if (pins[26].value)
+                        if (pins[PIN_RD4 - 1].value)
                             d |= 0x10;
-                        if (pins[21].value)
+                        if (pins[PIN_RD3 - 1].value)
                             d |= 0x08;
-                        if (pins[20].value)
+                        if (pins[PIN_RD2 - 1].value)
                             d |= 0x04;
-                        if (pins[19].value)
+                        if (pins[PIN_RD1 - 1].value)
                             d |= 0x02;
-                        if (pins[18].value)
+                        if (pins[PIN_RD0 - 1].value)
                             d |= 0x01;
 
-                        if ((!pins[9].dir) && (!pins[9].value)) {
+                        if ((!pins[PIN_RE2 - 1].dir) && (!pins[PIN_RE2 - 1].value)) {
                             lcd_cmd(&lcd, d);
-                        } else if ((!pins[9].dir) && (pins[9].value)) {
+                        } else if ((!pins[PIN_RE2 - 1].dir) && (pins[PIN_RE2 - 1].value)) {
                             lcd_data(&lcd, d);
                         }
                         lcde = 1;
@@ -1149,22 +1189,22 @@ void cboard_PICGenios::Run_CPU(void) {
 
                 // i2c
                 // code
-                if (pins[22].dir) {
+                if (pins[PIN_RC4 - 1].dir) {
                     sda = 1;
                 } else {
-                    sda = pins[22].value;
+                    sda = pins[PIN_RC4 - 1].value;
                 }
 
-                if (pins[17].dir) {
+                if (pins[PIN_RC3 - 1].dir) {
                     sck = 1;
                     if (dip[5]) {
-                        pic_set_pin(&pic, 18, 1);
+                        pic_set_pin(&pic, PIN_RC3, 1);
                     }
                 } else {
-                    sck = pins[17].value;
+                    sck = pins[PIN_RC3 - 1].value;
                 }
                 if (dip[6]) {
-                    pic_set_pin(&pic, 23, mi2c_io(&mi2c, sck, sda) & rtc_ds1307_I2C_io(&rtc2, sck, sda));
+                    pic_set_pin(&pic, PIN_RC4, mi2c_io(&mi2c, sck, sda) & rtc_ds1307_I2C_io(&rtc2, sck, sda));
                 }
             }
             pic.ioupdated = 0;
@@ -1235,12 +1275,12 @@ void cboard_PICGenios::Run_CPU(void) {
     }
 
     // RELAY
-    if ((dip[3]) && (output_ids[O_RL1]->value != pic.pins[14].oavalue)) {
-        output_ids[O_RL1]->value = pic.pins[14].oavalue;
+    if ((dip[3]) && (output_ids[O_RL1]->value != pic.pins[PIN_RC0 - 1].oavalue)) {
+        output_ids[O_RL1]->value = pic.pins[PIN_RC0 - 1].oavalue;
         output_ids[O_RL1]->update = 1;
     }
-    if ((dip[4]) && (output_ids[O_RL2]->value != pic.pins[7].oavalue)) {
-        output_ids[O_RL2]->value = pic.pins[7].oavalue;
+    if ((dip[4]) && (output_ids[O_RL2]->value != pic.pins[PIN_RE0 - 1].oavalue)) {
+        output_ids[O_RL2]->value = pic.pins[PIN_RE0 - 1].oavalue;
         output_ids[O_RL2]->update = 1;
     }
 }
@@ -1260,16 +1300,16 @@ void cboard_PICGenios::Reset(void) {
     p_BT[5] = 1;
     p_BT[6] = 1;
 
-    pic_set_pin(&pic, 33, p_BT[0]);
-    pic_set_pin(&pic, 34, p_BT[1]);
-    pic_set_pin(&pic, 35, p_BT[2]);
-    pic_set_pin(&pic, 36, p_BT[3]);
-    pic_set_pin(&pic, 37, p_BT[4]);
-    pic_set_pin(&pic, 38, p_BT[5]);
-    pic_set_pin(&pic, 7, p_BT[6]);
+    pic_set_pin(&pic, PIN_RB0, p_BT[0]);
+    pic_set_pin(&pic, PIN_RB1, p_BT[1]);
+    pic_set_pin(&pic, PIN_RB2, p_BT[2]);
+    pic_set_pin(&pic, PIN_RB3, p_BT[3]);
+    pic_set_pin(&pic, PIN_RB4, p_BT[4]);
+    pic_set_pin(&pic, PIN_RB5, p_BT[5]);
+    pic_set_pin(&pic, PIN_RA5, p_BT[6]);
 
-    pic_set_pin_DOV(&pic, 39, 1);
-    pic_set_pin_DOV(&pic, 40, 1);
+    pic_set_pin_DOV(&pic, PIN_RB6, 1);
+    pic_set_pin_DOV(&pic, PIN_RB7, 1);
 
     p_KEY[0] = 0;
     p_KEY[1] = 0;
@@ -1283,14 +1323,14 @@ void cboard_PICGenios::Reset(void) {
     p_KEY[9] = 0;
     p_KEY[10] = 0;
     p_KEY[11] = 0;
-    pic_set_pin(&pic, 33, 0);
-    pic_set_pin(&pic, 34, 0);
-    pic_set_pin(&pic, 35, 0);
+    pic_set_pin(&pic, PIN_RB0, 0);
+    pic_set_pin(&pic, PIN_RB1, 0);
+    pic_set_pin(&pic, PIN_RB2, 0);
 
-    pic_set_pin(&pic, 20, 0);
-    pic_set_pin(&pic, 21, 0);
-    pic_set_pin(&pic, 22, 0);
-    pic_set_pin(&pic, 23, 0);
+    pic_set_pin(&pic, PIN_RD1, 0);
+    pic_set_pin(&pic, PIN_RD2, 0);
+    pic_set_pin(&pic, PIN_RD3, 0);
+    pic_set_pin(&pic, PIN_RC4, 0);
 
     if (pic.serial[0].serialfd != INVALID_SERIAL)
         PICSimLab.UpdateStatus(
@@ -1364,22 +1404,22 @@ void cboard_PICGenios::RegisterRemoteControl(void) {
     input_ids[I_POT2]->status = &pot[0];
     input_ids[I_POT2]->update = &output_ids[O_POT1]->update;
 
-    output_ids[O_RB0]->status = &pic.pins[32].oavalue;
-    output_ids[O_RB1]->status = &pic.pins[33].oavalue;
-    output_ids[O_RB2]->status = &pic.pins[34].oavalue;
-    output_ids[O_RB3]->status = &pic.pins[35].oavalue;
-    output_ids[O_RB4]->status = &pic.pins[36].oavalue;
-    output_ids[O_RB5]->status = &pic.pins[37].oavalue;
-    output_ids[O_RB6]->status = &pic.pins[38].oavalue;
-    output_ids[O_RB7]->status = &pic.pins[39].oavalue;
-    output_ids[O_RD0]->status = &pic.pins[18].oavalue;
-    output_ids[O_RD1]->status = &pic.pins[19].oavalue;
-    output_ids[O_RD2]->status = &pic.pins[20].oavalue;
-    output_ids[O_RD3]->status = &pic.pins[21].oavalue;
-    output_ids[O_RD4]->status = &pic.pins[26].oavalue;
-    output_ids[O_RD5]->status = &pic.pins[27].oavalue;
-    output_ids[O_RD6]->status = &pic.pins[28].oavalue;
-    output_ids[O_RD7]->status = &pic.pins[29].oavalue;
+    output_ids[O_RB0]->status = &pic.pins[PIN_RB0 - 1].oavalue;
+    output_ids[O_RB1]->status = &pic.pins[PIN_RB1 - 1].oavalue;
+    output_ids[O_RB2]->status = &pic.pins[PIN_RB2 - 1].oavalue;
+    output_ids[O_RB3]->status = &pic.pins[PIN_RB3 - 1].oavalue;
+    output_ids[O_RB4]->status = &pic.pins[PIN_RB4 - 1].oavalue;
+    output_ids[O_RB5]->status = &pic.pins[PIN_RB5 - 1].oavalue;
+    output_ids[O_RB6]->status = &pic.pins[PIN_RB6 - 1].oavalue;
+    output_ids[O_RB7]->status = &pic.pins[PIN_RB7 - 1].oavalue;
+    output_ids[O_RD0]->status = &pic.pins[PIN_RD0 - 1].oavalue;
+    output_ids[O_RD1]->status = &pic.pins[PIN_RD1 - 1].oavalue;
+    output_ids[O_RD2]->status = &pic.pins[PIN_RD2 - 1].oavalue;
+    output_ids[O_RD3]->status = &pic.pins[PIN_RD3 - 1].oavalue;
+    output_ids[O_RD4]->status = &pic.pins[PIN_RD4 - 1].oavalue;
+    output_ids[O_RD5]->status = &pic.pins[PIN_RD5 - 1].oavalue;
+    output_ids[O_RD6]->status = &pic.pins[PIN_RD6 - 1].oavalue;
+    output_ids[O_RD7]->status = &pic.pins[PIN_RD7 - 1].oavalue;
     output_ids[O_LCD]->status = &lcd;
     output_ids[O_A1]->status = &lm1[18];
     output_ids[O_B1]->status = &lm1[19];
@@ -1536,7 +1576,7 @@ void cboard_PICGenios::EvMouseButtonPress(uint button, uint x, uint y, uint stat
                     dip[16] ^= 0x01;
                     output_ids[O_D17]->update = 1;
                     if (!dip[16]) {
-                        pic_set_apin(&pic, 4, 0);
+                        pic_set_apin(&pic, PIN_RA2, 0);
                     }
                 } break;
                 case I_D18: {

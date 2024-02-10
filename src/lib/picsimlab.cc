@@ -27,7 +27,7 @@
 #include "oscilloscope.h"
 #include "spareparts.h"
 
-#include <lxrad.h>
+#include <unistd.h>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -47,7 +47,6 @@ CPICSimLab::CPICSimLab() {
     NSTEP = NSTEPKT;
     NSTEPJ = NSTEP / JUMPSTEPS;
     pboard = NULL;
-    Window = NULL;
     mcurun = 1;
     mcupwr = 1;
     mcurst = 0;
@@ -79,11 +78,6 @@ CPICSimLab::CPICSimLab() {
     SHARE = "";
     pzwtmpdir[0] = 0;
 
-#ifndef _NOTHREAD
-    cpu_mutex = NULL;
-    cpu_cond = NULL;
-#endif
-
     OnUpdateStatus = NULL;
     OnConfigure = NULL;
     OnClockSet = NULL;
@@ -98,8 +92,7 @@ CPICSimLab::CPICSimLab() {
     OnWindowCmd = NULL;
 }
 
-void CPICSimLab::Init(CWindow* w) {
-    Window = w;
+void CPICSimLab::Init(void) {
     // check for other instances
     StartRControl();
 }
@@ -159,7 +152,7 @@ void CPICSimLab::StartRControl(void) {
     snprintf(fname, 1023, "%s/picsimlab.ini", (const char*)HOME.c_str());
 
     prefs.clear();
-    if (lxFileExists(fname)) {
+    if (SystemCmd(PSC_FILEEXISTS, fname)) {
         if (LoadFromFile(prefs, fname)) {
             for (lc = 0; lc < (int)prefs.size(); lc++) {
                 strncpy(line, prefs.at(lc).c_str(), 1023);
@@ -324,9 +317,9 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     }
 
     // write options
-    strcpy(home, (const char*)lxGetUserDataDir("picsimlab").utf8_str());
+    SystemCmd(PSC_GETUSERDATADIR, "picsimlab", home);
 
-    lxCreateDir(home);
+    SystemCmd(PSC_CREATEDIR, home);
 
     if (Instance) {
         sprintf(fname, "%s/picsimlab_%i.ini", home, Instance);
@@ -402,20 +395,13 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 
     scale = 1.0;
 
-#ifndef _NOTHREAD
-    delete cpu_cond;
-    delete cpu_mutex;
-    cpu_cond = NULL;
-    cpu_mutex = NULL;
-#endif
-
     if (GetNeedReboot()) {
         char cmd[1024];
         printf("PICSimLab: Reboot !!!\n");
         rcontrol_server_end();
         pboard->EndServers();
         DeleteBoard();
-        strcpy(cmd, lxGetExecutablePath().c_str());
+        SystemCmd(PSC_GETEXECUTABLEPATH, NULL, cmd);
         if (newpath) {
             if (strstr(newpath, ".pzw")) {
                 strcat(cmd, " \"");
@@ -429,7 +415,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: Run cmd: %s\n", cmd);
 
         if (strlen(pzwtmpdir)) {
-            lxRemoveDir(pzwtmpdir);
+            SystemCmd(PSC_REMOVEDIR, pzwtmpdir);
         }
 
         printf("PICSimLab: End Board Simulation.\n");
@@ -450,19 +436,15 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: Finish Ok\n");
         fflush(stdout);
 #endif
-        lxExecute(cmd);
+        SystemCmd(PSC_EXECUTE, cmd);
         exit(0);
     } else {
         printf("PICSimLab: End Board Simulation.\n");
     }
 
-    if (Oscilloscope.GetWindow()) {
-        Oscilloscope.GetWindow()->Hide();
-    }
+    Oscilloscope.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHIDE, NULL);
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHIDE, NULL);
 
-    if (SpareParts.GetWindow()) {
-        SpareParts.GetWindow()->Hide();
-    }
     DeleteBoard();
 }
 
@@ -473,7 +455,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
     char home[1024];
     char fzip[1280];
 
-    if (!lxFileExists(lxString::FromUTF8(fnpzw))) {
+    if (!SystemCmd(PSC_FILEEXISTS, fnpzw.c_str())) {
         printf("PICSimLab: file %s not found!\n", (const char*)fnpzw.c_str());
         RegisterError("PICSimLab: file " + fnpzw + " not found!");
         return;
@@ -486,13 +468,15 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
     // write options
 
     if (strlen(pzwtmpdir)) {
-        lxRemoveDir(pzwtmpdir);
+        SystemCmd(PSC_REMOVEDIR, pzwtmpdir);
     }
 
-    snprintf(pzwtmpdir, 1023, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char btdir[256];
+    SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
+    snprintf(pzwtmpdir, 1023, "%s/picsimlab-XXXXXX", btdir);
     close(mkstemp(pzwtmpdir));
     unlink(pzwtmpdir);
-    lxCreateDir(pzwtmpdir);
+    SystemCmd(PSC_CREATEDIR, pzwtmpdir);
 
     memcpy(fzip, pzwtmpdir, 1023);
     strncat(fzip, "/", 1023);
@@ -500,7 +484,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
     memcpy(home, pzwtmpdir, 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
 
-    lxUnzipDir(lxString::FromUTF8(fnpzw), fzip);
+    SystemCmd(PSC_UNZIPDIR, fnpzw.c_str(), fzip);
 
     EndSimulation(0, fnpzw.c_str());
 
@@ -565,10 +549,10 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
 
                 snprintf(oldname, 1499, "%sparts_%02i.pcf", home, llab);
 
-                if (lxFileExists(oldname)) {
+                if (SystemCmd(PSC_FILEEXISTS, oldname)) {
                     char newname[1500];
                     snprintf(newname, 1499, "%sparts_%s.pcf", home, old_board_names[llab]);
-                    lxRenameFile(oldname, newname);
+                    SystemCmd(PSC_RENAMEFILE, oldname, newname);
                 }
             }
             if (!strcmp(name_, "debug")) {
@@ -590,7 +574,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 char newname[1500];
                 snprintf(oldname, 1499, "%smdump_00_%s.hex", home, value);
                 snprintf(newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[0], value);
-                lxRenameFile(oldname, newname);
+                SystemCmd(PSC_RENAMEFILE, oldname, newname);
             }
             if (!strcmp(name_, "p1_proc")) {
                 sprintf(name_, "%s_proc", old_board_names[1]);
@@ -599,7 +583,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 char newname[1500];
                 snprintf(oldname, 1499, "%smdump_01_%s.hex", home, value);
                 snprintf(newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[1], value);
-                lxRenameFile(oldname, newname);
+                SystemCmd(PSC_RENAMEFILE, oldname, newname);
             }
             if (!strcmp(name_, "p2_proc")) {
                 sprintf(name_, "%s_proc", old_board_names[2]);
@@ -608,7 +592,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 char newname[1500];
                 snprintf(oldname, 1499, "%smdump_02_%s.hex", home, value);
                 snprintf(newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[2], value);
-                lxRenameFile(oldname, newname);
+                SystemCmd(PSC_RENAMEFILE, oldname, newname);
             }
             if (!strcmp(name_, "p3_proc")) {
                 sprintf(name_, "%s_proc", old_board_names[3]);
@@ -617,7 +601,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 char newname[1500];
                 snprintf(oldname, 1499, "%smdump_03_%s.hex", home, value);
                 snprintf(newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[3], value);
-                lxRenameFile(oldname, newname);
+                SystemCmd(PSC_RENAMEFILE, oldname, newname);
             }
             if (!strcmp(name_, "p4_proc")) {
                 sprintf(name_, "%s_proc", old_board_names[4]);
@@ -626,7 +610,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 char newname[1500];
                 snprintf(oldname, 1499, "%smdump_04_%s.hex", home, value);
                 snprintf(newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[4], value);
-                lxRenameFile(oldname, newname);
+                SystemCmd(PSC_RENAMEFILE, oldname, newname);
             }
             if (!strcmp(name_, "p5_proc")) {
                 sprintf(name_, "%s_proc", old_board_names[5]);
@@ -635,7 +619,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 char newname[1500];
                 snprintf(oldname, 1499, "%smdump_05_%s.hex", home, value);
                 snprintf(newname, 1499, "%smdump_%s_%s.hex", home, old_board_names[5], value);
-                lxRenameFile(oldname, newname);
+                SystemCmd(PSC_RENAMEFILE, oldname, newname);
             }
 
             char* ptr;
@@ -674,10 +658,10 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
 #else  // CONVERTER_MODE
     if (show_readme) {
         snprintf(fzip, 1279, "%s/Readme.html", home);
-        if (lxFileExists(fzip)) {
+        if (SystemCmd(PSC_FILEEXISTS, fzip)) {
 #ifndef __EMSCRIPTEN__
 #ifdef EXT_BROWSER
-            lxLaunchDefaultBrowser("file://" + std::string(fzip));
+            SystemCmd(PSC_LAUNCHDEFAULTBROWSER, ("file://" + std::string(fzip)).c_str());
 #else   // EXT_BROWSER
             Window2.html1.SetLoadFile(fzip);
             Window2.Show();
@@ -685,10 +669,10 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
 #endif  //__EMSCRIPTEN__
         } else {
             snprintf(fzip, 1279, "%s/Readme.txt", home);
-            if (lxFileExists(fzip)) {
+            if (SystemCmd(PSC_FILEEXISTS, fzip)) {
 #ifndef __EMSCRIPTEN__
 #ifdef EXT_BROWSER
-                lxLaunchDefaultBrowser("file://" + std::string(fzip));
+                SystemCmd(PSC_LAUNCHDEFAULTBROWSER, ("file://" + std::string(fzip)).c_str());
 #else   // EXT_BROWSER
                 Window2.html1.SetLoadFile(fzip);
                 Window2.Show();
@@ -706,8 +690,10 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     char fname[1280];
 
 #if !defined(__EMSCRIPTEN__) && !defined(CONVERTER_MODE)
-    if (lxFileExists(lxString::FromUTF8(fnpzw))) {
-        if (!Dialog_sz(lxString("Overwriting file: ") + basename(lxString::FromUTF8(fnpzw)) + "?", 400, 200))
+    if (SystemCmd(PSC_FILEEXISTS, fnpzw.c_str())) {
+        char bname[512];
+        SystemCmd(PSC_BASENAME, fnpzw.c_str(), bname);
+        if (!SystemCmd(PSC_SHOWDIALOG, (std::string("Overwriting file: ") + bname + "?").c_str()))
             return;
     }
 #endif
@@ -716,14 +702,16 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
 
     // write options
 
-    strncpy(home, (const char*)lxGetUserDataDir("picsimlab").utf8_str(), 1023);
+    SystemCmd(PSC_GETUSERDATADIR, "picsimlab", home);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsSaveToFile(fname);
 
-    snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char btdir[256];
+    SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
+    snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", btdir);
     close(mkstemp(tmpdir));
     unlink(tmpdir);
-    lxCreateDir(tmpdir);
+    SystemCmd(PSC_CREATEDIR, tmpdir);
 
     memcpy(home, tmpdir, 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
@@ -736,7 +724,7 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     snprintf(fname, 1279, "rm -rf %s/*.hex", home);
     system(fname);
 #else
-    lxCreateDir(home);
+    SystemCmd(PSC_CREATEDIR, home);
 #endif
 
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
@@ -778,11 +766,11 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     SpareParts.SavePinAlias(fname);
 
-    lxZipDir(home, lxString::FromUTF8(fnpzw));
+    SystemCmd(PSC_ZIPDIR, home, (void*)fnpzw.c_str());
 
-    lxRemoveDir(tmpdir);
+    SystemCmd(PSC_REMOVEDIR, tmpdir);
 
-    strncpy(home, (const char*)lxGetUserDataDir("picsimlab").utf8_str(), 1023);
+    SystemCmd(PSC_GETUSERDATADIR, "picsimlab", home);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsClear();
     PrefsLoadFromFile(fname);
@@ -845,13 +833,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     std::string status;
 
-#ifndef _NOTHREAD
-    if (cpu_mutex == NULL) {
-        cpu_mutex = new lxMutex();
-        cpu_cond = new lxCondition(*cpu_mutex);
-    }
-#endif
-
     if (Instance && !HOME.compare(home)) {
         snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, Instance);
     } else {
@@ -866,7 +847,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     DeleteBoard();
 
     PrefsClear();
-    if (lxFileExists(fname)) {
+    if (SystemCmd(PSC_FILEEXISTS, fname)) {
         printf("PICSimLab: Load Config from file \"%s\"\n", fname);
         if (PrefsLoadFromFile(fname)) {
             for (lc = 0; lc < (int)PrefsGetLinesCount(); lc++) {
@@ -1008,7 +989,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     pboard->MSetSerial(SERIALDEVICE);
 
     if (lfile) {
-        if (lxFileExists(lfile)) {
+        if (SystemCmd(PSC_FILEEXISTS, lfile)) {
             strcpy(fname, lfile);
         } else {
             printf("PICSimLab: File Not found \"%s\" loading default.\n", lfile);
@@ -1040,7 +1021,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     fname_[strlen(fname_) - 3] = 0;
     strncat(fname_, "bin", 2047);
 
-    if (!((lxFileExists(fname)) || (lxFileExists(fname_)))) {
+    if (!((SystemCmd(PSC_FILEEXISTS, fname)) || (SystemCmd(PSC_FILEEXISTS, fname_)))) {
         printf("PICSimLab: File not found! Creating new empty file. \n");
         if (!pboard->GetDefaultProcessor().compare(pboard->GetProcessorName())) {
             load_demo = 1;
@@ -1075,7 +1056,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     UpdateStatus(PS_RUN, "Running...");
 
-    Application->ProcessEvents();
+    WindowCmd(PW_MAIN, NULL, PWA_APPPROCESSEVENTS, NULL);
 
     Oscilloscope.SetBoard(pboard);
     Oscilloscope.SetBaseTimer();
@@ -1122,7 +1103,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         std::string fdemo =
             PICSimLab.GetSharePath() + "boards/" + std::string(boards_list[PICSimLab.GetLab()].name) + "/demo.pzw";
 
-        if (lxFileExists(fdemo)) {
+        if (SystemCmd(PSC_FILEEXISTS, fdemo.c_str())) {
             printf("PICSimLab: Loading board demonstration code.\n");
             PICSimLab.LoadWorkspace(fdemo, 0);
             PICSimLab.SetWorkspaceFileName("");
@@ -1155,7 +1136,7 @@ int CPICSimLab::LoadHexFile(std::string fname) {
         tgo = 1;
     while (status.status & 0x0401) {
         msleep(1);
-        Application->ProcessEvents();
+        WindowCmd(PW_MAIN, NULL, PWA_APPPROCESSEVENTS, NULL);
     }
 
     if (GetNeedReboot()) {
@@ -1225,6 +1206,13 @@ int CPICSimLab::WindowCmd(const int id, const char* ControlName, const PICSimLab
                           void* ReturnBuff) {
     if (PICSimLab.OnWindowCmd) {
         return (*PICSimLab.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+    }
+    return -1;
+}
+
+int CPICSimLab::SystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff) {
+    if (PICSimLab.OnSystemCmd) {
+        return (*PICSimLab.OnSystemCmd)(cmd, Arg, ReturnBuff);
     }
     return -1;
 }

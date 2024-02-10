@@ -28,6 +28,7 @@
 
 #include <vector>
 #include "board.h"
+#include "types.h"
 
 #define WMAX 350
 #define HMAX 250
@@ -51,7 +52,7 @@ class COscilloscope {
 public:
     COscilloscope();
 
-    void Init(CWindow* win);
+    void Init(void);
 
     /**
      * @brief  Sample and update oscilloscope data aquisition
@@ -100,11 +101,12 @@ public:
     void SetDT(double dt) { Dt = dt; };
     double GetDT(void) { return Dt; };
 
+    void Setxz(double xz_) { xz = xz_; };
+    double Getxz(void) { return xz; };
+
     void Reset(void);
 
     void SetBaseTimer(void);
-
-    CWindow* GetWindow(void) { return Window; };
 
     void WritePreferences(void);
     void ReadPreferences(char* name, char* value);
@@ -112,8 +114,13 @@ public:
     std::vector<std::string> WritePreferencesList(void);
     void ReadPreferencesList(std::vector<std::string>& pl);
 
+    static int WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                         void* ReturnBuff = NULL);
+
+    int (*OnWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                       void* ReturnBuff);
+
 private:
-    CWindow* Window;
     board* pboard;
     double Dt;  // Delta T
     double Rt;  // Relative delta T
@@ -134,9 +141,7 @@ private:
     int update;
     int measures[5];
     float vmax;
-
-    CToggleButton* tbstop;
-    CToggleButton* tbsingle;
+    double xz;
 };
 
 extern COscilloscope Oscilloscope;

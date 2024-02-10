@@ -24,6 +24,7 @@
    ######################################################################## */
 
 #include "virtual_VCD_Play.h"
+#include <unistd.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -372,7 +373,7 @@ void cpart_VCD_Play::OnMouseButtonPress(uint inputId, uint button, uint x, uint 
                 },
                 f_vcd_name);
 #else
-            lxLaunchDefaultApplication(f_vcd_name);
+            PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, f_vcd_name);
 #endif
             break;
     }

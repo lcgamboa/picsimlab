@@ -23,12 +23,13 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "other_MI2C_24CXXX.h"
+#include <lxrad.h>
+
+#include <unistd.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-
-#include <lxrad.h>
+#include "other_MI2C_24CXXX.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -72,7 +73,9 @@ cpart_MI2C_24CXXX::cpart_MI2C_24CXXX(const unsigned x, const unsigned y, const c
     f_mi2c_name[1] = 0;
     f_mi2c = NULL;
 
-    snprintf(f_mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char tname[128];
+    PICSimLab.SystemCmd(PSC_GETTEMPDIR, NULL, tname);
+    snprintf(f_mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", tname);
     close(mkstemp(f_mi2c_tmp_name));
     unlink(f_mi2c_tmp_name);
 
@@ -325,7 +328,7 @@ void cpart_MI2C_24CXXX::OnMouseButtonPress(uint inputId, uint button, uint x, ui
                     },
                     f_mi2c_tmp_name);
 #else
-                lxLaunchDefaultApplication(f_mi2c_tmp_name);
+                PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, f_mi2c_tmp_name);
 #endif
             } else {
                 printf("Error saving to file: %s \n", f_mi2c_tmp_name);

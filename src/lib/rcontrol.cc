@@ -61,8 +61,6 @@
 #include "rcontrol.h"
 #include "spareparts.h"
 
-#include <lxrad.h>
-
 static int sockfd = -1;
 static int listenfd = -1;
 static int server_started = 0;
@@ -1074,11 +1072,10 @@ int rcontrol_loop(void) {
                             ret = sendtext("Ok\r\n>");
                         } else {
                             if (PICSimLab.GetSimulationRun()) {
+                                int time;
+                                PICSimLab.WindowCmd(PW_MAIN, "timer1", PWA_TIMERGETTIME, NULL, &time);
                                 ret = sendtext(
-                                    FloatStrFormat(
-                                        "Simulation running %5.2fx\r\nOk\r\n>",
-                                        100.0 / ((CTimer*)PICSimLab.GetWindow()->GetChildByName("timer1"))->GetTime())
-                                        .c_str());
+                                    FloatStrFormat("Simulation running %5.2fx\r\nOk\r\n>", 100.0 / time).c_str());
                             } else {
                                 ret = sendtext("Simulation stopped\r\nOk\r\n>");
                             }

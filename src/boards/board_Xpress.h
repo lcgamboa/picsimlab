@@ -26,8 +26,6 @@
 #ifndef BOARD_Xpress_H
 #define BOARD_Xpress_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_picsim.h"
 
 #define BOARD_Xpress_Name "Xpress"

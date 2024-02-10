@@ -27,8 +27,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#include <lxrad.h>
-
 part::part(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int _id,
            const int fsize) {
     always_update = 0;
@@ -69,8 +67,8 @@ void part::Init(void) {
 void part::ReadMaps(void) {
     inputc = 0;
     outputc = 0;
-    ReadInputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetMapFile()).c_str());
-    ReadOutputMap((const char*)lxGetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetMapFile()).c_str());
+    ReadInputMap((const char*)GetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetMapFile()).c_str());
+    ReadOutputMap((const char*)GetLocalFile(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetMapFile()).c_str());
 
     for (int i = 0; i < inputc; i++) {
         input_ids[GetInputId(input[i].name)] = &input[i];
@@ -314,27 +312,31 @@ int part::PointInside(int x, int y, input_t input) {
 }
 
 void part::LoadPartImage(void) {
-    SpareParts.SetPartOnDraw(id);
-    std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
+    int created = 0;
+    SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+    if (created == 1) {
+        SpareParts.SetPartOnDraw(id);
+        std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
-    int bmp = SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
+        int bmp = SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
 
-    if (bmp >= 0) {
-        BitmapId = bmp;
-        SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
-    } else if ((bmp = SpareParts.CanvasCmd(
-                    {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Common/notfound.svg").c_str(), Scale,
-                                              0, Orientation}})) >= 0) {
-        BitmapId = bmp;
-        SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+        if (bmp >= 0) {
+            BitmapId = bmp;
+            SpareParts.CanvasCmd({CC_DESTROY});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+        } else if ((bmp = SpareParts.CanvasCmd(
+                        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/Common/notfound.svg").c_str(),
+                                                  Scale, 0, Orientation}})) >= 0) {
+            BitmapId = bmp;
+            SpareParts.CanvasCmd({CC_DESTROY});
+            SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
 
-        printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
-        PICSimLab.RegisterError("Error loading image:\n " + iname);
-    } else {
-        printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
-        exit(-1);
+            printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
+            PICSimLab.RegisterError("Error loading image:\n " + iname);
+        } else {
+            printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
+            exit(-1);
+        }
     }
 }
 
@@ -348,7 +350,7 @@ void part::SetOrientation(int orientation) {
 
     Orientation = orientation;
 
-    if (!BitmapId)
+    if (BitmapId < 0)
         return;
 
     SpareParts.SetPartOnDraw(id);
@@ -370,7 +372,7 @@ void part::SetScale(double scale) {
     if (Scale == scale)
         return;
 
-    if (!BitmapId)
+    if (BitmapId < 0)
         return;
 
     Scale = scale;
@@ -543,7 +545,7 @@ void part::Draw(void) {
             if (!Update) {
                 SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
                 SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{Fsize}});
-                SpareParts.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+                SpareParts.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             Update++;  // set to update buffer
 

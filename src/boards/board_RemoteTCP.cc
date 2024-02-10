@@ -383,7 +383,7 @@ void cboard_RemoteTCP::Draw(void) {
 
             if (!update) {
                 PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
@@ -417,7 +417,7 @@ void cboard_RemoteTCP::Draw(void) {
                     rec.width = w / Scale;
                     rec.height = h / Scale;
                     PICSimLab.CanvasCmd(
-                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
+                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
                     PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
@@ -631,7 +631,8 @@ void cboard_RemoteTCP::Run_CPU_ns(uint64_t time) {
     }
 }
 
-void cboard_RemoteTCP::EvThreadRun(CThread* thread) {
+void cboard_RemoteTCP::EvThreadRun(void) {
+    int tdestroy = 0;
     do {
         cmd_header_t cmd_header;
 
@@ -1005,7 +1006,8 @@ void cboard_RemoteTCP::EvThreadRun(CThread* thread) {
                 }
                 break;
         }
-    } while (!thread->TestDestroy());
+        PICSimLab.WindowCmd(PW_MAIN, "thread3", PWA_THREADTESTDESTROY, NULL, &tdestroy);
+    } while (!tdestroy);
 }
 
 // Register the board in PICSimLab

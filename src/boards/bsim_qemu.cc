@@ -342,7 +342,7 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
     serialfd[3] = INVALID_SERIAL;
 
 #ifndef __EMSCRIPTEN__
-    if ((!qemu_started) && (PICSimLab.GetWindow())) {
+    if (!qemu_started) {
         StartThread();
         while (!qemu_started) {
 #ifndef _WIN_
@@ -379,7 +379,7 @@ static void user_timeout_cb(void* opaque) {
     board->timer.last = now;
 }
 
-void bsim_qemu::EvThreadRun(CThread* thread) {
+void bsim_qemu::EvThreadRun(void) {
     mtx_qinit->Lock();
 
     // test icount limits

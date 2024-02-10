@@ -33,15 +33,6 @@
 #include <string.h>
 #include <string>
 
-class CControl;
-class CWindow;
-class CThread;
-class CToggleButton;
-class lxMutex;
-class lxCondition;
-
-// #include <lxrad.h>  //FIXME remove lxrad
-
 #define INCOMPLETE                                                      \
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \
     exit(-1);
@@ -182,7 +173,7 @@ public:
     /**
      * @brief  Event on the board
      */
-    virtual void EvThreadRun(CThread* thread){};
+    virtual void EvThreadRun(void){};
 
     /**
      * @brief  Called ever 1s to refresh status

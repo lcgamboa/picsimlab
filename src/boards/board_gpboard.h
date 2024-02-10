@@ -26,8 +26,6 @@
 #ifndef BOARD_gpboard_H
 #define BOARD_gpboard_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_gpsim.h"
 
 #define BOARD_gpboard_Name "gpboard"

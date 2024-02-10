@@ -29,6 +29,7 @@
 #include "lib/oscilloscope.h"
 #include "lib/picsimlab.h"
 #include "lib/spareparts.h"
+#include "picsimlab1.h"
 
 #include "picsimlab4_d.cc"
 
@@ -37,6 +38,8 @@ CPWindow4 Window4;
 // Implementation
 
 void CPWindow4::DrawScreen(void) {
+    double xz = Oscilloscope.Getxz();
+
     draw1.Canvas.Init();
     draw1.Canvas.SetFontSize(9);
     draw1.Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
@@ -290,9 +293,9 @@ void CPWindow4::spind5_EvOnChangeSpinDouble(CControl* control) {
     Oscilloscope.SetRT((spind5.GetValue() * 1e-3 * 10) / WMAX);
 
     if ((Oscilloscope.GetRT() / Oscilloscope.GetDT()) < 1.0) {
-        xz = Oscilloscope.GetDT() / Oscilloscope.GetRT();
+        Oscilloscope.Setxz(Oscilloscope.GetDT() / Oscilloscope.GetRT());
     } else
-        xz = 1.0;
+        Oscilloscope.Setxz(1.0);
 
     spind6.SetMin(-5 * spind5.GetValue());
     spind6.SetMax(5 * spind5.GetValue());
@@ -354,6 +357,7 @@ void CPWindow4::_EvOnCreate(CControl* control) {
                   ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                   : ("PICSimLab - ")) +
              "Oscilloscope");
+    Oscilloscope.OnWindowCmd = &CPWindow4::OnWindowCmd;
 }
 
 void CPWindow4::_EvOnShow(CControl* control) {
@@ -477,4 +481,25 @@ void CPWindow4::button8_EvMouseButtonPress(CControl* control, const uint button,
 void CPWindow4::button9_EvMouseButtonPress(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
     Oscilloscope.NextMeasure(4);
+}
+
+int CPWindow4::OnWindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
+                           void* ReturnBuff) {
+    CControl* ctrl = NULL;
+
+    if (id == 0) {
+        if (ControlName) {
+            ctrl = Window4.GetChildByName(ControlName);
+        } else {
+            ctrl = &Window4;
+        }
+
+        if (ctrl == NULL) {
+            return -1;
+        }
+    } else {
+        return -1;
+    }
+
+    return Window1.WinCmd(ctrl, action, Value, ReturnBuff);
 }

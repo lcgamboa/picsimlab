@@ -26,6 +26,7 @@
 
 // include files
 #include "board_Curiosity_HPC.h"
+#include <math.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/serial_port.h"
@@ -445,7 +446,7 @@ void cboard_Curiosity_HPC::Draw(void) {
     int i;
 
     PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
-    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
 
     // board_8 draw
     for (i = 0; i < outputc; i++)  // run over all outputs
@@ -511,7 +512,7 @@ void cboard_Curiosity_HPC::Draw(void) {
                 rec.width = output[i].x2 - output[i].x1;
                 rec.height = output[i].y2 - output[i].y1;
                 PICSimLab.CanvasCmd(
-                    {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
+                    {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
             } else if ((output[i].id == O_S1) || (output[i].id == O_S2)) {
                 PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 16}});
                 if (p_BT[output[i].id - O_S1]) {

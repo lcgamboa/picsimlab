@@ -24,11 +24,10 @@
    ######################################################################## */
 
 #include "virtual_VCD_Dump.h"
+#include <unistd.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-
-#include <lxrad.h>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -69,7 +68,9 @@ cpart_VCD_Dump::cpart_VCD_Dump(const unsigned x, const unsigned y, const char* n
     old_value_pins[6] = 2;
     old_value_pins[7] = 2;
 
-    snprintf(f_vcd_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char tname[128];
+    PICSimLab.SystemCmd(PSC_GETTEMPDIR, NULL, tname);
+    snprintf(f_vcd_name, 200, "%s/picsimlab-XXXXXX", tname);
     close(mkstemp(f_vcd_name));
     unlink(f_vcd_name);
 
@@ -385,7 +386,7 @@ void cpart_VCD_Dump::OnMouseButtonPress(uint inputId, uint button, uint x, uint 
                 },
                 f_vcd_name);
 #else
-            lxLaunchDefaultApplication(f_vcd_name);
+            PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, f_vcd_name);
 #endif
             break;
     }

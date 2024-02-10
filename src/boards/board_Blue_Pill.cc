@@ -29,8 +29,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#include <lxrad.h>
-
 /* ids of inputs of input map*/
 enum {
     I_ICSP,  // ICSP connector
@@ -419,7 +417,7 @@ void cboard_Blue_Pill::Draw(void) {
     int i;
 
     PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
-    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs

@@ -25,15 +25,15 @@
 
 // Spare parts
 
-#include "lib/oscilloscope.h"
-#include "lib/picsimlab.h"
-#include "lib/spareparts.h"
-
+#include "picsimlab5.h"
 #include "picsimlab1.h"
 #include "picsimlab2.h"
 #include "picsimlab4.h"
-#include "picsimlab5.h"
 #include "picsimlab5_d.cc"
+
+#include "lib/oscilloscope.h"
+#include "lib/picsimlab.h"
+#include "lib/spareparts.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -1035,7 +1035,7 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
         } break;
         case CC_LOADIMAGE: {
             lxImage image(&Window5);
-            if (image.LoadFile(lxGetLocalFile(cmd.LoadImage.fname), cmd.LoadImage.orientation, cmd.LoadImage.scale,
+            if (image.LoadFile(GetLocalFile(cmd.LoadImage.fname), cmd.LoadImage.orientation, cmd.LoadImage.scale,
                                cmd.LoadImage.scale, cmd.LoadImage.usealpha)) {
                 // find enpty bitmap
                 int bid = -1;
@@ -1095,7 +1095,7 @@ int CPWindow5::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         if (ctrl == NULL) {
             return -1;
         }
-    } else {  // find empty window
+    } else if (action == PWA_WINDOWCREATE) {  // find empty window
         for (int i = 0; i < MAX_PARTS; i++) {
             if (Window5.Windows[i] == NULL) {
                 wid = i;
@@ -1106,19 +1106,11 @@ int CPWindow5::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
         if (wid == -1) {
             return -1;
         }
+    } else {
+        return -1;
     }
 
     switch (action) {
-        case PWA_COMBOSETITEMS:
-            ((CCombo*)ctrl)->SetItems(Value);
-            break;
-        case PWA_COMBOSETTEXT:
-            ((CCombo*)ctrl)->SetText(Value);
-            break;
-        case PWA_COMBOGETTEXT:
-            strcpy((char*)ReturnBuff, ((CCombo*)ctrl)->GetText().c_str());
-            return strlen((char*)ReturnBuff);
-            break;
         case PWA_COMBOPROPEV:
             if (!strcmp(Value, "1")) {
                 ((CCombo*)ctrl)->EvOnComboChange = EVONCOMBOCHANGE & CPWindow5::PropComboChange;
@@ -1134,31 +1126,6 @@ int CPWindow5::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             }
             break;
 
-        case PWA_SPINDSETMAX:
-            ((CSpind*)ctrl)->SetMax(std::stof(Value));
-            break;
-        case PWA_SPINDSETMIN:
-            ((CSpind*)ctrl)->SetMin(std::stof(Value));
-            break;
-        case PWA_SPINDSETVALUE:
-            ((CSpind*)ctrl)->SetValue(std::stof(Value));
-            break;
-        case PWA_SPINDGETVALUE:
-            *((float*)ReturnBuff) = ((CSpind*)ctrl)->GetValue();
-            break;
-
-        case PWA_SPINSETMAX:
-            ((CSpin*)ctrl)->SetMax(std::stoi(Value));
-            break;
-        case PWA_SPINSETMIN:
-            ((CSpin*)ctrl)->SetMin(std::stoi(Value));
-            break;
-        case PWA_SPINSETVALUE:
-            ((CSpin*)ctrl)->SetValue(std::stoi(Value));
-            break;
-        case PWA_SPINGETVALUE:
-            *((int*)ReturnBuff) = ((CSpin*)ctrl)->GetValue();
-            break;
         case PWA_SPINPROPEV:
             if (!strcmp(Value, "1")) {
                 ((CSpin*)ctrl)->EvOnChangeSpin = EVONCHANGESPIN & CPWindow5::PropSpinChange;
@@ -1167,94 +1134,12 @@ int CPWindow5::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             }
             break;
 
-        case PWA_TEXTCLEAR:
-            ((CText*)ctrl)->Clear();
-            break;
-        case PWA_TEXTADDLINE:
-            ((CText*)ctrl)->AddLine(lxString::FromUTF8(Value));
-            break;
-        case PWA_TEXTGETLINE:
-            strcpy((char*)ReturnBuff, ((CText*)ctrl)->GetLine(std::stoi(Value)).utf8_str());
-            return strlen((char*)ReturnBuff);
-            break;
-        case PWA_TEXTGETLINECOUNT:
-            *((int*)ReturnBuff) = ((CText*)ctrl)->GetCountLines();
-            break;
-        case PWA_TEXTAPPEND:
-            ((CText*)ctrl)->Append(lxString::FromUTF8(Value));
-            if (((CText*)ctrl)->GetLine(((CText*)ctrl)->GetCountLines() - 1).length() > 1024) {
-                ((CText*)ctrl)->Append("\n");  // TODO break line with exact size
-            }
-
-            while (((CText*)ctrl)->GetCountLines() > 1000) {
-                ((CText*)ctrl)->SetCursorPos(0);
-                ((CText*)ctrl)->DelLine();
-            }
-            break;
-        case PWA_TEXTTELETYPE:
-            ((CText*)ctrl)->SetFontFamily(lxFONTFAMILY_TELETYPE);
-            break;
-
-        case PWA_CHECKBOXSETCHECK:
-            ((CCheckBox*)ctrl)->SetCheck(std::stoi(Value));
-            break;
-        case PWA_CHECKBOXGETCHECK:
-            *((int*)ReturnBuff) = ((CCheckBox*)ctrl)->GetCheck();
-            break;
-
-        case PWA_EDITSETTEXT:
-            ((CEdit*)ctrl)->SetText(Value);
-            break;
-        case PWA_EDITGETTEXT:
-            strcpy((char*)ReturnBuff, ((CEdit*)ctrl)->GetText().utf8_str());
-            return strlen((char*)ReturnBuff);
-            break;
         case PWA_EDITPARTEV:
             if (!strcmp(Value, "1")) {
                 ((CEdit*)ctrl)->EvKeyboardPress = EVKEYBOARDPRESS & CPWindow5::PartKeyEvent;
             } else {
                 ((CEdit*)ctrl)->EvKeyboardPress = NULL;
             }
-            break;
-
-        case PWA_LABELSETTEXT:
-            ((CLabel*)ctrl)->SetText(Value);
-            break;
-        case PWA_SETENABLE:
-            ctrl->SetEnable(std::stoi(Value));
-            break;
-        case PWA_SETWIDTH:
-            ctrl->SetWidth(std::stoi(Value));
-            break;
-        case PWA_SETHEIGHT:
-            ctrl->SetHeight(std::stoi(Value));
-            break;
-        case PWA_SETVISIBLE:
-            ctrl->SetVisible(std::stoi(Value));
-            break;
-        case PWA_SETX:
-            ctrl->SetX(std::stoi(Value));
-            break;
-        case PWA_SETY:
-            ctrl->SetY(std::stoi(Value));
-            break;
-        case PWA_SETTAG:
-            ctrl->SetTag(std::stoi(Value));
-            break;
-        case PWA_GETWIDTH:
-            *((int*)ReturnBuff) = ctrl->GetWidth();
-            break;
-        case PWA_GETHEIGHT:
-            *((int*)ReturnBuff) = ctrl->GetHeight();
-            break;
-        case PWA_GETX:
-            *((int*)ReturnBuff) = ctrl->GetX();
-            break;
-        case PWA_GETY:
-            *((int*)ReturnBuff) = ctrl->GetY();
-            break;
-        case PWA_GETTAG:
-            *((int*)ReturnBuff) = ctrl->GetTag();
             break;
 
         case PWA_WINDOWCREATE: {
@@ -1266,36 +1151,12 @@ int CPWindow5::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             Application->ACreateWindow(((CPWindow*)ctrl));
             return wid;
         } break;
-        case PWA_WINDOWDESTROY:
-            ((CPWindow*)ctrl)->Hide();
-            ((CPWindow*)ctrl)->DestroyChilds();
-            ((CPWindow*)ctrl)->SetCanDestroy(true);
-            ((CPWindow*)ctrl)->WDestroy();
-            ctrl = NULL;
-            break;
-        case PWA_WINDOWLOADXML:
-            ((CPWindow*)ctrl)->DestroyChilds();
-            return ((CPWindow*)ctrl)->LoadXMLContextAndCreateChilds(Value);
-            break;
-        case PWA_WINDOWSHOW:
-            ((CPWindow*)ctrl)->Show();
-            break;
-        case PWA_WINDOWHIDE:
-            ((CPWindow*)ctrl)->Hide();
-            break;
         case PWA_WINDOWPARTEV:
             if (!strcmp(Value, "1")) {
                 ((CPWindow*)ctrl)->EvOnShow = EVONCOMBOCHANGE & CPWindow5::PartEvent;
             } else {
                 ((CPWindow*)ctrl)->EvOnShow = NULL;
             }
-            break;
-        case PWA_WINDOWSHOWEX:
-            ((CPWindow*)ctrl)->Draw();
-            ((CPWindow*)ctrl)->ShowExclusive();
-            break;
-        case PWA_WINDOWHIDEEX:
-            ((CPWindow*)ctrl)->HideExclusive();
             break;
 
         case PWA_BUTTONPARTEV:
@@ -1305,36 +1166,9 @@ int CPWindow5::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
                 ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
             }
             break;
-        case PWA_BUTTONBOARDEV:
-            if (!strcmp(Value, "1")) {
-                //((CButton*)ctrl)->EvMouseButtonRelease = EVMOUSEBUTTONRELEASE & CPWindow1::board_ButtonEvent;
-            } else {
-                ((CButton*)ctrl)->EvMouseButtonRelease = NULL;
-            }
-            break;
-
-        case PWA_FILEDIALOGGETFNAME:
-            strcpy((char*)ReturnBuff, ((CFileDialog*)ctrl)->GetFileName().utf8_str());
-            return strlen((char*)ReturnBuff);
-            break;
-        case PWA_FILEDIALOGSETFNAME:
-            ((CFileDialog*)ctrl)->SetFileName(lxString::FromUTF8(Value));
-            break;
-        case PWA_FILEDIALOGSETFILTER:
-            ((CFileDialog*)ctrl)->SetFilter(Value);
-            break;
-        case PWA_FILEDIALOGSETTYPE:
-            ((CFileDialog*)ctrl)->SetType(std::stoi(Value));
-            break;
-        case PWA_FILEDIALOGRUN:
-            ((CFileDialog*)ctrl)->Run();
-            break;
-        case PWA_FILEDIALOGGETTYPE:
-            *((int*)ReturnBuff) = ((CFileDialog*)ctrl)->GetType();
-            break;
 
         default:
-            return -1;
+            return Window1.WinCmd(ctrl, action, Value, ReturnBuff);
             break;
     }
 

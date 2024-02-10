@@ -523,7 +523,7 @@ void cboard_DevKitC::Draw(void) {
     int i;
 
     PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
-    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
@@ -801,10 +801,12 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, uint button, uin
                 PICSimLab.WindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
                 PICSimLab.WindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
 
-                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETX,
-                                    std::to_string(PICSimLab.GetWindow()->GetX() + 50).c_str());
-                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETY,
-                                    std::to_string(PICSimLab.GetWindow()->GetY() + 50).c_str());
+                int x, y;
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
+
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETX, std::to_string(x + 50).c_str());
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETY, std::to_string(y + 50).c_str());
 
                 PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
             }

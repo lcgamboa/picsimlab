@@ -216,7 +216,7 @@ void cboard_gpboard::Draw(void) {
     unsigned int w, h;
 
     PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});  // initialize draw context
-    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{lxFONTWEIGHT_BOLD}});
+    PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
 
     PICSimLab.CanvasCmd(
         {CC_SETFONTSIZE, .SetFontSize{((MGetPinCount() >= 44) ? 5 : ((MGetPinCount() > 14) ? 12 : 4))}});
@@ -252,7 +252,7 @@ void cboard_gpboard::Draw(void) {
                     rec.width = w / Scale;
                     rec.height = h / Scale;
                     PICSimLab.CanvasCmd(
-                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
+                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
                     PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});

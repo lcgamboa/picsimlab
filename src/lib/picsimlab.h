@@ -42,9 +42,7 @@ class CPICSimLab {
 public:
     CPICSimLab();
 
-    void Init(CWindow* w);
-
-    CWindow* GetWindow(void) { return Window; };
+    void Init(void);
 
     /**
      * @brief  Get the file path of resources
@@ -258,10 +256,8 @@ public:
     static int WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                          void* ReturnBuff = NULL);
 
-#ifndef _NOTHREAD
-    lxCondition* cpu_cond;
-    lxMutex* cpu_mutex;
-#endif
+    static int SystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff = NULL);
+
     union {
         char st[2];
         unsigned short int status;
@@ -283,13 +279,14 @@ public:
     void (*OnEndSimulation)(void);
     void* (*OnUpdateGUI)(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);
     void (*OnConfigMenuGUI)(const PICSimlabGUIMenu type);
+
     int (*OnCanvasCmd)(const CanvasCmd_t cmd);
     int (*OnWindowCmd)(const int id, const char* ControlName, const PICSimLabWindowAction action, const char* Value,
                        void* ReturnBuff);
+    int (*OnSystemCmd)(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff);
 
 private:
     void StartRControl(void);
-    CWindow* Window;
     board* pboard;
     int lab;
     int lab_;
