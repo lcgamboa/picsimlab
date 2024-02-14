@@ -327,7 +327,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
 
     if (PICSimLab.GetErrorCount()) {
 #ifndef __EMSCRIPTEN__
-        Message_sz(lxString::FromUTF8(PICSimLab.GetError(0)), 600, 240);
+        Message_sz(lxString::FromUTF8(PICSimLab.GetError(0).c_str()), 600, 240);
 #else
         printf("Error: %s\n", PICSimLab.GetError(0).c_str());
 #endif
@@ -1218,7 +1218,7 @@ void CPWindow1::menu1_Help_Board_EvMenuActive(CControl* control) {
 
 void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
     Message_sz("Board " + lxString(boards_list[PICSimLab.GetLab()].name) + "\nDeveloped by " +
-                   lxString::FromUTF8(PICSimLab.GetBoard()->GetAboutInfo()),
+                   lxString::FromUTF8(PICSimLab.GetBoard()->GetAboutInfo().c_str()),
                400, 200);
 }
 

@@ -139,7 +139,7 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
                 Text += "\n" + Lines.at(l);
             }
 
-            SpareParts.CanvasCmd({CC_TEXTONRECT, .TextOnRect{(lxString::FromUTF8(Text)).c_str(), rec,
+            SpareParts.CanvasCmd({CC_TEXTONRECT, .TextOnRect{(lxString::FromUTF8(Text.c_str())).c_str(), rec,
                                                              lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
             break;
     }

@@ -1,13 +1,24 @@
+### FIXMEs
+| Filename | line # | FIXME |
+|:------|:------:|:------|
+| [src/picsimlab1.cc](src/picsimlab1.cc#L1041) | 1041 | remote control disabled |
+| [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L298) | 298 | NSTEP must be multiplied for 4 |
+| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1595) | 1595 | avr CONFIG size |
+| [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0; |
+| [src/parts/input_MPU6050.cc](src/parts/input_MPU6050.cc#L26) | 26 | remove lxrad |
+| [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L171) | 171 | on slow speed output is not 90 degrees |
+| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L224) | 224 | on slow speed output is not 90 degrees |
+
 ### TODOs
 | Filename | line # | TODO |
 |:------|:------:|:------|
-| [src/picsimlab4.cc](src/picsimlab4.cc#L413) | 413 | select the better mode for channel trigguer |
+| [src/picsimlab4.cc](src/picsimlab4.cc#L416) | 416 | select the better mode for channel trigguer |
 | [src/boards/board_Arduino_Mega.cc](src/boards/board_Arduino_Mega.cc#L68) | 68 | cboard_Arduino_Mega: add suport to analog inputs A6 and A7 |
 | [src/boards/board_Arduino_Nano.cc](src/boards/board_Arduino_Nano.cc#L69) | 69 | cboard_Arduino_Nano: add suport to analog inputs A6 and A7 |
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support |
-| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L193) | 193 | TEMP cooler must don't work with AQUE=0 |
+| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L236) | 236 | TEMP cooler must don't work with AQUE=0 |
 | [src/boards/board_RemoteTCP.cc](src/boards/board_RemoteTCP.cc#L176) | 176 | define pins |
-| [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L153) | 153 | add VCC and GND pins |
+| [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L169) | 169 | add VCC and GND pins |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1210) | 1210 | default output value is not used yet (DOV) |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1578) | 1578 | avr ID pointer |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1600) | 1600 | avr ID size |
@@ -23,17 +34,7 @@
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L88) | 88 | display test |
 | [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L300) | 300 | int output |
 | [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L282) | 282 | int output and countdown timer |
-| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L200) | 200 | set addr |
-| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L212) | 212 | implement Tout output |
-| [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L379) | 379 | only write support implemented |
-| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L160) | 160 | Add transfer funcion of dc motor |
-
-### FIXMEs
-| Filename | line # | FIXME |
-|:------|:------:|:------|
-| [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L298) | 298 | NSTEP must be multiplied for 4 |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1595) | 1595 | avr CONFIG size |
-| [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0; |
-| [src/lib/picsimlab.cc](src/lib/picsimlab.cc#L1171) | 1171 | remote control disabled |
-| [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L163) | 163 | on slow speed output is not 90 degrees |
-| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L213) | 213 | on slow speed output is not 90 degrees |
+| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L206) | 206 | set addr |
+| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L218) | 218 | implement Tout output |
+| [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L387) | 387 | only write support implemented |
+| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L171) | 171 | Add transfer funcion of dc motor |

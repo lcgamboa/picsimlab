@@ -4,7 +4,7 @@
 VERSION_="${VERSION}_${DATE}"
 
 rm -rf build_all/picsimlab*
-sudo apt-get install devscripts debmake debhelper sed
+sudo apt-get -y install devscripts debmake debhelper sed
 git archive --format=tar master > build_all/picsimlab-${VERSION}.tar 
 cd build_all
 tar  --delete -f picsimlab-${VERSION}.tar "docs/kicad"

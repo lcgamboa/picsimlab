@@ -1,3 +1,22 @@
+## (unreleased)
+
+### New
+
+* Add support to use analog values in gpboard (gpsim backend) [lcgamboa]
+
+* Add I2C support to ESP32C3. [lcgamboa]
+
+* Add support to PWM outputs for ESP32C3 and STM32 boards. [lcgamboa]
+
+### Changes
+
+* Changlog updated. [lcgamboa]
+
+### Fix
+
+* Fix path for load rcontrol and debug port from options. [lcgamboa]
+
+
 ## v0.9.1 (2023-12-10)
 
 ### New
