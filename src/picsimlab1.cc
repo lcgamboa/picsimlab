@@ -2010,7 +2010,7 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
             return Dialog_sz(lxString::FromUTF8(Arg), 400, 200);
             break;
         case PSC_BASENAME:
-            basename(lxString::FromUTF8(Arg));
+            strcpy((char*)ReturnBuff, (const char*)basename(lxString::FromUTF8(Arg)).utf8_str());
             break;
         default:
             return 0;
