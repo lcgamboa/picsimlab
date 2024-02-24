@@ -39,6 +39,7 @@ void led_ws2812b_rst(led_ws2812b_t* led) {
     led->adin = 0;
     led->ccounter = 0;
     led->bit = 0;
+    led->ledc = 0;
 }
 
 void led_ws2812b_init(led_ws2812b_t* led, const int rows, const int cols, const int diffuser) {

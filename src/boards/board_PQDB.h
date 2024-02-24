@@ -26,8 +26,6 @@
 #ifndef BOARD_PQDB_H
 #define BOARD_PQDB_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "bsim_picsim.h"
 
 #include "../devices/io_74xx595.h"
@@ -173,7 +171,7 @@ private:
 
     int lm7seg[32];  // luminosidade media display
 
-    lxaudio buzzer;
+    int buzzerId;
 
     void RegisterRemoteControl(void) override;
 

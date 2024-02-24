@@ -54,6 +54,7 @@
 #include "lib/picsimlab.h"
 
 #define MAX_MIC 140
+#define MAX_AUDIO 10
 
 /**
  * @brief CPWindow1 class
@@ -182,6 +183,8 @@ public:
 
     lxBitmap* Bitmaps[BOARDS_MAX];
     CPWindow* Windows[BOARDS_MAX];
+    lxMutex* Mutexs[BOARDS_MAX];
+    lxaudio* AudioChannels[MAX_AUDIO];
 
     int WinCmd(CControl* ctrl, const PICSimLabWindowAction action, const char* Value, void* ReturnBuff);
 

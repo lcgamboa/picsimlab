@@ -23,12 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>
-
+#include "output_Buzzer.h"
+#include <math.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-#include "output_Buzzer.h"
 
 /* outputs */
 enum { O_P1, O_P2, O_L1 };
@@ -57,13 +56,13 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
 
     mcount = 0;
 
-    buzzer.Init();
+    buzzerId = PICSimLab.SystemCmd(PSC_AUDIOCHCREATE, NULL);
     btype = ACTIVE;
 
-    samplerate = buzzer.GetSampleRate();
+    PICSimLab.SystemCmd(PSC_AUDIOCHGETSAMPLERATE, (const char*)&buzzerId, &samplerate);
     buffersize = samplerate / 5;  // 0.1 seconds
     buffer = NULL;
-    maxv = buzzer.GetMax();
+    PICSimLab.SystemCmd(PSC_AUDIOCHGETMAX, (const char*)&buzzerId, &maxv);
     buffercount = 0;
     ctone = 0;
     ftone = 0;
@@ -91,7 +90,7 @@ cpart_Buzzer::~cpart_Buzzer(void) {
         delete[] buffer;
     }
     SpareParts.CanvasCmd({CC_DESTROY});
-    buzzer.End();
+    PICSimLab.SystemCmd(PSC_AUDIOCHDESTROY, (const char*)&buzzerId);
 }
 
 void cpart_Buzzer::DrawOutput(const unsigned int i) {
@@ -236,7 +235,7 @@ void cpart_Buzzer::PreProcess(void) {
 
 void cpart_Buzzer::Stop(void) {
     if ((btype == ACTIVE) || (btype == TONE)) {
-        buzzer.BeepStop();
+        PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
     }
 }
 
@@ -292,20 +291,23 @@ void cpart_Buzzer::PostProcess(void) {
     if (btype == ACTIVE) {
         if (active) {
             if (ppins[input_pins[0] - 1].oavalue > 65) {
-                buzzer.BeepStart();
+                PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTART, (const char*)&buzzerId);
             } else {
-                buzzer.BeepStop();
+                PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
             }
         } else {
             if ((310 - ppins[input_pins[0] - 1].oavalue) > 215) {
-                buzzer.BeepStart();
+                PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTART, (const char*)&buzzerId);
             } else {
-                buzzer.BeepStop();
+                PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
             }
         }
     } else if (btype == PASSIVE) {
         buffer[buffercount - 1] = 0;
-        /*int ret =*/buzzer.SoundPlay(buffer, buffercount);
+        short* ptr[2];
+        ptr[0] = (short int*)&buffercount;
+        ptr[1] = buffer;
+        /*int ret =*/PICSimLab.SystemCmd(PSC_AUDIOCHSOUNDPLAY, (const char*)&buzzerId, ptr);
         // printf("ret=%i buffercount=%i sample=%i time=%f timer=%i\n", ret, buffercount, samplerate,
         //        ((float)(buffercount)) / samplerate, timer->GetTime());
         buffercount = 0;
@@ -321,12 +323,13 @@ void cpart_Buzzer::PostProcess(void) {
 
         if (freq > 100) {
             if (fabs(oftone - freq) > 10.0) {
-                buzzer.BeepStop();
-                buzzer.BeepStart(freq, 0.5, 1);
+                PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
+                float args[3] = {freq, 0.5, 1};
+                PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTARTF, (const char*)&buzzerId, args);
                 oftone = freq;
             }
         } else {
-            buzzer.BeepStop();
+            PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
             oftone = 0;
         }
     }
@@ -342,7 +345,7 @@ void cpart_Buzzer::ChangeType(unsigned char tp) {
         return;
 
     if ((btype == ACTIVE) || (btype == TONE)) {
-        buzzer.BeepStop();
+        PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
         if (!buffer) {
             buffer = new short[buffersize];
         }

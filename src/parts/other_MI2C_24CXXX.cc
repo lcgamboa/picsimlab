@@ -23,13 +23,11 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>
-
+#include "other_MI2C_24CXXX.h"
 #include <unistd.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
-#include "other_MI2C_24CXXX.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -279,7 +277,7 @@ void cpart_MI2C_24CXXX::OnMouseButtonPress(unsigned int inputId, unsigned int bu
     switch (inputId) {
         case I_LOAD:
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
-                                 std::to_string(lxFD_OPEN | lxFD_CHANGE_DIR).c_str());
+                                 std::to_string(PFD_OPEN | PFD_CHANGE_DIR).c_str());
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER,
                                  "PICSimLab Binary File (*.bin)|*.bin");
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.bin");
@@ -288,7 +286,7 @@ void cpart_MI2C_24CXXX::OnMouseButtonPress(unsigned int inputId, unsigned int bu
             break;
         case I_SAVE:
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
-                                 std::to_string(lxFD_SAVE | lxFD_CHANGE_DIR).c_str());
+                                 std::to_string(PFD_SAVE | PFD_CHANGE_DIR).c_str());
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER,
                                  "PICSimLab Binary File (*.bin)|*.bin");
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.bin");
@@ -342,11 +340,13 @@ void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
     if (retId) {
         int type;
         SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
-        if ((type == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
-            char buff[256];
+        if ((type == (PFD_OPEN | PFD_CHANGE_DIR))) {
+            char buff[200];
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
-            if (lxFileExists(buff)) {
-                if (!Dialog_sz(std::string("Overwriting file: ") + ((const char*)basename(buff)) + "?", 400, 200))
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, buff)) {
+                char fname[128];
+                PICSimLab.SystemCmd(PSC_BASENAME, buff, fname);
+                if (!PICSimLab.SystemCmd(PSC_SHOWDIALOG, (std::string("Overwriting file: ") + fname + " ?").c_str()))
                     return;
             }
 
@@ -355,13 +355,13 @@ void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
             if (fout) {
                 fwrite(mi2c.data, mi2c.SIZE, 1, fout);
                 fclose(fout);
-                strncpy(f_mi2c_name, buff, 199);
+                strncpy(f_mi2c_name, buff, 200);
             } else {
                 printf("Error saving to file: %s \n", (const char*)buff);
             }
         }
 
-        if (type == (lxFD_OPEN | lxFD_CHANGE_DIR)) {
+        if (type == (PFD_OPEN | PFD_CHANGE_DIR)) {
             FILE* fout;
             char buff[256];
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);

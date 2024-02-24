@@ -24,6 +24,8 @@
    ######################################################################## */
 
 #include "board_PICGenios.h"
+#include <math.h>
+#include <unistd.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -292,7 +294,7 @@ cboard_PICGenios::cboard_PICGenios(void) {
     for (int i = 0; i < 20; i++)
         dip[i] = 1;
 
-    buzzer.Init();
+    buzzerId = PICSimLab.SystemCmd(PSC_AUDIOCHCREATE, NULL);
 
     PICSimLab.UpdateGUI(LCD_TYPE, GT_COMBO, GA_ADD, (void*)"LCD");
     PICSimLab.UpdateGUI(HEATER, GT_GAUGE, GA_ADD, (void*)"Heater");
@@ -302,7 +304,9 @@ cboard_PICGenios::cboard_PICGenios(void) {
     PICSimLab.UpdateGUI(LCD_TYPE, GT_COMBO, GA_SET, (void*)",hd44780 16x2,hd44780 16x4,");
     PICSimLab.UpdateGUI(LCD_TYPE, GT_COMBO, GA_SET, (void*)"hd44780 16x2");
 
-    snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char tname[128];
+    PICSimLab.SystemCmd(PSC_GETTEMPDIR, NULL, tname);
+    snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", tname);
     close(mkstemp(mi2c_tmp_name));
     unlink(mi2c_tmp_name);
     strncat(mi2c_tmp_name, ".txt", 200);
@@ -313,8 +317,8 @@ cboard_PICGenios::cboard_PICGenios(void) {
 }
 
 cboard_PICGenios::~cboard_PICGenios(void) {
-    buzzer.BeepStop();
-    buzzer.End();
+    PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
+    PICSimLab.SystemCmd(PSC_AUDIOCHDESTROY, (const char*)&buzzerId);
     PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
     PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
     vent[0] = -1;
@@ -344,7 +348,7 @@ int cboard_PICGenios::MInit(const char* processor, const char* fname, float freq
     char fnamem[1024];
     FILE* fout;
 
-    strncpy(fnamem, (const char*)dirname(fname).c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_DIRNAME, fname, fnamem);
     strncat(fnamem, "/mdump_PICGenios_EEPROM.bin", 1023);
 
     fout = fopen_UTF8(fnamem, "rb");
@@ -382,7 +386,7 @@ int cboard_PICGenios::MDumpMemory(const char* mfname) {
     FILE* fout;
     char fname[1024];
 
-    strncpy(fname, (const char*)dirname(mfname).c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_DIRNAME, mfname, fname);
     strncat(fname, "/mdump_PICGenios_EEPROM.bin", 1023);
 
     fout = fopen_UTF8(fname, "wb");
@@ -852,11 +856,11 @@ void cboard_PICGenios::Draw(void) {
     // buzzer
     if ((((pic.pins[PIN_RC1 - 1].oavalue - 55) / 2) > 10) && (PICSimLab.GetMcuPwr()) && jmp[0]) {
         if (!sound_on) {
-            buzzer.BeepStart();
+            PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTART, (const char*)&buzzerId);
             sound_on = 1;
         }
     } else {
-        buzzer.BeepStop();
+        PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
         sound_on = 0;
     }
 
@@ -1754,7 +1758,7 @@ void cboard_PICGenios::EvMouseButtonPress(unsigned int button, unsigned int x, u
                             },
                             mi2c_tmp_name);
 #else
-                        lxLaunchDefaultApplication(mi2c_tmp_name);
+                        PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, mi2c_tmp_name);
 #endif
                     } else {
                         printf(

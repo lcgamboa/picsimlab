@@ -26,8 +26,6 @@
 #ifndef BOARD_PICGenios_H
 #define BOARD_PICGenios_H
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "../devices/lcd_hd44780.h"
 #include "../devices/mi2c_24CXXX.h"
 #include "../devices/rtc_ds1307.h"
@@ -80,7 +78,7 @@ private:
     int vent[2];
     int lcdbmp[2];
 
-    lxaudio buzzer;
+    int buzzerId;
 
     char mi2c_tmp_name[200];
 

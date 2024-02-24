@@ -90,7 +90,9 @@ cboard_K16F::cboard_K16F(void) {
     rtc_pfc8563_init(&rtc, this);
     ReadMaps();
 
-    snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char tname[128];
+    PICSimLab.SystemCmd(PSC_GETTEMPDIR, NULL, tname);
+    snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", tname);
     close(mkstemp(mi2c_tmp_name));
     unlink(mi2c_tmp_name);
     strncat(mi2c_tmp_name, ".txt", 200);
@@ -107,7 +109,7 @@ int cboard_K16F::MInit(const char* processor, const char* fname, float freq) {
     char fnamem[1024];
     FILE* fout;
 
-    strncpy(fnamem, (const char*)dirname(fname).c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_DIRNAME, fname, fnamem);
     strncat(fnamem, "/mdump_K16F_EEPROM.bin", 1023);
 
     fout = fopen_UTF8(fnamem, "rb");
@@ -124,7 +126,7 @@ int cboard_K16F::MDumpMemory(const char* mfname) {
     FILE* fout;
     char fname[1024];
 
-    strncpy(fname, (const char*)dirname(mfname).c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_DIRNAME, mfname, fname);
     strncat(fname, "/mdump_K16F_EEPROM.bin", 1023);
 
     fout = fopen_UTF8(fname, "wb");
@@ -631,7 +633,7 @@ void cboard_K16F::EvMouseButtonPress(unsigned int button, unsigned int x, unsign
                             },
                             mi2c_tmp_name);
 #else
-                        lxLaunchDefaultApplication(mi2c_tmp_name);
+                        PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, mi2c_tmp_name);
 #endif
                     } else {
                         printf(

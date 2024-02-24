@@ -313,6 +313,7 @@ cboard_DevKitC::cboard_DevKitC(void) {
     master_uart[2].rx_pin = 0;
 
     bitbang_pwm_init(&pwm_out, this, 16);
+    bitbang_out_init(&rmt_out, this, 8);
 
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_ADD, (void*)"Qemu CPU MIPS");
     buffer[0] = ',';
@@ -332,6 +333,7 @@ cboard_DevKitC::~cboard_DevKitC(void) {
     PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_DEL, NULL);
     PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWDESTROY, NULL);
     bitbang_pwm_end(&pwm_out);
+    bitbang_out_end(&rmt_out);
 }
 
 // Reset board status
@@ -728,7 +730,7 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, unsigned int but
                             "/" BOARD_DevKitC_Name +
                             "/config.lxrad";
 
-        if (lxFileExists(fname)) {
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str())) {
             if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
                 char buff[2048];
                 char line[1024];
@@ -984,22 +986,19 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 84:  // ledc_ls_sig_out5
                 case 85:  // ledc_ls_sig_out6
                 case 86:  // ledc_ls_sig_out7
-                    // printf("LEDC channel
-                    // %i in GPIO %i\n",
-                    // function - 71, gpio);
+                    // printf("LEDC channel %i in GPIO %i\n",function - 71, gpio);
                     pwm_out.pins[function - 71] = io2pin(gpio);
                     break;
                 case 87:  // rmt_sig_out0
-                case 88:  // rmt_sig_out1
-                case 89:  // rmt_sig_out2
-                case 90:  // rmt_sig_out3
-                case 91:  // rmt_sig_out4
-                case 92:  // rmt_sig_out5
-                case 93:  // rmt_sig_out6
-                case 94:  // rmt_sig_out7
-                    // printf("RMT channel
-                    // %i in GPIO %i\n",
-                    // function - 71, gpio);
+                    // case 88:  // rmt_sig_out1  //FIXME only channel 0 enabled
+                    // case 89:  // rmt_sig_out2
+                    // case 90:  // rmt_sig_out3
+                    // case 91:  // rmt_sig_out4
+                    // case 92:  // rmt_sig_out5
+                    // case 93:  // rmt_sig_out6
+                    // case 94:  // rmt_sig_out7
+                    //  printf("RMT channel %i in GPIO %i\n", function - 87, gpio);
+                    rmt_out.pins[function - 87] = io2pin(gpio);
                     break;
                 case 95:  // I2CEXT1_SCL
                     master_i2c[1].scl_pin = io2pin(gpio);

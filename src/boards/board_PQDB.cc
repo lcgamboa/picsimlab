@@ -185,7 +185,7 @@ cboard_PQDB::cboard_PQDB(void) {
 
     ReadMaps();
 
-    buzzer.Init();
+    buzzerId = PICSimLab.SystemCmd(PSC_AUDIOCHCREATE, NULL);
 
     scroll1_old = 255;  // force updated
     scroll2_old = 255;
@@ -195,8 +195,8 @@ cboard_PQDB::cboard_PQDB(void) {
 }
 
 cboard_PQDB::~cboard_PQDB(void) {
-    buzzer.BeepStop();
-    buzzer.End();
+    PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
+    PICSimLab.SystemCmd(PSC_AUDIOCHDESTROY, (const char*)&buzzerId);
 
     PICSimLab.UpdateGUI(TEMP, GT_SCROLL, GA_DEL, NULL);
     PICSimLab.UpdateGUI(LIGHT, GT_SCROLL, GA_DEL, NULL);
@@ -468,11 +468,11 @@ void cboard_PQDB::Draw(void) {
 
     if (((0.5 * (pic.pins[PWM_PIN].oavalue - 55)) > 10) && (PICSimLab.GetMcuPwr())) {
         if (!sound_on) {
-            buzzer.BeepStart();
+            PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTART, (const char*)&buzzerId);
             sound_on = 1;
         }
     } else {
-        buzzer.BeepStop();
+        PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
         sound_on = 0;
     }
 

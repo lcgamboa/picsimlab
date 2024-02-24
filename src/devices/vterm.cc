@@ -23,14 +23,13 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include "vterm.h"
 
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "../lib/picsimlab.h"
 
 #define dprintf \
     if (1) {    \
@@ -49,9 +48,9 @@ void vterm_rst(vterm_t* vt) {
 static void vterm_uart_rx_callback(bitbang_uart_t* bu, void* arg) {
     vterm_t* vt = (vterm_t*)arg;
     unsigned char data;
-    vt->inMutex->Lock();
+    PICSimLab.SystemCmd(PSC_MUTEXLOCK, (const char*)&vt->inMutexId);
     data = bitbang_uart_recv(&vt->bb_uart);
-    vt->inMutex->Unlock();
+    PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&vt->inMutexId);
 
     if (data == 27) {  // filter out VT100 codes
         vt->vt100 = 1;
@@ -101,12 +100,12 @@ void vterm_init(vterm_t* vt, board* pboard) {
     bitbang_uart_init(&vt->bb_uart, pboard, vterm_uart_rx_callback, vt);
     vt->ReceiveCallback = NULL;
     vterm_rst(vt);
-    vt->inMutex = new lxMutex();
+    vt->inMutexId = PICSimLab.SystemCmd(PSC_MUTEXCREATE, NULL);
     dprintf("init vterm\n");
 }
 
 void vterm_end(vterm_t* vt) {
-    delete vt->inMutex;
+    PICSimLab.SystemCmd(PSC_MUTEXDESTROY, (const char*)&vt->inMutexId);
 }
 
 unsigned char vterm_io(vterm_t* vt, const unsigned char rx) {

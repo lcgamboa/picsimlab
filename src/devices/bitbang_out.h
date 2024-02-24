@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2020-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2023-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,31 +23,22 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#ifndef VTERM
-#define VTERM
+#ifndef BITBANG_OUT
+#define BITBANG_OUT
 
-#include <stdio.h>
-#include "bitbang_uart.h"
+class board;
 
-#define SBUFFMAX 2048
+#define OUT_MAX 32
 
 typedef struct {
-    bitbang_uart_t bb_uart;
-    unsigned char buff_in[SBUFFMAX];
-    unsigned int count_in;
-    unsigned char buff_out[SBUFFMAX];
-    unsigned int count_out;
-    unsigned char out_ptr;
-    int inMutexId;
-    void (*ReceiveCallback)(unsigned char data);
-    unsigned int vt100;
-} vterm_t;
+    unsigned char channels;
+    board* pboard;
+    unsigned char pins[OUT_MAX];
+    unsigned char out[OUT_MAX];
+} bitbang_out_t;
 
-void vterm_rst(vterm_t* vt);
-void vterm_init(vterm_t* vt, board* pboard);
-void vterm_end(vterm_t* vt);
-void vterm_set_speed(vterm_t* vt, const unsigned int speed);
+void bitbang_out_init(bitbang_out_t* out, board* pboard, const unsigned char channels = 8);
+void bitbang_out_rst(bitbang_out_t* out);
+void bitbang_out_end(bitbang_out_t* out);
 
-unsigned char vterm_io(vterm_t* vt, const unsigned char rx);
-
-#endif  // VTERM
+#endif  // BITBANG_OUT

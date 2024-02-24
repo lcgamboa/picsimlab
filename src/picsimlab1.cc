@@ -30,8 +30,6 @@
 // print timer debug info
 // #define TDEBUG
 
-#include "lib/picsimlab.h"
-
 #include "picsimlab1.h"
 #include "picsimlab1_d.cc"
 
@@ -45,6 +43,7 @@ CPWindow1 Window1;
 #include "picsimlab5.h"
 
 #include "lib/oscilloscope.h"
+#include "lib/picsimlab.h"
 #include "lib/spareparts.h"
 
 #include "lib/rcontrol.h"
@@ -750,7 +749,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
     snprintf(fname, 1199, "%s/picsimlab_log%i.txt", home, PICSimLab.GetInstanceNumber());
-    if (lxFileExists(fname)) {
+    if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
         FILE* flog = fopen_UTF8(fname, "r");
         if (flog) {
             char line[1024];
@@ -852,7 +851,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         if (PICSimLab.GetLab() != -1) {
             snprintf(fname, 1199, "%s/picsimlab.ini", home);
             PICSimLab.PrefsClear();
-            if (lxFileExists(fname)) {
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
                 if (PICSimLab.PrefsLoadFromFile(fname)) {
                     PICSimLab.SavePrefs("picsimlab_lab", boards_list[PICSimLab.GetLab()].name_);
                     PICSimLab.SavePrefs(std::string(boards_list[PICSimLab.GetLab()].name_) + "_proc",
@@ -1850,7 +1849,7 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
     std::string fdemo =
         PICSimLab.GetSharePath() + "boards/" + std::string(boards_list[PICSimLab.GetLab()].name) + "/demo.pzw";
 
-    if (lxFileExists(fdemo)) {
+    if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fdemo.c_str())) {
         PICSimLab.LoadWorkspace(fdemo);
         PICSimLab.SetWorkspaceFileName("");
     } else {
@@ -1878,7 +1877,7 @@ void CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl* control) {
     char stfname[1024];
     snprintf(stfname, 1024, "%s/open_w_cutecom_or_gtkterm.sterm", (const char*)lxGetTempDir("PICSimLab").c_str());
 
-    if (!lxFileExists(stfname)) {
+    if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, stfname)) {
         // create one dumb file to associate whit serial terminal
         FILE* fout;
         fout = fopen_UTF8(stfname, "w");
@@ -1988,6 +1987,9 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
         case PSC_CREATEDIR:
             return lxCreateDir(Arg);
             break;
+        case PSC_REMOVEFILE:
+            return lxRemoveFile(Arg);
+            break;
         case PSC_EXECUTE:
             return lxExecute(Arg);
             break;
@@ -2012,6 +2014,79 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
         case PSC_BASENAME:
             strcpy((char*)ReturnBuff, (const char*)basename(lxString::FromUTF8(Arg)).utf8_str());
             break;
+        case PSC_DIRNAME:
+            strcpy((char*)ReturnBuff, (const char*)dirname(lxString::FromUTF8(Arg)).utf8_str());
+            break;
+
+        case PSC_MUTEXCREATE: {
+            int mid = -1;
+            for (int i = 0; i < BOARDS_MAX; i++) {
+                if (Window1.Mutexs[i] == NULL) {
+                    mid = i;
+                    break;
+                }
+            }
+            if (mid >= 0) {
+                Window1.Mutexs[mid] = new lxMutex;
+            }
+            return mid;
+        } break;
+        case PSC_MUTEXDESTROY: {
+            int mid = *((int*)Arg);
+            if (Window1.Mutexs[mid]) {
+                delete Window1.Mutexs[mid];
+                Window1.Mutexs[mid] = NULL;
+            }
+        } break;
+        case PSC_MUTEXLOCK:
+            return Window1.Mutexs[*((int*)Arg)]->Lock();
+        case PSC_MUTEXUNLOCK:
+            return Window1.Mutexs[*((int*)Arg)]->Unlock();
+            break;
+
+        case PSC_AUDIOCHCREATE: {
+            int ach = -1;
+            for (int i = 0; i < MAX_AUDIO; i++) {
+                if (Window1.AudioChannels[i] == NULL) {
+                    ach = i;
+                    break;
+                }
+            }
+            if (ach >= 0) {
+                Window1.AudioChannels[ach] = new lxaudio;
+                Window1.AudioChannels[ach]->Init();
+            }
+            return ach;
+        } break;
+        case PSC_AUDIOCHDESTROY: {
+            int ach = *((int*)Arg);
+            if (Window1.AudioChannels[ach]) {
+                Window1.AudioChannels[ach]->End();
+                delete Window1.AudioChannels[ach];
+                Window1.AudioChannels[ach] = NULL;
+            }
+        } break;
+        case PSC_AUDIOCHBEEPSTART:
+            Window1.AudioChannels[*((int*)Arg)]->BeepStart();
+            break;
+        case PSC_AUDIOCHBEEPSTARTF: {
+            float* args = (float*)ReturnBuff;
+            Window1.AudioChannels[*((int*)Arg)]->BeepStart(args[0], args[1], args[2]);
+        } break;
+        case PSC_AUDIOCHBEEPSTOP:
+            Window1.AudioChannels[*((int*)Arg)]->BeepStop();
+            break;
+        case PSC_AUDIOCHGETSAMPLERATE:
+            *((unsigned int*)ReturnBuff) = Window1.AudioChannels[*((int*)Arg)]->GetSampleRate();
+            break;
+        case PSC_AUDIOCHGETMAX:
+            *((unsigned int*)ReturnBuff) = Window1.AudioChannels[*((int*)Arg)]->GetMax();
+            break;
+        case PSC_AUDIOCHSOUNDPLAY: {
+            short** ptr = (short**)ReturnBuff;
+            Window1.AudioChannels[*((int*)Arg)]->SoundPlay(ptr[1], *((unsigned int*)ptr[0]));
+        } break;
+
         default:
             return 0;
             break;
@@ -2035,7 +2110,7 @@ int CPWindow1::OnWindowCmd(const int id, const char* ControlName, const PICSimLa
             return -1;
         }
     } else if (action == PWA_WINDOWCREATE) {  // find empty window
-        for (int i = 0; i < MAX_PARTS; i++) {
+        for (int i = 0; i < BOARDS_MAX; i++) {
             if (Window1.Windows[i] == NULL) {
                 wid = i;
                 break;

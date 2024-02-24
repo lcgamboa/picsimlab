@@ -31,7 +31,7 @@ class board;
 #define LEDC_MAX 32
 
 typedef struct {
-    unsigned char chanels;
+    unsigned char channels;
     board* pboard;
     int TimerID;
     unsigned int counter;

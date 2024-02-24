@@ -27,9 +27,8 @@
 #include <dlfcn.h>
 #endif
 
-#include <lxrad.h>  //FIXME remove lxrad
-
 #include <time.h>
+#include <unistd.h>
 #include "../lib/picsimlab.h"
 #include "../lib/serial_port.h"
 #include "bsim_qemu.h"
@@ -219,8 +218,31 @@ static void picsimlab_uart_rx_event(bitbang_uart_t* bu, void* arg) {
     }
 }
 
+static void picsimlab_rmt_event(const uint8_t channel, const uint32_t config0, const uint32_t value) {
+    long inc = (config0 & 0xF) * 12.5;
+    long t;
+
+    // static int count = 0;
+    // float step = (config0 & 0xF) / 80e6;
+    // printf("%4i RMT event channel[%d] %d(%e) %d(%e)\n", count++, channel, (value & 0x8000) >> 15,
+    //        (value & 0x7FFF) * step, ((value >> 16) & 0x8000) >> 15, ((value >> 16) & 0x7FFF) * step);
+
+    ioupdated = 1;
+    t = (value & 0x7FFF) * inc;
+    g_board->rmt_out.out[channel] = (value & 0x8000) >> 15;
+    g_board->timer.last += t;
+    g_board->Run_CPU_ns(t);
+
+    ioupdated = 1;
+    t = ((value >> 16) & 0x7FFF) * inc;
+    g_board->rmt_out.out[channel] = ((value >> 16) & 0x8000) >> 15;
+    g_board->timer.last += t;
+    g_board->Run_CPU_ns(t);
+}
+
 static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins,      picsimlab_i2c_event,
-                                picsimlab_spi_event, picsimlab_uart_tx_event, NULL};
+                                picsimlab_spi_event, picsimlab_uart_tx_event, NULL,
+                                picsimlab_rmt_event};
 
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
@@ -239,7 +261,11 @@ int bsim_qemu::load_qemu_lib(const char* path) {
         return 0;                                 \
     }
 #else  // WINDOWS
-    std::string fullpath = (const char*)(dirname(lxGetExecutablePath()) + "/lib/qemu/" + path + ".dll").c_str();
+    char expath[512];
+    char dpath[512];
+    PICSimLab.SystemCmd(PSC_GETEXECUTABLEPATH, NULL, expath);
+    PICSimLab.SystemCmd(PSC_DIRNAME, expath, dpath);
+    std::string fullpath = std::string(dpath) + "/lib/qemu/" + path + ".dll";
 
     HMODULE handle = LoadLibraryA((const char*)fullpath.c_str());
     if (handle == NULL) {
@@ -293,7 +319,7 @@ bsim_qemu::bsim_qemu(void) {
     memset(&ADCvalues, 0xFF, 32);
 
     PICSimLab.SetNeedReboot();
-    mtx_qinit = new lxMutex();
+    mtx_qinitId = PICSimLab.SystemCmd(PSC_MUTEXCREATE, NULL);
     ns_count = 0;
     icount = -1;
     use_cmdline_extra = 0;
@@ -318,7 +344,7 @@ bsim_qemu::~bsim_qemu(void) {
     bitbang_uart_end(&master_uart[0]);
     bitbang_uart_end(&master_uart[1]);
     bitbang_uart_end(&master_uart[2]);
-    delete mtx_qinit;
+    PICSimLab.SystemCmd(PSC_MUTEXDESTROY, (const char*)&mtx_qinitId);
 }
 
 void bsim_qemu::MSetSerial(const char* port) {}
@@ -350,8 +376,8 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
 #else
             Sleep(1);
 #endif
-            mtx_qinit->Lock();  // only for wait qemu start
-            mtx_qinit->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXLOCK, (const char*)&mtx_qinitId);  // only for wait qemu start
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
         }
 #else  // qemu is not supported in emscripten version yet
     qemu_started = -1;
@@ -380,7 +406,7 @@ static void user_timeout_cb(void* opaque) {
 }
 
 void bsim_qemu::EvThreadRun(void) {
-    mtx_qinit->Lock();
+    PICSimLab.SystemCmd(PSC_MUTEXLOCK, (const char*)&mtx_qinitId);
 
     // test icount limits
     if (icount < -1) {
@@ -406,7 +432,7 @@ void bsim_qemu::EvThreadRun(void) {
         if (!load_qemu_lib("libqemu-stm32")) {
             PICSimLab.RegisterError("Error loading libqemu-stm32");
             qemu_started = -1;
-            mtx_qinit->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
         }
 
@@ -415,7 +441,7 @@ void bsim_qemu::EvThreadRun(void) {
         fname_[strlen(fname_) - 3] = 0;
         strncat(fname_, "bin", 2047);
 
-        if (!lxFileExists(fname_)) {
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fname_)) {
             // create a empty memory
             FILE* fout;
             fout = fopen_UTF8(fname_, "wb");
@@ -458,7 +484,7 @@ void bsim_qemu::EvThreadRun(void) {
         if (!load_qemu_lib("libqemu-xtensa")) {
             PICSimLab.RegisterError("Error loading libqemu-xtensa");
             qemu_started = -1;
-            mtx_qinit->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
         }
 
@@ -467,7 +493,7 @@ void bsim_qemu::EvThreadRun(void) {
         fname_[strlen(fname_) - 3] = 0;
         strncat(fname_, "bin", 2047);
 
-        if (!lxFileExists(fname_)) {
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fname_)) {
             // create a empty memory
             FILE* fout;
             printf("PICSimLab: Flash file dont´t exist, creating new empty: %s.\n", fname_);
@@ -526,7 +552,7 @@ void bsim_qemu::EvThreadRun(void) {
                         printf(
                             "PICSimLab: Flash Size is wrong! Actual size: %li Expected size: %i Removing file: %s \n",
                             size, DBGGetROMSize(), fname_);
-                        lxRemoveFile(fname_);
+                        PICSimLab.SystemCmd(PSC_REMOVEFILE, fname_);
                         exit(-1);
                     }
                 }
@@ -545,13 +571,18 @@ void bsim_qemu::EvThreadRun(void) {
 #ifndef _WIN_
         std::string fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
 #else
-        std::string fullpath = (const char*)(dirname(lxGetExecutablePath()) + "/lib/qemu/fw/").c_str();
+        char expath[512];
+        char dpath[512];
+        PICSimLab.SystemCmd(PSC_GETEXECUTABLEPATH, NULL, expath);
+        PICSimLab.SystemCmd(PSC_DIRNAME, expath, dpath);
+        std::string fullpath = std::string(dpath) + "/lib/qemu/fw/";
 #endif
 
-        if ((!lxFileExists(fullpath + "esp32-v3-rom.bin")) || (!lxFileExists(fullpath + "esp32-v3-rom-app.bin"))) {
+        if ((!PICSimLab.SystemCmd(PSC_FILEEXISTS, (fullpath + "esp32-v3-rom.bin").c_str())) ||
+            (!PICSimLab.SystemCmd(PSC_FILEEXISTS, (fullpath + "esp32-v3-rom-app.bin").c_str()))) {
             PICSimLab.RegisterError("Error loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
             qemu_started = -1;
-            mtx_qinit->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
         }
 
@@ -561,7 +592,7 @@ void bsim_qemu::EvThreadRun(void) {
         fnefuse[strlen(fnefuse) - 3] = 0;
         strncat(fnefuse, "efuse", 2047);
 
-        if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fnefuse)) {  // create efuse file if it don´t exists
             FILE* fout;
             fout = fopen_UTF8(fnefuse, "wb");
             if (fout) {
@@ -625,7 +656,7 @@ void bsim_qemu::EvThreadRun(void) {
         if (!load_qemu_lib("libqemu-riscv32")) {
             PICSimLab.RegisterError("Error loading libqemu-riscv32");
             qemu_started = -1;
-            mtx_qinit->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
         }
 
@@ -634,7 +665,7 @@ void bsim_qemu::EvThreadRun(void) {
         fname_[strlen(fname_) - 3] = 0;
         strncat(fname_, "bin", 2047);
 
-        if (!lxFileExists(fname_)) {
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fname_)) {
             // create a empty memory
             FILE* fout;
             printf("PICSimLab: Flash file dont´t exist, creating new empty: %s.\n", fname_);
@@ -692,7 +723,7 @@ void bsim_qemu::EvThreadRun(void) {
                         printf(
                             "PICSimLab: Flash Size is wrong! Actual size: %li Expected size: %i Removing file: %s \n",
                             size, DBGGetROMSize(), fname_);
-                        lxRemoveFile(fname_);
+                        PICSimLab.SystemCmd(PSC_REMOVEFILE, fname_);
                         exit(-1);
                     }
                 }
@@ -711,13 +742,17 @@ void bsim_qemu::EvThreadRun(void) {
 #ifndef _WIN_
         std::string fullpath = PICSimLab.GetLibPath() + "qemu/fw/";
 #else
-        std::string fullpath = (const char*)(dirname(lxGetExecutablePath()) + "/lib/qemu/fw/").c_str();
+        char expath[512];
+        char dpath[512];
+        PICSimLab.SystemCmd(PSC_GETEXECUTABLEPATH, NULL, expath);
+        PICSimLab.SystemCmd(PSC_DIRNAME, expath, dpath);
+        std::string fullpath = std::string(dpath) + "/lib/qemu/fw/";
 #endif
 
-        if (!lxFileExists(fullpath + "esp32c3-rom.bin")) {
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, (fullpath + "esp32c3-rom.bin").c_str())) {
             PICSimLab.RegisterError("Error loading esp32c3-rom.bin");
             qemu_started = -1;
-            mtx_qinit->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
         }
 
@@ -727,7 +762,7 @@ void bsim_qemu::EvThreadRun(void) {
         fnefuse[strlen(fnefuse) - 3] = 0;
         strncat(fnefuse, "efuse", 2047);
 
-        if (!lxFileExists(fnefuse)) {  // create efuse file if it don´t exists
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fnefuse)) {  // create efuse file if it don´t exists
             FILE* fout;
             fout = fopen_UTF8(fnefuse, "wb");
             if (fout) {
@@ -829,13 +864,13 @@ void bsim_qemu::EvThreadRun(void) {
     // disable extra in case of invalid qemu option finish the simulator
 
     char ftest[2048];
-    strncpy(ftest, (const char*)lxGetTempDir("picsimlab").c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_GETTEMPDIR, NULL, ftest);
     strncat(ftest, "/picsimlab_qemu_fail", 1023);
 
-    if (lxFileExists(ftest)) {
+    if (PICSimLab.SystemCmd(PSC_FILEEXISTS, ftest)) {
         use_cmdline_extra = 0;
         PICSimLab.RegisterError("Invalid qemu extra option!");
-        lxRemoveFile(ftest);
+        PICSimLab.SystemCmd(PSC_REMOVEFILE, ftest);
     }
 
     if (use_cmdline_extra) {
@@ -872,7 +907,7 @@ void bsim_qemu::EvThreadRun(void) {
 
     if (use_cmdline_extra) {
         // all options good, remove fail file
-        lxRemoveFile(ftest);
+        PICSimLab.SystemCmd(PSC_REMOVEFILE, ftest);
     }
 
     cmdline = "";
@@ -894,7 +929,7 @@ void bsim_qemu::EvThreadRun(void) {
     timer_mod_ns(timer.qtimer, timer.last + timer.timeout);
 
     qemu_started = 1;
-    mtx_qinit->Unlock();
+    PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
 #ifndef _WIN_
     usleep(100);
 #else
@@ -923,7 +958,7 @@ void bsim_qemu::MEnd(void) {
 #endif
 
     if (fname_bak[0]) {
-        lxRenameFile(fname_bak, fname_);
+        PICSimLab.SystemCmd(PSC_RENAMEFILE, fname_bak, fname_);
     }
 
     StopThread();
@@ -981,7 +1016,7 @@ int bsim_qemu::MDumpMemory(const char* fname) {
         strncat(fname_, "bin", 299);
         qemu_mutex_lock_iothread();
         qmp_stop(NULL);
-        if (lxFileExists(fname_)) {
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname_)) {
             // save backup copy until end
             strncpy(fname_bak, fname, 299);
             fname_bak[strlen(fname) - 3] = 0;
@@ -1014,7 +1049,7 @@ int bsim_qemu::MDumpMemory(const char* fname) {
         strncat(fname_, "bin", 299);
         qemu_mutex_lock_iothread();
         qmp_stop(NULL);
-        if (lxFileExists(fname_)) {
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname_)) {
             // save backup copy until end
             strncpy(fname_bak, fname, 299);
             fname_bak[strlen(fname) - 3] = 0;
@@ -1114,8 +1149,8 @@ void bsim_qemu::MReset(int flags) {
     if (qemu_started != 1) {
         return;
     }
-    mtx_qinit->Lock();  // only for wait qemu start
-    mtx_qinit->Unlock();
+    PICSimLab.SystemCmd(PSC_MUTEXLOCK, (const char*)&mtx_qinitId);  // only for wait qemu start
+    PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
     if (flags >= 0) {
         qemu_mutex_lock_iothread();
     }
@@ -1132,6 +1167,7 @@ void bsim_qemu::MReset(int flags) {
     bitbang_uart_rst(&master_uart[1]);
     bitbang_uart_rst(&master_uart[2]);
     bitbang_pwm_rst(&pwm_out);
+    bitbang_out_rst(&rmt_out);
 }
 
 const picpin* bsim_qemu::MGetPinsValues(void) {
@@ -1194,10 +1230,16 @@ void bsim_qemu::MStep(void) {
                 }
             }
         }
-        for (int i = 0; i < pwm_out.chanels; i++) {
+        for (int i = 0; i < pwm_out.channels; i++) {
             if (pwm_out.pins[i]) {
                 pins[pwm_out.pins[i] - 1].dir = PD_OUT;
                 pins[pwm_out.pins[i] - 1].value = pwm_out.out[i];
+            }
+        }
+        for (int i = 0; i < rmt_out.channels; i++) {
+            if (rmt_out.pins[i]) {
+                pins[rmt_out.pins[i] - 1].dir = PD_OUT;
+                pins[rmt_out.pins[i] - 1].value = rmt_out.out[i];
             }
         }
     }

@@ -38,7 +38,7 @@
 void bitbang_pwm_rst(bitbang_pwm_t* pwm) {
     dprintf("bitbang_pwm rst\n");
     pwm->counter = 0;
-    for (int i = 0; i < pwm->chanels; i++) {
+    for (int i = 0; i < pwm->channels; i++) {
         pwm->duty[i] = 0;
         pwm->out[i] = 0;
     }
@@ -48,7 +48,7 @@ static void bitbang_pwm_ctrl_callback(void* arg) {
     bitbang_pwm_t* pwm = (bitbang_pwm_t*)arg;
     unsigned char out;
 
-    for (int i = 0; i < pwm->chanels; i++) {
+    for (int i = 0; i < pwm->channels; i++) {
         if (pwm->pins[i]) {
             if (pwm->counter < pwm->duty[i]) {
                 out = 1;
@@ -70,7 +70,7 @@ static void bitbang_pwm_ctrl_callback(void* arg) {
 
 void bitbang_pwm_init(bitbang_pwm_t* pwm, board* pboard, const unsigned char channels) {
     dprintf("bitbang_pwm init\n");
-    pwm->chanels = channels;
+    pwm->channels = channels;
     bitbang_pwm_rst(pwm);
     pwm->pboard = pboard;
     pwm->TimerID = pwm->pboard->TimerRegister_us(2, bitbang_pwm_ctrl_callback, pwm);

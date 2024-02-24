@@ -30,8 +30,6 @@
 
 #define PART_BUZZER_Name "Buzzer"
 
-#include <lxrad.h>
-
 class cpart_Buzzer : public part {
 public:
     std::string GetAboutInfo(void) override { return "L.C. Gamboa \n <lcgamboa@yahoo.com>"; };
@@ -54,7 +52,7 @@ private:
     void ChangeType(unsigned char tp);
     unsigned char active;
     unsigned char input_pins[1];
-    lxaudio buzzer;
+    int buzzerId;
     long int mcount;
     int JUMPSTEPS_;
     unsigned char btype;

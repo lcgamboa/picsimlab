@@ -25,10 +25,9 @@
 
 #include "bridge_gpsim.h"
 
+#include <algorithm>
 #include "../lib/picsimlab.h"
 #include "bsim_gpsim.h"
-
-#include <lxrad.h>  //FIXME remove lxrad
 
 static const unsigned char GPSIM_PORTS[7] = {0, 1, 2, 3, 4, 5, 0xFF};
 
@@ -50,7 +49,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
      std::string sproc = GetSupportedDevices();
 
      if (sproc.find(processor) != std::string::npos) {
-         if (!lxFileExists(fname)) {
+         if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
              // create a empty memory
              FILE* fout;
              fout = fopen_UTF8(fname, "w");
@@ -117,7 +116,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
 
          if (pinname.find("port") != std::string::npos) {
              pinname = "R" + pinname.substr(4, 2);
-             pinname = uppercase(pinname);
+             std::transform(pinname.begin(), pinname.end(), pinname.begin(), ::toupper);
          }
          if (pinname.length() == 0) {
              pinname = "nd";

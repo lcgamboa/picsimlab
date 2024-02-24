@@ -211,7 +211,7 @@ void cpart_UART::ReadPropertiesWindow(void) {
 
     char buff[200];
     SpareParts.WPropCmd("combo5", PWA_COMBOGETTEXT, NULL, buff);
-    strncpy(uart_name, buff, 199);
+    strncpy(uart_name, buff, 200);
 
     SpareParts.WPropCmd("combo6", PWA_COMBOGETTEXT, NULL, buff);
     uart_speed = std::stoi(buff);

@@ -739,8 +739,8 @@ void CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive(CControl* control) {
 
 void CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl* control) {
     std::string alias_fname = SpareParts.GetAliasFname();
-    if (lxFileExists(alias_fname)) {
-        SpareParts.SavePinAlias(alias_fname);
+    if (PICSimLab.SystemCmd(PSC_FILEEXISTS, alias_fname.c_str())) {
+        SpareParts.SavePinAlias(alias_fname.c_str());
 #ifdef _WIN_
         lxExecute("notepad.exe " + alias_fname);
 #else
@@ -854,7 +854,7 @@ void CPWindow5::menu1_Help_About_EvMenuActive(CControl* control) {
 void CPWindow5::filedialog1_EvOnClose(int retId) {
     if (retId && (SpareParts.Getfdtype() == -1)) {
         if ((filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
-            if (lxFileExists(filedialog1.GetFileName())) {
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, filedialog1.GetFileName())) {
                 if (!Dialog_sz(std::string("Overwriting file: ") +
                                    ((const char*)basename(filedialog1.GetFileName()).c_str()) + "?",
                                400, 200))
@@ -890,7 +890,7 @@ void CPWindow5::filedialog1_EvOnClose(int retId) {
         }
     } else if (retId && (SpareParts.Getfdtype() == -2)) {
         if ((filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
-            if (lxFileExists(filedialog1.GetFileName())) {
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, filedialog1.GetFileName())) {
                 if (!Dialog_sz(std::string("Overwriting file: ") +
                                    ((const char*)basename(filedialog1.GetFileName()).c_str()) + "?",
                                400, 200))

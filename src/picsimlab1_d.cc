@@ -500,6 +500,8 @@ CPWindow1::CPWindow1(void) {
 
     memset(Bitmaps, 0, sizeof(Bitmaps));
     memset(Windows, 0, sizeof(Windows));
+    memset(Mutexs, 0, sizeof(Mutexs));
+    memset(AudioChannels, 0, sizeof(AudioChannels));
 
     Windows[PW_MAIN] = this;
 

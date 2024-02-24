@@ -24,11 +24,6 @@
    ######################################################################## */
 
 // include files
-#include "board_RemoteTCP.h"
-#include "../lib/oscilloscope.h"
-#include "../lib/picsimlab.h"
-#include "../lib/spareparts.h"
-
 #ifndef _WIN_
 #include <netinet/in.h>
 #else
@@ -36,6 +31,11 @@
 #include <ws2tcpip.h>
 #define MSG_NOSIGNAL 0
 #endif
+
+#include "../lib/oscilloscope.h"
+#include "../lib/picsimlab.h"
+#include "../lib/spareparts.h"
+#include "board_RemoteTCP.h"
 
 #define dprintf \
     if (1) {    \

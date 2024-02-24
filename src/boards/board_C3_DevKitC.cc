@@ -252,6 +252,7 @@ cboard_C3_DevKitC::cboard_C3_DevKitC(void) {
     master_uart[2].rx_pin = 0;
 
     bitbang_pwm_init(&pwm_out, this, 6);
+    bitbang_out_init(&rmt_out, this, 2);
 
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_ADD, (void*)"Qemu CPU MIPS");
     buffer[0] = ',';
@@ -271,6 +272,7 @@ cboard_C3_DevKitC::~cboard_C3_DevKitC(void) {
     PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_DEL, NULL);
     PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWDESTROY, NULL);
     bitbang_pwm_end(&pwm_out);
+    bitbang_out_end(&rmt_out);
 }
 
 // Reset board status
@@ -669,8 +671,7 @@ void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int 
                             "boards"
                             "/" BOARD_C3_DevKitC_Name +
                             "/config.lxrad";
-
-        if (lxFileExists(fname)) {
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str())) {
             if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
                 char buff[2048];
                 char line[1024];
@@ -930,16 +931,13 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                 case 48:  // ledc_ls_sig_out3
                 case 49:  // ledc_ls_sig_out4
                 case 50:  // ledc_ls_sig_out5
-                    // printf("LEDC channel
-                    // %i in GPIO %i\n",
-                    // function - 45, gpio);
+                    // printf("LEDC channel %i in GPIO %i\n", function - 45, gpio);
                     pwm_out.pins[function - 45] = io2pin(gpio);
                     break;
                 case 51:  // rmt_sig_out0
                 case 52:  // rmt_sig_out1
-                    // printf("RMT channel
-                    // %i in GPIO %i\n",
-                    // function - 71, gpio);
+                    // printf("RMT channel %i in GPIO %i\n", function - 51, gpio);
+                    rmt_out.pins[function - 51] = io2pin(gpio);
                     break;
 
                 case 53:  // I2CEXT0_SCL

@@ -23,6 +23,8 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#define _USE_MATH_DEFINES
+
 #define dprint \
     if (1) {   \
     } else     \
@@ -49,6 +51,7 @@
 #endif
 // system headers independent
 #include <errno.h>
+#include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>

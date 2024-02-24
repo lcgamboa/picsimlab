@@ -28,8 +28,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#include <lxrad.h>
-
 /* inputs */
 enum { I_TEXTB };
 
@@ -139,8 +137,8 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
                 Text += "\n" + Lines.at(l);
             }
 
-            SpareParts.CanvasCmd({CC_TEXTONRECT, .TextOnRect{(lxString::FromUTF8(Text.c_str())).c_str(), rec,
-                                                             lxALIGN_CENTER | lxALIGN_CENTER_VERTICAL}});
+            SpareParts.CanvasCmd(
+                {CC_TEXTONRECT, .TextOnRect{Text.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
             break;
     }
 }
@@ -298,7 +296,7 @@ void cpart_TEXT::ReadPropertiesWindow(void) {
 void cpart_TEXT::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
                                     unsigned int state) {
     if ((button == 1) && Link.length()) {
-        lxLaunchDefaultBrowser(Link);
+        PICSimLab.SystemCmd(PSC_LAUNCHDEFAULTBROWSER, Link.c_str());
     }
 }
 

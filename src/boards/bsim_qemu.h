@@ -26,9 +26,8 @@
 #ifndef BOARD_QEMU_H
 #define BOARD_QEMU_H
 
-#include "lxrad.h"
-
 #include "../devices/bitbang_i2c.h"
+#include "../devices/bitbang_out.h"
 #include "../devices/bitbang_pwm.h"
 #include "../devices/bitbang_spi.h"
 #include "../devices/bitbang_uart.h"
@@ -75,6 +74,7 @@ public:
     bitbang_spi_t master_spi[2];
     bitbang_uart_t master_uart[3];
     bitbang_pwm_t pwm_out;
+    bitbang_out_t rmt_out;
     void IoLockAccess(void) override;
     void IoUnlockAccess(void) override;
     int GetUARTRX(const int uart_num) override;
@@ -105,7 +105,7 @@ protected:
     char fname_[2048];
     char fname_bak[2048];
     unsigned short ADCvalues[16];
-    lxMutex* mtx_qinit;
+    int mtx_qinitId;
     int qemu_started;
     QEMUSimType SimType;
     std::string cmdline;

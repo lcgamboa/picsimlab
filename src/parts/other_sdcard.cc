@@ -28,8 +28,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#include <lxrad.h>
-
 /* outputs */
 enum { O_P3, O_P4, O_P5, O_P6, O_FILE };
 
@@ -236,7 +234,7 @@ void cpart_SDCard::OnMouseButtonPress(unsigned int inputId, unsigned int button,
     switch (inputId) {
         case I_CONN:
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
-                                 std::to_string(lxFD_OPEN | lxFD_CHANGE_DIR).c_str());
+                                 std::to_string(PFD_OPEN | PFD_CHANGE_DIR).c_str());
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER, "SD Card image (*.img)|*.img");
             if (sdcard_fname[0] == '*') {
                 SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.img");
@@ -253,10 +251,10 @@ void cpart_SDCard::filedialog_EvOnClose(int retId) {
     if (retId) {
         int type;
         SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
-        if ((type == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+        if ((type == (PFD_OPEN | PFD_CHANGE_DIR))) {
             char buff[256];
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
-            if (lxFileExists(buff)) {
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, buff)) {
                 strcpy(sdcard_fname, buff);
                 sdcard_set_filename(&sd, sdcard_fname);
                 sdcard_set_card_present(&sd, 1);

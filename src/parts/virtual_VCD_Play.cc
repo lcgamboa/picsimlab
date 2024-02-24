@@ -29,8 +29,6 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
-#include <lxrad.h>
-
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -234,7 +232,7 @@ void cpart_VCD_Play::ReadPreferences(std::string value) {
             strcat(buff, f_vcd_name + 4);
             strcpy(f_vcd_name, buff);
         }
-        if (lxFileExists(f_vcd_name)) {
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, f_vcd_name)) {
             LoadVCD(f_vcd_name);
         } else {
             printf("PICSimLab: VCD_Play Error loading from file: %s \n", f_vcd_name);
@@ -332,7 +330,7 @@ void cpart_VCD_Play::OnMouseButtonPress(unsigned int inputId, unsigned int butto
     switch (inputId) {
         case I_LOAD:
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
-                                 std::to_string(lxFD_OPEN | lxFD_CHANGE_DIR).c_str());
+                                 std::to_string(PFD_OPEN | PFD_CHANGE_DIR).c_str());
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER, "Value change dump (*.vcd)|*.vcd");
 
             if (f_vcd_name[0] == '*') {
@@ -384,7 +382,7 @@ void cpart_VCD_Play::filedialog_EvOnClose(int retId) {
     if (retId) {
         int type;
         SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
-        if ((type == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
+        if ((type == (PFD_OPEN | PFD_CHANGE_DIR))) {
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, f_vcd_name);
             LoadVCD(f_vcd_name);
         }

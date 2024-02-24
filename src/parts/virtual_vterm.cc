@@ -233,12 +233,12 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
                 show &= ~0x80;
             }
 
-            vt.inMutex->Lock();
+            PICSimLab.SystemCmd(PSC_MUTEXLOCK, (const char*)&vt.inMutexId);
             strncpy(str, (char*)vt.buff_in, vt.count_in);
             str[vt.count_in] = 0;
             vt.count_in = 0;
             // printf("Data recv: \n[\n%s]\n", str);
-            vt.inMutex->Unlock();
+            PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&vt.inMutexId);
 
             SpareParts.WindowCmd(wvtermId, "text1", PWA_TEXTAPPEND, str);
             break;

@@ -24,6 +24,8 @@
    ######################################################################## */
 
 #include "board_McLab2.h"
+#include <math.h>
+#include <unistd.h>
 #include "../lib/oscilloscope.h"
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
@@ -139,7 +141,7 @@ cboard_McLab2::cboard_McLab2(void) {
     heater_pwr = 0;
     cooler_pwr = 0;
 
-    buzzer.Init();
+    buzzerId = PICSimLab.SystemCmd(PSC_AUDIOCHCREATE, NULL);
 
     pot1 = 100;
 
@@ -154,7 +156,9 @@ cboard_McLab2::cboard_McLab2(void) {
     vent[1] = PICSimLab.CanvasCmd(
         {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(), 1.0, 0, 0}});
 
-    snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str());
+    char tname[128];
+    PICSimLab.SystemCmd(PSC_GETTEMPDIR, NULL, tname);
+    snprintf(mi2c_tmp_name, 200, "%s/picsimlab-XXXXXX", tname);
     close(mkstemp(mi2c_tmp_name));
     unlink(mi2c_tmp_name);
     strncat(mi2c_tmp_name, ".txt", 200);
@@ -165,8 +169,8 @@ cboard_McLab2::cboard_McLab2(void) {
 }
 
 cboard_McLab2::~cboard_McLab2(void) {
-    buzzer.BeepStop();
-    buzzer.End();
+    PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
+    PICSimLab.SystemCmd(PSC_AUDIOCHDESTROY, (const char*)&buzzerId);
     mi2c_end(&mi2c);
     lcd_end(&lcd);
     PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
@@ -188,7 +192,7 @@ int cboard_McLab2::MInit(const char* processor, const char* fname, float freq) {
     char fnamem[1024];
     FILE* fout;
 
-    strncpy(fnamem, (const char*)dirname(fname).c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_DIRNAME, fname, fnamem);
     strncat(fnamem, "/mdump_McLab2_EEPROM.bin", 1023);
 
     fout = fopen_UTF8(fnamem, "rb");
@@ -219,7 +223,7 @@ int cboard_McLab2::MDumpMemory(const char* mfname) {
     FILE* fout;
     char fname[1024];
 
-    strncpy(fname, (const char*)dirname(mfname).c_str(), 1023);
+    PICSimLab.SystemCmd(PSC_DIRNAME, mfname, fname);
     strncat(fname, "/mdump_McLab2_EEPROM.bin", 1023);
 
     fout = fopen_UTF8(fname, "wb");
@@ -543,11 +547,11 @@ void cboard_McLab2::Draw(void) {
 
     if ((((pic.pins[6].oavalue - 55) / 2) > 40) && PICSimLab.GetMcuPwr()) {
         if (!sound_on) {
-            buzzer.BeepStart();
+            PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTART, (const char*)&buzzerId);
             sound_on = 1;
         }
     } else {
-        buzzer.BeepStop();
+        PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTOP, (const char*)&buzzerId);
         sound_on = 0;
     }
 
@@ -1046,7 +1050,7 @@ void cboard_McLab2::EvMouseButtonPress(unsigned int button, unsigned int x, unsi
                             },
                             mi2c_tmp_name);
 #else
-                        lxLaunchDefaultApplication(mi2c_tmp_name);
+                        PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, mi2c_tmp_name);
 #endif
                     } else {
                         printf("Error saving to file: %s \n", mi2c_tmp_name);
