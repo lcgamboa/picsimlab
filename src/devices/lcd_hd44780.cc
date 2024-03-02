@@ -442,7 +442,7 @@ void lcd_data(lcd_t* lcd, char data) {
 }
 
 unsigned char lcd_read_busyf_acounter(lcd_t* lcd) {
-    // busy flag aways 0
+    // busy flag always 0
     unsigned char status = (0x7F & lcd->addr_counter);
 
     // switch betwwen 8 or 4 bits communication

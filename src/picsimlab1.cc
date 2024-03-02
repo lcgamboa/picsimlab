@@ -792,7 +792,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     printf("PICSimLab: Command Line: ");
     for (int i = 0; i < Application->Aargc; i++) {
+#ifdef wxUSE_UNICODE
+        printf("%s ", (const char*)lxString(Application->Aargvw[i]).utf8_str());
+#else
         printf("%s ", Application->Aargv[i]);
+#endif
     }
     printf("\n");
 
@@ -808,35 +812,47 @@ void CPWindow1::_EvOnCreate(CControl* control) {
                                 std::string(fname_error) +
                                 "\n If the problem persists, please consider opening an issue on github.\n ");
     } else if (Application->Aargc == 2) {  // only .pzw file
+#ifdef wxUSE_UNICODE
+        fn.Assign(Application->Aargvw[1]);
+#else
         fn.Assign(Application->Aargv[1]);
+#endif
         fn.MakeAbsolute();
         // load options
         PICSimLab.Configure(home, 1, 1);
 
         // check if it is a demonstration
 
-        std::string fns = (const char*)fn.GetFullPath().c_str();
+        std::string fns = (const char*)fn.GetFullPath().utf8_str();
 
         lxFileName fn_dir;
         fn_dir.Assign(PICSimLab.GetSharePath() + "boards/");
         fn_dir.MakeAbsolute();
 
         if ((fns.find(fn_dir.GetFullPath()) != std::string::npos) && (fns.find("demo.pzw") != std::string::npos)) {
-            PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().c_str(), 0);
+            PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().utf8_str(), 0);
             PICSimLab.SetWorkspaceFileName("");
         } else {
-            PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().c_str());
+            PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().utf8_str());
         }
 
     } else if ((Application->Aargc >= 3) && (Application->Aargc <= 5)) {
         // arguments: Board Processor File.hex(.bin) file.pcf
 
         if (Application->Aargc >= 4) {
+#ifdef wxUSE_UNICODE
+            fn.Assign(Application->Aargvw[3]);
+#else
             fn.Assign(Application->Aargv[3]);
+#endif
             fn.MakeAbsolute();
         }
         if (Application->Aargc == 5) {
+#ifdef wxUSE_UNICODE
+            fn_spare.Assign(Application->Aargvw[4]);
+#else
             fn_spare.Assign(Application->Aargv[4]);
+#endif
             fn_spare.MakeAbsolute();
         }
 
@@ -870,9 +886,9 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         // search for file name
         if (Application->Aargc >= 4) {
             // load options
-            PICSimLab.Configure(home, 0, 1, (const char*)fn.GetFullPath().c_str());
+            PICSimLab.Configure(home, 0, 1, (const char*)fn.GetFullPath().utf8_str());
             if (Application->Aargc == 5) {
-                SpareParts.LoadConfig((const char*)fn_spare.GetFullPath().c_str());
+                SpareParts.LoadConfig((const char*)fn_spare.GetFullPath().utf8_str());
             }
         } else {
             // load options

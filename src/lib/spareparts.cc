@@ -327,7 +327,7 @@ bool CSpareParts::LoadPinAlias(std::string fname, unsigned char show_error_msg) 
 bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
     char name[256];
     char temp[4096];
-    unsigned int x, y;
+    int x, y;
     int orient;
     std::vector<std::string> prefs;
     int newformat = 0;

@@ -1,6 +1,6 @@
 app-id: com.github.lcgamboa.picsimlab
 runtime: org.freedesktop.Platform
-runtime-version: '21.08'
+runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
 command: picsimlab
 rename-desktop-file: picsimlab.desktop
