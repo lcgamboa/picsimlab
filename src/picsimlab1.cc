@@ -694,6 +694,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     PICSimLab.OnWindowCmd = &CPWindow1::OnWindowCmd;
     PICSimLab.OnSystemCmd = &CPWindow1::OnSystemCmd;
 
+    SpareParts.OnCanvasCmd = &CPWindow5::OnCanvasCmd;
+    SpareParts.OnWindowCmd = &CPWindow5::OnWindowCmd;
+
+    Oscilloscope.OnWindowCmd = &CPWindow4::OnWindowCmd;
+
     PICSimLab.Init();
 
     // board menu

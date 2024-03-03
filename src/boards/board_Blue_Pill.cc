@@ -260,6 +260,7 @@ cboard_Blue_Pill::cboard_Blue_Pill(void) {
     master_uart[2].rx_pin = 0;
 
     bitbang_pwm_init(&pwm_out, this, 20);
+    bitbang_out_init(&rmt_out, this, 0);
 
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_ADD, (void*)"Qemu CPU MIPS");
     buffer[0] = ',';
@@ -278,6 +279,10 @@ cboard_Blue_Pill::~cboard_Blue_Pill(void) {
 // Reset board status
 
 void cboard_Blue_Pill::Reset(void) {
+    if (qemu_started != 1) {
+        return;
+    }
+
     MReset(1);
 
     PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));

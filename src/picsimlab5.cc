@@ -73,9 +73,6 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::_EvOnCreate(CControl* control) {
-    SpareParts.OnCanvasCmd = &CPWindow5::OnCanvasCmd;
-    SpareParts.OnWindowCmd = &CPWindow5::OnWindowCmd;
-
     if (SpareParts.GetLoadConfigFile().length() > 0)
         SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
 

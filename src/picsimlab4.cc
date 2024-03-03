@@ -360,7 +360,6 @@ void CPWindow4::_EvOnCreate(CControl* control) {
                   ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                   : ("PICSimLab - ")) +
              "Oscilloscope");
-    Oscilloscope.OnWindowCmd = &CPWindow4::OnWindowCmd;
 }
 
 void CPWindow4::_EvOnShow(CControl* control) {
