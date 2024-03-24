@@ -785,6 +785,11 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, unsigned int but
                             }
                         }
                         arg = strtok(NULL, " \n");
+
+                        if ((!arg && (line[0] == '-')) || ((arg) && (arg[0] == '-') && (line[0] == '-'))) {
+                            PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
                     }
                 } else {
                     PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTCLEAR, NULL);

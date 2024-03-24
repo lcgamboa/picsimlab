@@ -667,10 +667,7 @@ void cboard_C3_DevKitC::BoardOptions(int* argc, char** argv) {
 void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
                                           unsigned int state) {
     if (!strcmp(controlname, "b_button2")) {
-        std::string fname = PICSimLab.GetSharePath() +
-                            "boards"
-                            "/" BOARD_C3_DevKitC_Name +
-                            "/config.lxrad";
+        std::string fname = PICSimLab.GetSharePath() + "boards/" BOARD_C3_DevKitC_Name + "/config.lxrad";
         if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str())) {
             if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
                 char buff[2048];
@@ -726,6 +723,11 @@ void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int 
                             }
                         }
                         arg = strtok(NULL, " \n");
+
+                        if ((!arg && (line[0] == '-')) || ((arg) && (arg[0] == '-') && (line[0] == '-'))) {
+                            PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
                     }
                 } else {
                     PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTCLEAR, NULL);

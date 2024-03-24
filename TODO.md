@@ -1,7 +1,7 @@
 ### FIXMEs
 | Filename | line # | FIXME |
 |:------|:------:|:------|
-| [src/picsimlab1.cc](src/picsimlab1.cc#L1041) | 1041 | remote control disabled |
+| [src/picsimlab1.cc](src/picsimlab1.cc#L1061) | 1061 | remote control disabled |
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L298) | 298 | NSTEP must be multiplied for 4 |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1595) | 1595 | avr CONFIG size |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L134) | 134 | only for BANK=0; |
@@ -12,13 +12,13 @@
 ### TODOs
 | Filename | line # | TODO |
 |:------|:------:|:------|
-| [src/picsimlab4.cc](src/picsimlab4.cc#L416) | 416 | select the better mode for channel trigguer |
+| [src/picsimlab4.cc](src/picsimlab4.cc#L415) | 415 | select the better mode for channel trigguer |
 | [src/boards/board_Arduino_Mega.cc](src/boards/board_Arduino_Mega.cc#L68) | 68 | cboard_Arduino_Mega: add suport to analog inputs A6 and A7 |
 | [src/boards/board_Arduino_Nano.cc](src/boards/board_Arduino_Nano.cc#L69) | 69 | cboard_Arduino_Nano: add suport to analog inputs A6 and A7 |
-| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L98) | 98 | jumper support |
-| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L236) | 236 | TEMP cooler must don't work with AQUE=0 |
+| [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L100) | 100 | jumper support |
+| [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L238) | 238 | TEMP cooler must don't work with AQUE=0 |
 | [src/boards/board_RemoteTCP.cc](src/boards/board_RemoteTCP.cc#L176) | 176 | define pins |
-| [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L169) | 169 | add VCC and GND pins |
+| [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L168) | 168 | add VCC and GND pins |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1210) | 1210 | default output value is not used yet (DOV) |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1578) | 1578 | avr ID pointer |
 | [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1600) | 1600 | avr ID size |

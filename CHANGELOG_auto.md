@@ -2,6 +2,8 @@
 
 ### New
 
+* Add initial support to ESP32 RMT TX. [lcgamboa]
+
 * Add support to use analog values in gpboard (gpsim backend) [lcgamboa]
 
 * Add I2C support to ESP32C3. [lcgamboa]
@@ -13,6 +15,10 @@
 * Changlog updated. [lcgamboa]
 
 ### Fix
+
+* Fix spare parts window position on start. [lcgamboa]
+
+* Fix support to multi byte char in command line file name. [lcgamboa]
 
 * Fix path for load rcontrol and debug port from options. [lcgamboa]
 
