@@ -9,7 +9,6 @@
 void simulation_cleanup(void);
 
 static pic_processor* gpic = NULL;
-
 static IOPIN* iopins[100];
 
 int bridge_gpsim_init(const char* processor, const char* fileName, float freq) {
@@ -144,6 +143,7 @@ int bridge_gpsim_dump_memory(const char* fname) {
     unsigned short val;
     unsigned int memsize = gpic->program_memory_size() * 2;
     unsigned int configsize = gpic->getConfigMemory()->getnConfigWords();
+    unsigned int configaddr = 0x2007;
 
     mem = (unsigned char*)malloc(memsize);
 
@@ -158,12 +158,14 @@ int bridge_gpsim_dump_memory(const char* fname) {
     for (unsigned int i = 0; i < configsize; i++) {
         if (gpic->getConfigMemory()->getConfigWord(i)) {
             config[i] = gpic->getConfigMemory()->getConfigWord(i)->getVal();
+            // gpic->config_word_address() don´t work for PIC18F!
+            configaddr = gpic->getConfigMemory()->getConfigWord(i)->ConfigWordAdd() - i;
         } else {
-            config[i] = 0;
+            config[i] = 0xFFFF;
         }
     }
 
-    int ret = write_hex(mem, memsize, config, configsize, gpic->config_word_address(), fname);
+    int ret = write_hex(mem, memsize, config, configsize, configaddr, fname);
 
     free(mem);
     free(config);
@@ -229,6 +231,17 @@ static int write_hex(unsigned char* mem, unsigned int size, unsigned short* conf
         // config
         nb = 0;
         sum = 0;
+
+        if (configaddr > 0xFFFF) {
+            fprintf(fout, ":020000040030CA\n");  // FOR PIC18F
+            configaddr = 0;
+
+            for (unsigned int b = 0; b < configsize; b += 2) {
+                config[b / 2] = ((config[b + 1] & 0xFF) << 8) | (config[b] & 0xFF);
+            }
+            configsize = configsize / 2;
+        }
+
         for (i = 0; i < configsize; i++) {
             if (nb == 0) {
                 iaddr = (configaddr * 2) + (i * 2);
