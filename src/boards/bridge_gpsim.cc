@@ -1,16 +1,7 @@
 
 #include "bridge_gpsim.h"
 
-// GpSim includes
-// #include <gpsim/cod.h>
-// #include <gpsim/interface.h>
-// #include <gpsim/gpsim_classes.h>
 #include <gpsim/pic-processor.h>
-// #include <gpsim/uart.h>
-// #include <gpsim/pir.h>
-// #include <gpsim/eeprom.h>
-// #include <gpsim/packages.h>
-// #include <gpsim/stimuli.h>
 #include <gpsim/sim_context.h>
 
 #include "../lib/util.h"
@@ -19,14 +10,20 @@ void simulation_cleanup(void);
 
 static pic_processor* gpic = NULL;
 
+static IOPIN* iopins[100];
+
 int bridge_gpsim_init(const char* processor, const char* fileName, float freq) {
-    // initialize_gpsim_core ();
-    // initialization_is_complete ();
     Processor* tempProc = 0l;
     CSimulationContext::GetContext()->LoadProgram(fileName, processor, &tempProc, NULL);
     gpic = dynamic_cast<pic_processor*>(tempProc);
 
     bridge_gpsim_set_frequency(freq);
+
+    if (gpic) {
+        for (int pin = 1; pin <= bridge_gpsim_get_pin_count(); pin++) {
+            iopins[pin] = gpic->get_pin(pin);
+        }
+    }
 
     return (gpic != NULL) - 1;
 }
@@ -58,23 +55,21 @@ const char* bridge_gpsim_get_pin_name(int pin) {
 }
 
 unsigned char bridge_gpsim_get_pin_value(int pin) {
-    return gpic->get_pin_state(pin);
+    if (iopins[pin]) {
+        return iopins[pin]->getDrivingState();
+    }
+    return 0;
 }
 
 unsigned char bridge_gpsim_get_pin_dir(int pin) {
-    IOPIN* iopin = gpic->get_pin(pin);
-
-    if (iopin) {
-        return (iopin->get_direction() == IOPIN::DIR_INPUT);
+    if (iopins[pin]) {
+        return (iopins[pin]->get_direction() == IOPIN::DIR_INPUT);
     }
-
     return 0;
 }
 
 void bridge_gpsim_set_pin_value(int pin, unsigned char value) {
-    IOPIN* iopin = gpic->get_pin(pin);
-
-    char cPinState = iopin->getForcedDrivenState();
+    char cPinState = iopins[pin]->getForcedDrivenState();
 
     switch (cPinState) {
         case '0':
@@ -82,30 +77,28 @@ void bridge_gpsim_set_pin_value(int pin, unsigned char value) {
         case 'X':
         case '1':
             if (value) {
-                iopin->forceDrivenState('1');
-                iopin->putState(true);
+                iopins[pin]->forceDrivenState('1');
+                iopins[pin]->putState(true);
             } else {
-                iopin->forceDrivenState('0');
-                iopin->putState(false);
+                iopins[pin]->forceDrivenState('0');
+                iopins[pin]->putState(false);
             }
             break;
         case 'W':
             if (!value)
-                iopin->forceDrivenState('w');
+                iopins[pin]->forceDrivenState('w');
             break;
         case 'w':
             if (value)
-                iopin->forceDrivenState('W');
+                iopins[pin]->forceDrivenState('W');
             break;
     }
 }
 
 void bridge_gpsim_set_apin_value(int pin, float value) {
-    IOPIN* iopin = gpic->get_pin(pin);
-
-    iopin->set_is_analog(true);
-    iopin->set_Cth(5e-12);
-    iopin->set_nodeVoltage(value);
+    iopins[pin]->set_is_analog(true);
+    iopins[pin]->set_Cth(5e-12);
+    iopins[pin]->set_nodeVoltage(value);
 }
 
 void bridge_gpsim_step(void) {
