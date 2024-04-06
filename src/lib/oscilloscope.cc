@@ -379,6 +379,8 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
             SetMeasure(i, measures[i]);
         }
     }
+
+    SetBaseTimer();
 }
 
 std::vector<std::string> COscilloscope::WritePreferencesList(void) {
@@ -569,6 +571,7 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
     // osc_ch2
     WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, tokens[9]);
     SetChannelPin(1, atoi(tokens[9]) - 1);
+    SetBaseTimer();
 }
 
 void COscilloscope::SetBaseTimer(void) {

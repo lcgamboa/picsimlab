@@ -51,7 +51,10 @@ unsigned char bridge_gpsim_get_pin_count(void) {
 }
 
 const char* bridge_gpsim_get_pin_name(int pin) {
-    return gpic->get_pin_name(pin).c_str();
+    if (gpic) {
+        return gpic->get_pin_name(pin).c_str();
+    }
+    return "error";
 }
 
 unsigned char bridge_gpsim_get_pin_value(int pin) {
@@ -107,9 +110,7 @@ void bridge_gpsim_set_apin_value(int pin, float value) {
 
 void bridge_gpsim_step(void) {
     gpic->step_cycle();
-    if (gpic->mCurrentPhase == ((ClockPhase*)gpic->mExecute2ndHalf)) {
-        gpic->step_cycle();
-    }
+    bp.clear_halt();
 }
 
 void bridge_gpsim_end(void) {

@@ -273,13 +273,12 @@ void cboard_gpboard::Draw(void) {
 }
 
 void cboard_gpboard::Run_CPU(void) {
-    int i;
+    long int i;
     // int j;
     unsigned char pi;
     unsigned int alm[64];
     const int pinc = MGetPinCount();
 
-    // const int JUMPSTEPS = Window1.GetJUMPSTEPS ();
     // //number of steps skipped
     const long int NSTEP = PICSimLab.GetNSTEP();  // number of steps in 100ms
     const float RNSTEP = 200.0 * pinc / NSTEP;
@@ -293,8 +292,8 @@ void cboard_gpboard::Run_CPU(void) {
 
     // j = JUMPSTEPS; //step counter
     pi = 0;
-    if (PICSimLab.GetMcuPwr())                      // if powered
-        for (i = 0; i < PICSimLab.GetNSTEP(); i++)  // repeat for number of steps in 100ms
+    if (PICSimLab.GetMcuPwr())       // if powered
+        for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
             /*
             if (j >= JUMPSTEPS)//if number of step is bigger

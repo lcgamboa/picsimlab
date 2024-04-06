@@ -83,7 +83,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
  void bsim_gpsim::MSetFreq(float freq_) {
      freq = freq_;
      bridge_gpsim_set_frequency(freq);
-     TimerUpdateFrequency(freq);
+     TimerUpdateFrequency(freq / 4.0);
  }
 
  float bsim_gpsim::MGetFreq(void) {
@@ -99,7 +99,7 @@ void bsim_gpsim::MSetSerial(const char* port) {
  }
 
  float bsim_gpsim::MGetInstClockFreq(void) {
-     return freq;
+     return freq / 4.0;
  }
 
  int bsim_gpsim::CpuInitialized(void) {
