@@ -72,11 +72,10 @@ modules:
           - ./configure  CFLAGS=-fPIC CXXFLAGS=-fPIC --disable-gui --prefix=/app
           - make -j$(nproc)
           - make install 
-          - sed -i "25s/.*//" /app/include/gpsim/breakpoints.h 
         sources:
           - type: archive
-            url : https://sourceforge.net/projects/gpsim/files/gpsim/0.31.0/gpsim-0.31.0.tar.gz
-            sha256: 110ee6be3a5d02b32803a91e480cbfc9d423ef72e0830703fc0bc97b9569923f
+            url : https://sourceforge.net/projects/gpsim/files/gpsim/0.32.0/gpsim-0.32.1.tar.gz
+            sha256: c704d923ae771fabb7f63775a564dfefd7018a79c914671c4477854420b32e69
         modules:
           - name: libpopt
             buildsystem: simple
