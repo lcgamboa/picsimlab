@@ -85,8 +85,9 @@ public:
 
     void SetChannelPin(int ch, int pin) { chpin[ch] = pin; };
 
-    int GetTimeOffset(void) { return toffset; };
-    void SetTimeOffset(int to) { toffset = to; };
+    int GetSampleOffset(void) { return soffset; };
+
+    void SetTimeScaleAndOffset(float tscale_, float toffset_);
 
     int GetRun(void) { return run; };
     void SetRun(int r) { run = r; };
@@ -95,13 +96,8 @@ public:
 
     void SetVMax(float vm) { vmax = vm; };
 
-    void SetRT(double rt) { Rt = rt; };
     double GetRT(void) { return Rt; };
-
-    void SetDT(double dt) { Dt = dt; };
     double GetDT(void) { return Dt; };
-
-    void Setxz(double xz_) { xz = xz_; };
     double Getxz(void) { return xz; };
 
     void Reset(void);
@@ -127,7 +123,7 @@ private:
     int usetrigger;
     double triggerlv;
     int tch;  // trigger channel
-    int toffset;
+    int soffset;
     int chpin[2];
     double databuffer[2][2][NPOINTS];  // flip buffers + 2 channels + 700 points
     int fp;                            // actual flip buffer
@@ -142,6 +138,8 @@ private:
     int measures[5];
     float vmax;
     double xz;
+    float tscale;
+    float toffset;
 };
 
 extern COscilloscope Oscilloscope;

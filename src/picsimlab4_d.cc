@@ -126,7 +126,7 @@ CPWindow4::CPWindow4(void) {
     spind5.SetPopupMenu(NULL);
     spind5.SetValue(10.000000);
     spind5.SetMin(0.001000);
-    spind5.SetMax(200.000000);
+    spind5.SetMax(1000.000000);
     spind5.SetInc(0.001000);
     spind5.SetDigits(3);
     spind5.EvOnChangeSpinDouble = EVONCHANGESPINDOUBLE & CPWindow4::spind5_EvOnChangeSpinDouble;
@@ -694,4 +694,6 @@ CPWindow4::CPWindow4(void) {
     // lxrad automatic generated block end, don't edit above!
     button1.SetColor(255, 0, 0);
     button2.SetColor(0, 255, 0);
+
+    update_pos = 0;
 }

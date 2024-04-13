@@ -39,7 +39,7 @@ COscilloscope::COscilloscope() {
     triggerlv = 2.5;
     chpin[0] = 0;
     chpin[1] = 1;
-    toffset = 250;
+    soffset = 250;
     run = 1;
 
     fp = 0;
@@ -84,26 +84,46 @@ void COscilloscope::SetSample(void) {
         databuffer[fp][0][is] = -pins[0] + ((1.0 * rand() / RAND_MAX) - 0.5) * 0.1;
         databuffer[fp][1][is] = -pins[1] + ((1.0 * rand() / RAND_MAX) - 0.5) * 0.1;
         is++;
-        if (is >= NPOINTS)  // buffer full
+
+        if ((tscale > 30) && is) {
+            databuffer[!fp][0][is - 1] = databuffer[fp][0][is - 1];
+            databuffer[!fp][1][is - 1] = databuffer[fp][1][is - 1];
+
+            ch[0] = &databuffer[!fp][0][0];
+            ch[1] = &databuffer[!fp][1][0];
+            update = is;  // Request redraw screen
+
+            if (is >= WMAX) {
+                t = 0;
+                fp = !fp;  // togle fp
+                is = 0;
+            }
+        } else if (is >= NPOINTS)  // buffer full
         {
             int checked;
             WindowCmd(PW_MAIN, "togglebutton7", PWA_TOGGLEBGETCHECK, NULL, &checked);
             if (tr && checked) {
                 WindowCmd(PW_MAIN, "togglebutton6", PWA_TOGGLEBSETCHECK, "1");
             }
-            is = 0;
             tr = 0;
             t = 0;
-            ch[0] = &databuffer[fp][0][toffset];
-            ch[1] = &databuffer[fp][1][toffset];
-            fp = !fp;    // togle fp
-            update = 1;  // Request redraw screen
+            if (tscale > 30) {
+                ch[0] = &databuffer[fp][0][0];
+                ch[1] = &databuffer[fp][1][0];
+                update = is;  // Request redraw screen
+            } else {
+                ch[0] = &databuffer[fp][0][soffset];
+                ch[1] = &databuffer[fp][1][soffset];
+                update = is - soffset + 1;  // Request redraw screen
+            }
+            fp = !fp;  // togle fp
+            is = 0;
         }
     }
     t += Dt;
 
     // trigger
-    if (usetrigger) {
+    if ((usetrigger) && (tscale <= 30)) {
         if ((!tr) && (is >= NPOINTS / 2)) {
             if ((pins_[tch] < triggerlv) && (pins[tch] >= triggerlv)) {
                 tr = 1;
@@ -378,9 +398,8 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
         for (int i = 0; i < 5; i++) {
             SetMeasure(i, measures[i]);
         }
+        SetBaseTimer();
     }
-
-    SetBaseTimer();
 }
 
 std::vector<std::string> COscilloscope::WritePreferencesList(void) {
@@ -388,7 +407,7 @@ std::vector<std::string> COscilloscope::WritePreferencesList(void) {
     std::string line;
 
     int created = 0;
-    Oscilloscope.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+    WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
 
     if (created != 1) {
         return list;
@@ -592,7 +611,7 @@ void COscilloscope::SetBaseTimer(void) {
     if (pboard->CpuInitialized() == 0)
         return;
 
-    SetDT(1.0 / pboard->MGetInstClockFreq());
+    Dt = 1.0 / pboard->MGetInstClockFreq();
 
     int chp[2];
 
@@ -641,23 +660,27 @@ void COscilloscope::SetBaseTimer(void) {
     } else
         WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, "2");
 
-    float tscale;
     WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &tscale);
-
-    SetRT((tscale * 1e-3 * 10) / WMAX);
-
-    if ((GetRT() / GetDT()) < 1.0) {
-        xz = GetDT() / GetRT();
-    } else
-        xz = 1.0;
 
     WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMIN, std::to_string(-5 * tscale).c_str());
     WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMAX, std::to_string(5 * tscale).c_str());
-
-    float toffset;
     WindowCmd(PW_MAIN, "spind6", PWA_SPINDGETVALUE, NULL, &toffset);
 
-    Oscilloscope.SetTimeOffset((WMAX / 2) - (((WMAX / 2) * toffset) / (5 * tscale)));
+    SetTimeScaleAndOffset(tscale, toffset);
+}
+
+void COscilloscope::SetTimeScaleAndOffset(float tscale_, float toffset_) {
+    tscale = tscale_;
+    toffset = toffset_;
+
+    Rt = (tscale * 1e-3 * 10) / WMAX;
+
+    if ((Rt / Dt) < 1.0) {
+        xz = Dt / Rt;
+    } else
+        xz = 1.0;
+
+    soffset = (WMAX / 2) - (((WMAX / 2) * toffset) / (5 * tscale));
 }
 
 int COscilloscope::WindowCmd(const int id, const char* ControlName, const PICSimLabWindowAction action,

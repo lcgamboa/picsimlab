@@ -125,6 +125,7 @@ public:
 
 private:
     CButton* ctrl;
+    int update_pos;
 };
 
 extern CPWindow4 Window4;

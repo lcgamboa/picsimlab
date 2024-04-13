@@ -119,6 +119,10 @@ void CPWindow4::DrawScreen(void) {
     }
     draw1.Canvas.SetLineWidth(1);
 
+    // draw update cursor
+    draw1.Canvas.SetFgColor(250, 250, 50);
+    draw1.Canvas.Line(update_pos, 0, update_pos, HMAX);
+
     // draw trigger level
     if (Oscilloscope.GetUseTrigger()) {
         if (combo1.GetText().compare("1") == 0)
@@ -139,9 +143,8 @@ void CPWindow4::DrawScreen(void) {
     }
 
     // draw toffset level
-
     draw1.Canvas.SetFgColor(255, 255, 0);
-    nivel[2] = ((WMAX - Oscilloscope.GetTimeOffset()) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0);
+    nivel[2] = ((WMAX - Oscilloscope.GetSampleOffset()) * xz + xz) - ((NPOINTS * (xz - 1.0)) / 4.0);
     pts[0].y = 1;
     pts[0].x = nivel[2] - 3;
     pts[1].y = 1 + 3;
@@ -291,20 +294,38 @@ void CPWindow4::draw1_EvMouseButtonClick(CControl* control, unsigned int button,
 }
 
 void CPWindow4::spind5_EvOnChangeSpinDouble(CControl* control) {
-    // spind5.SetMin ((Dt*WMAX)/10e-3);
-
-    Oscilloscope.SetRT((spind5.GetValue() * 1e-3 * 10) / WMAX);
-
-    if ((Oscilloscope.GetRT() / Oscilloscope.GetDT()) < 1.0) {
-        Oscilloscope.Setxz(Oscilloscope.GetDT() / Oscilloscope.GetRT());
-    } else
-        Oscilloscope.Setxz(1.0);
-
     spind6.SetMin(-5 * spind5.GetValue());
     spind6.SetMax(5 * spind5.GetValue());
 
-    spind6_EvOnChangeSpinDouble(this);
-    // printf("Dt=%e Rt=%e  Rt/Dt=%f   xz=%f\n",Dt,Rt,Rt/Dt,xz);
+    float inc = spind5.GetValue() / 100.0;
+
+    if (inc < 0.001000) {
+        spind5.SetInc(0.001000);
+    } else if (inc >= 1) {
+        spind5.SetInc(5);
+    } else if (inc >= 0.1) {
+        spind5.SetInc(0.5);
+    } else {
+        spind5.SetInc(0.005);
+    }
+
+    Oscilloscope.SetTimeScaleAndOffset(spind5.GetValue(), spind6.GetValue());
+}
+
+void CPWindow4::spind6_EvOnChangeSpinDouble(CControl* control) {
+    float inc = fabs(spind6.GetValue() / 100.0);
+
+    if (inc < 0.001000) {
+        spind6.SetInc(0.001000);
+    } else if (inc >= 1) {
+        spind6.SetInc(5);
+    } else if (inc >= 0.1) {
+        spind6.SetInc(0.5);
+    } else {
+        spind6.SetInc(0.005);
+    }
+
+    Oscilloscope.SetTimeScaleAndOffset(spind5.GetValue(), spind6.GetValue());
 }
 
 void CPWindow4::togglebutton5_EvOnToggleButton(CControl* control) {
@@ -318,7 +339,8 @@ void CPWindow4::spind7_EvOnChangeSpinDouble(CControl* control) {
 void CPWindow4::timer1_EvOnTime(CControl* control) {
     static int count = 0;
 
-    if (Oscilloscope.GetUpdate()) {
+    update_pos = Oscilloscope.GetUpdate();
+    if (update_pos) {
         Oscilloscope.SetUpdate(0);
 
         count++;
@@ -337,6 +359,7 @@ void CPWindow4::timer1_EvOnTime(CControl* control) {
             }
         }
         DrawScreen();
+        update_pos = 0;
 #ifndef _WIN_
         Draw();
 #endif
@@ -373,10 +396,6 @@ void CPWindow4::_EvOnHide(CControl* control) {
     if (pboard) {
         pboard->SetUseOscilloscope(0);
     }
-}
-
-void CPWindow4::spind6_EvOnChangeSpinDouble(CControl* control) {
-    Oscilloscope.SetTimeOffset((WMAX / 2) - (((WMAX / 2) * spind6.GetValue()) / (5 * spind5.GetValue())));
 }
 
 // autoset
