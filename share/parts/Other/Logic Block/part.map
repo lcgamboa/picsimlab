@@ -1,0 +1,29 @@
+<img src="[push_buttons] (sobrescrita)" width="581" height="112" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:Luis Claudio Gamboa Lopes       -->
+<area shape="rect" coords="523,58,572,77" href="O_PN_9" />
+<area shape="rect" coords="523,82,572,101" href="O_PN_10" />
+<area shape="rect" coords="559,43,569,53" href="O_OUT" />
+<area shape="rect" coords="477,20,543,39" href="O_TYPE" />
+<area shape="rect" coords="9,82,58,101" href="O_PN_1" />
+<area shape="rect" coords="14,66,24,76" href="O_IN_1" />
+<area shape="rect" coords="71,82,120,101" href="O_PN_2" />
+<area shape="rect" coords="76,66,86,76" href="O_IN_2" />
+<area shape="rect" coords="134,82,183,101" href="O_PN_3" />
+<area shape="rect" coords="138,66,148,76" href="O_IN_3" />
+<area shape="rect" coords="195,82,244,101" href="O_PN_4" />
+<area shape="rect" coords="200,66,210,76" href="O_IN_4" />
+<area shape="rect" coords="257,82,306,101" href="O_PN_5" />
+<area shape="rect" coords="262,66,272,76" href="O_IN_5" />
+<area shape="rect" coords="321,82,370,101" href="O_PN_6" />
+<area shape="rect" coords="326,66,336,76" href="O_IN_6" />
+<area shape="rect" coords="383,82,432,101" href="O_PN_7" />
+<area shape="rect" coords="387,66,397,76" href="O_IN_7" />
+<area shape="rect" coords="444,82,493,101" href="O_PN_8" />
+<area shape="rect" coords="448,66,458,76" href="O_IN_8" />
+</map>

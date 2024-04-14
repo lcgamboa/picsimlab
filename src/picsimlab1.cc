@@ -662,7 +662,7 @@ static void set_signal_handler(void) {
 }
 #endif
 #else
-static void set_signal_handler(void){};
+static void set_signal_handler(void) {};
 #endif
 
 void CPWindow1::_EvOnCreate(CControl* control) {
@@ -2187,7 +2187,7 @@ int CPWindow1::WinCmd(CControl* ctrl, const PICSimLabWindowAction action, const 
         case PWA_COMBODELETEITEMS:
             ((CCombo*)ctrl)->DeleteItems();
             break;
-        case PWM_COMBOADDITEM:
+        case PWA_COMBOADDITEM:
             ((CCombo*)ctrl)->AddItem(Value);
             break;
 
