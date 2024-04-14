@@ -625,40 +625,35 @@ void COscilloscope::SetBaseTimer(void) {
 
     WindowCmd(PW_MAIN, "combo2", PWA_COMBODELETEITEMS, NULL);
     WindowCmd(PW_MAIN, "combo3", PWA_COMBODELETEITEMS, NULL);
-    for (int i = 1; i <= PinCount; i++) {
-        std::string spin;
-        if (pboard->GetUseSpareParts()) {
-            spin = SpareParts.GetPinName(i);
-        } else {
+
+    if (pboard->GetUseSpareParts()) {
+        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETITEMS, SpareParts.GetPinsNames().c_str());
+        WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETITEMS, SpareParts.GetPinsNames().c_str());
+    } else {
+        for (int i = 1; i <= PinCount; i++) {
+            std::string spin;
             spin = pboard->MGetPinName(i);
-        }
-        if (spin.compare("error")) {
-            WindowCmd(PW_MAIN, "combo2", PWM_COMBOADDITEM, (std::to_string(i) + "  " + spin).c_str());
-            WindowCmd(PW_MAIN, "combo3", PWM_COMBOADDITEM, (std::to_string(i) + "  " + spin).c_str());
+            if (spin.compare("error")) {
+                WindowCmd(PW_MAIN, "combo2", PWA_COMBOADDITEM, (std::to_string(i) + "  " + spin).c_str());
+                WindowCmd(PW_MAIN, "combo3", PWA_COMBOADDITEM, (std::to_string(i) + "  " + spin).c_str());
+            }
         }
     }
 
-    if (chp[0] <= PinCount) {
-        std::string spin;
-        if (pboard->GetUseSpareParts()) {
-            spin = SpareParts.GetPinName(chp[0]);
-        } else {
-            spin = pboard->MGetPinName(chp[0]);
-        }
-        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, (std::to_string(chp[0]) + "  " + spin).c_str());
-    } else
-        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, "1");
+    std::string spin;
+    if (pboard->GetUseSpareParts()) {
+        spin = SpareParts.GetPinName(chp[0]);
+    } else {
+        spin = pboard->MGetPinName(chp[0]);
+    }
+    WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, (std::to_string(chp[0]) + "  " + spin).c_str());
 
-    if (chp[1] <= PinCount) {
-        std::string spin;
-        if (pboard->GetUseSpareParts()) {
-            spin = SpareParts.GetPinName(chp[1]);
-        } else {
-            spin = pboard->MGetPinName(chp[1]);
-        }
-        WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, (std::to_string(chp[1]) + "  " + spin).c_str());
-    } else
-        WindowCmd(PW_MAIN, "combo2", PWA_COMBOSETTEXT, "2");
+    if (pboard->GetUseSpareParts()) {
+        spin = SpareParts.GetPinName(chp[1]);
+    } else {
+        spin = pboard->MGetPinName(chp[1]);
+    }
+    WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, (std::to_string(chp[1]) + "  " + spin).c_str());
 
     WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &tscale);
 
