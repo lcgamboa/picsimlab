@@ -138,9 +138,9 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
             if (input_pins[output[i].id - O_P1] == 0)
                 SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd(
-                    {.cmd = CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
-                                                  output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                   output[i].x1, output[i].y1, 0}});
             break;
         case O_P9:
         case O_P10:
@@ -152,9 +152,9 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
             if (output_pins[output[i].id - O_P9] == 0)
                 SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1 - xoff, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd(
-                    {.cmd = CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P9]).c_str(),
-                                                  output[i].x1 - xoff, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P9]).c_str(),
+                                                   output[i].x1 - xoff, output[i].y1, 0}});
             break;
         case O_IN1:
         case O_IN2:
@@ -192,8 +192,7 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
 
 void cpart_lblock::PreProcess(void) {
     output_pins_alm = 0;
-    JUMPSTEPS_ =
-        PICSimLab.GetJUMPSTEPS() * 4.0 * PICSimLab.GetBoard()->MGetInstClockFreq() / PICSimLab.GetBoard()->MGetFreq();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
 }
 
@@ -516,8 +515,9 @@ void cpart_lblock::LoadPartImage(void) {
         SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
 
         int BackBitmap = SpareParts.CanvasCmd(
-            {.cmd = CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
-                                      Scale, 0, Orientation}});
+            {.cmd = CC_LOADIMAGE,
+             .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
+                        Orientation}});
 
         SpareParts.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
         SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});

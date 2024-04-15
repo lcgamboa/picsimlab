@@ -330,6 +330,10 @@ output_t* board::GetOutput(int n) {
     return NULL;
 }
 
+int board::MGetClocksPerInstructions(void) {
+    return MGetFreq() / MGetInstClockFreq();
+}
+
 unsigned char board::CalcAngle(int in, int x, int y) {
     int dx = input[in].cx - x;
     int dy = y - input[in].cy;

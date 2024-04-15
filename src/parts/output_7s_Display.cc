@@ -668,7 +668,7 @@ void cpart_7s_display::PreProcess(void) {
         memset(alm4, 0, 8 * sizeof(unsigned int));
     }
 
-    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
 }
 

@@ -328,7 +328,7 @@ void cpart_IO_MM74C922::ReadPropertiesWindow(void) {
 void cpart_IO_MM74C922::PreProcess(void) {
     memset(pins_alm, 0, 8 * sizeof(unsigned long));
 
-    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
 
     io_MM74C922_set_clk_freq(&kc, pboard->MGetInstClockFreq());
@@ -384,24 +384,15 @@ void cpart_IO_MM74C922::Process(void) {
 
 void cpart_IO_MM74C922::PostProcess(void) {
     long int NSTEPJ = PICSimLab.GetNSTEPJ();
-    const picpin* ppins = SpareParts.GetPinsValues();
 
-    SpareParts.WritePinOA(output_pins[0],
-                          (ppins[output_pins[0] - 1].oavalue + ((pins_alm[0] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[1],
-                          (ppins[output_pins[1] - 1].oavalue + ((pins_alm[1] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[2],
-                          (ppins[output_pins[2] - 1].oavalue + ((pins_alm[2] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[3],
-                          (ppins[output_pins[3] - 1].oavalue + ((pins_alm[3] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(input_pins[0],
-                          (ppins[input_pins[0] - 1].oavalue + ((pins_alm[4] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(input_pins[1],
-                          (ppins[input_pins[1] - 1].oavalue + ((pins_alm[5] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(input_pins[2],
-                          (ppins[input_pins[2] - 1].oavalue + ((pins_alm[6] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(input_pins[3],
-                          (ppins[input_pins[3] - 1].oavalue + ((pins_alm[7] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(output_pins[0], ((pins_alm[0] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[1], ((pins_alm[1] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[2], ((pins_alm[2] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[3], ((pins_alm[3] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(input_pins[0], ((pins_alm[4] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(input_pins[1], ((pins_alm[5] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(input_pins[2], ((pins_alm[6] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(input_pins[3], ((pins_alm[7] * 200.0) / NSTEPJ) + 55);
 }
 
 part_init(PART_IO_MM74C922_Name, cpart_IO_MM74C922, "Other");

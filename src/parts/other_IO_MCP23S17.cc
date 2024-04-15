@@ -372,7 +372,7 @@ void cpart_IO_MCP23S17::ReadPropertiesWindow(void) {
 
 void cpart_IO_MCP23S17::PreProcess(void) {
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
-    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
 }
 
@@ -460,40 +460,23 @@ void cpart_IO_MCP23S17::Process(void) {
 
 void cpart_IO_MCP23S17::PostProcess(void) {
     long int NSTEPJ = PICSimLab.GetNSTEPJ();
-    const picpin* ppins = SpareParts.GetPinsValues();
 
-    SpareParts.WritePinOA(output_pins[0],
-                          (ppins[output_pins[0] - 1].oavalue + ((output_pins_alm[0] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[1],
-                          (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm[1] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[2],
-                          (ppins[output_pins[2] - 1].oavalue + ((output_pins_alm[2] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[3],
-                          (ppins[output_pins[3] - 1].oavalue + ((output_pins_alm[3] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[4],
-                          (ppins[output_pins[4] - 1].oavalue + ((output_pins_alm[4] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[5],
-                          (ppins[output_pins[5] - 1].oavalue + ((output_pins_alm[5] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[6],
-                          (ppins[output_pins[6] - 1].oavalue + ((output_pins_alm[6] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[7],
-                          (ppins[output_pins[7] - 1].oavalue + ((output_pins_alm[7] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[8],
-                          (ppins[output_pins[8] - 1].oavalue + ((output_pins_alm[8] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[9],
-                          (ppins[output_pins[9] - 1].oavalue + ((output_pins_alm[9] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[10],
-                          (ppins[output_pins[10] - 1].oavalue + ((output_pins_alm[10] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[11],
-                          (ppins[output_pins[11] - 1].oavalue + ((output_pins_alm[11] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[12],
-                          (ppins[output_pins[12] - 1].oavalue + ((output_pins_alm[12] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[13],
-                          (ppins[output_pins[13] - 1].oavalue + ((output_pins_alm[13] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[14],
-                          (ppins[output_pins[14] - 1].oavalue + ((output_pins_alm[14] * 200.0) / NSTEPJ) + 55) / 2);
-    SpareParts.WritePinOA(output_pins[15],
-                          (ppins[output_pins[15] - 1].oavalue + ((output_pins_alm[15] * 200.0) / NSTEPJ) + 55) / 2);
+    SpareParts.WritePinOA(output_pins[0], ((output_pins_alm[0] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[1], ((output_pins_alm[1] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[2], ((output_pins_alm[2] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[3], ((output_pins_alm[3] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[4], ((output_pins_alm[4] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[5], ((output_pins_alm[5] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[6], ((output_pins_alm[6] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[7], ((output_pins_alm[7] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[8], ((output_pins_alm[8] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[9], ((output_pins_alm[9] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[10], ((output_pins_alm[10] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[11], ((output_pins_alm[11] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[12], ((output_pins_alm[12] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[13], ((output_pins_alm[13] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[14], ((output_pins_alm[14] * 200.0) / NSTEPJ) + 55);
+    SpareParts.WritePinOA(output_pins[15], ((output_pins_alm[15] * 200.0) / NSTEPJ) + 55);
 }
 
 part_init(PART_IO_MCP23S17_Name, cpart_IO_MCP23S17, "Other");

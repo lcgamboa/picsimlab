@@ -517,7 +517,7 @@ void cpart_Jumpers::ReadPropertiesWindow(void) {
 
 void cpart_Jumpers::PreProcess(void) {
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
-    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS();
+    JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
 }
 
@@ -557,8 +557,7 @@ void cpart_Jumpers::PostProcess(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     for (int i = 0; i < 16; i++) {
-        SpareParts.WritePinOA(output_pins[i],
-                              (ppins[output_pins[i] - 1].oavalue + ((output_pins_alm[i] * 200.0) / NSTEPJ) + 55) / 2);
+        SpareParts.WritePinOA(output_pins[i], ((output_pins_alm[i] * 200.0) / NSTEPJ) + 55);
 
         if (output_pins[i] && (output_ids[O_L1 + i]->value != ppins[output_pins[i] - 1].oavalue)) {
             output_ids[O_L1 + i]->value = ppins[output_pins[i] - 1].oavalue;

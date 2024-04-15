@@ -153,7 +153,7 @@ public:
     /**
      * @brief  Event on the board
      */
-    virtual void EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state){};
+    virtual void EvMouseMove(unsigned int button, unsigned int x, unsigned int y, unsigned int state) {};
 
     /**
      * @brief  Event on the board
@@ -173,7 +173,7 @@ public:
     /**
      * @brief  Event on the board
      */
-    virtual void EvThreadRun(void){};
+    virtual void EvThreadRun(void) {};
 
     /**
      * @brief  Called ever 1s to refresh status
@@ -183,12 +183,12 @@ public:
     /**
      * @brief  Called to save board preferences in configuration file
      */
-    virtual void WritePreferences(void){};
+    virtual void WritePreferences(void) {};
 
     /**
      * @brief  Called whe configuration file load  preferences
      */
-    virtual void ReadPreferences(char* name, char* value){};
+    virtual void ReadPreferences(char* name, char* value) {};
 
     /**
      * @brief  return the input ids numbers of names used in input map
@@ -203,13 +203,13 @@ public:
     /**
      * @brief  Called when window side controls are activated
      */
-    virtual void board_Event(const char* controlname){};
+    virtual void board_Event(const char* controlname) {};
 
     /**
      * @brief  Called when window side controls are activated
      */
     virtual void board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
-                                   unsigned int state){};
+                                   unsigned int state) {};
 
     /**
      * @brief  Called once on board creation
@@ -324,7 +324,7 @@ public:
     /**
      * @brief board servers shutdown
      */
-    virtual void EndServers(void){};
+    virtual void EndServers(void) {};
 
     /**
      * @brief board microcontroller save non volatile memory to hex file
@@ -360,6 +360,11 @@ public:
      * @brief board microcontroller get cpu internal clock (in PIC frequency/4)
      */
     virtual float MGetInstClockFreq(void) = 0;
+
+    /**
+     * @brief board microcontroller get Clock pulses per instruction (in PIC equal to 4)
+     */
+    int MGetClocksPerInstructions(void);
 
     /**
      * @brief board microcontroller pin count
@@ -619,12 +624,12 @@ public:
     /**
      * @brief Lock IO to others threads access
      */
-    virtual void IoLockAccess(void){};
+    virtual void IoLockAccess(void) {};
 
     /**
      * @brief Unlock IO to others threads access
      */
-    virtual void IoUnlockAccess(void){};
+    virtual void IoUnlockAccess(void) {};
 
     /**
      * @brief Return the UART N RX pin number
@@ -645,7 +650,7 @@ protected:
     /**
      * @brief Register remote control variables
      */
-    virtual void RegisterRemoteControl(void){};
+    virtual void RegisterRemoteControl(void) {};
 
     /**
      * @brief Increment the Intructions Counter
