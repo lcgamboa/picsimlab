@@ -165,9 +165,12 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         const PCWProp* items = SpareParts.GetPart(PartSelected)->GetPCWProperties();
         Windows[PW_WPROP]->SetName("window1");  // must be the same as in xml
         Application->ACreateWindow(Windows[PW_WPROP]);
+        Windows[PW_WPROP]->HideExclusive();
         Windows[PW_WPROP]->DestroyChilds();
         Windows[PW_WPROP]->SetTitle(SpareParts.GetPart(PartSelected)->GetName());
         Windows[PW_WPROP]->SetWidth(370);
+        Windows[PW_WPROP]->SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
+        Windows[PW_WPROP]->SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
 
         CLabel* label;
         CCombo* combo;
@@ -387,9 +390,6 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         Windows[PW_WPROP]->SetHeight(y + 130);
 
         SpareParts.GetPart(PartSelected)->ConfigurePropertiesWindow();
-
-        Windows[PW_WPROP]->SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
-        Windows[PW_WPROP]->SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
 
         Windows[PW_WPROP]->Draw();
         Windows[PW_WPROP]->ShowExclusive();

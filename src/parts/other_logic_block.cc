@@ -90,6 +90,7 @@ cpart_lblock::cpart_lblock(const unsigned x, const unsigned y, const char* name,
     input_pins[7] = 0;
 
     output_value = 0;
+    output_value_prev = !output_value;
 
     output_pins[0] = 0;
     output_pins[1] = SpareParts.RegisterIOpin("LB0");
@@ -192,6 +193,14 @@ void cpart_lblock::PreProcess(void) {
 void cpart_lblock::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
+    // Add one clock pulse delay to output
+    if (output_value_prev != output_value) {
+        SpareParts.SetPin(output_pins[0], output_value);
+        SpareParts.WritePin(output_pins[1], output_value);
+        output_value_prev = output_value;
+        ioupdated = 1;
+    }
+
     if (ioupdated) {
         switch (gatetype) {
             case LG_NOT:
@@ -239,10 +248,7 @@ void cpart_lblock::Process(void) {
                 }
                 output_value = !output_value;
                 break;
-                break;
         }
-        SpareParts.SetPin(output_pins[0], output_value);
-        SpareParts.WritePin(output_pins[1], output_value);
     }
 
     mcount++;
@@ -256,21 +262,21 @@ void cpart_lblock::Process(void) {
 
 void cpart_lblock::PostProcess(void) {
     const long int NSTEPJ = PICSimLab.GetNSTEPJ();
-    // const picpin* ppins = SpareParts.GetPinsValues();
-    /*
-    for (unsigned int i = 0; i < Size; i++) {
-        if (input_pins[i] && (output_ids[O_L1 + i]->value != ppins[input_pins[i] - 1].oavalue)) {
-            output_ids[O_L1 + i]->value = ppins[input_pins[i] - 1].oavalue;
-            output_ids[O_L1 + i]->update = 1;
-        }
-    }
-    */
+    const picpin* ppins = SpareParts.GetPinsValues();
 
-    // SpareParts.WritePinOA(output_pins[1],
-    //                       (ppins[output_pins[1] - 1].oavalue + ((output_pins_alm * 200.0) / NSTEPJ) + 55) / 2);
     SpareParts.WritePinOA(output_pins[1], ((output_pins_alm * 200.0) / NSTEPJ) + 55);
 
-    SetUpdate(1);  // TODO update only when necessary
+    for (unsigned int i = 0; i < Size; i++) {
+        if (input_pins[i] && (output_ids[O_IN1 + i]->value != ppins[input_pins[i] - 1].oavalue)) {
+            output_ids[O_IN1 + i]->value = ppins[input_pins[i] - 1].oavalue;
+            output_ids[O_IN1 + i]->update = 1;
+        }
+    }
+
+    if ((output_ids[O_OUT]->value != ppins[output_pins[1] - 1].oavalue)) {
+        output_ids[O_OUT]->value = ppins[output_pins[1] - 1].oavalue;
+        output_ids[O_OUT]->update = 1;
+    }
 }
 
 unsigned short cpart_lblock::GetInputId(char* name) {
@@ -359,6 +365,8 @@ void cpart_lblock::ConfigurePropertiesWindow(void) {
     SetPCWComboWithPinNames("combo7", input_pins[6]);
     SetPCWComboWithPinNames("combo8", input_pins[7]);
     SetPCWComboWithPinNames("combo9", output_pins[0]);
+
+    SpareParts.WPropCmd("label_10", PWA_LABELSETTEXT, std::to_string(output_pins[1]).c_str());
 
     SpareParts.WPropCmd("combo11", PWA_COMBOSETITEMS, "NOT,BUFFER,AND,NAND,OR,NOR,XOR,XNOR,");
     SpareParts.WPropCmd("combo11", PWA_COMBOPROPEV, "1");

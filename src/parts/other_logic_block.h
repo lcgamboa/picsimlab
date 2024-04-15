@@ -60,6 +60,7 @@ private:
     unsigned char output_pins[2];
     unsigned long output_pins_alm;
     unsigned char output_value;
+    unsigned char output_value_prev;
     int OWidth;
     int OHeight;
     int xoff;
