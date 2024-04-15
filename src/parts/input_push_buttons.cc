@@ -137,8 +137,8 @@ void cpart_pbuttons::Reset(void) {
 
 cpart_pbuttons::~cpart_pbuttons(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
     SWBounce_end(&bounce);
 }
 
@@ -152,16 +152,17 @@ void cpart_pbuttons::DrawOutput(const unsigned int i) {
         case O_P6:
         case O_P7:
         case O_P8:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
-                                                  output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
+                                                   output[i].x1, output[i].y1, 0}});
             break;
         case O_B1:
         case O_B2:
@@ -171,14 +172,14 @@ void cpart_pbuttons::DrawOutput(const unsigned int i) {
         case O_B6:
         case O_B7:
         case O_B8:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{100, 100, 100}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
             if (output_value[output[i].id - O_B1] == active) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{55, 55, 55}});
             } else {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{15, 15, 15}});
             }
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
             break;
     }
 }
@@ -468,7 +469,7 @@ void cpart_pbuttons::ChangeSize(const unsigned int sz) {
     if (Size != sz) {
         if (BitmapId >= 0) {
             SpareParts.SetPartOnDraw(id);
-            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         }
         Size = sz;
         if (Size > 8) {
@@ -488,26 +489,27 @@ void cpart_pbuttons::LoadPartImage(void) {
         Height = OHeight;
 
         SpareParts.SetPartOnDraw(id);
-        BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
+        BitmapId = SpareParts.CanvasCmd({.cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
-        SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+        SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+        SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
 
         int BackBitmap = SpareParts.CanvasCmd(
-            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
-                                      Scale, 0, Orientation}});
+            {.cmd = CC_LOADIMAGE,
+             .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
+                        Orientation}});
 
-        SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
-        SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
-        SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
+        SpareParts.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
+        SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+        SpareParts.CanvasCmd({.cmd = CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
 
-        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
-        SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
+        SpareParts.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+        SpareParts.CanvasCmd({.cmd = CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
 
-        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
-        SpareParts.CanvasCmd({CC_END});
+        SpareParts.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+        SpareParts.CanvasCmd({.cmd = CC_END});
 
-        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
 
     } else {
         Width = OWidth;

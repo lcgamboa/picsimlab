@@ -102,94 +102,94 @@ void cboard_McLab1::Draw(void) {
             output[i].update = 0;
 
             if (!update) {
-                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({.cmd = CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
             if (!output[i].r)  // rectangle
             {
-                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
 
                 if (jmp[0]) {
                     switch (output[i].id) {
                         case O_A1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[7], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[7], 0, 0}});
                             break;
                         case O_B1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[8], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[8], 0, 0}});
                             break;
                         case O_C1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[10], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[10], 0, 0}});
                             break;
                         case O_D1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[11], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[11], 0, 0}});
                             break;
                         case O_E1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[12], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[12], 0, 0}});
                             break;
                         case O_F1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[6], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[6], 0, 0}});
                             break;
                         case O_G1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[5], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[5], 0, 0}});
                             break;
                         case O_A2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[7], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[7], 0, 0}});
                             break;
                         case O_B2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[8], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[8], 0, 0}});
                             break;
                         case O_C2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[10], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[10], 0, 0}});
                             break;
                         case O_D2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[11], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[11], 0, 0}});
                             break;
                         case O_E2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[12], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[12], 0, 0}});
                             break;
                         case O_F2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[6], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[6], 0, 0}});
                             break;
                         case O_G2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[5], 0, 0}});
+                            PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[5], 0, 0}});
                             break;
                     }
                 } else {
-                    PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{30, 0, 0}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{30, 0, 0}});
                 }
 
                 if (output[i].id == O_JP1)
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{150, 150, 150}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{150, 150, 150}});
 
                 if ((output[i].id >= O_BRA1) && (output[i].id <= O_BRA4)) {
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 22}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 22}});
                     if (p_BT[output[i].id - O_BRA1]) {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 19}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 19}});
                 } else if (output[i].id == O_RST) {
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 22}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 22}});
                     if (p_RST) {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 19}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 19}});
                 } else if (output[i].id == O_MP) {
-                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{26, 26, 26}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{10}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{26, 26, 26}});
+                    PICSimLab.CanvasCmd({.cmd = CC_RECTANGLE,
+                                         .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                    output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{230, 230, 230}});
                     PICSimLab.CanvasCmd(
-                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                  output[i].y2 - output[i].y1}});
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{230, 230, 230}});
-                    PICSimLab.CanvasCmd(
-                        {CC_ROTATEDTEXT, .RotatedText{Proc.c_str(), output[i].x1 + 5, output[i].y1, 0}});
+                        {.cmd = CC_ROTATEDTEXT, .RotatedText{Proc.c_str(), output[i].x1 + 5, output[i].y1, 0}});
                 } else if (output[i].id == O_SS1) {
                     output_ids[O_A1]->update = 1;
                     output_ids[O_B1]->update = 1;
@@ -200,10 +200,10 @@ void cboard_McLab1::Draw(void) {
                     output_ids[O_G1]->update = 1;
                     output_ids[O_P1]->update = 1;
 
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
-                    PICSimLab.CanvasCmd(
-                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{10, 10, 10}});
+                    PICSimLab.CanvasCmd({.cmd = CC_RECTANGLE,
+                                         .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                    output[i].y2 - output[i].y1}});
                 } else if (output[i].id == O_SS2) {
                     output_ids[O_A2]->update = 1;
                     output_ids[O_B2]->update = 1;
@@ -214,112 +214,126 @@ void cboard_McLab1::Draw(void) {
                     output_ids[O_G2]->update = 1;
                     output_ids[O_P2]->update = 1;
 
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
-                    PICSimLab.CanvasCmd(
-                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{10, 10, 10}});
+                    PICSimLab.CanvasCmd({.cmd = CC_RECTANGLE,
+                                         .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                    output[i].y2 - output[i].y1}});
                 } else if (output[i].id == O_JP1) {
                     if (!jmp[0]) {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{70, 70, 70}});
-                        PICSimLab.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1,
-                                                                      ((output[i].x2 - output[i].x1) * 0.65f),
-                                                                      output[i].y2 - output[i].y1}});
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{70, 70, 70}});
                         PICSimLab.CanvasCmd(
-                            {CC_CIRCLE, .Circle{1, (output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.80f)),
-                                                (output[i].y1 + ((output[i].y2 - output[i].y1) / 2)), 3}});
+                            {.cmd = CC_RECTANGLE,
+                             .Rectangle{1, output[i].x1, output[i].y1, ((output[i].x2 - output[i].x1) * 0.65f),
+                                        output[i].y2 - output[i].y1}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{220, 220, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_CIRCLE,
+                                             .Circle{1, (output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.80f)),
+                                                     (output[i].y1 + ((output[i].y2 - output[i].y1) / 2)), 3}});
                     } else {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{70, 70, 70}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{70, 70, 70}});
                         PICSimLab.CanvasCmd(
-                            {CC_RECTANGLE,
+                            {.cmd = CC_RECTANGLE,
                              .Rectangle{1, output[i].x1 + (((output[i].x2 - output[i].x1) * 0.35f)), output[i].y1,
                                         ((output[i].x2 - output[i].x1) * 0.65f), output[i].y2 - output[i].y1}});
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 0}});
-                        PICSimLab.CanvasCmd(
-                            {CC_CIRCLE, .Circle{1, (output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.20f)),
-                                                (output[i].y1 + ((output[i].y2 - output[i].y1) / 2)), 3}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{220, 220, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_CIRCLE,
+                                             .Circle{1, (output[i].x1 + (int)((output[i].x2 - output[i].x1) * 0.20f)),
+                                                     (output[i].y1 + ((output[i].y2 - output[i].y1) / 2)), 3}});
                     }
                 } else {
-                    PICSimLab.CanvasCmd(
-                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({.cmd = CC_RECTANGLE,
+                                         .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                    output[i].y2 - output[i].y1}});
                 }
 
             }  // circle
             else {
                 int led = 1;
 
-                PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{55, 0, 0}});
+                PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{55, 0, 0}});
 
                 if (!jmp[0]) {
                     switch (output[i].id) {
                         case O_RB0:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[5].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[5].oavalue, 0, 0}});
                             break;
                         case O_RB1:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[6].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[6].oavalue, 0, 0}});
                             break;
                         case O_RB2:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[7].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[7].oavalue, 0, 0}});
                             break;
                         case O_RB3:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[8].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[8].oavalue, 0, 0}});
                             break;
                         case O_RB4:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[9].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[9].oavalue, 0, 0}});
                             break;
                         case O_RB5:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[10].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[10].oavalue, 0, 0}});
                             break;
                         case O_RB6:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[11].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[11].oavalue, 0, 0}});
                             break;
                         case O_RB7:
-                            PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[12].oavalue, 0, 0}});
+                            PICSimLab.CanvasCmd(
+                                {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[12].oavalue, 0, 0}});
                             break;
                     }
                 } else {
                     if ((output[i].name[3] == 'R') && (output[i].name[4] == 'B')) {
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{55, 0, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{55, 0, 0}});
                     }
                 }
 
                 switch (output[i].id) {
                     case O_RA0:
-                        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[16].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
+                        PICSimLab.CanvasCmd(
+                            {.cmd = CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[16].oavalue, 0}});
                         break;
                     case O_RA1:
-                        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[17].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
+                        PICSimLab.CanvasCmd(
+                            {.cmd = CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[17].oavalue, 0}});
                         break;
                     case O_RA2:
-                        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[0].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
+                        PICSimLab.CanvasCmd(
+                            {.cmd = CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[0].oavalue, 0}});
                         break;
                     case O_RA3:
-                        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[1].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 55, 0}});
+                        PICSimLab.CanvasCmd(
+                            {.cmd = CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[1].oavalue, 0}});
                         break;
                     case O_RA0L:
-                        PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{55, 55, 0}});
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[16].oavalue,
-                                                                        (unsigned int)pic.pins[16].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{55, 55, 0}});
+                        PICSimLab.CanvasCmd(
+                            {.cmd = CC_SETBGCOLOR,
+                             .SetBgColor{(unsigned int)pic.pins[16].oavalue, (unsigned int)pic.pins[16].oavalue, 0}});
                         break;
                     case O_P1:
                         led = 0;
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm1[9], 0, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm1[9], 0, 0}});
                         break;
                     case O_P2:
                         led = 0;
-                        PICSimLab.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{lm2[9], 0, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{lm2[9], 0, 0}});
                         break;
                 }
 
                 if (led) {
                     DrawLED(PICSimLab.CanvasCmd, &output[i]);
                 } else {
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
                 }
             }
         }
@@ -327,7 +341,7 @@ void cboard_McLab1::Draw(void) {
 
     // end draw
     if (update) {
-        PICSimLab.CanvasCmd({CC_END});
+        PICSimLab.CanvasCmd({.cmd = CC_END});
     }
 
     // Lamp

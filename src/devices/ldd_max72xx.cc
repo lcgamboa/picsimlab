@@ -140,21 +140,23 @@ void ldd_max72xx_draw(ldd_max72xx_t* ldd, CanvasCmd_ft CanvasCmd, int x1, int y1
             }
 
             if (ldd->ram[a] & (1 << (b))) {
-                (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
-                (*CanvasCmd)({CC_SETBGCOLOR, .SetBgColor{250, 0, 0}});
+                (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
+                (*CanvasCmd)({.cmd = CC_SETBGCOLOR, .SetBgColor{250, 0, 0}});
             } else {
-                (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
-                (*CanvasCmd)({CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
+                (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
+                (*CanvasCmd)({.cmd = CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
             }
 
             switch (mode) {
                 case 1:
-                    (*CanvasCmd)({CC_CIRCLE, .Circle{1, (float)(x1 + ((7 - x) * 20) + 10),
-                                                     (float)(y1 + ((7 - y) * 20) + 10), 9}});  // Parola
+                    (*CanvasCmd)({.cmd = CC_CIRCLE,
+                                  .Circle{1, (float)(x1 + ((7 - x) * 20) + 10), (float)(y1 + ((7 - y) * 20) + 10),
+                                          9}});  // Parola
                     break;
                 default:
-                    (*CanvasCmd)({CC_CIRCLE, .Circle{1, (float)(x1 + ((x) * 20) + 10),
-                                                     (float)(y1 + ((7 - y) * 20) + 10), 9}});  // FC16
+                    (*CanvasCmd)(
+                        {.cmd = CC_CIRCLE,
+                         .Circle{1, (float)(x1 + ((x) * 20) + 10), (float)(y1 + ((7 - y) * 20) + 10), 9}});  // FC16
                     break;
             }
         }

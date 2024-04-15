@@ -91,8 +91,8 @@ void cpart_gamepad_an::Reset(void) {
 
 cpart_gamepad_an::~cpart_gamepad_an(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 }
 
 void cpart_gamepad_an::DrawOutput(const unsigned int i) {
@@ -100,49 +100,50 @@ void cpart_gamepad_an::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_P1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd(
-                {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 + 10,
-                                          output[i].y2 - output[i].y1 + 20}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1 + 10,
+                                             output[i].y2 - output[i].y1 + 20}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
 
             temp = FloatStrFormat("%3.1f", output_value_an) + "V";
             SpareParts.CanvasCmd(
-                {CC_ROTATEDTEXT, .RotatedText{("Out " + temp).c_str(), output[i].x1, output[i].y1 + 20, 0}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+                {.cmd = CC_ROTATEDTEXT, .RotatedText{("Out " + temp).c_str(), output[i].x1, output[i].y1 + 20, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[0] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[0]).c_str(),
-                                                                   output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd(
+                    {.cmd = CC_ROTATEDTEXT,
+                     .RotatedText{SpareParts.GetPinName(output_pins[0]).c_str(), output[i].x1, output[i].y1, 0}});
             break;
         case O_B5:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{102, 102, 102}});
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{102, 102, 102}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 10}});
             if (output_value[output[i].id - O_B1]) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{15, 15, 15}});
             } else {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{55, 55, 55}});
             }
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 8}});
             break;
         case O_B2:
         case O_B3:
             if (output_value[output[i].id - O_B1]) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{244, 244, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{244, 244, 0}});
             } else {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x9c, 0x94, 0x47}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0x9c, 0x94, 0x47}});
             }
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 20}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 20}});
             break;
         case O_B1:
         case O_B4:
             if (output_value[output[i].id - O_B1]) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 214}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 0, 214}});
             } else {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{64, 87, 106}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{64, 87, 106}});
             }
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 20}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 20}});
             break;
     }
 }

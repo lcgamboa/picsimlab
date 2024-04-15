@@ -620,11 +620,11 @@ void lcd_ili9341_draw(lcd_ili9341_t* lcd, CanvasCmd_ft CanvasCmd, const int x1, 
                 b = (lcd->ram[x][y] & 0x00001F)*8.23;
                  */
 
-                (*CanvasCmd)({CC_SETCOLOR, .SetColor{r, g, b}});
+                (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{r, g, b}});
 
                 // canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2, 2);
 
-                (*CanvasCmd)({CC_POINT, .Point{(float)(x1 + y), (float)(y1 + (239 - x))}});
+                (*CanvasCmd)({.cmd = CC_POINT, .Point{(float)(x1 + y), (float)(y1 + (239 - x))}});
             }
         }
     }

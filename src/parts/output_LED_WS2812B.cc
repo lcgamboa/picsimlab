@@ -67,8 +67,8 @@ cpart_led_ws2812b::cpart_led_ws2812b(const unsigned x, const unsigned y, const c
 cpart_led_ws2812b::~cpart_led_ws2812b(void) {
     SpareParts.UnregisterIOpin(output_pins[0]);
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
     led_ws2812b_end(&led);
 }
 
@@ -80,40 +80,41 @@ void cpart_led_ws2812b::LoadPartImage(void) {
         Height = OHeight + yoff;
 
         SpareParts.SetPartOnDraw(id);
-        BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
+        BitmapId = SpareParts.CanvasCmd({.cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
-        SpareParts.CanvasCmd({CC_DESTROY});
-        SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+        SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+        SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
 
         int BackBitmap = SpareParts.CanvasCmd(
-            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(),
-                                      Scale, 0, Orientation}});
+            {.cmd = CC_LOADIMAGE,
+             .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
+                        Orientation}});
 
         int LEDBitmap = SpareParts.CanvasCmd(
-            {CC_LOADIMAGE,
+            {.cmd = CC_LOADIMAGE,
              .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetName() + "/LED.svg").c_str(), Scale, 0,
                         Orientation}});
 
-        SpareParts.CanvasCmd({CC_INIT, .Init{Scale, Scale, Orientation}});
-        SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
-        SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
+        SpareParts.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
+        SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+        SpareParts.CanvasCmd({.cmd = CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
 
-        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
-        SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{BackBitmap, 0, yoff * Scale}});
+        SpareParts.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+        SpareParts.CanvasCmd({.cmd = CC_PUTBITMAP, .PutBitmap{BackBitmap, 0, yoff * Scale}});
 
         if (!led.diffuser) {
             for (unsigned int r = 0; r < led.nrows; r++)
                 for (unsigned int c = 0; c < led.ncols; c++) {
-                    SpareParts.CanvasCmd(
-                        {CC_PUTBITMAP, .PutBitmap{LEDBitmap, (output_ids[O_LED]->x1 + (40 * c)) * Scale,
-                                                  (output_ids[O_LED]->y1 - (40 * r) + yoff) * Scale}});
+                    SpareParts.CanvasCmd({.cmd = CC_PUTBITMAP,
+                                          .PutBitmap{LEDBitmap, (output_ids[O_LED]->x1 + (40 * c)) * Scale,
+                                                     (output_ids[O_LED]->y1 - (40 * r) + yoff) * Scale}});
                 }
         }
-        SpareParts.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
-        SpareParts.CanvasCmd({CC_END});
+        SpareParts.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+        SpareParts.CanvasCmd({.cmd = CC_END});
 
-        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
-        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{LEDBitmap}});
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{LEDBitmap}});
 
     } else {
         Width = OWidth;
@@ -127,49 +128,55 @@ void cpart_led_ws2812b::LoadPartImage(void) {
 void cpart_led_ws2812b::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_P1:
-            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{8}});
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
-                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                                  .Rectangle{1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
+                                             output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 + yoff, 90.0}});
-            else
                 SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
-                                                  output[i].x1, output[i].y2 + yoff, 90.0}});
+                    {.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 + yoff, 90.0}});
+            else
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                   output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_P2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
-                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                                  .Rectangle{1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
+                                             output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P2] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 + yoff, 90.0}});
-            else
                 SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{std::to_string(output_pins[output[i].id - O_P2]).c_str(),
-                                                  output[i].x1, output[i].y2 + yoff, 90.0}});
+                    {.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 + yoff, 90.0}});
+            else
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{std::to_string(output_pins[output[i].id - O_P2]).c_str(),
+                                                   output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
             break;
         case O_F1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
-                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"5V", output[i].x1, output[i].y2 + yoff, 90.0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                                  .Rectangle{1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
+                                             output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"5V", output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_F2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1 + yoff,
-                                                           output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2 + yoff, 90.0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                                  .Rectangle{1, output[i].x1, output[i].y1 + yoff, output[i].x2 - output[i].x1,
+                                             output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2 + yoff, 90.0}});
             break;
         case O_LED:
             // draw led text
             if (led.update) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
                 led_ws2812b_draw(&led, SpareParts.CanvasCmd, output[i].x1, output[i].y1 + yoff,
                                  output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1);
             }
@@ -226,7 +233,7 @@ void cpart_led_ws2812b::ChangeType(const unsigned int rows, const unsigned int c
     if ((led.nrows != rows) || (led.ncols != cols) || (led.diffuser != diffuser)) {
         if (BitmapId >= 0) {
             SpareParts.SetPartOnDraw(id);
-            SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         }
 
         unsigned int rows_ = rows;

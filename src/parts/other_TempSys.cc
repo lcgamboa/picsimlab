@@ -51,12 +51,12 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
     vtc = 0;
     vt = 0;
 
-    vent[0] =
-        SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(),
-                                                       Scale * 0.867f, 0, Orientation}});
-    vent[1] =
-        SpareParts.CanvasCmd({CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(),
-                                                       Scale * 0.867f, 0, Orientation}});
+    vent[0] = SpareParts.CanvasCmd(
+        {.cmd = CC_LOADIMAGE,
+         .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT1.svg").c_str(), Scale * 0.867f, 0, Orientation}});
+    vent[1] = SpareParts.CanvasCmd(
+        {.cmd = CC_LOADIMAGE,
+         .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/VT2.svg").c_str(), Scale * 0.867f, 0, Orientation}});
 
     input_pins[0] = 0;
     input_pins[1] = 0;
@@ -84,13 +84,13 @@ cpart_tempsys::cpart_tempsys(const unsigned x, const unsigned y, const char* nam
 
 cpart_tempsys::~cpart_tempsys(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[0]}});
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{vent[1]}});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{vent[0]}});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{vent[1]}});
     vent[0] = -1;
     vent[1] = -1;
 
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 
     pboard->TimerUnregister(TimerID);
 }
@@ -103,49 +103,54 @@ void cpart_tempsys::DrawOutput(const unsigned int i) {
         case O_CO:
         case O_TA:
         case O_TE:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_HT] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_HT]).c_str(),
-                                                  output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_HT]).c_str(),
+                                                   output[i].x1, output[i].y1, 0}});
             break;
         case O_F1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"12V", output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"12V", output[i].x1, output[i].y1, 0}});
             break;
         case O_F2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y1, 0}});
             break;
         case O_OTA:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             snprintf(str, 100, "Ambient.=%5.2fC", ambient);
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{str, output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{str, output[i].x1, output[i].y1, 0}});
             break;
         case O_OTE:
             snprintf(str, 100, "Temp.=%5.2fC", temp[0]);
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{str, output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{str, output[i].x1, output[i].y1, 0}});
             break;
         case O_VT:
-            SpareParts.CanvasCmd({CC_PUTBITMAP, .PutBitmap{vent[vt], output[i].x1, output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_PUTBITMAP, .PutBitmap{vent[vt], output[i].x1, output[i].y1}});
             break;
     }
 }

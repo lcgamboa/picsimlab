@@ -160,11 +160,11 @@ void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1
     unsigned char x, y, z;
 
     if (lcd->e) {
-        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, 0, 0}});
+        (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+        (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{0, 0, 0}});
     } else {
-        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{82, 129, 111}});
-        (*CanvasCmd)({CC_SETCOLOR, .SetColor{82, 129, 111}});
+        (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{82, 129, 111}});
+        (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{82, 129, 111}});
     }
 
     // canvas->Rectangle (1, x1, y1, w1, h1);//erase all
@@ -180,13 +180,13 @@ void lcd_pcd8544_draw(lcd_pcd8544_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1
                 lcd->ram[x][y] &= 0x00FF;  // clear draw
                 for (z = 0; z < 8; z++) {
                     if (!(lcd->ram[x][y] & (0x01 << z)) != (!lcd->e)) {
-                        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0, 0, 0}});
+                        (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                        (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{0, 0, 0}});
                     } else {
-                        (*CanvasCmd)({CC_SETFGCOLOR, .SetFgColor{82, 129, 111}});
-                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{82, 129, 111}});
+                        (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{82, 129, 111}});
+                        (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{82, 129, 111}});
                     }
-                    (*CanvasCmd)({CC_RECTANGLE,
+                    (*CanvasCmd)({.cmd = CC_RECTANGLE,
                                   .Rectangle{1, (float)(x1 + (x * 2)), (float)(y1 + (y * 8 * 2) + (z * 2)), 2, 2}});
                     // canvas->Point (x1 + x, y1 + y*8 +z);
                 }

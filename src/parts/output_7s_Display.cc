@@ -137,12 +137,12 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
 
 cpart_7s_display::~cpart_7s_display(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 }
 
 void cpart_7s_display::DrawOutput(const unsigned int i) {
-    SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
+    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
 
     switch (output[i].id) {
         case O_SA:
@@ -157,186 +157,216 @@ void cpart_7s_display::DrawOutput(const unsigned int i) {
         case O_DISP2:
         case O_DISP3:
         case O_DISP4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_SA] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_SA]).c_str(),
-                                                  output[i].x1, output[i].y2, 90.0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_SA]).c_str(),
+                                                   output[i].x1, output[i].y2, 90.0}});
             break;
         case O_FX1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
             if (active) {
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90.0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90.0}});
             } else {
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"+5V", output[i].x1, output[i].y2, 90.0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"+5V", output[i].x1, output[i].y2, 90.0}});
             }
             break;
         case O_A1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[0], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[0], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_B1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[1], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[1], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_C1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[2], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[2], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_D1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[3], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[3], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_E1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[4], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[4], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_F1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[5], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[5], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_G1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[6], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[6], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_P1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm1[7], 0}});
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm1[7], 0}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
             break;
 
         case O_A2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[0], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[0], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_B2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[1], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[1], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_C2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[2], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[2], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_D2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[3], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[3], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_E2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[4], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[4], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_F2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[5], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[5], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_G2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[6], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[6], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_P2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm2[7], 0}});
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm2[7], 0}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
             break;
 
         case O_A3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[0], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[0], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_B3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[1], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[1], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_C3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[2], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[2], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_D3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[3], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[3], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_E3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[4], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[4], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_F3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[5], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[5], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_G3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[6], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[6], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_P3:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm3[7], 0}});
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm3[7], 0}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
             break;
             break;
         case O_A4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[0], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[0], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_B4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[1], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[1], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_C4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[2], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[2], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_D4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[3], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[3], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_E4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[4], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[4], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_F4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[5], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[5], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_G4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[6], 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[6], 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_P4:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, lm4[7], 0}});
-            SpareParts.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, lm4[7], 0}});
+            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
             break;
         case O_SS1:
             output_ids[O_A1]->update = 1;
@@ -347,9 +377,10 @@ void cpart_7s_display::DrawOutput(const unsigned int i) {
             output_ids[O_F1]->update = 1;
             output_ids[O_G1]->update = 1;
             output_ids[O_P1]->update = 1;
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{10, 10, 10}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
         case O_SS2:
             output_ids[O_A2]->update = 1;
             output_ids[O_B2]->update = 1;
@@ -359,9 +390,10 @@ void cpart_7s_display::DrawOutput(const unsigned int i) {
             output_ids[O_F2]->update = 1;
             output_ids[O_G2]->update = 1;
             output_ids[O_P2]->update = 1;
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{10, 10, 10}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
         case O_SS3:
             output_ids[O_A3]->update = 1;
             output_ids[O_B3]->update = 1;
@@ -371,9 +403,10 @@ void cpart_7s_display::DrawOutput(const unsigned int i) {
             output_ids[O_F3]->update = 1;
             output_ids[O_G3]->update = 1;
             output_ids[O_P3]->update = 1;
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{10, 10, 10}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
         case O_SS4:
             output_ids[O_A4]->update = 1;
             output_ids[O_B4]->update = 1;
@@ -383,9 +416,10 @@ void cpart_7s_display::DrawOutput(const unsigned int i) {
             output_ids[O_F4]->update = 1;
             output_ids[O_G4]->update = 1;
             output_ids[O_P4]->update = 1;
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{10, 10, 10}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{10, 10, 10}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
     }
 }
@@ -748,8 +782,8 @@ void cpart_7s_display::ChangeType(unsigned char tp) {
 
     if (BitmapId >= 0) {
         SpareParts.SetPartOnDraw(id);
-        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-        SpareParts.CanvasCmd({CC_DESTROY});
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+        SpareParts.CanvasCmd({.cmd = CC_DESTROY});
     }
 
     dtype = tp;

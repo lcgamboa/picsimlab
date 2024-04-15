@@ -161,8 +161,8 @@ cpart_Jumpers::~cpart_Jumpers(void) {
         SpareParts.UnregisterIOpin(output_pins[i]);
     }
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 }
 
 void cpart_Jumpers::DrawOutput(const unsigned int i) {
@@ -173,28 +173,31 @@ void cpart_Jumpers::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_L1 ... O_L16:
             c = ppins[output_pins[output[i].id - O_L1] - 1].oavalue;
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{c, c, 0}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{c, c, 0}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_I1 ... O_I16:
-            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{10}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             snprintf(pname, 256, "%2i-%s", output[i].id - O_I1 + 1,
                      SpareParts.GetPinName(input_pins[output[i].id - O_I1]).c_str());
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{pname, output[i].x1, output[i].y2, 90.0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{pname, output[i].x1, output[i].y2, 90.0}});
             break;
         case O_O1 ... O_O16:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             snprintf(pname, 256, "%2i-%s", output[i].id - O_O1 + 1,
                      SpareParts.GetPinName(output_pins[output[i].id - O_O1]).c_str());
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{pname, output[i].x1, output[i].y2, 90.0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{pname, output[i].x1, output[i].y2, 90.0}});
             break;
         default:
             break;

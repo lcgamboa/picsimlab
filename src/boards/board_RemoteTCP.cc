@@ -171,7 +171,7 @@ cboard_RemoteTCP::cboard_RemoteTCP(void) {
     ReadMaps();      // Read input and output board maps
 
     micbmp = PICSimLab.CanvasCmd(
-        {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic48.svg").c_str(), Scale, 1, 0}});
+        {.cmd = CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic48.svg").c_str(), Scale, 1, 0}});
 
     // TODO define pins
 
@@ -203,7 +203,7 @@ cboard_RemoteTCP::cboard_RemoteTCP(void) {
 // Destructor called once on board destruction
 
 cboard_RemoteTCP::~cboard_RemoteTCP(void) {
-    PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
+    PICSimLab.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = -1;
 }
 
@@ -226,13 +226,14 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
     ret = bsim_remote::MInit(processor, fname, freq);
 
     int bmp = PICSimLab.CanvasCmd(
-        {CC_LOADIMAGE,
+        {.cmd = CC_LOADIMAGE,
          .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg").c_str(),
                     Scale, 1, 0}});
 
     if (bmp < 0) {
         bmp = PICSimLab.CanvasCmd(
-            {CC_LOADIMAGE, .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
+            {.cmd = CC_LOADIMAGE,
+             .LoadImage{(PICSimLab.GetSharePath() + "boards/Common/ic6.svg").c_str(), Scale, 1, 0}});
         printf("picsimlab: IC package with %i pins not found!\n", MGetPinCount());
         printf("picsimlab: %s not found!\n",
                (const char*)(PICSimLab.GetSharePath() + "boards/Common/ic" + std::to_string(MGetPinCount()) + ".svg")
@@ -240,7 +241,7 @@ int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq
     }
 
     if (micbmp)
-        PICSimLab.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{micbmp}});
+        PICSimLab.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = bmp;
 
     PICSimLab.SetMcuPwr(0);
@@ -382,52 +383,54 @@ void cboard_RemoteTCP::Draw(void) {
             output[i].update = 0;
 
             if (!update) {
-                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({.cmd = CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;  // set to update buffer
 
-            PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
+            PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});  // black
 
             switch (output[i].id)  // search for color of output
             {
                 case O_LPWR:  // Blue using mcupwr value
                     PICSimLab.CanvasCmd(
-                        {CC_SETCOLOR, .SetColor{0, 0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55)}});
-                    PICSimLab.CanvasCmd(
-                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                  output[i].y2 - output[i].y1}});
+                        {.cmd = CC_SETCOLOR, .SetColor{0, 0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55)}});
+                    PICSimLab.CanvasCmd({.cmd = CC_RECTANGLE,
+                                         .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                    output[i].y2 - output[i].y1}});
                     break;
                 case O_MP:
 
-                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{10}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{10}});
 
-                    PICSimLab.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{((MGetPinCount() >= 44) || (MGetPinCount() <= 8))
-                                                                          ? 6
-                                                                          : ((MGetPinCount() > 14) ? 12 : 10)}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETFONTSIZE,
+                                         .SetFontSize{((MGetPinCount() >= 44) || (MGetPinCount() <= 8))
+                                                          ? 6
+                                                          : ((MGetPinCount() > 14) ? 12 : 10)}});
 
-                    PICSimLab.CanvasCmd({CC_GETBITMAPSIZE, .GetBitmapSize{micbmp, &w, &h}});
-                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
-                    PICSimLab.CanvasCmd({CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
-                    PICSimLab.CanvasCmd({CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
-                    PICSimLab.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{230, 230, 230}});
+                    PICSimLab.CanvasCmd({.cmd = CC_GETBITMAPSIZE, .GetBitmapSize{micbmp, &w, &h}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+                    PICSimLab.CanvasCmd(
+                        {.cmd = CC_PUTBITMAP, .PutBitmap{micbmp, output[i].x1 * Scale, output[i].y1 * Scale}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{230, 230, 230}});
 
                     rec.x = output[i].x1;
                     rec.y = output[i].y1;
                     rec.width = w / Scale;
                     rec.height = h / Scale;
-                    PICSimLab.CanvasCmd(
-                        {CC_TEXTONRECT, .TextOnRect{Proc.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
+                    PICSimLab.CanvasCmd({.cmd = CC_TEXTONRECT,
+                                         .TextOnRect{Proc.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
                     break;
                 case O_RST:
-                    PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{100, 100, 100}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 11}});
                     if (p_RST) {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
-                    PICSimLab.CanvasCmd({CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
+                    PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 9}});
                     break;
             }
         }
@@ -435,7 +438,7 @@ void cboard_RemoteTCP::Draw(void) {
 
     // end draw
     if (update) {
-        PICSimLab.CanvasCmd({CC_END});
+        PICSimLab.CanvasCmd({.cmd = CC_END});
     }
 }
 

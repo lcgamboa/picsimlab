@@ -65,8 +65,8 @@ cpart_TEXT::cpart_TEXT(const unsigned x, const unsigned y, const char* name, con
 
 cpart_TEXT::~cpart_TEXT(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 }
 
 void cpart_TEXT::PostInit(void) {
@@ -94,12 +94,12 @@ void cpart_TEXT::LoadPartImage(void) {
 
     SpareParts.SetPartOnDraw(id);
     if (BitmapId >= 0) {
-        SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     }
 
-    BitmapId = SpareParts.CanvasCmd({CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
-    SpareParts.CanvasCmd({CC_DESTROY});
-    SpareParts.CanvasCmd({CC_CREATE, .Create{BitmapId}});
+    BitmapId = SpareParts.CanvasCmd({.cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
 }
 
 void cpart_TEXT::DrawOutput(const unsigned int i) {
@@ -110,23 +110,25 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_TEXTB:
 
-            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{Size}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{Size}});
 
             SpareParts.CanvasCmd(
-                {CC_SETCOLOR, .SetColor{colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+                {.cmd = CC_SETCOLOR, .SetColor{colortable[Bgcolor].r, colortable[Bgcolor].g, colortable[Bgcolor].b}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
             if (Link.length()) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 0xff}});
-                SpareParts.CanvasCmd({CC_SETLINEWIDTH, .SetLineWidth{2}});
-                SpareParts.CanvasCmd(
-                    {CC_RECTANGLE, .Rectangle{0, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                              output[i].y2 - output[i].y1}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 0, 0xff}});
+                SpareParts.CanvasCmd({.cmd = CC_SETLINEWIDTH, .SetLineWidth{2}});
+                SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                                      .Rectangle{0, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                 output[i].y2 - output[i].y1}});
             }
 
             SpareParts.CanvasCmd(
-                {CC_SETCOLOR, .SetColor{colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b}});
+                {.cmd = CC_SETCOLOR,
+                 .SetColor{colortable[Textcolor].r, colortable[Textcolor].g, colortable[Textcolor].b}});
             rec.x = output[i].x1;
             rec.y = output[i].y1;
             rec.width = output[i].x2 - output[i].x1;
@@ -138,7 +140,7 @@ void cpart_TEXT::DrawOutput(const unsigned int i) {
             }
 
             SpareParts.CanvasCmd(
-                {CC_TEXTONRECT, .TextOnRect{Text.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
+                {.cmd = CC_TEXTONRECT, .TextOnRect{Text.c_str(), rec, CC_ALIGN_CENTER | CC_ALIGN_CENTER_VERTICAL}});
             break;
     }
 }

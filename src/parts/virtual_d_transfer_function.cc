@@ -65,8 +65,8 @@ cpart_dtfunc::cpart_dtfunc(const unsigned x, const unsigned y, const char* name,
 
 cpart_dtfunc::~cpart_dtfunc(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 }
 
 void cpart_dtfunc::DrawOutput(const unsigned int i) {
@@ -76,24 +76,27 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_P1:
         case O_P2:
-            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{7}});
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{249, 249, 249}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{7}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{249, 249, 249}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
             if (output[i].id == O_P1) {
                 if (pins[0] == 0)
-                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                    SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
                 else
-                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[0]).c_str(),
-                                                                       output[i].x1, output[i].y1, 0}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ROTATEDTEXT,
+                         .RotatedText{SpareParts.GetPinName(pins[0]).c_str(), output[i].x1, output[i].y1, 0}});
             }
             if (output[i].id == O_P2) {
                 if (pins[1] == 0)
-                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                    SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
                 else
-                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(pins[1]).c_str(),
-                                                                       output[i].x1, output[i].y1, 0}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ROTATEDTEXT,
+                         .RotatedText{SpareParts.GetPinName(pins[1]).c_str(), output[i].x1, output[i].y1, 0}});
             }
             break;
         case O_IG:
@@ -101,10 +104,11 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
         case O_OG:
         case O_OO:
         case O_TS:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 220}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{220, 220, 220}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
             if (output[i].id == O_IG)
                 snprintf(buff, 19, "%5.2f", in_gain);
             if (output[i].id == O_IO)
@@ -115,12 +119,13 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                 snprintf(buff, 19, "%5.2f", out_off);
             if (output[i].id == O_TS)
                 snprintf(buff, 19, "%5.2f", sample);
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{buff, output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{buff, output[i].x1, output[i].y1, 0}});
             break;
         case O_NUM:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 220}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{220, 220, 220}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
             strncpy(eq, "[", 99);
             for (int i = 0; i < ordern; i++) {
@@ -128,13 +133,14 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                 strncat(eq, buff, 99);
             }
             strncat(eq, "]", 99);
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{eq, output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{eq, output[i].x1, output[i].y1, 0}});
             break;
         case O_DEN:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{220, 220, 220}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{220, 220, 220}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
             strncpy(eq, "[", 99);
             for (int i = 0; i < orderd; i++) {
@@ -142,8 +148,8 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                 strncat(eq, buff, 99);
             }
             strncat(eq, "]", 99);
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{eq, output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{eq, output[i].x1, output[i].y1, 0}});
             break;
     }
 }
@@ -190,50 +196,50 @@ void cpart_dtfunc::Reset(void) {
         v[i] = 0;
 }
 
-void
-cpart_dtfunc::EvKeyPress(unsigned int key, unsigned int mask) {
- /*
- if(key == '1')
- {
-   p_BT1=0; 
- }
- if(key == '2')
- {
-   p_BT2=0; 
- }
- if(key == '3')
- {
-   p_BT3=0; 
- }
- if(key == '4')
- {
-   p_BT4=0; 
- }
-  */ };
+void cpart_dtfunc::EvKeyPress(unsigned int key, unsigned int mask) {
+    /*
+    if(key == '1')
+    {
+      p_BT1=0;
+    }
+    if(key == '2')
+    {
+      p_BT2=0;
+    }
+    if(key == '3')
+    {
+      p_BT3=0;
+    }
+    if(key == '4')
+    {
+      p_BT4=0;
+    }
+     */
+};
 
-void
-cpart_dtfunc::EvKeyRelease(unsigned int key, unsigned int mask) {
- /*
- if(key == '1')
- {
-   p_BT1=1; 
- }
-  
- if(key == '2')
- {
-   p_BT2=1; 
- }
-  
- if(key == '3')
- {
-   p_BT3=1; 
- }
-  
- if(key == '4')
- {
-   p_BT4=1; 
- }
-  */ };
+void cpart_dtfunc::EvKeyRelease(unsigned int key, unsigned int mask) {
+    /*
+    if(key == '1')
+    {
+      p_BT1=1;
+    }
+
+    if(key == '2')
+    {
+      p_BT2=1;
+    }
+
+    if(key == '3')
+    {
+      p_BT3=1;
+    }
+
+    if(key == '4')
+    {
+      p_BT4=1;
+    }
+     */
+};
 
 unsigned short cpart_dtfunc::GetInputId(char* name) {
     printf("Error input '%s' don't have a valid id! \n", name);

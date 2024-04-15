@@ -393,13 +393,13 @@ void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1
                 lcd->ram[x][y] &= 0x00FF;  // clear draw
                 for (z = 0; z < 8; z++) {
                     if (!(lcd->ram[x][y] & (0x01 << z)) != (!lcd->inv)) {
-                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0xb4, 0xff, 0xfc}});  // front
+                        (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{0xb4, 0xff, 0xfc}});  // front
                     } else {
-                        (*CanvasCmd)({CC_SETCOLOR, .SetColor{0x0f, 0x0f, 0x17}});  // back
+                        (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{0x0f, 0x0f, 0x17}});  // back
                     }
                     // canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2,
                     // 2);
-                    (*CanvasCmd)({CC_POINT, .Point{(float)(x1 + x), (float)(y1 + y * 8 + z)}});
+                    (*CanvasCmd)({.cmd = CC_POINT, .Point{(float)(x1 + x), (float)(y1 + y * 8 + z)}});
                 }
             }
         }

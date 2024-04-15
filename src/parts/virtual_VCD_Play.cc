@@ -81,8 +81,8 @@ void cpart_VCD_Play::RegisterRemoteControl(void) {
 
 cpart_VCD_Play::~cpart_VCD_Play(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
     if (vcd_data) {
         free(vcd_data);
         vcd_data = NULL;
@@ -103,29 +103,31 @@ void cpart_VCD_Play::DrawOutput(const unsigned int i) {
         case O_P6:
         case O_P7:
         case O_P8:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
-                                                  output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P1]).c_str(),
+                                                   output[i].x1, output[i].y1, 0}});
             break;
         case O_NAME:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             to = strlen(f_vcd_name);
             if (to < 48) {
                 to = 0;
             } else {
                 to = to - 48;
             }
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{f_vcd_name + to, output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{f_vcd_name + to, output[i].x1, output[i].y1, 0}});
             break;
         case O_L1:
         case O_L2:
@@ -137,20 +139,21 @@ void cpart_VCD_Play::DrawOutput(const unsigned int i) {
         case O_L8:
             if (output_pins[output[i].id - O_L1] > 0) {
                 SpareParts.CanvasCmd(
-                    {CC_SETCOLOR, .SetColor{(unsigned int)ppins[output_pins[output[i].id - O_L1] - 1].oavalue, 0, 0}});
+                    {.cmd = CC_SETCOLOR,
+                     .SetColor{(unsigned int)ppins[output_pins[output[i].id - O_L1] - 1].oavalue, 0, 0}});
             } else {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{30, 0, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{30, 0, 0}});
             }
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
             DrawLED(SpareParts.CanvasCmd, &output[i]);
             break;
         case O_PLAY:
             if (play > 0) {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{0, 255, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 255, 0}});
             } else {
-                SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{255, 0, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{255, 0, 0}});
             }
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
             DrawLED(SpareParts.CanvasCmd, &output[i]);
             break;
     }

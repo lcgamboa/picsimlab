@@ -58,40 +58,46 @@ cpart_RTC_pfc8563::cpart_RTC_pfc8563(const unsigned x, const unsigned y, const c
 cpart_RTC_pfc8563::~cpart_RTC_pfc8563(void) {
     rtc_pfc8563_end(&rtc);
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
 }
 
 void cpart_RTC_pfc8563::DrawOutput(const unsigned int i) {
     switch (output[i].id) {
         case O_IC:
-            SpareParts.CanvasCmd({CC_SETFONTSIZE, .SetFontSize{6}});
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{26, 26, 26}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"PFC8563", output[i].x1, output[i].y2 - 15, 0.0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{6}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{26, 26, 26}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_ROTATEDTEXT, .RotatedText{"PFC8563", output[i].x1, output[i].y2 - 15, 0.0}});
             break;
         default:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {CC_ROTATEDTEXT, .RotatedText{pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0}});
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                  .RotatedText{pin_names[output[i].id - O_P1], output[i].x1, output[i].y2, 90.0}});
 
             int pinv = pin_values[output[i].id - O_P1][0];
             if (pinv > 10) {
-                SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{pin_values[output[i].id - O_P1], output[i].x1,
-                                                                   output[i].y2 - 30, 90.0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+                SpareParts.CanvasCmd(
+                    {.cmd = CC_ROTATEDTEXT,
+                     .RotatedText{pin_values[output[i].id - O_P1], output[i].x1, output[i].y2 - 30, 90.0}});
             } else {
                 if (input_pins[pinv] == 0)
-                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2 - 30, 90.0}});
                 else
-                    SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[pinv]).c_str(),
-                                                                       output[i].x1, output[i].y2 - 30, 90.0}});
+                    SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                          .RotatedText{SpareParts.GetPinName(input_pins[pinv]).c_str(), output[i].x1,
+                                                       output[i].y2 - 30, 90.0}});
             }
             break;
     }

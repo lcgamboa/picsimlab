@@ -85,52 +85,54 @@ cpart_Buzzer::cpart_Buzzer(const unsigned x, const unsigned y, const char* name,
 
 cpart_Buzzer::~cpart_Buzzer(void) {
     SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     if (buffer) {
         delete[] buffer;
     }
-    SpareParts.CanvasCmd({CC_DESTROY});
+    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
     PICSimLab.SystemCmd(PSC_AUDIOCHDESTROY, (const char*)&buzzerId);
 }
 
 void cpart_Buzzer::DrawOutput(const unsigned int i) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
+    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{30, 0, 0}});
 
     switch (output[i].id) {
         case O_P1:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd(
-                    {CC_ROTATEDTEXT, .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
-                                                  output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                                      .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
+                                                   output[i].x1, output[i].y1, 0}});
             break;
         case O_P2:
-            SpareParts.CanvasCmd({CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                           output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
-            SpareParts.CanvasCmd({CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y1, 0}});
             break;
         case O_L1:
-            SpareParts.CanvasCmd({CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
 
             if (input_pins[0] > 0) {
                 if (active) {
                     SpareParts.CanvasCmd(
-                        {CC_SETBGCOLOR, .SetBgColor{(unsigned int)ppins[input_pins[0] - 1].oavalue, 0, 0}});
+                        {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)ppins[input_pins[0] - 1].oavalue, 0, 0}});
                 } else {
-                    SpareParts.CanvasCmd(
-                        {CC_SETBGCOLOR, .SetBgColor{(unsigned int)(310 - ppins[input_pins[0] - 1].oavalue), 0, 0}});
+                    SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR,
+                                          .SetBgColor{(unsigned int)(310 - ppins[input_pins[0] - 1].oavalue), 0, 0}});
                 }
             } else {
-                SpareParts.CanvasCmd({CC_SETBGCOLOR, .SetBgColor{55, 0, 0}});
+                SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{55, 0, 0}});
             }
             DrawLED(SpareParts.CanvasCmd, &output[i]);
             break;

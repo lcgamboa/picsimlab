@@ -312,8 +312,8 @@ void cboard_Arduino_Uno::Draw(void) {
             output[i].update = 0;
 
             if (!update) {
-                PICSimLab.CanvasCmd({CC_INIT, .Init{Scale, Scale, 0}});
-                PICSimLab.CanvasCmd({CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
+                PICSimLab.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, 0}});
+                PICSimLab.CanvasCmd({.cmd = CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             update++;          // set to update buffer
             if (!output[i].r)  // if output shape is a rectangle
@@ -321,45 +321,47 @@ void cboard_Arduino_Uno::Draw(void) {
                 switch (output[i].id) {
                     case O_ON:
                         PICSimLab.CanvasCmd(
-                            {CC_SETCOLOR, .SetColor{0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0}});
+                            {.cmd = CC_SETCOLOR, .SetColor{0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55), 0}});
                         break;
                     case O_RX:
                         PICSimLab.CanvasCmd(
-                            {CC_SETCOLOR,
+                            {.cmd = CC_SETCOLOR,
                              .SetColor{0, (unsigned int)(255 - pins[1].oavalue) * PICSimLab.GetMcuPwr(), 0}});
                         break;
                     case O_TX:
                         PICSimLab.CanvasCmd(
-                            {CC_SETCOLOR,
+                            {.cmd = CC_SETCOLOR,
                              .SetColor{
                                  0, (unsigned int)(255 - ((unsigned char)pins[2].oavalue * 10)) * PICSimLab.GetMcuPwr(),
                                  0}});
                         break;
                     case O_L:
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, (unsigned int)pins[LED_pin].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, (unsigned int)pins[LED_pin].oavalue, 0}});
                         break;
                     case O_RST:
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{100, 100, 100}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{100, 100, 100}});
                         break;
                     default:
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{0, 0, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 0, 0}});
                         break;
                 }
 
                 if (output[i].id == O_RST) {
                     PICSimLab.CanvasCmd(
-                        {CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5}});
+                        {.cmd = CC_CIRCLE,
+                         .Circle{1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 5}});
                     if (p_RST) {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{15, 15, 15}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{15, 15, 15}});
                     } else {
-                        PICSimLab.CanvasCmd({CC_SETCOLOR, .SetColor{55, 55, 55}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{55, 55, 55}});
                     }
                     PICSimLab.CanvasCmd(
-                        {CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7}});
+                        {.cmd = CC_CIRCLE,
+                         .Circle{1, output[i].cx, output[i].cy, ((output[i].x2 - output[i].x1) / 2) - 7}});
                 } else {
-                    PICSimLab.CanvasCmd(
-                        {CC_RECTANGLE, .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                                  output[i].y2 - output[i].y1}});
+                    PICSimLab.CanvasCmd({.cmd = CC_RECTANGLE,
+                                         .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                                                    output[i].y2 - output[i].y1}});
                 }
             }
         }
@@ -367,7 +369,7 @@ void cboard_Arduino_Uno::Draw(void) {
 
     // end draw
     if (update) {
-        PICSimLab.CanvasCmd({CC_END});
+        PICSimLab.CanvasCmd({.cmd = CC_END});
     }
 
     int value = (pins[PWM_pins[0]].oavalue - 55) / 2;
