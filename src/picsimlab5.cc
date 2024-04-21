@@ -1077,6 +1077,18 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
             }
             return -1;
         } break;
+        case CC_ARC:
+            Window5.Canvas[partn].Arc(cmd.Arc.filled, cmd.Arc.x1, cmd.Arc.y1, cmd.Arc.x2, cmd.Arc.y2, cmd.Arc.xc,
+                                      cmd.Arc.yc);
+            break;
+        case CC_ELLIPTICARC:
+            Window5.Canvas[partn].EllipticArc(cmd.EllipticArc.filled, cmd.EllipticArc.x, cmd.EllipticArc.y,
+                                              cmd.EllipticArc.width, cmd.EllipticArc.height, cmd.EllipticArc.start,
+                                              cmd.EllipticArc.end);
+            break;
+        case CC_LINES:
+            Window5.Canvas[partn].Lines((lxPoint*)cmd.Lines.points, cmd.Lines.npoints);
+            break;
         case CC_LAST:
         default:
             break;

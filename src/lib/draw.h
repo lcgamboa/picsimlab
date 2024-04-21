@@ -52,6 +52,9 @@ enum PICSimLabCanvasCmd {
     CC_GETBITMAPSIZE,
     CC_LOADIMAGE,
     CC_CREATEIMAGE,
+    CC_ARC,
+    CC_ELLIPTICARC,
+    CC_LINES,
     CC_LAST
 };
 
@@ -192,6 +195,28 @@ typedef struct {
             const int usealpha;
             const int orientation;
         } CreateImage;
+        struct {
+            bool filled;
+            float x1;
+            float y1;
+            float x2;
+            float y2;
+            float xc;
+            float yc;
+        } Arc;
+        struct {
+            bool filled;
+            float x;
+            float y;
+            float width;
+            float height;
+            double start;
+            double end;
+        } EllipticArc;
+        struct {
+            const Point_t* points;
+            const int npoints;
+        } Lines;
     };
 } CanvasCmd_t;
 

@@ -183,9 +183,104 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
             SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
                                   .Rectangle{1, output[i].x1 - xoff, output[i].y1, output[i].x2 - output[i].x1,
                                              output[i].y2 - output[i].y1}});
+
             SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-            SpareParts.CanvasCmd(
-                {.cmd = CC_ROTATEDTEXT, .RotatedText{logicgate_name[gatetype], output[i].x1 - xoff, output[i].y1, 0}});
+            SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetFgColor{250, 250, 180}});
+
+            switch (gatetype) {
+                case LG_NOT:
+                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 16 - xoff, output[i].cy + 0, 3}});
+                case LG_BUFFER: {
+                    Point_t pts[] = {{-10, -13}, {-10, 13}, {13, 0}};
+                    for (int p = 0; p < 3; p++) {
+                        // offset
+                        pts[p].x += output[i].cx - xoff;
+                        pts[p].y += output[i].cy;
+                    }
+                    SpareParts.CanvasCmd({.cmd = CC_POLYGON, .Polygon{1, pts, 3}});
+
+                } break;
+
+                case LG_NAND:
+                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 19 - xoff, output[i].cy + 0, 3}});
+                case LG_AND: {
+                    Point_t pts[] = {{0, -16}, {-21, -16}, {-21, 16}, {0, 16}};
+                    for (int p = 0; p < 4; p++) {
+                        // offset
+                        pts[p].x += output[i].cx - xoff;
+                        pts[p].y += output[i].cy;
+                    }
+                    SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{250, 250, 180}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, -21, 32}});
+                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{pts, 4}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx + 0 - 16 - xoff, output[i].cy + 0 - 16, 32, 32, -90, 90}});
+                } break;
+                case LG_NOR:
+                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 25 - xoff, output[i].cy + 0, 3}});
+                case LG_OR: {
+                    Point_t pts[] = {{-16, 16}, {-6, 16}, {-6, -16}, {-16, -16}};
+                    for (int p = 0; p < 4; p++) {
+                        // offset
+                        pts[p].x += output[i].cx - xoff;
+                        pts[p].y += output[i].cy;
+                    }
+                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{250, 255, 0}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, 14, -32}});
+                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{pts, 2}});
+
+                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{&pts[2], 2}});
+
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy + 16 - 32, 64, 64, 30, 90}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy - 16 - 32, 64, 64, 270, 330}});
+                    SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 37 - 26 - xoff, output[i].cy - 0 - 26, 52, 52, -37, 37}});
+
+                } break;
+                case LG_XNOR:
+                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 25 - xoff, output[i].cy + 0, 3}});
+                case LG_XOR: {
+                    Point_t pts[] = {{-16, 16}, {-6, 16}, {-6, -16}, {-16, -16}};
+                    for (int p = 0; p < 4; p++) {
+                        // offset
+                        pts[p].x += output[i].cx - xoff;
+                        pts[p].y += output[i].cy;
+                    }
+                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{250, 255, 0}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, 14, -32}});
+                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{pts, 2}});
+                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{&pts[2], 2}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy + 16 - 32, 64, 64, 30, 90}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy - 16 - 32, 64, 64, 270, 330}});
+                    SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 37 - 26 - xoff, output[i].cy - 0 - 26, 52, 52, -37, 37}});
+                    SpareParts.CanvasCmd(
+                        {.cmd = CC_ELLIPTICARC,
+                         .EllipticArc{1, output[i].cx - 42 - 26 - xoff, output[i].cy - 0 - 26, 52, 52, -37, 37}});
+
+                } break;
+                default:
+                    break;
+            }
             break;
     }
 }
