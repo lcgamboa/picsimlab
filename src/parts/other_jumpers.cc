@@ -527,26 +527,30 @@ void cpart_Jumpers::Process(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
     for (i = 0; i < 16; i++) {
-        if (ppins[input_pins[i] - 1].value != ppins[output_pins[i] - 1].value) {
-            if (jtype & 0x01) {
-                SpareParts.SetPin(output_pins[i], ppins[input_pins[i] - 1].value);
-            } else {
-                SpareParts.WritePin(output_pins[i], ppins[input_pins[i] - 1].value);
+        if (input_pins[i] && output_pins[i]) {
+            if (ppins[input_pins[i] - 1].value != ppins[output_pins[i] - 1].value) {
+                if (jtype & 0x01) {
+                    SpareParts.SetPin(output_pins[i], ppins[input_pins[i] - 1].value);
+                } else {
+                    SpareParts.WritePin(output_pins[i], ppins[input_pins[i] - 1].value);
+                }
             }
+            /*
+            if (ppins[input_pins[i] - 1].avalue != ppins[output_pins[i] - 1].avalue)
+            {
+                SpareParts.WritePinA (output_pins[i], ppins[input_pins[i] - 1].avalue);
+            }
+             */
         }
-        /*
-        if (ppins[input_pins[i] - 1].avalue != ppins[output_pins[i] - 1].avalue)
-        {
-     SpareParts.WritePinA (output_pins[i], ppins[input_pins[i] - 1].avalue);
-        }
-         */
     }
 
     mcount++;
     if (mcount >= JUMPSTEPS_) {
         for (i = 0; i < 16; i++) {
-            if (ppins[output_pins[i] - 1].value)
-                output_pins_alm[i]++;
+            if (output_pins[i]) {
+                if (ppins[output_pins[i] - 1].value)
+                    output_pins_alm[i]++;
+            }
         }
         mcount = -1;
     }

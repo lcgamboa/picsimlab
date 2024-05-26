@@ -167,7 +167,8 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         Application->ACreateWindow(Windows[PW_WPROP]);
         Windows[PW_WPROP]->HideExclusive();
         Windows[PW_WPROP]->DestroyChilds();
-        Windows[PW_WPROP]->SetTitle(SpareParts.GetPart(PartSelected)->GetName());
+        Windows[PW_WPROP]->SetTitle(SpareParts.GetPart(PartSelected)->GetName() +
+                                    " [id=" + std::to_string(SpareParts.GetPart(PartSelected)->GetId()) + "]");
         Windows[PW_WPROP]->SetWidth(370);
         Windows[PW_WPROP]->SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
         Windows[PW_WPROP]->SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
