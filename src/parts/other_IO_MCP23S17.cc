@@ -145,8 +145,13 @@ cpart_IO_MCP23S17::cpart_IO_MCP23S17(const unsigned x, const unsigned y, const c
     mcount = 0;
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
 
-    _PA = 0xFA;  // dummy value
+    _PA = 0xFA;  // dummy value to force update
     _PB = 0xFA;
+    _PA_INT = 0xFA;
+    _PB_INT = 0xFA;
+    _DIRA = 0xFA;
+    _DIRB = 0xFA;
+    _ret = 0xFA;
 
     SetPCWProperties(pcwprop);
 
@@ -369,11 +374,28 @@ void cpart_IO_MCP23S17::ReadPropertiesWindow(void) {
     input_pins[8] = GetPWCComboSelectedPin("combo19");
     input_pins[9] = GetPWCComboSelectedPin("combo20");
 }
+void cpart_IO_MCP23S17::Reset(void) {
+    io_MCP23X17_rst(&mcp);
+    _PA = 0xFA;  // dummy value to force update
+    _PB = 0xFA;
+    _PA_INT = 0xFA;
+    _PB_INT = 0xFA;
+    _DIRA = 0xFA;
+    _DIRB = 0xFA;
+    _ret = 0xFA;
+}
 
 void cpart_IO_MCP23S17::PreProcess(void) {
+    const picpin* ppins = SpareParts.GetPinsValues();
     memset(output_pins_alm, 0, 16 * sizeof(unsigned long));
     JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
+
+    if (input_pins[4] && input_pins[5] && input_pins[6]) {
+        unsigned char addr = (ppins[input_pins[6] - 1].value << 2) | (ppins[input_pins[5] - 1].value << 1) |
+                             (ppins[input_pins[4] - 1].value);
+        io_MCP23X17_set_addr(&mcp, addr);
+    }
 }
 
 void cpart_IO_MCP23S17::Process(void) {
@@ -393,35 +415,118 @@ void cpart_IO_MCP23S17::Process(void) {
      */
 
     // TODO only write support implemented
-    io_MCP23X17_SPI_io(&mcp, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value,
-                       ppins[input_pins[7] - 1].value, ppins[input_pins[0] - 1].value);
 
-    if (_PA != mcp.regs[OLATA]) {
-        SpareParts.WritePin(output_pins[0], (mcp.regs[OLATA] & 0x01) != 0);
-        SpareParts.WritePin(output_pins[1], (mcp.regs[OLATA] & 0x02) != 0);
-        SpareParts.WritePin(output_pins[2], (mcp.regs[OLATA] & 0x04) != 0);
-        SpareParts.WritePin(output_pins[3], (mcp.regs[OLATA] & 0x08) != 0);
-        SpareParts.WritePin(output_pins[4], (mcp.regs[OLATA] & 0x10) != 0);
-        SpareParts.WritePin(output_pins[5], (mcp.regs[OLATA] & 0x20) != 0);
-        SpareParts.WritePin(output_pins[6], (mcp.regs[OLATA] & 0x40) != 0);
-        SpareParts.WritePin(output_pins[7], (mcp.regs[OLATA] & 0x80) != 0);
-    }
+    if (ioupdated) {
+        if (input_pins[0] & input_pins[1] & input_pins[2] & input_pins[7]) {
+            unsigned char ret = io_MCP23X17_SPI_io(&mcp, ppins[input_pins[2] - 1].value, ppins[input_pins[1] - 1].value,
+                                                   ppins[input_pins[7] - 1].value, ppins[input_pins[0] - 1].value);
 
-    if (_PB != mcp.regs[OLATB]) {
-        SpareParts.WritePin(output_pins[8], (mcp.regs[OLATB] & 0x01) != 0);
-        SpareParts.WritePin(output_pins[9], (mcp.regs[OLATB] & 0x02) != 0);
-        SpareParts.WritePin(output_pins[10], (mcp.regs[OLATB] & 0x04) != 0);
-        SpareParts.WritePin(output_pins[11], (mcp.regs[OLATB] & 0x08) != 0);
-        SpareParts.WritePin(output_pins[12], (mcp.regs[OLATB] & 0x10) != 0);
-        SpareParts.WritePin(output_pins[13], (mcp.regs[OLATB] & 0x20) != 0);
-        SpareParts.WritePin(output_pins[14], (mcp.regs[OLATB] & 0x40) != 0);
-        SpareParts.WritePin(output_pins[15], (mcp.regs[OLATB] & 0x80) != 0);
+            if (input_pins[3] && mcp.so_active) {  // if CS is active, update SO output
+                if (!ppins[input_pins[0] - 1].value) {
+                    if (_ret != ret) {
+                        SpareParts.SetPin(input_pins[3], ret);
+                    }
+                    _ret = ret;
+                } else {
+                    _ret = 0xFF;  // invalid value
+                }
+            }
+        }
+
+        // update pin dir
+        if (_DIRA != mcp.regs[IODIRA]) {
+            SpareParts.SetPinDir(output_pins[0], (mcp.regs[IODIRA] & 0x01) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[1], (mcp.regs[IODIRA] & 0x02) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[2], (mcp.regs[IODIRA] & 0x04) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[3], (mcp.regs[IODIRA] & 0x08) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[4], (mcp.regs[IODIRA] & 0x10) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[5], (mcp.regs[IODIRA] & 0x20) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[6], (mcp.regs[IODIRA] & 0x40) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[7], (mcp.regs[IODIRA] & 0x80) ? PD_IN : PD_OUT);
+        }
+        if (_DIRB != mcp.regs[IODIRB]) {
+            SpareParts.SetPinDir(output_pins[8], (mcp.regs[IODIRB] & 0x01) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[9], (mcp.regs[IODIRB] & 0x02) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[10], (mcp.regs[IODIRB] & 0x04) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[11], (mcp.regs[IODIRB] & 0x08) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[12], (mcp.regs[IODIRB] & 0x10) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[13], (mcp.regs[IODIRB] & 0x20) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[14], (mcp.regs[IODIRB] & 0x40) ? PD_IN : PD_OUT);
+            SpareParts.SetPinDir(output_pins[15], (mcp.regs[IODIRB] & 0x80) ? PD_IN : PD_OUT);
+        }
+        _DIRA = mcp.regs[IODIRA];
+        _DIRB = mcp.regs[IODIRB];
+
+        // update output pins value
+        if (_PA != mcp.regs[OLATA]) {
+            if (!(mcp.regs[IODIRA] & 0x01))
+                SpareParts.WritePin(output_pins[0], (mcp.regs[OLATA] & 0x01) != 0);
+            if (!(mcp.regs[IODIRA] & 0x02))
+                SpareParts.WritePin(output_pins[1], (mcp.regs[OLATA] & 0x02) != 0);
+            if (!(mcp.regs[IODIRA] & 0x04))
+                SpareParts.WritePin(output_pins[2], (mcp.regs[OLATA] & 0x04) != 0);
+            if (!(mcp.regs[IODIRA] & 0x08))
+                SpareParts.WritePin(output_pins[3], (mcp.regs[OLATA] & 0x08) != 0);
+            if (!(mcp.regs[IODIRA] & 0x10))
+                SpareParts.WritePin(output_pins[4], (mcp.regs[OLATA] & 0x10) != 0);
+            if (!(mcp.regs[IODIRA] & 0x20))
+                SpareParts.WritePin(output_pins[5], (mcp.regs[OLATA] & 0x20) != 0);
+            if (!(mcp.regs[IODIRA] & 0x40))
+                SpareParts.WritePin(output_pins[6], (mcp.regs[OLATA] & 0x40) != 0);
+            if (!(mcp.regs[IODIRA] & 0x80))
+                SpareParts.WritePin(output_pins[7], (mcp.regs[OLATA] & 0x80) != 0);
+        }
+
+        if (_PB != mcp.regs[OLATB]) {
+            if (!(mcp.regs[IODIRB] & 0x01))
+                SpareParts.WritePin(output_pins[8], (mcp.regs[OLATB] & 0x01) != 0);
+            if (!(mcp.regs[IODIRB] & 0x02))
+                SpareParts.WritePin(output_pins[9], (mcp.regs[OLATB] & 0x02) != 0);
+            if (!(mcp.regs[IODIRB] & 0x04))
+                SpareParts.WritePin(output_pins[10], (mcp.regs[OLATB] & 0x04) != 0);
+            if (!(mcp.regs[IODIRB] & 0x08))
+                SpareParts.WritePin(output_pins[11], (mcp.regs[OLATB] & 0x08) != 0);
+            if (!(mcp.regs[IODIRB] & 0x10))
+                SpareParts.WritePin(output_pins[12], (mcp.regs[OLATB] & 0x10) != 0);
+            if (!(mcp.regs[IODIRB] & 0x20))
+                SpareParts.WritePin(output_pins[13], (mcp.regs[OLATB] & 0x20) != 0);
+            if (!(mcp.regs[IODIRB] & 0x40))
+                SpareParts.WritePin(output_pins[14], (mcp.regs[OLATB] & 0x40) != 0);
+            if (!(mcp.regs[IODIRB] & 0x80))
+                SpareParts.WritePin(output_pins[15], (mcp.regs[OLATB] & 0x80) != 0);
+        }
+        _PA = mcp.regs[OLATA];
+        _PB = mcp.regs[OLATB];
     }
-    _PA = mcp.regs[OLATA];
-    _PB = mcp.regs[OLATB];
 
     mcount++;
     if (mcount >= JUMPSTEPS_) {
+        // update input pins value
+        unsigned char ipa = 0;
+        unsigned char ipb = 0;
+        for (int bit = 0; bit < 8; bit++) {
+            unsigned char bit_mask = 1 << bit;
+
+            if (ppins[output_pins[bit] - 1].value) {
+                ipa |= bit_mask;
+            }
+
+            if (ppins[output_pins[bit + 8] - 1].value) {
+                ipb |= bit_mask;
+            }
+        }
+
+        io_MCP23X17_set_inputs(&mcp, ipa, ipb);
+
+        if ((_PA_INT != mcp.inta_value) && (input_pins[9])) {
+            SpareParts.SetPin(input_pins[9], mcp.inta_value);
+        }
+        if ((_PB_INT != mcp.intb_value) && (input_pins[8])) {
+            SpareParts.SetPin(input_pins[8], mcp.intb_value);
+        }
+        _PA_INT = mcp.inta_value;
+        _PB_INT = mcp.intb_value;
+
         if (ppins[output_pins[0] - 1].value)
             output_pins_alm[0]++;
         if (ppins[output_pins[1] - 1].value)

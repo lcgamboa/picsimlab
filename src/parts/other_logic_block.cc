@@ -120,6 +120,7 @@ cpart_lblock::~cpart_lblock(void) {
 }
 
 void cpart_lblock::DrawOutput(const unsigned int i) {
+    unsigned char color;
     const picpin* ppins = SpareParts.GetPinsValues();
     switch (output[i].id) {
         case O_P1:
@@ -164,9 +165,12 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
         case O_IN6:
         case O_IN7:
         case O_IN8:
-            SpareParts.CanvasCmd(
-                {.cmd = CC_SETCOLOR,
-                 .SetBgColor{(unsigned int)ppins[input_pins[output[i].id - O_IN1] - 1].oavalue, 0, 0}});
+            if (input_pins[output[i].id - O_IN1]) {
+                color = ppins[input_pins[output[i].id - O_IN1] - 1].oavalue;
+            } else {
+                color = 0;
+            }
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetBgColor{(unsigned int)color, 0, 0}});
             SpareParts.CanvasCmd(
                 {.cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
@@ -185,7 +189,7 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
                                              output[i].y2 - output[i].y1}});
 
             SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-            SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetFgColor{250, 250, 180}});
+            SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{250, 250, 180}});
 
             switch (gatetype) {
                 case LG_NOT:
@@ -305,47 +309,75 @@ void cpart_lblock::Process(void) {
     if (ioupdated) {
         switch (gatetype) {
             case LG_NOT:
-                output_value = !ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = !ppins[input_pins[0] - 1].value;
+                }
                 break;
             case LG_BUFFER:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 break;
             case LG_AND:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 for (unsigned int i = 1; i < Size; i++) {
-                    output_value &= ppins[input_pins[i] - 1].value;
+                    if (input_pins[i]) {
+                        output_value &= ppins[input_pins[i] - 1].value;
+                    }
                 }
                 break;
             case LG_NAND:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 for (unsigned int i = 1; i < Size; i++) {
-                    output_value &= ppins[input_pins[i] - 1].value;
+                    if (input_pins[i]) {
+                        output_value &= ppins[input_pins[i] - 1].value;
+                    }
                 }
                 output_value = !output_value;
                 break;
             case LG_OR:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 for (unsigned int i = 1; i < Size; i++) {
-                    output_value |= ppins[input_pins[i] - 1].value;
+                    if (input_pins[i]) {
+                        output_value |= ppins[input_pins[i] - 1].value;
+                    }
                 }
                 break;
             case LG_NOR:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 for (unsigned int i = 1; i < Size; i++) {
-                    output_value |= ppins[input_pins[i] - 1].value;
+                    if (input_pins[i]) {
+                        output_value |= ppins[input_pins[i] - 1].value;
+                    }
                 }
                 output_value = !output_value;
                 break;
             case LG_XOR:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 for (unsigned int i = 1; i < Size; i++) {
-                    output_value ^= ppins[input_pins[i] - 1].value;
+                    if (input_pins[i]) {
+                        output_value ^= ppins[input_pins[i] - 1].value;
+                    }
                 }
                 break;
             case LG_XNOR:
-                output_value = ppins[input_pins[0] - 1].value;
+                if (input_pins[0]) {
+                    output_value = ppins[input_pins[0] - 1].value;
+                }
                 for (unsigned int i = 1; i < Size; i++) {
-                    output_value ^= ppins[input_pins[i] - 1].value;
+                    if (input_pins[i]) {
+                        output_value ^= ppins[input_pins[i] - 1].value;
+                    }
                 }
                 output_value = !output_value;
                 break;
@@ -354,9 +386,11 @@ void cpart_lblock::Process(void) {
 
     mcount++;
     if (mcount >= JUMPSTEPS_) {
-        if (ppins[output_pins[1] - 1].value)
-            output_pins_alm++;
-
+        if (output_pins[1]) {
+            if (ppins[output_pins[1] - 1].value) {
+                output_pins_alm++;
+            }
+        }
         mcount = -1;
     }
 }

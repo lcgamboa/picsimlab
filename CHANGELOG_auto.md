@@ -2,6 +2,12 @@
 
 ### New
 
+* New part \"Logic Block\" with logic functions: Not, Buffer, And, Nand, Or, Nor, Xor and Xnor. [lcgamboa]
+
+* Increase oscilloscope time scale up to 1s/div. [lcgamboa]
+
+* Support to PIC18F67J60 added to Breadboard board. [lcgamboa]
+
 * Add initial support to ESP32 RMT TX. [lcgamboa]
 
 * Add support to use analog values in gpboard (gpsim backend) [lcgamboa]
@@ -12,9 +18,19 @@
 
 ### Changes
 
+* Gpboard updated to use gpsim-0.32.1. [lcgamboa]
+
+* Gpsim interface optimization to improve simulation performance. [lcgamboa]
+
 * Changlog updated. [lcgamboa]
 
 ### Fix
+
+* Fix Oscilloscope to use all SpareParts pins. [lcgamboa]
+
+* Fix gpboard configuration bits dump for PIC18F. [lcgamboa]
+
+* Fix gpboard simulation clock speed. [lcgamboa]
 
 * Fix spare parts window position on start. [lcgamboa]
 

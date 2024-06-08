@@ -91,6 +91,9 @@ typedef struct {
     unsigned char reg_addr;
     unsigned char op;
     unsigned char addr;
+    unsigned char so_active;  // serial out pin
+    unsigned char inta_value;
+    unsigned char intb_value;
     bitbang_spi_t bb_spi;
     bitbang_i2c_t bb_i2c;
 } io_MCP23X17_t;
@@ -98,6 +101,7 @@ typedef struct {
 void io_MCP23X17_rst(io_MCP23X17_t* mcp);
 void io_MCP23X17_init(io_MCP23X17_t* mcp);
 void io_MCP23X17_set_addr(io_MCP23X17_t* mcp, unsigned char addr);
+void io_MCP23X17_set_inputs(io_MCP23X17_t* mcp, unsigned char porta, unsigned char portb);
 
 unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned char sck, unsigned char rst,
                                  unsigned char cs);

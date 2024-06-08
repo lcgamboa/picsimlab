@@ -148,13 +148,11 @@ unsigned char bitbang_spi_get_status(bitbang_spi_t* spi) {
 
 void bitbang_spi_send16(bitbang_spi_t* spi, const unsigned int data) {
     spi->outsr = data;
-    // spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     dprintf("bitbang_spi data to send 0x%02x \n", data);
 }
 
 void bitbang_spi_send8(bitbang_spi_t* spi, const unsigned char data) {
     spi->outsr = (spi->outsr & 0xFF00) | data;
-    // spi->ret = ((spi->outsr & spi->outbitmask) > 0);
     dprintf("bitbang_spi data to send 0x%02x \n", data);
 }
 

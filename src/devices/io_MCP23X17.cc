@@ -76,11 +76,6 @@ static unsigned char decode_addr(io_MCP23X17_t* mcp) {
             case 0x0A:
                 return 0x14;
                 break;
-                // case 0x0B: return 0x10; break;
-                // case 0x0C: return 0x10; break;
-                // case 0x0D: return 0x10; break;
-                // case 0x0E: return 0x10; break;
-                // case 0x0F: return 0x10; break;
             case 0x10:
                 return 0x01;
                 break;
@@ -126,7 +121,10 @@ static unsigned char decode_addr(io_MCP23X17_t* mcp) {
 
 static void write_reg(io_MCP23X17_t* mcp, unsigned char val) {
     unsigned char addr_ = decode_addr(mcp);
-    mcp->regs[addr_] = val;
+
+    if ((addr_ != INTFA) && (addr_ != INTFB) && (addr_ != INTCAPA) && ((addr_ != INTCAPB))) {
+        mcp->regs[addr_] = val;
+    }
 
     if ((mcp->regs[IOCON] & SEQOP) == 0) {
         mcp->reg_addr++;
@@ -139,7 +137,6 @@ static void write_reg(io_MCP23X17_t* mcp, unsigned char val) {
     switch (addr_) {
         case IOCON:
             mcp->regs[IOCON_] = val;
-            break;
         case IOCON_:
             mcp->regs[IOCON] = val;
             break;
@@ -154,6 +151,26 @@ static void write_reg(io_MCP23X17_t* mcp, unsigned char val) {
 
 static unsigned char read_reg(io_MCP23X17_t* mcp) {
     unsigned char addr_ = decode_addr(mcp);
+
+    switch (addr_) {
+        case GPIOA:
+        case INTCAPA:
+            mcp->regs[INTFA] = 0;
+            mcp->inta_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            if (mcp->regs[IOCON] & MIRROR) {
+                mcp->intb_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            }
+            break;
+        case GPIOB:
+        case INTCAPB:
+            mcp->regs[INTFB] = 0;
+            mcp->intb_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            if (mcp->regs[IOCON] & MIRROR) {
+                mcp->inta_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            }
+            break;
+    }
+
     return mcp->regs[addr_];
 }
 
@@ -162,10 +179,17 @@ void io_MCP23X17_rst(io_MCP23X17_t* mcp) {
         mcp->regs[i] = 0;
     mcp->reg_addr = 0;
 
+    mcp->regs[IODIRA] = 0xFF;
+    mcp->regs[IODIRB] = 0xFF;
+
     bitbang_i2c_rst(&mcp->bb_i2c);
     bitbang_spi_rst(&mcp->bb_spi);
 
+    mcp->inta_value = 1;
+    mcp->intb_value = 1;
+
     mcp->op = 0;
+    mcp->so_active = 0;
     dprintf("mcp rst\n");
 }
 
@@ -178,8 +202,60 @@ void io_MCP23X17_init(io_MCP23X17_t* mcp) {
 }
 
 void io_MCP23X17_set_addr(io_MCP23X17_t* mcp, unsigned char addr) {
-    mcp->addr = addr << 1;
+    mcp->addr = 0x40 | ((0x07 & addr) << 1);
     bitbang_i2c_set_addr(&mcp->bb_i2c, addr);
+}
+
+void io_MCP23X17_set_inputs(io_MCP23X17_t* mcp, unsigned char porta, unsigned char portb) {
+    if ((mcp->regs[GPIOA] != porta) || (mcp->regs[GPIOB] != portb)) {
+        if (mcp->regs[GPINTENA]) {
+            unsigned char intf = 0;
+            intf |= (porta ^ mcp->regs[GPIOA]) & ~mcp->regs[INTCONA];
+            intf |= (porta ^ mcp->regs[DEFVALA]) & mcp->regs[INTCONA];
+            intf &= mcp->regs[GPINTENA] & mcp->regs[IODIRA];
+
+            if (!mcp->regs[INTFA] && intf) {
+                mcp->regs[INTCAPA] = porta;
+            }
+
+            mcp->regs[INTFA] = intf;
+        }
+
+        if (mcp->regs[GPINTENB]) {
+            unsigned char intf = 0;
+            intf |= (portb ^ mcp->regs[GPIOB]) & ~mcp->regs[INTCONB];
+            intf |= (portb ^ mcp->regs[DEFVALB]) & mcp->regs[INTCONB];
+            intf &= mcp->regs[GPINTENB] & mcp->regs[IODIRB];
+
+            if (!mcp->regs[INTFB] && intf) {
+                mcp->regs[INTCAPB] = portb;
+            }
+
+            mcp->regs[INTFB] = intf;
+        }
+
+        if (mcp->regs[IOCON] & MIRROR) {
+            mcp->inta_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            mcp->intb_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            if ((mcp->regs[GPINTENA] && mcp->regs[INTFA]) || (mcp->regs[GPINTENB] && mcp->regs[INTFB])) {
+                mcp->inta_value = !!(mcp->regs[IOCON] & INTPOL);  // enabled
+                mcp->intb_value = !!(mcp->regs[IOCON] & INTPOL);  // enabled
+            }
+        } else {
+            mcp->inta_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            if (mcp->regs[GPINTENA] && mcp->regs[INTFA]) {
+                mcp->inta_value = !!(mcp->regs[IOCON] & INTPOL);  // enabled
+            }
+
+            mcp->intb_value = !(mcp->regs[IOCON] & INTPOL);  // disabled
+            if (mcp->regs[GPINTENB] && mcp->regs[INTFB]) {
+                mcp->intb_value = !!(mcp->regs[IOCON] & INTPOL);  // enabled
+            }
+        }
+
+        mcp->regs[GPIOA] = porta;
+        mcp->regs[GPIOB] = portb;
+    }
 }
 
 unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned char sck, unsigned char rst,
@@ -189,30 +265,39 @@ unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned 
         return 0;
     }
 
-    unsigned char ret = bitbang_spi_io(&mcp->bb_spi, sck, si, cs);
+    bitbang_spi_io(&mcp->bb_spi, sck, si, cs);
 
     switch (bitbang_spi_get_status(&mcp->bb_spi)) {
         case SPI_DATA:
 
             switch (mcp->bb_spi.byte) {
                 case 1:
-                    if ((mcp->bb_spi.data & 0xFE) == mcp->addr) {
-                        mcp->op = mcp->bb_spi.data & 0x01;
-                        dprintf("mcp addr 0x%02X OK\n", mcp->addr);
+                    if (mcp->regs[IOCON] & HAEN) {
+                        if ((mcp->bb_spi.data & 0xFE) == mcp->addr) {
+                            mcp->op = mcp->bb_spi.data & 0x01;
+                            dprintf("mcp op 0x%02X OK\n", mcp->addr);
+                        } else {
+                            mcp->bb_spi.bit = 0x80;
+                            dprintf("mcp op 0x%02X ERROR\n", mcp->addr);
+                        }
                     } else {
-                        mcp->bb_spi.bit = 0x80;
-
-                        dprintf("mcp addr 0x%02X ERROR\n", mcp->addr);
+                        mcp->op = mcp->bb_spi.data & 0x01;
                     }
                     break;
                 case 2:
                     mcp->reg_addr = mcp->bb_spi.data;
                     dprintf("mcp reg addr 0x%02X\n", mcp->bb_spi.data);
+
+                    if (mcp->op) {
+                        mcp->so_active = 1;
+                        bitbang_spi_send8(&mcp->bb_spi, read_reg(mcp));
+                        dprintf("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.outsr & 0xFF);
+                    }
                     break;
                 default:
                     if (mcp->op) {
-                        dprintf("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
                         bitbang_spi_send8(&mcp->bb_spi, read_reg(mcp));
+                        dprintf("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.outsr & 0xFF);
                     } else {
                         dprintf("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
                         write_reg(mcp, mcp->bb_spi.data);
@@ -222,46 +307,31 @@ unsigned char io_MCP23X17_SPI_io(io_MCP23X17_t* mcp, unsigned char si, unsigned 
             break;
     }
 
-    return ret;
+    return mcp->bb_spi.ret;
 }
 
 unsigned char io_MCP23X17_I2C_io(io_MCP23X17_t* mcp, unsigned char scl, unsigned char sda) {
-    /*
-     NOT tested !!!!
+    unsigned char ret = bitbang_i2c_io(&mcp->bb_i2c, scl, sda);
 
-     unsigned char ret = bitbang_i2c_io (&mcp->bb_i2c, scl, sda);
+    switch (bitbang_i2c_get_status(&mcp->bb_i2c)) {
+        case I2C_DATAW:
+            dprintf("write mcp =%02X\n", mcp->bb_i2c.datar);
+            switch (mcp->bb_i2c.byte) {
+                case 1:
+                    mcp->reg_addr = mcp->bb_i2c.datar;
+                    dprintf("mcp reg addr 0x%02X\n", mcp->bb_i2c.datar);
+                    break;
+                default:
+                    dprintf("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
+                    write_reg(mcp, mcp->bb_i2c.datar);
+                    break;
+            }
+            break;
+        case I2C_DATAR:
+            bitbang_i2c_send(&mcp->bb_i2c, read_reg(mcp));
+            dprintf("mcp read =%02X\n", mcp->bb_i2c.datas);
+            break;
+    }
 
-     switch (bitbang_i2c_get_status (&mcp->C))
-      {
-      case I2C_DATAW:
-       dprintf ("write mcp =%02X\n", mcp->bb_i2c.datar);
-        switch (mcp->bb_i2c.byte)
-        {
-        case 1:
-         mcp->reg_addr = mcp->bb_i2c.datar;
-         dprintf ("mcp reg addr 0x%02X\n", mcp->bb_i2c.datar);
-         break;
-        default:
-         if (mcp->op)
-          {
-           dprintf ("mcp data read [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
-           bitbang_spi_send (&mcp->bb_spi, read_reg (mcp));
-          }
-         else
-          {
-           dprintf ("mcp data write [0x%02X] 0x%02X\n", mcp->reg_addr, mcp->bb_spi.data);
-           write_reg (mcp, mcp->bb_spi.data);
-          }
-         break;
-        }
-       break;
-      case I2C_DATAR:
-       bitbang_i2c_send (&mcp->bb_i2c, read_reg (mcp));
-       dprintf ("mcp read =%02X\n", mcp->bb_i2c.datas);
-       break;
-      }
-
-     return ret;
-     */
-    return 0;
+    return ret;
 }

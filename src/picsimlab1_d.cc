@@ -505,6 +505,8 @@ CPWindow1::CPWindow1(void) {
 
     Windows[PW_MAIN] = this;
 
+#ifndef _NOTHREAD
     cpu_mutex = new lxMutex;
     cpu_cond = new lxCondition(*cpu_mutex);
+#endif
 }

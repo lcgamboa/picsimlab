@@ -160,8 +160,10 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
 }
 
 CPWindow1::~CPWindow1(void) {
+#ifndef _NOTHREAD
     delete cpu_cond;
     delete cpu_mutex;
+#endif
 }
 
 void CPWindow1::DrawBoard(void) {

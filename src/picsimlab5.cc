@@ -1062,7 +1062,7 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
             lxImage image(&Window5);
             if (image.CreateBlank(cmd.CreateImage.width, cmd.CreateImage.height, cmd.CreateImage.orientation,
                                   cmd.CreateImage.scale, cmd.CreateImage.scale)) {
-                // find enpty bitmap
+                // find empty bitmap
                 int bid = -1;
                 for (int i = 0; i < (MAX_PARTS * 2); i++) {
                     if (Window5.Bitmaps[i] == NULL) {

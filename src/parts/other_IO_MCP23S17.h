@@ -41,6 +41,7 @@ public:
     void PreProcess(void) override;
     void Process(void) override;
     void PostProcess(void) override;
+    void Reset(void) override;
     std::string GetPictureFileName(void) override { return "../Common/IC28.svg"; };
     std::string GetMapFile(void) override { return "../Common/IC28.map"; };
     void ConfigurePropertiesWindow(void) override;
@@ -59,6 +60,11 @@ private:
     io_MCP23X17_t mcp;
     unsigned char _PA;
     unsigned char _PB;
+    unsigned char _PA_INT;
+    unsigned char _PB_INT;
+    unsigned char _DIRA;
+    unsigned char _DIRB;
+    unsigned char _ret;
 };
 
 #endif /* PART_IO_MCP23S17_H */
