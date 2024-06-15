@@ -1195,6 +1195,7 @@ void bsim_simavr::MSetPin(int pin, unsigned char value) {
         return;
     if (Write_stat_irq[pin - 1] == NULL)
         return;
+    pins[pin - 1].value = value;
     avr_raise_irq(Write_stat_irq[pin - 1], value);
 }
 
@@ -1548,6 +1549,11 @@ void bsim_simavr::MReset(int flags) {
     avr_extint_set_strict_lvl_trig(avr, 5, 0);
     avr_extint_set_strict_lvl_trig(avr, 6, 0);
     avr_extint_set_strict_lvl_trig(avr, 7, 0);
+
+    for (int p = 0; p < MGetPinCount(); p++) {
+        MSetPin(p + 1, 0);
+    }
+    pins_reset();
 }
 
 unsigned short* bsim_simavr::DBGGetProcID_p(void) {
