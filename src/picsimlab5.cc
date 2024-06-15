@@ -170,8 +170,10 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
         Windows[PW_WPROP]->SetTitle(SpareParts.GetPart(PartSelected)->GetName() +
                                     " [id=" + std::to_string(SpareParts.GetPart(PartSelected)->GetId()) + "]");
         Windows[PW_WPROP]->SetWidth(370);
-        Windows[PW_WPROP]->SetX(SpareParts.GetPart(PartSelected)->GetX() + GetX() - offsetx);
-        Windows[PW_WPROP]->SetY(SpareParts.GetPart(PartSelected)->GetY() + GetY() - offsety);
+        Windows[PW_WPROP]->SetX(GetX() +
+                                ((SpareParts.GetPart(PartSelected)->GetX() + offsetx) * SpareParts.GetScale()));
+        Windows[PW_WPROP]->SetY(GetY() +
+                                ((SpareParts.GetPart(PartSelected)->GetY() + offsety) * SpareParts.GetScale()));
 
         CLabel* label;
         CCombo* combo;
