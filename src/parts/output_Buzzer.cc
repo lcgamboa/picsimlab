@@ -305,14 +305,16 @@ void cpart_Buzzer::PostProcess(void) {
             }
         }
     } else if (btype == PASSIVE) {
-        buffer[buffercount - 1] = 0;
-        short* ptr[2];
-        ptr[0] = (short int*)&buffercount;
-        ptr[1] = buffer;
-        /*int ret =*/PICSimLab.SystemCmd(PSC_AUDIOCHSOUNDPLAY, (const char*)&buzzerId, ptr);
-        // printf("ret=%i buffercount=%i sample=%i time=%f timer=%i\n", ret, buffercount, samplerate,
-        //        ((float)(buffercount)) / samplerate, timer->GetTime());
-        buffercount = 0;
+        if (buffercount) {
+            buffer[buffercount - 1] = 0;
+            short* ptr[2];
+            ptr[0] = (short int*)&buffercount;
+            ptr[1] = buffer;
+            /*int ret =*/PICSimLab.SystemCmd(PSC_AUDIOCHSOUNDPLAY, (const char*)&buzzerId, ptr);
+            // printf("ret=%i buffercount=%i sample=%i time=%f timer=%i\n", ret, buffercount, samplerate,
+            //        ((float)(buffercount)) / samplerate, timer->GetTime());
+            buffercount = 0;
+        }
     } else  // TONE
     {
         float freq;

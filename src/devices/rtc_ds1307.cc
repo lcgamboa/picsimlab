@@ -37,7 +37,7 @@
     } else      \
         printf
 
-enum { DS_SECONDS = 0, DS_MINUTES, DS_HOURS, DS_DAY, DS_DATE, DS_MONTH, DS_YEAR, DS_CONTROL };
+enum { DS_SECONDS = 0, DS_MINUTES, DS_HOURS, DS_DAY, DS_DATE, DS_MONTH, DS_YEAR, DS_CTRL };
 
 #ifdef _DEBUG
 static char buff[30];
@@ -69,7 +69,7 @@ const char* get_addr_str(const unsigned char addr, const unsigned char data) {
         case DS_YEAR:
             sprintf(buff, "YEAR    [%02X] = %02X", addr, data);
             break;
-        case DS_CONTROL:
+        case DS_CTRL:
             sprintf(buff, "CONTROL [%02X] = %02X", addr, data);
             break;
         default:
@@ -265,7 +265,7 @@ void rtc_ds1307_init(rtc_ds1307_t* rtc, board* pboard_) {
 
     memset(rtc->data, 0xFF, 8);
     rtc->data[DS_HOURS] &= 0x3F;  // 24h mode
-    rtc->data[DS_CONTROL] = 0;
+    rtc->data[DS_CTRL] = 0;
     rtc_ds1307_rst(rtc);
 
     utime = time(NULL);
