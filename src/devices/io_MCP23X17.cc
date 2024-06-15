@@ -171,6 +171,15 @@ static unsigned char read_reg(io_MCP23X17_t* mcp) {
             break;
     }
 
+    switch (addr_) {
+        case GPIOA:
+            return mcp->regs[GPIOA] ^ (mcp->regs[IPOLA] & mcp->regs[IODIRA]);
+            break;
+        case GPIOB:
+            return mcp->regs[GPIOB] ^ (mcp->regs[IPOLB] & mcp->regs[IODIRB]);
+            break;
+    }
+
     return mcp->regs[addr_];
 }
 
@@ -203,7 +212,7 @@ void io_MCP23X17_init(io_MCP23X17_t* mcp) {
 
 void io_MCP23X17_set_addr(io_MCP23X17_t* mcp, unsigned char addr) {
     mcp->addr = 0x40 | ((0x07 & addr) << 1);
-    bitbang_i2c_set_addr(&mcp->bb_i2c, addr);
+    bitbang_i2c_set_addr(&mcp->bb_i2c, mcp->addr >> 1);
 }
 
 void io_MCP23X17_set_inputs(io_MCP23X17_t* mcp, unsigned char porta, unsigned char portb) {
@@ -317,7 +326,7 @@ unsigned char io_MCP23X17_I2C_io(io_MCP23X17_t* mcp, unsigned char scl, unsigned
         case I2C_DATAW:
             dprintf("write mcp =%02X\n", mcp->bb_i2c.datar);
             switch (mcp->bb_i2c.byte) {
-                case 1:
+                case 2:
                     mcp->reg_addr = mcp->bb_i2c.datar;
                     dprintf("mcp reg addr 0x%02X\n", mcp->bb_i2c.datar);
                     break;
