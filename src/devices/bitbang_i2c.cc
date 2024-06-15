@@ -129,7 +129,7 @@ unsigned char bitbang_i2c_io(bitbang_i2c_t* i2c, const unsigned char scl, const 
     if (i2c->bit == 9) {
         dprintf("bitbang_i2c %02x data %02X\n", i2c->addr >> 1, i2c->datab);
 
-        if (i2c->byte == 0)                                  // ADDR
+        if (i2c->byte == 0)  // ADDR
         {
             if ((i2c->datab & i2c->addr_mask) == i2c->addr)  // valid address
             {

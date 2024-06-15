@@ -37,6 +37,50 @@
     } else      \
         printf
 
+enum { DS_SECONDS = 0, DS_MINUTES, DS_HOURS, DS_DAY, DS_DATE, DS_MONTH, DS_YEAR, DS_CONTROL };
+
+#ifdef _DEBUG
+static char buff[30];
+const char* get_addr_str(const unsigned char addr, const unsigned char data) {
+    switch (addr) {
+        case DS_SECONDS:
+            sprintf(buff, "SECONDS [%02X] = %02X", addr, data);
+            break;
+        case DS_MINUTES:
+            sprintf(buff, "MINUTES [%02X] = %02X", addr, data);
+            break;
+        case DS_HOURS:
+            if ((data & 0x40)) {  // 12h mode
+                sprintf(buff, "HOURS   [%02X] = %02X  (%02X %s)", addr, data, data & 0x1F, (data & 0x20) ? "PM" : "AM");
+            } else {  // 24h mode
+                sprintf(buff, "HOURS   [%02X] = %02X  (%02X)", addr, data, data & 0x3F);
+            }
+            break;
+        case DS_DAY: {
+            const char wdays[8][4] = {"***", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+            sprintf(buff, "DAY     [%02X] = %02X  (%s)", addr, data, wdays[data]);
+        } break;
+        case DS_DATE:
+            sprintf(buff, "DATE    [%02X] = %02X", addr, data);
+            break;
+        case DS_MONTH:
+            sprintf(buff, "MONTH   [%02X] = %02X", addr, data);
+            break;
+        case DS_YEAR:
+            sprintf(buff, "YEAR    [%02X] = %02X", addr, data);
+            break;
+        case DS_CONTROL:
+            sprintf(buff, "CONTROL [%02X] = %02X", addr, data);
+            break;
+        default:
+            sprintf(buff, "RAM     [%02X] = %02X", addr, data);
+            break;
+    }
+
+    return buff;
+}
+#endif
+
 void rtc_ds1307_rst(rtc_ds1307_t* rtc) {
     bitbang_i2c_rst(&rtc->bb_i2c);
 
@@ -87,13 +131,32 @@ static void rtc_ds1307_callback(void* arg) {
 #else
         localtime_r(&utime, &rtc->dtime);
 #endif
-        rtc->data[0] = ((rtc->dtime.tm_sec / 10) << 4) | (rtc->dtime.tm_sec % 10);
-        rtc->data[1] = ((rtc->dtime.tm_min / 10) << 4) | (rtc->dtime.tm_min % 10);
-        rtc->data[2] = ((rtc->dtime.tm_hour / 10) << 4) | (rtc->dtime.tm_hour % 10);
-        rtc->data[3] = rtc->dtime.tm_wday;
-        rtc->data[4] = ((rtc->dtime.tm_mday / 10) << 4) | (rtc->dtime.tm_mday % 10);
-        rtc->data[5] = (((rtc->dtime.tm_mon + 1) / 10) << 4) | ((rtc->dtime.tm_mon + 1) % 10);
-        rtc->data[6] = (((rtc->dtime.tm_year % 100) / 10) << 4) | (rtc->dtime.tm_year % 10);
+        rtc->data[DS_SECONDS] = ((rtc->dtime.tm_sec / 10) << 4) | (rtc->dtime.tm_sec % 10);
+        rtc->data[DS_MINUTES] = ((rtc->dtime.tm_min / 10) << 4) | (rtc->dtime.tm_min % 10);
+        if (rtc->data[DS_HOURS] & 0x40) {  // 12h mode
+            if (rtc->dtime.tm_hour < 12) {
+                int hour = rtc->dtime.tm_hour;
+                if (hour == 0) {
+                    hour = 12;
+                }
+                rtc->data[DS_HOURS] = (rtc->data[DS_HOURS] & 0xC0) | ((((hour / 10) << 4) | (hour % 10)) & 0x1F);
+            } else {
+                int hour = rtc->dtime.tm_hour;
+                if (hour > 12) {
+                    hour -= 12;
+                }
+                rtc->data[DS_HOURS] = (rtc->data[DS_HOURS] & 0xC0) | 0x20 | ((((hour / 10) << 4) | (hour % 10)) & 0x1F);
+            }
+        } else {  // 24h mode
+            rtc->data[DS_HOURS] =
+                (rtc->data[DS_HOURS] & 0xC0) | ((((rtc->dtime.tm_hour / 10) << 4) | (rtc->dtime.tm_hour % 10)) & 0x3F);
+        }
+        rtc->data[DS_DAY] = rtc->dtime.tm_wday;
+        if (rtc->data[DS_DAY] == 0)
+            rtc->data[DS_DAY] = 7;
+        rtc->data[DS_DATE] = ((rtc->dtime.tm_mday / 10) << 4) | (rtc->dtime.tm_mday % 10);
+        rtc->data[DS_MONTH] = (((rtc->dtime.tm_mon + 1) / 10) << 4) | ((rtc->dtime.tm_mon + 1) % 10);
+        rtc->data[DS_YEAR] = (((rtc->dtime.tm_year % 100) / 10) << 4) | (rtc->dtime.tm_year % 10);
     }
 
     // alarm
@@ -201,6 +264,8 @@ void rtc_ds1307_init(rtc_ds1307_t* rtc, board* pboard_) {
     bitbang_i2c_init(&rtc->bb_i2c, 0x68);
 
     memset(rtc->data, 0xFF, 8);
+    rtc->data[DS_HOURS] &= 0x3F;  // 24h mode
+    rtc->data[DS_CONTROL] = 0;
     rtc_ds1307_rst(rtc);
 
     utime = time(NULL);
@@ -218,13 +283,32 @@ void rtc_ds1307_setUtime(rtc_ds1307_t* rtc, time_t utime) {
 #else
     localtime_r(&utime, &rtc->dtime);
 #endif
-    rtc->data[0] = ((rtc->dtime.tm_sec / 10) << 4) | (rtc->dtime.tm_sec % 10);
-    rtc->data[1] = ((rtc->dtime.tm_min / 10) << 4) | (rtc->dtime.tm_min % 10);
-    rtc->data[2] = ((rtc->dtime.tm_hour / 10) << 4) | (rtc->dtime.tm_hour % 10);
-    rtc->data[3] = rtc->dtime.tm_wday;
-    rtc->data[4] = ((rtc->dtime.tm_mday / 10) << 4) | (rtc->dtime.tm_mday % 10);
-    rtc->data[5] = (((rtc->dtime.tm_mon + 1) / 10) << 4) | ((rtc->dtime.tm_mon + 1) % 10);
-    rtc->data[6] = (((rtc->dtime.tm_year % 100) / 10) << 4) | (rtc->dtime.tm_year % 10);
+    rtc->data[DS_SECONDS] = ((rtc->dtime.tm_sec / 10) << 4) | (rtc->dtime.tm_sec % 10);
+    rtc->data[DS_MINUTES] = ((rtc->dtime.tm_min / 10) << 4) | (rtc->dtime.tm_min % 10);
+    if (rtc->data[DS_HOURS] & 0x40) {  // 12h mode
+        if (rtc->dtime.tm_hour < 12) {
+            int hour = rtc->dtime.tm_hour;
+            if (hour == 0) {
+                hour = 12;
+            }
+            rtc->data[DS_HOURS] = (rtc->data[DS_HOURS] & 0xC0) | ((((hour / 10) << 4) | (hour % 10)) & 0x1F);
+        } else {
+            int hour = rtc->dtime.tm_hour;
+            if (hour > 12) {
+                hour -= 12;
+            }
+            rtc->data[DS_HOURS] = (rtc->data[DS_HOURS] & 0xC0) | 0x20 | ((((hour / 10) << 4) | (hour % 10)) & 0x1F);
+        }
+    } else {  // 24h mode
+        rtc->data[DS_HOURS] =
+            (rtc->data[DS_HOURS] & 0xC0) | ((((rtc->dtime.tm_hour / 10) << 4) | (rtc->dtime.tm_hour % 10)) & 0x3F);
+    }
+    rtc->data[DS_DAY] = rtc->dtime.tm_wday;
+    if (rtc->data[DS_DAY] == 0)
+        rtc->data[DS_DAY] = 7;
+    rtc->data[DS_DATE] = ((rtc->dtime.tm_mday / 10) << 4) | (rtc->dtime.tm_mday % 10);
+    rtc->data[DS_MONTH] = (((rtc->dtime.tm_mon + 1) / 10) << 4) | ((rtc->dtime.tm_mon + 1) % 10);
+    rtc->data[DS_YEAR] = (((rtc->dtime.tm_year % 100) / 10) << 4) | (rtc->dtime.tm_year % 10);
 }
 
 time_t rtc_ds1307_getUtime(rtc_ds1307_t* rtc) {
@@ -244,30 +328,51 @@ unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned c
             if (rtc->bb_i2c.byte == 2) {
                 rtc->addr = rtc->bb_i2c.datar;
             } else {
-                dprintf("write rtc[%04X]=%02X\n", rtc->addr, rtc->bb_i2c.datar);
+#ifdef _DEBUG
+                dprintf("> rtc write %s\n", get_addr_str(rtc->addr, rtc->bb_i2c.datar));
+#endif
                 rtc->data[rtc->addr] = rtc->bb_i2c.datar;
 
                 switch (rtc->addr) {
-                    case 0:
+                    case DS_SECONDS:
                         rtc->dtime.tm_sec = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
                         break;
-                    case 1:
+                    case DS_MINUTES:
                         rtc->dtime.tm_min = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
                         break;
-                    case 2:
-                        rtc->dtime.tm_hour = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
+                    case DS_HOURS:
+                        if (rtc->bb_i2c.datar & 0x40) {      // 12h mode
+                            if (rtc->bb_i2c.datar & 0x20) {  // PM
+                                rtc->dtime.tm_hour =
+                                    (((rtc->bb_i2c.datar & 0x10) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
+                                if (rtc->dtime.tm_hour < 12) {
+                                    rtc->dtime.tm_hour += 12;
+                                }
+                            } else {  // AM
+                                rtc->dtime.tm_hour =
+                                    (((rtc->bb_i2c.datar & 0x10) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
+                                if (rtc->dtime.tm_hour == 12) {
+                                    rtc->dtime.tm_hour = 0;
+                                }
+                            }
+                        } else {  // 24h mode
+                            rtc->dtime.tm_hour = (((rtc->bb_i2c.datar & 0x30) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
+                        }
                         break;
-                    case 4:
+                    case DS_DATE:
                         rtc->dtime.tm_mday = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
                         break;
-                    case 3:
-                        rtc->dtime.tm_wday = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
-                        break;
-                    case 5:
+                    case DS_DAY: {
+                        int wday = rtc->bb_i2c.datar;
+                        if (wday == 7)
+                            wday = 0;
+                        rtc->dtime.tm_wday = (((wday & 0xF0) >> 4) * 10) + (wday & 0x0F);
+                    } break;
+                    case DS_MONTH:
                         rtc->dtime.tm_mon =
                             ((((rtc->bb_i2c.datar - 1) & 0xF0) >> 4) * 10) + ((rtc->bb_i2c.datar - 1) & 0x0F);
                         break;
-                    case 6:
+                    case DS_YEAR:
                         rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) |
                                              ((((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F));
                         break;
@@ -286,7 +391,9 @@ unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned c
             break;
         case I2C_DATAR:
             bitbang_i2c_send(&rtc->bb_i2c, rtc->data[rtc->addr]);
-            dprintf("rtc read [%04X]=%02X\n", rtc->addr, rtc->data[rtc->addr]);
+#ifdef _DEBUG
+            dprintf("< rtc read  %s\n", get_addr_str(rtc->addr, rtc->data[rtc->addr]));
+#endif
             rtc->addr++;
             if (rtc->addr > 63) {
                 rtc->addr -= 64;
