@@ -28,21 +28,30 @@
 
 class board;
 
-#define LEDC_MAX 32
+#define PWM_CHANNEL_MAX 32
 
 typedef struct {
-    unsigned char channels;
-    board* pboard;
     int TimerID;
     unsigned int counter;
-    unsigned char pins[LEDC_MAX];
-    unsigned char out[LEDC_MAX];
-    unsigned char duty[LEDC_MAX];
+    unsigned char pin;
+    unsigned char out;
+    unsigned char duty;
+    unsigned int freq;
+    unsigned int res;
+} channel_pwm_t;
+
+typedef struct {
+    unsigned char channels_count;
+    board* pboard;
+    channel_pwm_t channels[PWM_CHANNEL_MAX];
 } bitbang_pwm_t;
 
 void bitbang_pwm_init(bitbang_pwm_t* pwm, board* pboard, const unsigned char channels = 8);
 void bitbang_pwm_rst(bitbang_pwm_t* pwm);
 void bitbang_pwm_end(bitbang_pwm_t* pwm);
 void bitbang_pwm_set_duty(bitbang_pwm_t* pwm, const unsigned char channel, const char duty);
+void bitbang_pwm_set_duty_f(bitbang_pwm_t* pwm, const unsigned char channel, const float duty);
+void bitbang_pwm_set_pin(bitbang_pwm_t* pwm, const unsigned char channel, const char pin);
+void bitbang_pwm_set_freq(bitbang_pwm_t* pwm, const unsigned char channel, unsigned int freq);
 
 #endif  // BITBANG_PWM

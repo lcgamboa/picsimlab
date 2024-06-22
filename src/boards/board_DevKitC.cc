@@ -992,7 +992,7 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 85:  // ledc_ls_sig_out6
                 case 86:  // ledc_ls_sig_out7
                     // printf("LEDC channel %i in GPIO %i\n",function - 71, gpio);
-                    pwm_out.pins[function - 71] = io2pin(gpio);
+                    bitbang_pwm_set_pin(&pwm_out, function - 71, io2pin(gpio));
                     break;
                 case 87:  // rmt_sig_out0
                     // case 88:  // rmt_sig_out1  //FIXME only channel 0 enabled
@@ -1108,7 +1108,18 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
 
         } break;
         case QEMU_EXTRA_PIN_LEDC_CFG:
-            bitbang_pwm_set_duty(&pwm_out, (cfg & 0x0F00) >> 8, cfg & 0xFF);
+            uint32_t* channel_conf0_reg = qemu_picsimlab_get_internals(QEMU_INTERNAL_LEDC_CHANNEL_CONF);  // 16
+            uint32_t* timer_freq = qemu_picsimlab_get_internals(QEMU_INTERNAL_LEDC_TIMER_FREQ);           // 8
+            float* channel_duty = (float*)qemu_picsimlab_get_internals(QEMU_INTERNAL_LEDC_CHANNEL_DUTY);  // 16
+            int channel = (cfg & 0x0F00) >> 8;
+            int timern = channel_conf0_reg[channel] & 0x03;
+            if (channel >= 8) {
+                timern += 4;  // use LSTimers
+            }
+
+            bitbang_pwm_set_freq(&pwm_out, channel, timer_freq[timern]);
+            // bitbang_pwm_set_duty(&pwm_out, channel, cfg & 0xFF);
+            bitbang_pwm_set_duty_f(&pwm_out, channel, channel_duty[channel]);
             break;
     }
 }

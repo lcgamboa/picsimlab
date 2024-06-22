@@ -37,14 +37,14 @@
 
 void bitbang_out_rst(bitbang_out_t* out) {
     dprintf("bitbang_out rst\n");
-    for (int i = 0; i < out->channels; i++) {
+    for (int i = 0; i < out->channels_count; i++) {
         out->out[i] = 0;
     }
 }
 
-void bitbang_out_init(bitbang_out_t* out, board* pboard, const unsigned char channels) {
+void bitbang_out_init(bitbang_out_t* out, board* pboard, const unsigned char channels_count) {
     dprintf("bitbang_out init\n");
-    out->channels = channels;
+    out->channels_count = channels_count;
     bitbang_out_rst(out);
     out->pboard = pboard;
     memset(out->pins, 0, OUT_MAX);

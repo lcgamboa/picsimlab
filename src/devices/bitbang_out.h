@@ -31,7 +31,7 @@ class board;
 #define OUT_MAX 32
 
 typedef struct {
-    unsigned char channels;
+    unsigned char channels_count;
     board* pboard;
     unsigned char pins[OUT_MAX];
     unsigned char out[OUT_MAX];

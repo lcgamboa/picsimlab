@@ -24,6 +24,7 @@ mv src/Makefile.static src/Makefile
 mv tools/srtank/Makefile.static tools/srtank/Makefile
 mv tools/espmsim/Makefile.static tools/espmsim/Makefile
 mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
+mv tools/picsimlab_tool/Makefile.static tools/picsimlab_tool/Makefile
 PWD=`pwd`	
 echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) PKG=\"DEB\" $1\n\n" >> debian/rules
 echo -e "\noverride_dh_auto_install:\n\tdh_auto_install\n\tinstall -d ${PWD}/debian/picsimlab/usr/lib/picsimlab/" >> debian/rules

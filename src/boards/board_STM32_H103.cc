@@ -921,7 +921,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
-                            pwm_out.pins[(1 << 2) + 0] = iopin(A, 0);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 0, iopin(A, 0));
                         }
                         break;
                     case 1:
@@ -929,7 +929,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
-                            pwm_out.pins[(1 << 2) + 1] = iopin(A, 1);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 1, iopin(A, 1));
                         }
                         break;
                     case 2:
@@ -945,7 +945,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
-                            pwm_out.pins[(1 << 2) + 2] = iopin(A, 2);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 2, iopin(A, 2));
                         }
                         break;
                     case 3:
@@ -961,7 +961,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 0) {
-                            pwm_out.pins[(1 << 2) + 3] = iopin(A, 3);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 3, iopin(A, 3));
                         }
                         break;
                     case 4:
@@ -990,7 +990,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
-                            pwm_out.pins[(2 << 2) + 0] = iopin(A, 6);
+                            bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 0, iopin(A, 6));
                         }
                         break;
                     case 7:
@@ -1007,14 +1007,14 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
-                            pwm_out.pins[(0 << 2) + 0] = iopin(A, 7);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 0, iopin(A, 7));
                             break;
                         }
                         // tim3
                         // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
-                            pwm_out.pins[(2 << 2) + 1] = iopin(A, 7);
+                            bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 1, iopin(A, 7));
                         }
                         break;
                     case 8:
@@ -1022,7 +1022,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
-                            pwm_out.pins[(0 << 2) + 0] = iopin(A, 8);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 0, iopin(A, 8));
                         }
                         break;
                     case 9:
@@ -1038,7 +1038,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
-                            pwm_out.pins[(0 << 2) + 1] = iopin(A, 9);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 1, iopin(A, 9));
                         }
                         break;
                     case 10:
@@ -1054,7 +1054,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
-                            pwm_out.pins[(0 << 2) + 2] = iopin(A, 10);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 2, iopin(A, 10));
                         }
                         break;
                     case 11:
@@ -1062,7 +1062,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 0) {
-                            pwm_out.pins[(0 << 2) + 3] = iopin(A, 11);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 3, iopin(A, 11));
                         }
                         break;
                     case 12:
@@ -1082,13 +1082,13 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
-                            pwm_out.pins[(0 << 2) + 1] = iopin(B, 0);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 1, iopin(B, 0));
                             break;
                         }
                         // tim3_ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
-                            pwm_out.pins[(2 << 2) + 2] = iopin(B, 0);
+                            bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 2, iopin(B, 0));
                         }
                         break;
                     case 1:
@@ -1096,13 +1096,13 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
-                            pwm_out.pins[(0 << 2) + 2] = iopin(B, 1);
+                            bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 2, iopin(B, 1));
                             break;
                         }
                         // tim3_ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
-                            pwm_out.pins[(2 << 2) + 3] = iopin(B, 1);
+                            bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 3, iopin(B, 1));
                         }
 
                         break;
@@ -1113,7 +1113,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
-                            pwm_out.pins[(1 << 2) + 1] = iopin(B, 3);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 1, iopin(B, 3));
                             break;
                         }
                     case 4:
@@ -1121,7 +1121,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 2) {
-                            pwm_out.pins[(2 << 2) + 0] = iopin(B, 4);
+                            bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 0, iopin(B, 4));
                             break;
                         }
                     case 5:
@@ -1139,7 +1139,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 2) {
-                            pwm_out.pins[(2 << 2) + 1] = iopin(B, 5);
+                            bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 1, iopin(B, 5));
                             break;
                         }
                         break;
@@ -1165,7 +1165,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
-                            pwm_out.pins[(3 << 2) + 0] = iopin(B, 6);
+                            bitbang_pwm_set_pin(&pwm_out, (3 << 2) + 0, iopin(B, 6));
                         }
                         break;
                     case 7:
@@ -1190,7 +1190,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
-                            pwm_out.pins[(3 << 2) + 1] = iopin(B, 7);
+                            bitbang_pwm_set_pin(&pwm_out, (3 << 2) + 1, iopin(B, 7));
                         }
                         break;
                     case 8:
@@ -1207,7 +1207,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
-                            pwm_out.pins[(3 << 2) + 2] = iopin(B, 8);
+                            bitbang_pwm_set_pin(&pwm_out, (3 << 2) + 2, iopin(B, 8));
                         }
                     case 9:
                         // i2c0
@@ -1223,7 +1223,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
-                            pwm_out.pins[(3 << 2) + 3] = iopin(B, 9);
+                            bitbang_pwm_set_pin(&pwm_out, (3 << 2) + 3, iopin(B, 9));
                         }
                         break;
                     case 10:
@@ -1231,7 +1231,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
-                            pwm_out.pins[(1 << 2) + 2] = iopin(B, 10);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 2, iopin(B, 10));
                             break;
                         }
                         /*
@@ -1271,7 +1271,7 @@ void cboard_STM32_H103::PinsExtraConfig(int cfg) {
                         // (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
-                            pwm_out.pins[(1 << 2) + 3] = iopin(B, 10);
+                            bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 3, iopin(B, 10));
                             break;
                         }
                         /*

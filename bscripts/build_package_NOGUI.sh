@@ -37,6 +37,7 @@ sed -i 's/picsimlab /picsimlab_NOGUI /g' src/Makefile
 mv tools/srtank/Makefile.static tools/srtank/Makefile
 mv tools/espmsim/Makefile.static tools/espmsim/Makefile
 mv tools/PinViewer/Makefile.static tools/PinViewer/Makefile
+mv tools/picsimlab_tool/Makefile.static tools/picsimlab_tool/Makefile
 rm -rf share/*/*/*.png
 PWD=`pwd`	
 echo -e "\noverride_dh_auto_build:\n\tmake -j$(nproc) PKG=\"DEB\" $1\n\n" >> debian/rules

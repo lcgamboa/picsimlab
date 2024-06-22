@@ -1230,13 +1230,13 @@ void bsim_qemu::MStep(void) {
                 }
             }
         }
-        for (int i = 0; i < pwm_out.channels; i++) {
-            if (pwm_out.pins[i]) {
-                pins[pwm_out.pins[i] - 1].dir = PD_OUT;
-                pins[pwm_out.pins[i] - 1].value = pwm_out.out[i];
+        for (int i = 0; i < pwm_out.channels_count; i++) {
+            if (pwm_out.channels[i].pin) {
+                pins[pwm_out.channels[i].pin - 1].dir = PD_OUT;
+                pins[pwm_out.channels[i].pin - 1].value = pwm_out.channels[i].out;
             }
         }
-        for (int i = 0; i < rmt_out.channels; i++) {
+        for (int i = 0; i < rmt_out.channels_count; i++) {
             if (rmt_out.pins[i]) {
                 pins[rmt_out.pins[i] - 1].dir = PD_OUT;
                 pins[rmt_out.pins[i] - 1].value = rmt_out.out[i];
