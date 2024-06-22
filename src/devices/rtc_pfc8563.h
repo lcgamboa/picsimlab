@@ -39,6 +39,7 @@ typedef struct {
     int alarm;
     board* pboard;
     int TimerID;
+    int backup_mday;
 } rtc_pfc8563_t;
 
 void rtc_pfc8563_rst(rtc_pfc8563_t* rtc);

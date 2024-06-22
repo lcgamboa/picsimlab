@@ -42,6 +42,7 @@ void rtc_pfc8563_rst(rtc_pfc8563_t* rtc) {
     rtc->addr = 0;
     rtc->ucont = 0;
     rtc->alarm = 0;
+    rtc->backup_mday = 0;
     dprintf("rtc rst\n");
 }
 
@@ -239,6 +240,7 @@ unsigned char rtc_pfc8563_I2C_io(rtc_pfc8563_t* rtc, unsigned char scl, unsigned
                         break;
                     case 5:
                         rtc->dtime.tm_mday = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
+                        rtc->backup_mday = rtc->dtime.tm_mday;
                         break;
                     case 6:
                         rtc->dtime.tm_wday = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
@@ -246,9 +248,13 @@ unsigned char rtc_pfc8563_I2C_io(rtc_pfc8563_t* rtc, unsigned char scl, unsigned
                     case 7:
                         rtc->dtime.tm_mon =
                             ((((rtc->bb_i2c.datar - 1) & 0xF0) >> 4) * 10) + ((rtc->bb_i2c.datar - 1) & 0x0F);
+                        if (rtc->backup_mday) {
+                            rtc->dtime.tm_mday = rtc->backup_mday;
+                            rtc->backup_mday = 0;
+                        }
                         break;
                     case 8:
-                        rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) |
+                        rtc->dtime.tm_year = (rtc->dtime.tm_year - (rtc->dtime.tm_year % 100)) +
                                              ((((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F));
                         break;
                     default:

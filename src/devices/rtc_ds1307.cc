@@ -87,6 +87,7 @@ void rtc_ds1307_rst(rtc_ds1307_t* rtc) {
     rtc->addr = 0;
     rtc->ucont = 0;
     rtc->alarm = 0;
+    rtc->backup_mday = 0;
     dprintf("rtc rst\n");
 }
 
@@ -330,6 +331,7 @@ unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned c
             } else {
 #ifdef _DEBUG
                 dprintf("> rtc write %s\n", get_addr_str(rtc->addr, rtc->bb_i2c.datar));
+                dprintf("====>old %s", asctime(&rtc->dtime));
 #endif
                 rtc->data[rtc->addr] = rtc->bb_i2c.datar;
 
@@ -361,6 +363,7 @@ unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned c
                         break;
                     case DS_DATE:
                         rtc->dtime.tm_mday = (((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F);
+                        rtc->backup_mday = rtc->dtime.tm_mday;
                         break;
                     case DS_DAY: {
                         int wday = rtc->bb_i2c.datar;
@@ -371,21 +374,34 @@ unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned c
                     case DS_MONTH:
                         rtc->dtime.tm_mon =
                             ((((rtc->bb_i2c.datar - 1) & 0xF0) >> 4) * 10) + ((rtc->bb_i2c.datar - 1) & 0x0F);
+                        if (rtc->backup_mday) {
+                            rtc->dtime.tm_mday = rtc->backup_mday;
+                            rtc->backup_mday = 0;
+                        }
                         break;
                     case DS_YEAR:
-                        rtc->dtime.tm_year = (rtc->dtime.tm_year & 0xFF00) |
+                        rtc->dtime.tm_year = (rtc->dtime.tm_year - (rtc->dtime.tm_year % 100)) +
                                              ((((rtc->bb_i2c.datar & 0xF0) >> 4) * 10) + (rtc->bb_i2c.datar & 0x0F));
                         break;
                     default:
                         break;
                 }
-
+                dprintf("====>new %s", asctime(&rtc->dtime));
                 rtc->addr++;
                 if (rtc->addr > 63) {
                     rtc->addr -= 64;
                 }
                 rtc->systime = time(NULL);
                 rtc->rtctime = rtc_ds1307_getUtime(rtc);
+#ifdef _DEBUG
+                struct tm ddtime;
+#ifdef _WIN_
+                localtime_s(&ddtime, &rtc->rtctime);
+#else
+                localtime_r(&rtc->rtctime, &ddtime);
+#endif
+                dprintf("====>rtc %s\n", asctime(&ddtime));
+#endif
                 rtc->ucont = 0;
             }
             break;
@@ -393,6 +409,9 @@ unsigned char rtc_ds1307_I2C_io(rtc_ds1307_t* rtc, unsigned char scl, unsigned c
             bitbang_i2c_send(&rtc->bb_i2c, rtc->data[rtc->addr]);
 #ifdef _DEBUG
             dprintf("< rtc read  %s\n", get_addr_str(rtc->addr, rtc->data[rtc->addr]));
+            if (rtc->addr == DS_YEAR) {
+                dprintf("====>date %s", asctime(&rtc->dtime));
+            }
 #endif
             rtc->addr++;
             if (rtc->addr > 63) {
