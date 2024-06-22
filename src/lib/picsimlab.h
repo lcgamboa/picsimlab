@@ -125,7 +125,7 @@ public:
     void Set_mcudbg(int pd);
 
     void SetMcuRun(int mr) { mcurun = mr; };
-    int GetMcuRun(void) { return mcurst; };
+    int GetMcuRun(void) { return mcurun; };
 
     /**
      * @brief  Return the selected debugger port
@@ -237,7 +237,7 @@ public:
     int GetUseDSRReset(void) { return use_dsr_reset; };
     void SetUseDSRReset(int udsr) { use_dsr_reset = udsr; };
 
-    void SetToDestroy(void);
+    void SetToDestroy(int reason = RC_EXIT);
     int GetToDestroy(void) { return settodestroy; };
 
     void SetSync(unsigned char s) { sync = s; };

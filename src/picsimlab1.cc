@@ -342,12 +342,21 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
     }
 #endif
 
-    if (PICSimLab.GetToDestroy()) {
-        WDestroy();
-    }
-
     if (GetNeedClkUpdate()) {
         PICSimLab.SetClock(PICSimLab.GetClock());
+    }
+
+    int reason = PICSimLab.GetToDestroy();
+    switch (reason) {
+        case RC_EXIT:
+            WDestroy();
+            break;
+        case RC_LOAD: {
+            PICSimLab.LoadHexFile(rcontrol_get_file_to_load());
+            WDestroy();
+        } break;
+        default:
+            break;
     }
 }
 
@@ -872,7 +881,11 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         }
 
         if (PICSimLab.GetLab() != -1) {
-            snprintf(fname, 1199, "%s/picsimlab.ini", home);
+            if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
+                snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, PICSimLab.GetInstanceNumber());
+            } else {
+                snprintf(fname, 1023, "%s/picsimlab.ini", home);
+            }
             PICSimLab.PrefsClear();
             if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
                 if (PICSimLab.PrefsLoadFromFile(fname)) {

@@ -2,7 +2,7 @@
 FILE=Makefile
 
 
-SUBDIRS= src tools/espmsim tools/srtank tools/PinViewer
+SUBDIRS= src tools/espmsim tools/srtank tools/PinViewer tools/picsimlab_tool
 
 .PHONY: $(SUBDIRS)  
 

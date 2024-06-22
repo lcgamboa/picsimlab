@@ -71,6 +71,7 @@ static int server_started = 0;
 #define BSIZE 1024
 static char buffer[BSIZE];
 static int bp = 0;
+static char file_to_load[BSIZE];
 
 void setnblock(int sock_descriptor) {
 #ifndef _WIN_
@@ -110,6 +111,10 @@ void setblock(int sock_descriptor) {
     unsigned long iMode = 0;
     ioctlsocket(sock_descriptor, FIONBIO, &iMode);
 #endif
+}
+
+char* rcontrol_get_file_to_load(void) {
+    return file_to_load;
 }
 
 int rcontrol_init(const unsigned short tcpport, const int reporterror) {
@@ -882,10 +887,19 @@ int rcontrol_loop(void) {
                         if ((ptr = strchr(cmd, '\n'))) {
                             ptr[0] = 0;
                         }
-                        if (PICSimLab.LoadHexFile(cmd + 8)) {
-                            ret += sendtext("ERROR\r\n>");
-                        } else {
+
+                        if (PICSimLab.GetNeedReboot()) {
+                            PICSimLab.SetWorkspaceFileName("");
+                            PICSimLab.SetToDestroy(RC_LOAD);
                             ret += sendtext("Ok\r\n>");
+                            strcpy(file_to_load, cmd + 8);
+                            ret = 1;
+                        } else {
+                            if (PICSimLab.LoadHexFile(cmd + 8)) {
+                                ret += sendtext("ERROR\r\n>");
+                            } else {
+                                ret += sendtext("Ok\r\n>");
+                            }
                         }
                     } else {
                         ret = sendtext("ERROR\r\n>");
@@ -1139,8 +1153,10 @@ int rcontrol_loop(void) {
     }
 
     // close connection
-    if (ret)
+    if (ret) {
+        sleep(1);  // wait client to close socket first
         rcontrol_stop();
+    }
 
     return ret;
 }

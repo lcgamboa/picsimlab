@@ -81,7 +81,7 @@ public:
     void WritePinOA(unsigned char pin, unsigned short oavalue);
     unsigned char RegisterIOpin(std::string pname, unsigned char pin = 0, unsigned char dir = PD_OUT);
     unsigned char UnregisterIOpin(unsigned char pin);
-    part* AddPart(const char* partname, const int x, const int y, const float scale, board* pboard_);
+    part* AddPart(const char* partname, const int x, const int y, const float scale);
     void DeletePart(const int partn);
     void SetUseAlias(const int use) { useAlias = use; };
     unsigned char GetUseAlias(void) { return useAlias; };

@@ -1,0 +1,49 @@
+include ../../VERSION
+
+CC = g++
+
+DESTDIR ?= /usr
+prefix = $(DESTDIR)
+
+RM= rm -f
+CP= cp
+MKDIR = mkdir -p
+
+appdir= ${prefix}/share/applications/
+execdir= ${prefix}/bin/
+sharedir= ${prefix}/share/picsimlab/
+
+#lxrad automatic generated block start, don't edit below!
+
+FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -g -O2 
+FLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\" 
+
+LIBS =  
+
+OBJS = picsimlab_tool.o 
+
+exp: all
+
+all: $(OBJS)
+	@echo "Linking picsimlab_tool"
+	@$(CC) $(FLAGS) $(OBJS) -opicsimlab_tool $(LIBS)
+
+%.o: %.cc
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
+
+run: all
+	./picsimlab_tool
+
+install: all
+	$(CP) -dvf picsimlab_tool ${execdir}
+
+install_app: all
+	$(CP) -dvf picsimlab_tool ${execdir}
+
+uninstall:
+	$(RM) -dvf ${execdir}picsimlab_tool
+
+
+clean:
+	rm -f picsimlab_tool *.o core

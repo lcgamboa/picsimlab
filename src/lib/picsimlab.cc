@@ -1119,8 +1119,8 @@ void CPICSimLab::SetIdleMs(double im) {
     idle_ms = im;
 }
 
-void CPICSimLab::SetToDestroy(void) {
-    settodestroy = 1;
+void CPICSimLab::SetToDestroy(int reason) {
+    settodestroy = reason;
 }
 
 int CPICSimLab::LoadHexFile(std::string fname) {
@@ -1129,6 +1129,8 @@ int CPICSimLab::LoadHexFile(std::string fname) {
 
     pa = GetMcuPwr();
     SetMcuPwr(0);
+    while (PICSimLab.status.st[1] & ST_TH)
+        usleep(100);  // wait thread
 
     status.st[0] |= ST_DI;
     msleep(BASETIMER);

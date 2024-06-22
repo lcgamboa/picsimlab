@@ -45,5 +45,6 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror = 0);
 int rcontrol_loop(void);
 void rcontrol_end(void);
 void rcontrol_server_end(void);
+char* rcontrol_get_file_to_load(void);
 
 #endif /* RCONTROL_H */

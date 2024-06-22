@@ -1,0 +1,30 @@
+include ../../VERSION
+
+CC =  x86_64-w64-mingw32-g++
+
+FLAGS = -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"share/\" -Wall -O2 -D_WIN_ 
+FLAGS+= -D_ARCH_=\"WIN_64\" -D_DATE_=\"${DATE}\"
+
+LIBS = -lws2_32
+#LIBS+= -Wl,--subsystem,console -mconsole
+
+OBJS = picsimlab_tool.o 
+
+exp: all
+
+all: $(OBJS)
+	@echo "Linking picsimlab_tool"
+	@$(CC) $(FLAGS) $(OBJS) -opicsimlab_tool.exe $(LIBS)
+	@mv *.exe ../../picsimlab_win64/
+
+%.o: %.cc
+	@echo "Compiling $<"
+	@$(CC) -c $(FLAGS) $< 
+
+run: all
+	wine2 picsimlab_tool.exe
+
+install: all
+
+clean:
+	rm -f picsimlab_tool.exe *.o core 

@@ -65,8 +65,8 @@ part* CSpareParts::GetPart(const int partn) {
     return NULL;
 }
 
-part* CSpareParts::AddPart(const char* partname, const int x, const int y, const float scale, board* pboard_) {
-    part* newpart = create_part(partname, x, y, pboard_, partsc);
+part* CSpareParts::AddPart(const char* partname, const int x, const int y, const float scale) {
+    part* newpart = create_part(partname, x, y, pboard, partsc);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
         PICSimLab.RegisterError("Erro creating part: " + std::string(partname));

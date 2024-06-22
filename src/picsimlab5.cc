@@ -61,8 +61,8 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
     PartToCreate = ((CItemMenu*)control)->GetText();
 
     if (SpareParts.GetCount() < MAX_PARTS) {
-        part* Part = SpareParts.AddPart((const char*)PartToCreate.c_str(), 50 - offsetx, 50 - offsety,
-                                        SpareParts.GetScale(), PICSimLab.GetBoard());
+        part* Part =
+            SpareParts.AddPart((const char*)PartToCreate.c_str(), 50 - offsetx, 50 - offsety, SpareParts.GetScale());
         _EvOnShow(control);
         PartToCreate = "";
         PartToMove = Part->GetId();

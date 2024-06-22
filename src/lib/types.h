@@ -167,4 +167,7 @@ enum PICSimLabWindows {
 #define PFD_SAVE 0x0002
 #define PFD_CHANGE_DIR 0x0080
 
+#define RC_EXIT 1
+#define RC_LOAD 2
+
 #endif  // TYPES_H
