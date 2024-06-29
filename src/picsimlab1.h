@@ -50,11 +50,15 @@
 #define CPWINDOW1
 
 #include <lxrad.h>
+#include <condition_variable>
+#include <mutex>
 #include "lib/board.h"
 #include "lib/picsimlab.h"
 
 #define MAX_MIC 140
 #define MAX_AUDIO 10
+#define BITMAPS_MAX 50
+#define MUTEX_MAX 30
 
 /**
  * @brief CPWindow1 class
@@ -181,9 +185,9 @@ public:
     int GetNeedClkUpdate(void) { return need_clkupdate; };
     void SetNeedClkUpdate(const int ncu) { need_clkupdate = ncu; };
 
-    lxBitmap* Bitmaps[BOARDS_MAX];
+    lxBitmap* Bitmaps[BITMAPS_MAX];
     CPWindow* Windows[BOARDS_MAX];
-    lxMutex* Mutexs[BOARDS_MAX];
+    lxMutex* Mutexs[MUTEX_MAX];
     lxaudio* AudioChannels[MAX_AUDIO];
 
     int WinCmd(CControl* ctrl, const PICSimLabWindowAction action, const char* Value, void* ReturnBuff);
@@ -202,8 +206,8 @@ private:
     CThread thread3;  // boards
 
 #ifndef _NOTHREAD
-    lxMutex* cpu_mutex;
-    lxCondition* cpu_cond;
+    std::mutex cpu_mutex;
+    std::condition_variable cpu_cond;
 #endif
 };
 

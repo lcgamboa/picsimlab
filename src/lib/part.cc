@@ -318,6 +318,11 @@ void part::LoadPartImage(void) {
         SpareParts.SetPartOnDraw(id);
         std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
+        if (BitmapId >= 0) {
+            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            BitmapId = -1;
+        }
+
         int bmp = SpareParts.CanvasCmd({.cmd = CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
 
         if (bmp >= 0) {

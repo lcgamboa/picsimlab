@@ -76,17 +76,17 @@ public:
     /**
      * @brief  Called every start of CPU process
      */
-    virtual void PreProcess(void){};
+    virtual void PreProcess(void) {};
 
     /**
      * @brief  Called every CPU step
      */
-    virtual void Process(void){};
+    virtual void Process(void) {};
 
     /**
      * @brief  Called every end of CPU process
      */
-    virtual void PostProcess(void){};
+    virtual void PostProcess(void) {};
 
     /**
      * @brief  Return the filename of part picture
@@ -126,12 +126,12 @@ public:
     /**
      * @brief  Reset part status
      */
-    virtual void Reset(void){};
+    virtual void Reset(void) {};
 
     /**
      * @brief  Stop part simulation
      */
-    virtual void Stop(void){};
+    virtual void Stop(void) {};
 
     /**
      * @brief  Event handler on the part
@@ -142,7 +142,7 @@ public:
      * @brief  Event handler on the part
      */
     virtual void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
-                                    unsigned int state){};
+                                    unsigned int state) {};
 
     /**
      * @brief  Event handler on the part
@@ -153,7 +153,7 @@ public:
      * @brief  Event handler on the part
      */
     virtual void OnMouseButtonRelease(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
-                                      unsigned int state){};
+                                      unsigned int state) {};
 
     /**
      * @brief  Event handler on the part
@@ -164,17 +164,17 @@ public:
      * @brief  Event handler on the part
      */
     virtual void OnMouseMove(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
-                             unsigned int state){};
+                             unsigned int state) {};
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvKeyPress(unsigned int key, unsigned int mask){};
+    virtual void EvKeyPress(unsigned int key, unsigned int mask) {};
 
     /**
      * @brief  Event handler on the part
      */
-    virtual void EvKeyRelease(unsigned int key, unsigned int mask){};
+    virtual void EvKeyRelease(unsigned int key, unsigned int mask) {};
 
     /**
      * @brief  Called to save part preferences in configuration file
@@ -209,33 +209,33 @@ public:
     /**
      * @brief  Used by properties window combos
      */
-    virtual void ComboChange(const char* controlname, std::string value){};
+    virtual void ComboChange(const char* controlname, std::string value) {};
 
     /**
      * @brief  Used by properties window spin
      */
-    virtual void SpinChange(const char* controlname, int value){};
+    virtual void SpinChange(const char* controlname, int value) {};
 
     /**
      * @brief  Used by windows of parts
      */
     virtual void ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
-                             unsigned int state){};
+                             unsigned int state) {};
 
     /**
      * @brief  Used by windows of parts
      */
-    virtual void KeyEvent(const char* controlname, unsigned int keysym, unsigned int ukeysym, unsigned int state){};
+    virtual void KeyEvent(const char* controlname, unsigned int keysym, unsigned int ukeysym, unsigned int state) {};
 
     /**
      * @brief  Used by windows of parts
      */
-    virtual void Event(const char* controlname){};
+    virtual void Event(const char* controlname) {};
 
     /**
      * @brief  Used by properties window filedialogs
      */
-    virtual void filedialog_EvOnClose(int retId){};
+    virtual void filedialog_EvOnClose(int retId) {};
 
     /**
      * @brief  Called once on part creation
@@ -251,12 +251,12 @@ public:
     /**
      * @brief  Called once on part after initialization
      */
-    virtual void PostInit(void){};
+    virtual void PostInit(void) {};
 
     /**
      * @brief  Called once on part destruction
      */
-    virtual ~part(void){};
+    virtual ~part(void) {};
 
     /**
      * @brief  Return the Bitmap of part
@@ -334,6 +334,11 @@ public:
     int GetId(void) { return id; };
 
     /**
+     * @brief  Set the part ID
+     */
+    void SetId(int id_) { id = id_; };
+
+    /**
      * @brief  Return if part need Draw update
      */
     unsigned char GetUpdate(void);
@@ -365,7 +370,7 @@ protected:
     /**
      * @brief Register remote control variables
      */
-    virtual void RegisterRemoteControl(void){};
+    virtual void RegisterRemoteControl(void) {};
 
     int id;                         ///< part ID
     input_t input[MAX_IDS];         ///< input map elements

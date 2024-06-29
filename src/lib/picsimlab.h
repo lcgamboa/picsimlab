@@ -33,6 +33,7 @@
 
 extern char SERIALDEVICE[100];
 
+#include <atomic>
 #include "board.h"
 #include "draw.h"
 #include "types.h"
@@ -258,12 +259,9 @@ public:
 
     static int SystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff = NULL);
 
-    union {
-        char st[2];
-        unsigned short int status;
-    } status;
+    std::atomic<unsigned short int> status;
 
-    int tgo;
+    std::atomic<int> tgo;
 
     int plWidth;
     int plHeight;

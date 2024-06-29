@@ -26,6 +26,7 @@
 #ifndef SPAREPARTS
 #define SPAREPARTS
 
+#include <atomic>
 #include "draw.h"
 #include "part.h"
 #include "types.h"
@@ -135,7 +136,7 @@ private:
     picpin* Pins;
     unsigned char PinsCount;
     unsigned char useAlias;
-    int partsc;
+    std::atomic<int> partsc;
     part* parts[MAX_PARTS];
     int partsc_aup;              // always update list
     part* parts_aup[MAX_PARTS];  // always update list

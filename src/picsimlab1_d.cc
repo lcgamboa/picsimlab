@@ -504,9 +504,4 @@ CPWindow1::CPWindow1(void) {
     memset(AudioChannels, 0, sizeof(AudioChannels));
 
     Windows[PW_MAIN] = this;
-
-#ifndef _NOTHREAD
-    cpu_mutex = new lxMutex;
-    cpu_cond = new lxCondition(*cpu_mutex);
-#endif
 }

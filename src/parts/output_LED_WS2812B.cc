@@ -80,6 +80,9 @@ void cpart_led_ws2812b::LoadPartImage(void) {
         Height = OHeight + yoff;
 
         SpareParts.SetPartOnDraw(id);
+        if (BitmapId >= 0) {
+            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+        }
         BitmapId = SpareParts.CanvasCmd({.cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
         SpareParts.CanvasCmd({.cmd = CC_DESTROY});
@@ -234,6 +237,7 @@ void cpart_led_ws2812b::ChangeType(const unsigned int rows, const unsigned int c
         if (BitmapId >= 0) {
             SpareParts.SetPartOnDraw(id);
             SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            BitmapId = -1;
         }
 
         unsigned int rows_ = rows;

@@ -372,7 +372,7 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
         StartThread();
         while (!qemu_started) {
 #ifndef _WIN_
-            usleep(100);
+            usleep(1000);
 #else
             Sleep(1);
 #endif
@@ -931,7 +931,7 @@ void bsim_qemu::EvThreadRun(void) {
     qemu_started = 1;
     PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
 #ifndef _WIN_
-    usleep(100);
+    usleep(1000);
 #else
     Sleep(1);
 #endif

@@ -759,6 +759,7 @@ void cpart_LCD_ili9341::ChangeType(unsigned char tp) {
     if (BitmapId >= 0) {
         SpareParts.SetPartOnDraw(id);
         SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+        BitmapId = -1;
     }
 
     type_com = tp;

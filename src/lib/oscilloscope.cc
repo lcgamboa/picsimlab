@@ -682,6 +682,8 @@ int COscilloscope::WindowCmd(const int id, const char* ControlName, const PICSim
                              const char* Value, void* ReturnBuff) {
     if (Oscilloscope.OnWindowCmd) {
         return (*Oscilloscope.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+    } else {
+        printf("Error: COscilloscope::WindowCmd missing !\n");
     }
     return -1;
 }

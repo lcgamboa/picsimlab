@@ -178,6 +178,9 @@ void cpart_servo::ReadPropertiesWindow(void) {
 
 void cpart_servo::LoadPartImage(void) {
     SpareParts.SetPartOnDraw(id);
+    if (BitmapId >= 0) {
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    }
     BitmapId = SpareParts.CanvasCmd(
         {.cmd = CC_LOADIMAGE,
          .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,

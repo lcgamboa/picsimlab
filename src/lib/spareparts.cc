@@ -81,12 +81,13 @@ part* CSpareParts::AddPart(const char* partname, const int x, const int y, const
 
 void CSpareParts::DeleteParts(void) {
     int partsc_ = partsc;
-    partsc = 0;  // for disable process
+    partsc = 0;  // for disable draw process
     partsc_aup = 0;
     useAlias = 0;
 
     for (int i = 0; i < partsc_; i++) {
         delete parts[i];
+        parts[i] = NULL;
     }
 }
 
@@ -504,15 +505,17 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
 
 void CSpareParts::DeletePart(const int partn) {
     int partsc_ = partsc;
-    partsc = 0;  // disable process
+    partsc = 0;  // disable draw process
     partsc_aup = 0;
 
     delete parts[partn];
 
     for (int i = partn; i < partsc_ - 1; i++) {
         parts[i] = parts[i + 1];
+        parts[i]->SetId(i);
     }
     partsc_--;
+    parts[partsc_] = NULL;
 
     partsc = partsc_;
 }
@@ -680,6 +683,8 @@ int CSpareParts::WPropCmd(const char* ControlName, const PICSimLabWindowAction a
                           void* ReturnBuff) {
     if (SpareParts.OnWindowCmd) {
         return (*SpareParts.OnWindowCmd)(PW_WPROP, ControlName, action, Value, ReturnBuff);
+    } else {
+        printf("Error: CSpareParts::WindowCmd missing !\n");
     }
     return -1;
 }
@@ -688,6 +693,8 @@ int CSpareParts::WindowCmd(const int id, const char* ControlName, const PICSimLa
                            void* ReturnBuff) {
     if (SpareParts.OnWindowCmd) {
         return (*SpareParts.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+    } else {
+        printf("Error: CSpareParts::WindowCmd missing !\n");
     }
     return -1;
 }

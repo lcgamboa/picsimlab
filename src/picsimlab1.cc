@@ -100,11 +100,11 @@ void file_ready(const char* fname, const char* dir = NULL);
 
 void CPWindow1::timer1_EvOnTime(CControl* control) {
     // avoid run again before terminate previous
-    if (PICSimLab.status.st[0] & (ST_T1 | ST_DI))
+    if (PICSimLab.status & (ST_T1 | ST_DI))
         return;
 
     PICSimLab.SetSync(1);
-    PICSimLab.status.st[0] |= ST_T1;
+    PICSimLab.status |= ST_T1;
 
 #ifdef _NOTHREAD
     // printf ("overtimer = %i \n", timer1.GetOverTime ());
@@ -142,9 +142,10 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
 
     PICSimLab.tgo++;
 #ifndef _NOTHREAD
-    cpu_mutex->Lock();
-    cpu_cond->Signal();
-    cpu_mutex->Unlock();
+    {
+        std::unique_lock<std::mutex> lk(cpu_mutex);
+        cpu_cond.notify_one();
+    }
 #endif
 
     if (PICSimLab.tgo > 3) {
@@ -156,15 +157,10 @@ void CPWindow1::timer1_EvOnTime(CControl* control) {
 
     DrawBoard();
 
-    PICSimLab.status.st[0] &= ~ST_T1;
+    PICSimLab.status &= ~ST_T1;
 }
 
-CPWindow1::~CPWindow1(void) {
-#ifndef _NOTHREAD
-    delete cpu_cond;
-    delete cpu_mutex;
-#endif
-}
+CPWindow1::~CPWindow1(void) {}
 
 void CPWindow1::DrawBoard(void) {
     if (PICSimLab.GetNeedResize()) {
@@ -238,12 +234,12 @@ void CPWindow1::thread1_EvThreadRun(CControl*) {
         if (PICSimLab.tgo) {
             t0 = cpuTime();
 
-            PICSimLab.status.st[1] |= ST_TH;
+            PICSimLab.status |= ST_TH;
             PICSimLab.GetBoard()->Run_CPU();
             if (PICSimLab.GetDebugStatus())
                 PICSimLab.GetBoard()->DebugLoop();
             PICSimLab.tgo--;
-            PICSimLab.status.st[1] &= ~ST_TH;
+            PICSimLab.status &= ~ST_TH;
 
             t1 = cpuTime();
 
@@ -271,9 +267,10 @@ void CPWindow1::thread1_EvThreadRun(CControl*) {
                 PICSimLab.SetIdleMs(0);
         } else {
 #ifndef _NOTHREAD
-            cpu_mutex->Lock();
-            cpu_cond->Wait();
-            cpu_mutex->Unlock();
+            {
+                std::unique_lock<std::mutex> lk(cpu_mutex);
+                cpu_cond.wait(lk);
+            }
 #endif
         }
 
@@ -295,10 +292,10 @@ void CPWindow1::thread3_EvThreadRun(CControl*) {
 
 void CPWindow1::timer2_EvOnTime(CControl* control) {
     // avoid run again before terminate previous
-    if (PICSimLab.status.st[0] & (ST_T2 | ST_DI))
+    if (PICSimLab.status & (ST_T2 | ST_DI))
         return;
 
-    PICSimLab.status.st[0] |= ST_T2;
+    PICSimLab.status |= ST_T2;
     if (PICSimLab.GetBoard() != NULL) {
         PICSimLab.GetBoard()->RefreshStatus();
 
@@ -334,7 +331,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
 #endif
         PICSimLab.DeleteError(0);
     }
-    PICSimLab.status.st[0] &= ~ST_T2;
+    PICSimLab.status &= ~ST_T2;
 
 #ifdef CONVERTER_MODE
     if (cvt_fname.Length() > 3) {
@@ -998,15 +995,16 @@ void CPWindow1::OnEndSimulation(void) {
     Window1.timer2.SetRunState(0);
 
     msleep(BASETIMER);
-    while (PICSimLab.status.status) {
+    while (PICSimLab.status) {
         msleep(1);
         Application->ProcessEvents();
     }
     PICSimLab.tgo = 100000;
 #ifndef _NOTHREAD
-    Window1.cpu_mutex->Lock();
-    Window1.cpu_cond->Signal();
-    Window1.cpu_mutex->Unlock();
+    {
+        std::unique_lock<std::mutex> lk(Window1.cpu_mutex);
+        Window1.cpu_cond.notify_one();
+    }
 #endif
 
     Window1.thread1.Destroy();
@@ -1177,7 +1175,7 @@ void CPWindow1::filedialog1_EvOnClose(int retId) {
     pa = PICSimLab.GetMcuPwr();
     PICSimLab.SetMcuPwr(0);
 
-    while (PICSimLab.status.st[1] & ST_TH)
+    while (PICSimLab.status & ST_TH)
         usleep(100);  // wait thread
 
     if (retId && (filedialog1.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
@@ -1538,19 +1536,20 @@ int CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
                                cmd.LoadImage.scale, cmd.LoadImage.usealpha)) {
                 // find enpty bitmap
                 int bid = -1;
-                for (int i = 0; i < BOARDS_MAX; i++) {
+                for (int i = 0; i < BITMAPS_MAX; i++) {
                     if (Window1.Bitmaps[i] == NULL) {
                         bid = i;
                         break;
                     }
                 }
 
-                if ((bid >= 0) && (bid < BOARDS_MAX)) {
+                if ((bid >= 0) && (bid < BITMAPS_MAX)) {
                     Window1.Bitmaps[bid] = new lxBitmap(&image, &Window1);
                     image.Destroy();
                     return bid;
                 }
             }
+            printf("PICSimLab: Erro CC_LOADIMAGE!\n");
             return -1;
         } break;
         case CC_CREATEIMAGE: {
@@ -1559,18 +1558,19 @@ int CPWindow1::OnCanvasCmd(const CanvasCmd_t cmd) {
                                   cmd.CreateImage.scale, cmd.CreateImage.scale)) {
                 // find enpty bitmap
                 int bid = -1;
-                for (int i = 0; i < BOARDS_MAX; i++) {
+                for (int i = 0; i < BITMAPS_MAX; i++) {
                     if (Window1.Bitmaps[i] == NULL) {
                         bid = i;
                         break;
                     }
                 }
-                if ((bid >= 0) && (bid < BOARDS_MAX)) {
+                if ((bid >= 0) && (bid < BITMAPS_MAX)) {
                     Window1.Bitmaps[bid] = new lxBitmap(&image, &Window1);
                     image.Destroy();
                     return bid;
                 }
             }
+            printf("PICSimLab: Erro CC_CREATEIMAGE!\n");
             return -1;
         } break;
         case CC_ARC:
@@ -2068,7 +2068,7 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
 
         case PSC_MUTEXCREATE: {
             int mid = -1;
-            for (int i = 0; i < BOARDS_MAX; i++) {
+            for (int i = 0; i < MUTEX_MAX; i++) {
                 if (Window1.Mutexs[i] == NULL) {
                     mid = i;
                     break;
@@ -2076,6 +2076,8 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
             }
             if (mid >= 0) {
                 Window1.Mutexs[mid] = new lxMutex;
+            } else {
+                printf("PICSimLab: Error PSC_MUTEXCREATE!\n");
             }
             return mid;
         } break;

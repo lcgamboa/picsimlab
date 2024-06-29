@@ -377,6 +377,10 @@ void cpart_LCD_hd44780::PostProcess(void) {
 void cpart_LCD_hd44780::LoadPartImage(void) {
     int bmp = -1;
 
+    if (BitmapId >= 0) {
+        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    }
+
     switch (model) {
         case LCD16x2:
             bmp = SpareParts.CanvasCmd(

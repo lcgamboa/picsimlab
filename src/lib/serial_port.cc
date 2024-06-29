@@ -293,7 +293,7 @@ unsigned long serial_port_rec_tout(serialfd_t serialfd, unsigned char* c) {
 #else
         long nbytes;
         do {
-            usleep(100);
+            usleep(1000);
             nbytes = read(serialfd, c, 1);
             if (nbytes < 0)
                 nbytes = 0;

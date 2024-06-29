@@ -213,6 +213,7 @@ void cpart_keypad::ChangeType(unsigned char tp) {
     if (BitmapId >= 0) {
         SpareParts.SetPartOnDraw(id);
         SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+        BitmapId = -1;
     }
 
     type = tp;

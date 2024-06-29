@@ -66,7 +66,7 @@ CPICSimLab::CPICSimLab() {
     lab = DEFAULT_BOARD;
     lab_ = DEFAULT_BOARD;
     Workspacefn = "";
-    status.status = 0;
+    status = 0;
     scale = 1.0;
     need_resize = 0;
     tgo = 0;
@@ -805,14 +805,14 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
 
 void CPICSimLab::SetSimulationRun(int run) {
     if (run) {
-        status.st[0] &= ~ST_DI;
+        status &= ~ST_DI;
     } else {
-        status.st[0] |= ST_DI;
+        status |= ST_DI;
     }
 }
 
 int CPICSimLab::GetSimulationRun(void) {
-    return (status.st[0] & ST_DI) == 0;
+    return (status & ST_DI) == 0;
 }
 
 void CPICSimLab::Configure(const char* home, int use_default_board, int create, const char* lfile,
@@ -1129,14 +1129,14 @@ int CPICSimLab::LoadHexFile(std::string fname) {
 
     pa = GetMcuPwr();
     SetMcuPwr(0);
-    while (PICSimLab.status.st[1] & ST_TH)
+    while (PICSimLab.status & ST_TH)
         usleep(100);  // wait thread
 
-    status.st[0] |= ST_DI;
+    status |= ST_DI;
     msleep(BASETIMER);
     if (tgo)
         tgo = 1;
-    while (status.status & 0x0401) {
+    while (status & (ST_TH | ST_T1)) {
         msleep(1);
         WindowCmd(PW_MAIN, NULL, PWA_APPPROCESSEVENTS, NULL);
     }
@@ -1175,7 +1175,7 @@ int CPICSimLab::LoadHexFile(std::string fname) {
     ret = !GetMcuRun();
 
     SetMcuPwr(pa);
-    status.st[0] &= ~ST_DI;
+    status &= ~ST_DI;
 
 #ifdef NO_DEBUG
     UpdateStatus(PS_DEBUG, " ");
@@ -1208,6 +1208,8 @@ int CPICSimLab::WindowCmd(const int id, const char* ControlName, const PICSimLab
                           void* ReturnBuff) {
     if (PICSimLab.OnWindowCmd) {
         return (*PICSimLab.OnWindowCmd)(id, ControlName, action, Value, ReturnBuff);
+    } else {
+        printf("Error: CPICSimLab::WindowCmd missing !\n");
     }
     return -1;
 }
@@ -1215,6 +1217,8 @@ int CPICSimLab::WindowCmd(const int id, const char* ControlName, const PICSimLab
 int CPICSimLab::SystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* ReturnBuff) {
     if (PICSimLab.OnSystemCmd) {
         return (*PICSimLab.OnSystemCmd)(cmd, Arg, ReturnBuff);
+    } else {
+        printf("Error: CPICSimLab::SystemCmd missing !\n");
     }
     return -1;
 }

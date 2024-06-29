@@ -26,6 +26,7 @@
 #ifndef BOARD_QEMU_H
 #define BOARD_QEMU_H
 
+#include <atomic>
 #include "../devices/bitbang_i2c.h"
 #include "../devices/bitbang_out.h"
 #include "../devices/bitbang_pwm.h"
@@ -62,12 +63,12 @@ public:
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
     void MStep(void) override;
-    void MStepResume(void) override{};
+    void MStepResume(void) override {};
     void MReset(int flags) override;
     void EvThreadRun(void) override;
     int GetDefaultClock(void) override { return 1; };
     int GetInc_ns(void) { return inc_ns; };
-    virtual void PinsExtraConfig(int cfg){};
+    virtual void PinsExtraConfig(int cfg) {};
     user_timer_t timer;
     virtual void Run_CPU_ns(uint64_t time) = 0;
     bitbang_i2c_t master_i2c[2];
@@ -87,7 +88,7 @@ protected:
     const char* IcountToMipsItens(char* buffer);
     unsigned int ns_count;
     void pins_reset(void);
-    virtual void BoardOptions(int* argc, char** argv){};
+    virtual void BoardOptions(int* argc, char** argv) {};
     virtual const short int* GetPinMap(void) = 0;
     int icount;
 #ifdef _WIN_
@@ -106,7 +107,7 @@ protected:
     char fname_bak[2048];
     unsigned short ADCvalues[16];
     int mtx_qinitId;
-    int qemu_started;
+    std::atomic_int qemu_started;
     QEMUSimType SimType;
     std::string cmdline;
     int use_cmdline_extra;

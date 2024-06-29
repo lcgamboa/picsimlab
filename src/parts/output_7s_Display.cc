@@ -784,6 +784,7 @@ void cpart_7s_display::ChangeType(unsigned char tp) {
         SpareParts.SetPartOnDraw(id);
         SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+        BitmapId = -1;
     }
 
     dtype = tp;

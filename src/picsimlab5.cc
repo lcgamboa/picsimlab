@@ -816,6 +816,12 @@ void CPWindow5::pmenu2_Rotate_EvMenuActive(CControl* control) {
 void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
     PartToMove = -1;
     SpareParts.DeletePart(PartSelected);
+
+    for (int i = PartSelected; i < SpareParts.GetCount(); i++) {
+        Canvas[i] = Canvas[i + 1];
+    }
+    Canvas[PartSelected].Destroy();
+
     update_all = 1;
 }
 
@@ -1058,6 +1064,7 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
                     return bid;
                 }
             }
+            printf("PICSimLab: Erro CC_LOADIMAGE!\n");
             return -1;
         } break;
         case CC_CREATEIMAGE: {
@@ -1078,6 +1085,7 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
                     return bid;
                 }
             }
+            printf("PICSimLab: Erro CC_CREATEIMAGE!\n");
             return -1;
         } break;
         case CC_ARC:

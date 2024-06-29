@@ -470,6 +470,7 @@ void cpart_pbuttons::ChangeSize(const unsigned int sz) {
         if (BitmapId >= 0) {
             SpareParts.SetPartOnDraw(id);
             SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            BitmapId = -1;
         }
         Size = sz;
         if (Size > 8) {
@@ -489,6 +490,9 @@ void cpart_pbuttons::LoadPartImage(void) {
         Height = OHeight;
 
         SpareParts.SetPartOnDraw(id);
+        if (BitmapId >= 0) {
+            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+        }
         BitmapId = SpareParts.CanvasCmd({.cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
         SpareParts.CanvasCmd({.cmd = CC_DESTROY});
