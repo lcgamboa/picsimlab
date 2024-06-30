@@ -202,11 +202,16 @@ static uint8_t picsimlab_spi_event(const uint8_t id, const uint16_t event) {
 static void picsimlab_uart_tx_event(const uint8_t id, const uint8_t value) {
     dprintf("Uart[%i] %c \n", id, value);
 
+    uint32_t baud_rate = *qemu_picsimlab_get_internals(QEMU_INTERNAL_UART0_BAUD + id);
+    bitbang_uart_set_speed(&g_board->master_uart[id], baud_rate);
+
+    unsigned long delta = (1e10 / baud_rate);
+
     g_board->Run_CPU_ns(GotoNow());
 
     bitbang_uart_send(&g_board->master_uart[id], value);
-    g_board->timer.last += 1041667;
-    g_board->Run_CPU_ns(1041667);  // TODO fixed 10 bits at 9600 bps
+    g_board->timer.last += delta;
+    g_board->Run_CPU_ns(delta);
 }
 
 static void picsimlab_uart_rx_event(bitbang_uart_t* bu, void* arg) {
@@ -334,6 +339,9 @@ bsim_qemu::bsim_qemu(void) {
     bitbang_uart_init(&master_uart[0], this, picsimlab_uart_rx_event, (void*)&id[0]);
     bitbang_uart_init(&master_uart[1], this, picsimlab_uart_rx_event, (void*)&id[1]);
     bitbang_uart_init(&master_uart[2], this, picsimlab_uart_rx_event, (void*)&id[2]);
+    bitbang_uart_set_speed(&master_uart[0], 115200);
+    bitbang_uart_set_speed(&master_uart[1], 115200);
+    bitbang_uart_set_speed(&master_uart[2], 115200);
 }
 
 bsim_qemu::~bsim_qemu(void) {
