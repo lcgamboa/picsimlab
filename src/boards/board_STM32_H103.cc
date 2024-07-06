@@ -311,7 +311,9 @@ void cboard_STM32_H103::Reset(void) {
 
     MReset(1);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
+    uint32_t baud_rate = *qemu_picsimlab_get_internals(QEMU_INTERNAL_UART0_BAUD);
+    bitbang_uart_set_speed(&master_uart[0], baud_rate);
+    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
 
     if (use_spare)
         SpareParts.Reset();
@@ -330,7 +332,10 @@ void cboard_STM32_H103::RegisterRemoteControl(void) {
 
 void cboard_STM32_H103::RefreshStatus(void) {
     if (serial_open) {
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
+        uint32_t baud_rate = *qemu_picsimlab_get_internals(QEMU_INTERNAL_UART0_BAUD);
+        bitbang_uart_set_speed(&master_uart[0], baud_rate);
+        PICSimLab.UpdateStatus(PS_SERIAL,
+                               "Serial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
     } else {
         PICSimLab.UpdateStatus(PS_SERIAL, "Serial: Error");
     }
