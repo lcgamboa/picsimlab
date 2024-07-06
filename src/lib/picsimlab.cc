@@ -973,9 +973,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         strcpy(PROGDEVICE, "/dev/tnt4");
 #endif
 #else
-        strcpy(SERIALDEVICE, "com6");
+        strcpy(SERIALDEVICE, "COM6");
 #ifdef _USE_PICSTARTP_
-        strcpy(PROGDEVICE, "com8");
+        strcpy(PROGDEVICE, "COM8");
 #endif
 #endif
     }

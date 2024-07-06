@@ -115,6 +115,7 @@ protected:
     int serial_open;
     unsigned int application_offset;
     int ConfEnableSerial;
+    int ConfigWaitGdb;
 
 private:
     int load_qemu_lib(const char* path);

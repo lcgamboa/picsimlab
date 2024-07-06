@@ -331,6 +331,7 @@ bsim_qemu::bsim_qemu(void) {
     serial_open = 0;
     application_offset = 0;
     ConfEnableSerial = 1;
+    ConfigWaitGdb = 0;
 
     bitbang_i2c_ctrl_init(&master_i2c[0], this);
     bitbang_i2c_ctrl_init(&master_i2c[1], this);
@@ -867,6 +868,10 @@ void bsim_qemu::EvThreadRun(void) {
         sprintf(argv[argc++], "shift=auto,align=off,sleep=off");
     }
 
+    if (ConfigWaitGdb) {
+        strcpy(argv[(argc)++], "-S");
+    }
+
     BoardOptions(&argc, argv);
 
     // disable extra in case of invalid qemu option finish the simulator
@@ -1162,7 +1167,9 @@ void bsim_qemu::MReset(int flags) {
     if (flags >= 0) {
         qemu_mutex_lock_iothread();
     }
-    qmp_cont(NULL);
+    if (!ConfigWaitGdb) {
+        qmp_cont(NULL);
+    }
     qmp_system_reset(NULL);
     if (flags >= 0) {
         qemu_mutex_unlock_iothread();

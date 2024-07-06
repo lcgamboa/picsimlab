@@ -45,7 +45,7 @@ enum {
     O_RST    // Reset button
 };
 
-enum { MIPS = 0 };
+enum { MIPS = 0, CONFIG = 2 };
 
 // copied from qemu, must be the same
 enum {
@@ -290,12 +290,17 @@ cboard_STM32_H103::cboard_STM32_H103(void) {
     IcountToMipsItens(buffer + 1);
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_SET, (void*)buffer);
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_SET, (void*)IcountToMipsStr(icount));
+
+    PICSimLab.UpdateGUI(CONFIG, GT_BUTTON, GA_ADD, (void*)"Config Qemu");
+
+    wconfigId = PICSimLab.WindowCmd(-1, "window1", PWA_WINDOWCREATE, NULL);
 }
 
 // Destructor called once on board destruction
 
 cboard_STM32_H103::~cboard_STM32_H103(void) {
     PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_DEL, NULL);
+    PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWDESTROY, NULL);
     bitbang_pwm_end(&pwm_out);
 }
 
@@ -340,6 +345,11 @@ void cboard_STM32_H103::WritePreferences(void) {
     PICSimLab.SavePrefs("STM32_H103_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
     // write microcontroller icount to preferences
     PICSimLab.SavePrefs("STM32_H103_icount", std::to_string(icount));
+
+    PICSimLab.SavePrefs("STM32_H103_cfgeserial", std::to_string(ConfEnableSerial));
+    PICSimLab.SavePrefs("STM32_H103_cfgwgdb", std::to_string(ConfigWaitGdb));
+    PICSimLab.SavePrefs("STM32_H103_cfguextra", std::to_string(use_cmdline_extra));
+    PICSimLab.SavePrefs("STM32_H103_cmdextra", cmdline_extra);
 }
 
 // Called whe configuration file load  preferences
@@ -357,6 +367,19 @@ void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
     if (!strcmp(name, "STM32_H103_icount")) {
         icount = atoi(value);
         PICSimLab.UpdateGUI(MIPS, GT_COMBO, GA_SET, (void*)IcountToMipsStr(icount));
+    }
+
+    if (!strcmp(name, "STM32_H103_cfgeserial")) {
+        ConfEnableSerial = atoi(value);
+    }
+    if (!strcmp(name, "STM32_H103_cfgwgdb")) {
+        ConfigWaitGdb = atoi(value);
+    }
+    if (!strcmp(name, "STM32_H103_cfguextra")) {
+        use_cmdline_extra = atoi(value);
+    }
+    if (!strcmp(name, "STM32_H103_cmdextra")) {
+        cmdline_extra = value;
     }
 }
 
@@ -895,6 +918,127 @@ void cboard_STM32_H103::MSetAPin(int pin, float value) {
                 // %i\n",channel,svalue);
             }
         }
+    }
+}
+
+void cboard_STM32_H103::board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                                          unsigned int state) {
+    if (!strcmp(controlname, "b_button2")) {
+        std::string fname = PICSimLab.GetSharePath() +
+                            "boards"
+                            "/" BOARD_STM32_H103_Name +
+                            "/config.lxrad";
+
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str())) {
+            if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
+                char buff[2048];
+                char line[1024];
+                strncpy(buff, (const char*)cmdline.c_str(), 2047);
+
+                char* arg = strtok(buff, " \n");
+                line[0] = 0;
+
+                while (arg) {
+                    if (!line[0]) {
+                        strcpy(line, arg);
+                        if (line[0] != '-') {
+                            PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
+                    } else {
+                        if (arg[0] == '-') {
+                            PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            strcpy(line, arg);
+                        } else {
+                            strcat(line, " ");
+                            strcat(line, arg);
+                            PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
+                    }
+                    arg = strtok(NULL, " \n");
+
+                    if ((!arg && (line[0] == '-')) || ((arg) && (arg[0] == '-') && (line[0] == '-'))) {
+                        PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                        line[0] = 0;
+                    }
+                }
+
+                if (cmdline_extra.length()) {
+                    strncpy(buff, (const char*)cmdline_extra.c_str(), 2047);
+
+                    arg = strtok(buff, " \n");
+                    line[0] = 0;
+
+                    while (arg) {
+                        if (!line[0]) {
+                            strcpy(line, arg);
+                            if (line[0] != '-') {
+                                PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                                line[0] = 0;
+                            }
+                        } else {
+                            if (arg[0] == '-') {
+                                PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                                strcpy(line, arg);
+                            } else {
+                                strcat(line, " ");
+                                strcat(line, arg);
+                                PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                                line[0] = 0;
+                            }
+                        }
+                        arg = strtok(NULL, " \n");
+
+                        if ((!arg && (line[0] == '-')) || ((arg) && (arg[0] == '-') && (line[0] == '-'))) {
+                            PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTADDLINE, line);
+                            line[0] = 0;
+                        }
+                    }
+                } else {
+                    PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTCLEAR, NULL);
+                }
+
+                PICSimLab.WindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(use_cmdline_extra).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfEnableSerial).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox6", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfigWaitGdb).c_str());
+
+                PICSimLab.WindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
+                PICSimLab.WindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
+
+                int x, y;
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
+
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETX, std::to_string(x + 50).c_str());
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETY, std::to_string(y + 50).c_str());
+
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
+            }
+        } else {
+            PICSimLab.RegisterError("File " + fname + " not found!");
+        }
+    } else if (!strcmp(controlname, "button1")) {
+        PICSimLab.WindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXGETCHECK, NULL, &use_cmdline_extra);
+        PICSimLab.WindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableSerial);
+        PICSimLab.WindowCmd(wconfigId, "checkbox6", PWA_CHECKBOXGETCHECK, NULL, &ConfigWaitGdb);
+
+        cmdline_extra = "";
+        unsigned int lc;
+        PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTGETLINECOUNT, NULL, &lc);
+        for (unsigned int i = 0; i < lc; i++) {
+            char buff[256];
+            PICSimLab.WindowCmd(wconfigId, "text2", PWA_TEXTGETLINE, std::to_string(i).c_str(), buff);
+            cmdline_extra += buff;
+            cmdline_extra += " ";
+        }
+        PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
+        PICSimLab.EndSimulation();
+    } else if (!strcmp(controlname, "button2")) {
+        PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWHIDEEX, NULL);
     }
 }
 

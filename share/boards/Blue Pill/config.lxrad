@@ -167,64 +167,6 @@
   <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Cancel</Text>
 </button2>
-<checkbox1>
-  <Class type="lxString">CCheckBox</Class>
-  <Name type="lxString">checkbox1</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">18</X>
-  <Y type="int">315</Y>
-  <Width type="uint">791</Width>
-  <Height type="uint">25</Height>
-  <Hint type="lxString"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="lxString">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
-  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Enable Wifi (-nic user,model=esp32_wifi,id=u1,net=192.168.4.0/24)</Text>
-  <Check type="Int">0</Check>
-  <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
-</checkbox1>
-<checkbox2>
-  <Class type="lxString">CCheckBox</Class>
-  <Name type="lxString">checkbox2</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">18</X>
-  <Y type="int">347</Y>
-  <Width type="uint">790</Width>
-  <Height type="uint">25</Height>
-  <Hint type="lxString"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="lxString">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
-  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Disable WatchDog (-global driver=timer.esp32.timg,property=wdt_disable,value=true)</Text>
-  <Check type="Int">0</Check>
-  <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
-</checkbox2>
 <checkbox3>
   <Class type="lxString">CCheckBox</Class>
   <Name type="lxString">checkbox3</Name>
@@ -254,35 +196,6 @@
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox3>
-<checkbox4>
-  <Class type="lxString">CCheckBox</Class>
-  <Name type="lxString">checkbox4</Name>
-  <Tag type="int">0</Tag>
-  <X type="int">18</X>
-  <Y type="int">383</Y>
-  <Width type="uint">788</Width>
-  <Height type="uint">25</Height>
-  <Hint type="lxString"></Hint>
-  <Enable type="bool">1</Enable>
-  <Visible type="bool">1</Visible>
-  <Color type="lxString">#000001</Color>
-  <PopupMenu type="PopupMenu">NULL</PopupMenu>
-  <EvMouseMove type="Event">FALSE</EvMouseMove>
-  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
-  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
-  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
-  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
-  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
-  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
-  <EvOnDraw type="Event">FALSE</EvOnDraw>
-  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
-  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
-  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
-  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Enable Ethernet (-nic user,model=open_eth,id=u2,net=192.168.3.0/24)</Text>
-  <Check type="Int">0</Check>
-  <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
-</checkbox4>
 <checkbox5>
   <Class type="lxString">CCheckBox</Class>
   <Name type="lxString">checkbox5</Name>
@@ -317,7 +230,7 @@
   <Name type="lxString">checkbox6</Name>
   <Tag type="int">0</Tag>
   <X type="int">18</X>
-  <Y type="int">419</Y>
+  <Y type="int">315</Y>
   <Width type="uint">796</Width>
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>

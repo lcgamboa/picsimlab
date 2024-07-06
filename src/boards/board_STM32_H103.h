@@ -33,6 +33,7 @@
 // new board class must be derived from board class defined in board.h
 class cboard_STM32_H103 : public bsim_qemu {
 private:
+    int wconfigId;
     unsigned char p_BUT;
 
     void RegisterRemoteControl(void) override;
@@ -50,7 +51,7 @@ public:
     ~cboard_STM32_H103(void);
     // Called ever 100ms to draw board
     void Draw(void) override;
-    void Run_CPU(void) override{};
+    void Run_CPU(void) override {};
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     std::string GetSupportedDevices(void) override { return "stm32f103rbt6,"; };
@@ -76,6 +77,8 @@ public:
     unsigned short GetOutputId(char* name) override;
     // board combo events
     void board_Event(const char* controlname) override;
+    void board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
+                           unsigned int state) override;
     void MSetAPin(int pin, float value) override;
     std::string MGetPinName(int pin) override;
     int MGetPinCount(void) override;

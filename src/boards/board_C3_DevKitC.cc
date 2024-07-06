@@ -332,6 +332,7 @@ void cboard_C3_DevKitC::WritePreferences(void) {
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cfgewifi", std::to_string(ConfEnableWifi));
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cfgdwdt", std::to_string(ConfDisableWdt));
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cfgeeth", std::to_string(ConfEnableEthernet));
+    PICSimLab.SavePrefs("ESP32_C3_DevKitC_cfgwgdb", std::to_string(ConfigWaitGdb));
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cfguextra", std::to_string(use_cmdline_extra));
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cmdextra", cmdline_extra);
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_app_off", std::to_string(application_offset));
@@ -357,16 +358,17 @@ void cboard_C3_DevKitC::ReadPreferences(char* name, char* value) {
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgeserial")) {
         ConfEnableSerial = atoi(value);
     }
-
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgewifi")) {
         ConfEnableWifi = atoi(value);
     }
-
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgdwdt")) {
         ConfDisableWdt = atoi(value);
     }
     if (!strcmp(name, "ESP32_C3_DevKitC_cfgeeth")) {
         ConfEnableEthernet = atoi(value);
+    }
+    if (!strcmp(name, "ESP32_C3_DevKitC_cfgwgdb")) {
+        ConfigWaitGdb = atoi(value);
     }
     if (!strcmp(name, "ESP32_C3_DevKitC_cfguextra")) {
         use_cmdline_extra = atoi(value);
@@ -701,6 +703,11 @@ void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int 
                         }
                     }
                     arg = strtok(NULL, " \n");
+
+                    if ((!arg && (line[0] == '-')) || ((arg) && (arg[0] == '-') && (line[0] == '-'))) {
+                        PICSimLab.WindowCmd(wconfigId, "text1", PWA_TEXTADDLINE, line);
+                        line[0] = 0;
+                    }
                 }
 
                 if (cmdline_extra.length()) {
@@ -748,6 +755,8 @@ void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int 
                                     std::to_string(ConfEnableEthernet).c_str());
                 PICSimLab.WindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXSETCHECK,
                                     std::to_string(ConfEnableSerial).c_str());
+                PICSimLab.WindowCmd(wconfigId, "checkbox6", PWA_CHECKBOXSETCHECK,
+                                    std::to_string(ConfigWaitGdb).c_str());
 
                 PICSimLab.WindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
                 PICSimLab.WindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
@@ -770,6 +779,7 @@ void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int 
         PICSimLab.WindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXGETCHECK, NULL, &use_cmdline_extra);
         PICSimLab.WindowCmd(wconfigId, "checkbox4", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableEthernet);
         PICSimLab.WindowCmd(wconfigId, "checkbox5", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableSerial);
+        PICSimLab.WindowCmd(wconfigId, "checkbox6", PWA_CHECKBOXGETCHECK, NULL, &ConfigWaitGdb);
 
         cmdline_extra = "";
         unsigned int lc;

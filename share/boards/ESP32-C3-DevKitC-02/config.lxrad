@@ -5,7 +5,7 @@
   <X type="int">456</X>
   <Y type="int">105</Y>
   <Width type="uint">1018</Width>
-  <Height type="uint">828</Height>
+  <Height type="uint">868</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -91,7 +91,7 @@
   <Name type="lxString">text2</Name>
   <Tag type="int">0</Tag>
   <X type="int">18</X>
-  <Y type="int">461</Y>
+  <Y type="int">500</Y>
   <Width type="uint">960</Width>
   <Height type="uint">230</Height>
   <Hint type="lxString"></Hint>
@@ -118,7 +118,7 @@
   <Name type="lxString">button1</Name>
   <Tag type="int">5</Tag>
   <X type="int">426</X>
-  <Y type="int">716</Y>
+  <Y type="int">756</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -145,7 +145,7 @@
   <Name type="lxString">button2</Name>
   <Tag type="int">6</Tag>
   <X type="int">512</X>
-  <Y type="int">716</Y>
+  <Y type="int">756</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -230,7 +230,7 @@
   <Name type="lxString">checkbox3</Name>
   <Tag type="int">0</Tag>
   <X type="int">18</X>
-  <Y type="int">432</Y>
+  <Y type="int">468</Y>
   <Width type="uint">177</Width>
   <Height type="uint">25</Height>
   <Hint type="lxString"></Hint>
@@ -312,4 +312,33 @@
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox5>
+<checkbox6>
+  <Class type="lxString">CCheckBox</Class>
+  <Name type="lxString">checkbox6</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">18</X>
+  <Y type="int">419</Y>
+  <Width type="uint">796</Width>
+  <Height type="uint">25</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
+  <Text type="lxString">Wait for GDB (-S)</Text>
+  <Check type="Int">0</Check>
+  <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
+</checkbox6>
 </window1>
