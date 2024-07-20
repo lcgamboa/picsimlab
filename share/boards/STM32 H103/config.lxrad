@@ -2,10 +2,10 @@
   <Class type="lxString">CPWindow</Class>
   <Name type="lxString">window1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">456</X>
-  <Y type="int">105</Y>
+  <X type="int">50</X>
+  <Y type="int">50</Y>
   <Width type="uint">1018</Width>
-  <Height type="uint">868</Height>
+  <Height type="uint">768</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -93,7 +93,7 @@
   <X type="int">18</X>
   <Y type="int">500</Y>
   <Width type="uint">960</Width>
-  <Height type="uint">230</Height>
+  <Height type="uint">130</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">1</Visible>
@@ -118,7 +118,7 @@
   <Name type="lxString">button1</Name>
   <Tag type="int">5</Tag>
   <X type="int">426</X>
-  <Y type="int">756</Y>
+  <Y type="int">656</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -145,7 +145,7 @@
   <Name type="lxString">button2</Name>
   <Tag type="int">6</Tag>
   <X type="int">512</X>
-  <Y type="int">756</Y>
+  <Y type="int">656</Y>
   <Width type="uint">65</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
