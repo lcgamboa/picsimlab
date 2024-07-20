@@ -762,6 +762,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
     snprintf(fname, 1199, "%s/picsimlab_log%i.txt", home, PICSimLab.GetInstanceNumber());
+    printf("PICSimLab: Output redirect to file: \"%s\"\n", fname);
     if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
         FILE* flog = fopen_UTF8(fname, "r");
         if (flog) {
@@ -778,7 +779,6 @@ void CPWindow1::_EvOnCreate(CControl* control) {
                 close_error = 1;
                 snprintf(fname_error, 1199, "%s/picsimlab_error%i.txt", home, PICSimLab.GetInstanceNumber());
                 lxRenameFile(fname, fname_error);
-                lxLaunchDefaultApplication(fname_error);
             }
         }
     }
@@ -820,7 +820,30 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             "PICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n If the "
             "problem persists, please consider opening an issue on github..",
             fname_error);
-        PICSimLab.Configure(home, 1, 1);
+
+        FILE* ferror;
+        ferror = fopen(fname_error, "a");
+
+        if (ferror) {
+            char btdir[256];
+            PICSimLab.SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
+            std::string fbackup = std::string(btdir) + "";
+
+            fprintf(ferror,
+                    "\n\nPICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n "
+                    "If the problem persists, please consider opening an issue on github :\n"
+                    "https://github.com/lcgamboa/picsimlab/issues\n\n"
+                    "A backup was made of your project that presented a problem with the name following the template:\n"
+                    "%s/backup_<boardname>_<clocktime>.pzw\n\n",
+                    fname_error, btdir);
+            fclose(ferror);
+        }
+
+        lxLaunchDefaultApplication(fname_error);
+
+        // force use demo
+        PICSimLab.Configure(home, 2, 1);
+
         PICSimLab.RegisterError("Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " +
                                 std::string(fname_error) +
                                 "\n If the problem persists, please consider opening an issue on github.\n ");
@@ -879,9 +902,9 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
         if (PICSimLab.GetLab() != -1) {
             if (PICSimLab.GetInstanceNumber() && !PICSimLab.GetHomePath().compare(home)) {
-                snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, PICSimLab.GetInstanceNumber());
+                snprintf(fname, 1100, "%s/picsimlab_%i.ini", home, PICSimLab.GetInstanceNumber());
             } else {
-                snprintf(fname, 1023, "%s/picsimlab.ini", home);
+                snprintf(fname, 1100, "%s/picsimlab.ini", home);
             }
             PICSimLab.PrefsClear();
             if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {

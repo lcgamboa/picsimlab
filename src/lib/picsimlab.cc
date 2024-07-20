@@ -35,6 +35,8 @@
 
 #include "rcontrol.h"
 
+#include "time.h"
+
 #ifdef _USE_PICSTARTP_
 extern char PROGDEVICE[100];
 #endif
@@ -875,7 +877,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 #endif
 
                 if (!strcmp(name, "picsimlab_lab")) {
-                    if (use_default_board) {
+                    if (use_default_board == 1) {
                         SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);
                     } else {
                         for (i = 0; i < BOARDS_LAST; i++) {
@@ -1099,14 +1101,22 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     rcontrol_init(GetRemotecPort() + Instance);
 #endif
 
-    if (load_demo) {
-        std::string fdemo =
-            PICSimLab.GetSharePath() + "boards/" + std::string(boards_list[PICSimLab.GetLab()].name) + "/demo.pzw";
+    if (use_default_board == 2) {
+        char btdir[256];
+        SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
+        std::string fbackup = std::string(btdir) + "/backup_" + std::string(boards_list[GetLab()].name) + "_" +
+                              std::to_string(clock()) + ".pzw";
+        SaveWorkspace(fbackup);
+        SetWorkspaceFileName("");
+    }
+
+    if (load_demo || (use_default_board == 2)) {
+        std::string fdemo = GetSharePath() + "boards/" + std::string(boards_list[GetLab()].name) + "/demo.pzw";
 
         if (SystemCmd(PSC_FILEEXISTS, fdemo.c_str())) {
             printf("PICSimLab: Loading board demonstration code.\n");
-            PICSimLab.LoadWorkspace(fdemo, 0);
-            PICSimLab.SetWorkspaceFileName("");
+            LoadWorkspace(fdemo, 0);
+            SetWorkspaceFileName("");
         }
     }
 }
@@ -1129,7 +1139,7 @@ int CPICSimLab::LoadHexFile(std::string fname) {
 
     pa = GetMcuPwr();
     SetMcuPwr(0);
-    while (PICSimLab.status & ST_TH)
+    while (status & ST_TH)
         usleep(100);  // wait thread
 
     status |= ST_DI;
