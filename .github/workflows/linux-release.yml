@@ -8,7 +8,10 @@ on:
 jobs:
   buildLinux:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+            matrix:
+                os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
 
     steps:
     

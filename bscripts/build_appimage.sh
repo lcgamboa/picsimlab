@@ -54,10 +54,11 @@ install -d "release_${VERSION}"
 #rm -rf squashfs-root/
 #rename package
 #mv PICSimLab-x86_64.AppImage PICSimLab-${VERSION}-x86_64.AppImage 
+lversion=`lsb_release -d | cut -f2 | sed -e 's/ /_/g' | sed -e 's/\//_/g'`
 if [[ -n "$1" ]]; then
-  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_Linux_experimetal_x86_64.AppImage 
+  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_${lversion}_experimetal_x86_64.AppImage 
 else
-  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_Linux_x86_64.AppImage 
+  mv -f PICSimLab-${VERSION}-x86_64.AppImage release_${VERSION}/PICSimLab-${VERSION}_${lversion}_x86_64.AppImage 
 fi	
 rm -rf AppDir
 
@@ -77,8 +78,8 @@ cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
 
 /tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
 if [[ -n "$1" ]]; then
-  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_Linux_experimental_x86_64.AppImage 
+  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_${lversion}_experimental_x86_64.AppImage 
 else
-  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_Linux_x86_64.AppImage 
+  mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_${lversion}_x86_64.AppImage 
 fi	
 rm -rf AppDir
