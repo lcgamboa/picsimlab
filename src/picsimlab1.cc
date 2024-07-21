@@ -815,39 +815,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     fflush(stdout);
 
-    if (close_error) {
-        printf(
-            "PICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n If the "
-            "problem persists, please consider opening an issue on github..",
-            fname_error);
-
-        FILE* ferror;
-        ferror = fopen(fname_error, "a");
-
-        if (ferror) {
-            char btdir[256];
-            PICSimLab.SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
-            std::string fbackup = std::string(btdir) + "";
-
-            fprintf(ferror,
-                    "\n\nPICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n "
-                    "If the problem persists, please consider opening an issue on github :\n"
-                    "https://github.com/lcgamboa/picsimlab/issues\n\n"
-                    "A backup was made of your project that presented a problem with the name following the template:\n"
-                    "%s/backup_<boardname>_<clocktime>.pzw\n\n",
-                    fname_error, btdir);
-            fclose(ferror);
-        }
-
-        lxLaunchDefaultApplication(fname_error);
-
-        // force use demo
-        PICSimLab.Configure(home, 2, 1);
-
-        PICSimLab.RegisterError("Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " +
-                                std::string(fname_error) +
-                                "\n If the problem persists, please consider opening an issue on github.\n ");
-    } else if (Application->Aargc == 2) {  // only .pzw file
+    if (Application->Aargc == 2) {  // only .pzw file
 #ifdef wxUSE_UNICODE
         fn.Assign(Application->Aargvw[1]);
 #else
@@ -934,6 +902,38 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             // load options
             PICSimLab.Configure(home, 0, 1);
         }
+    } else if (close_error) {  // no arguments with error
+        printf(
+            "PICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n If the "
+            "problem persists, please consider opening an issue on github..",
+            fname_error);
+
+        FILE* ferror;
+        ferror = fopen(fname_error, "a");
+
+        if (ferror) {
+            char btdir[256];
+            PICSimLab.SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
+            std::string fbackup = std::string(btdir) + "";
+
+            fprintf(ferror,
+                    "\n\nPICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n "
+                    "If the problem persists, please consider opening an issue on github :\n"
+                    "https://github.com/lcgamboa/picsimlab/issues\n\n"
+                    "A backup was made of your project that presented a problem with the name following the template:\n"
+                    "%s/backup_<boardname>_<clocktime>.pzw\n\n",
+                    fname_error, btdir);
+            fclose(ferror);
+        }
+
+        lxLaunchDefaultApplication(fname_error);
+
+        // force use demo
+        PICSimLab.Configure(home, 2, 1);
+
+        PICSimLab.RegisterError("Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " +
+                                std::string(fname_error) +
+                                "\n If the problem persists, please consider opening an issue on github.\n ");
     } else {  // no arguments
         // load options
         PICSimLab.Configure(home, 0, 1);
