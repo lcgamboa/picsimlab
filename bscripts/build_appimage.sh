@@ -5,7 +5,7 @@ VERSION_="${VERSION}_${DATE}"
 
 export VERSION=${VERSION_}
 
-sudo apt-get -y install libminizip-dev wget fuse
+sudo apt-get -y install libminizip-dev wget
 install -d build_all
 cd build_all
 git clone https://github.com/lcgamboa/lxrad_nogui.git
@@ -41,7 +41,7 @@ echo "export XDG_DATA_DIRS=\"\$APPDIR/usr/share/:/usr/share/:\$XDG_DATA_DIRS\"" 
 echo "" >> /tmp/AppRun
 echo "\$APPDIR/usr/bin/picsimlab \$@" >> /tmp/AppRun
 chmod a+x /tmp/AppRun
-/tmp/linuxdeploy-x86_64.AppImage --plugin gtk --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
+/tmp/linuxdeploy-x86_64.AppImage --appimage-extract-and-run --plugin gtk --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
 install -d "release_${VERSION}"
 #remove libgmodule
 #wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
@@ -76,7 +76,7 @@ cd -
 install -d AppDir/usr/lib/picsimlab/
 cp -Rv lib/qemu AppDir/usr/lib/picsimlab/
 
-/tmp/linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+/tmp/linuxdeploy-x86_64.AppImage --appimage-extract-and-run --appdir AppDir --output appimage
 if [[ -n "$1" ]]; then
   mv -f PICSimLab_NOGUI-${VERSION}-x86_64.AppImage ../release_${VERSION}/PICSimLab_NOGUI-${VERSION}_${lversion}_experimental_x86_64.AppImage 
 else
