@@ -9,7 +9,7 @@ cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git doxygen gcc g++ make libwxgtk3.*-dev \
 libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave \
-gedit cmake ccache bison pulseview
+gedit cmake ccache bison flex pulseview
 cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all
