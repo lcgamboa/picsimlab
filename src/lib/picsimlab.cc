@@ -1105,7 +1105,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         char btdir[256];
         SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
         std::string fbackup = std::string(btdir) + "/backup_" + std::string(boards_list[GetLab()].name) + "_" +
-                              std::to_string(clock()) + ".pzw";
+                              std::to_string(time(NULL)) + ".pzw";
         SaveWorkspace(fbackup);
         SetWorkspaceFileName("");
     }

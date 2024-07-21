@@ -762,7 +762,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
     snprintf(fname, 1199, "%s/picsimlab_log%i.txt", home, PICSimLab.GetInstanceNumber());
-    printf("PICSimLab: Output redirect to file: \"%s\"\n", fname);
+    printf("PICSimLab: Console output redirected to file: \"%s\"\n", fname);
     if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
         FILE* flog = fopen_UTF8(fname, "r");
         if (flog) {
@@ -798,7 +798,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     if (dup2(fileno(stdout), fileno(stderr)) == -1) {
         printf("PICSimLab: stderr redirect error [%i] %s \n", errno, strerror(errno));
     }
-
+    printf("PICSimLab: Console output redirected to file: \"%s\"\n", fname);
 #endif
 
     printf("PICSimLab: Version \"%s %s %s %s\"\n", _VERSION_, _DATE_, _ARCH_, _PKG_);
@@ -914,14 +914,13 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         if (ferror) {
             char btdir[256];
             PICSimLab.SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
-            std::string fbackup = std::string(btdir) + "";
 
             fprintf(ferror,
                     "\n\nPICSimLab: Error closing PICSimLab in last time! \nUsing default mode.\n Erro log file: %s\n "
                     "If the problem persists, please consider opening an issue on github :\n"
                     "https://github.com/lcgamboa/picsimlab/issues\n\n"
                     "A backup was made of your project that presented a problem with the name following the template:\n"
-                    "%s/backup_<boardname>_<clocktime>.pzw\n\n",
+                    "%s/backup_<boardname>_<timestamp>.pzw\n\n",
                     fname_error, btdir);
             fclose(ferror);
         }
