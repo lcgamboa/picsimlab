@@ -5,7 +5,7 @@ VERSION_="${VERSION}_${DATE}"
 
 export VERSION=${VERSION_}
 
-sudo apt-get -y install libminizip-dev
+sudo apt-get -y install libminizip-dev wget fuse
 install -d build_all
 cd build_all
 git clone https://github.com/lcgamboa/lxrad_nogui.git
