@@ -318,6 +318,9 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
             case CPU_ERROR:
                 statusbar1.SetField(0, "Error!");
                 break;
+            case CPU_WAITING_GDB:
+                statusbar1.SetField(0, "Waiting for GDB...");
+                break;
         }
     }
 

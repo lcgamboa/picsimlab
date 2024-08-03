@@ -855,10 +855,6 @@ void bsim_qemu::EvThreadRun(void) {
             }
         }
     }
-    if (PICSimLab.GetDebugStatus()) {
-        strcpy(argv[argc++], "-gdb");
-        sprintf(argv[argc++], "tcp::%i", PICSimLab.GetDebugPort());
-    }
 
     if ((icount >= 0) && (icount < 11)) {
         strcpy(argv[argc++], "-icount");
@@ -870,6 +866,13 @@ void bsim_qemu::EvThreadRun(void) {
 
     if (ConfigWaitGdb) {
         strcpy(argv[(argc)++], "-S");
+        PICSimLab.SetDebugStatus(1);
+        PICSimLab.SetCpuState(CPU_WAITING_GDB);
+    }
+
+    if (PICSimLab.GetDebugStatus()) {
+        strcpy(argv[argc++], "-gdb");
+        sprintf(argv[argc++], "tcp::%i", PICSimLab.GetDebugPort());
     }
 
     BoardOptions(&argc, argv);
@@ -1190,6 +1193,7 @@ const picpin* bsim_qemu::MGetPinsValues(void) {
 }
 
 void bsim_qemu::MStep(void) {
+    PICSimLab.SetCpuState(CPU_RUNNING);
     if (ioupdated) {
         for (int id = 0; id < 2; id++) {
             if (master_i2c[id].ctrl_on) {
