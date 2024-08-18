@@ -462,7 +462,7 @@ void cboard_Blue_Pill::Draw(void) {
             switch (output[i].id)  // search for color of output
             {
                 case O_LED:  // White using pc13 mean value
-                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{(unsigned int)pins[1].oavalue, 0, 0}});
+                    PICSimLab.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{(unsigned int)(310 - pins[1].oavalue), 0, 0}});
                     break;
                 case O_LPWR:  // Blue using mcupwr value
                     PICSimLab.CanvasCmd(

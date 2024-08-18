@@ -868,6 +868,7 @@ void bsim_qemu::EvThreadRun(void) {
         strcpy(argv[(argc)++], "-S");
         PICSimLab.SetDebugStatus(1);
         PICSimLab.SetCpuState(CPU_WAITING_GDB);
+        printf("PICSimLab: Waiting for GDB connection ...\n");
     }
 
     if (PICSimLab.GetDebugStatus()) {
