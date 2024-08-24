@@ -29,9 +29,13 @@ jobs:
     - name: build_all_static
       run: bscripts/build_all_static.sh
 
-    - name: package artifacts
+    - name: package artifacts deb
       run: |
         bscripts/build_package.sh
+    
+    - name: package artifacts appimage
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
+      run: |
         bscripts/build_appimage.sh
 
     - uses: actions/upload-artifact@v2

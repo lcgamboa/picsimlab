@@ -1306,6 +1306,14 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
         // printf("TIM %i chn %i dut set to %i\n", timer +
         // 1, chn + 1, duty);
         bitbang_pwm_set_duty(&pwm_out, (timer << 2) + chn, duty);
+    } else if ((cfg & 0xF00000) == 0xD00000) {  // timer frequency
+        int freq = (cfg & 0xFFFFC) >> 2;
+        int timer = cfg & 0x0003;
+        // printf("TIM %i freq set to %i\n", timer + 1, freq);
+        bitbang_pwm_set_freq(&pwm_out, timer + 0, freq);
+        bitbang_pwm_set_freq(&pwm_out, timer + 1, freq);
+        bitbang_pwm_set_freq(&pwm_out, timer + 2, freq);
+        bitbang_pwm_set_freq(&pwm_out, timer + 3, freq);
     }
 }
 
