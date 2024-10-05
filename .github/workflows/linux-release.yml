@@ -38,7 +38,7 @@ jobs:
       run: |
         bscripts/build_appimage.sh
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       if: github.ref == 'refs/heads/master' 
       with:
         name: picsimlab_pkg
