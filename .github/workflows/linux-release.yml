@@ -41,7 +41,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       if: github.ref == 'refs/heads/master' 
       with:
-        name: picsimlab_pkg-${{ matrix.nr }}
+        name: picsimlab_pkg-${{ matrix.os }}
         path: release*/*
 
     - name: Latest code build release
