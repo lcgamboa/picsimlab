@@ -1,6 +1,14 @@
-## (unreleased)
+## v0.9.2 (2024-10-05)
 
 ### New
+
+* Version 0.9.2 realease! [lcgamboa]
+
+* Support to wait for GDB in qemu based boards added. [lcgamboa]
+
+* Add a new picsimlab_tool command line tool to upload firmware direct to PICSimLab (from platformio). [lcgamboa]
+
+* New spare part MCP23017 I2C IO expander. [lcgamboa]
 
 * New part \"Logic Block\" with logic functions: Not, Buffer, And, Nand, Or, Nor, Xor and Xnor. [lcgamboa]
 
@@ -18,6 +26,20 @@
 
 ### Changes
 
+* Add support to set PWM frequency in STM32 Qemu based boards. [lcgamboa]
+
+* Adds support for showing in the status bar when waiting for GDB connection. [lcgamboa]
+
+* On fails make backup and load demonstrantion workspace to recover. [lcgamboa]
+
+* Add support to set baud rate in bitbang_uart (STM32 boards) [lcgamboa]
+
+* Add support to set baud rate in bitbang_uart (ESP32 and ESP32C3) [lcgamboa]
+
+* Add suport to set PWM frequency in bitbang_pwm (LEDC for ESP32, ESP32C3) [lcgamboa]
+
+* Add support to Read operations and interrupts in MCP23S17 spare part. [lcgamboa]
+
 * Gpboard updated to use gpsim-0.32.1. [lcgamboa]
 
 * Gpsim interface optimization to improve simulation performance. [lcgamboa]
@@ -25,6 +47,18 @@
 * Changlog updated. [lcgamboa]
 
 ### Fix
+
+* Fix BluePill Board onboard LED polarity. [lcgamboa]
+
+* Fix errors when setting time/date in RTC DS1307 and PFC8563. [lcgamboa]
+
+* Fix spare parts Buzzer crash on board reset. [lcgamboa]
+
+* Fix spare parts properties window position. [lcgamboa]
+
+* Fix state of input pins after reset in AVR based boards. [lcgamboa]
+
+* Fix RTC DS1307 support to 12h mode. [lcgamboa]
 
 * Fix Oscilloscope to use all SpareParts pins. [lcgamboa]
 

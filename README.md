@@ -13,7 +13,7 @@ For code editing and debugging the same tools used for a real board should be us
 PICSimLab supports several devices (spare parts) that can be connected to the boards for simulation. 
 Such as example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
 shield w5500 for internet connection or the color graphic display ili9340 with touchscreen. 
-The the complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/stable/SpareParts.html). 
+The complete list of parts can be accessed in the [documentation](https://lcgamboa.github.io/picsimlab_docs/stable/SpareParts.html). 
  
 
 
@@ -225,7 +225,7 @@ If the problem is not in either of the previous two options, the problem is prob
   - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=lcgamboa&repository=picsimlab) (grouped per release)
 
 - SourceForge [`picsimlab`](https://sourceforge.net/projects/picsim/) repo
-  - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.9.1)](https://sourceforge.net/projects/picsim/files/v0.9.1/)
+  - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.9.2)](https://sourceforge.net/projects/picsim/files/v0.9.2/)
   - all PICSimLab releases [![Sourceforge All Relesases](https://img.shields.io/sourceforge/dt/picsim)](https://sourceforge.net/projects/picsim/files/)
 
 Credit to [Shields IO](https://shields.io) for the badges and to
