@@ -950,6 +950,7 @@ void cboard_C3_DevKitC::PinsExtraConfig(int cfg) {
                 case 50:  // ledc_ls_sig_out5
                     // printf("LEDC channel %i in GPIO %i\n", function - 45, gpio);
                     bitbang_pwm_set_pin(&pwm_out, function - 45, io2pin(gpio));
+                    bitbang_pwm_set_enable(&pwm_out, function - 45, 1);
                     break;
                 case 51:  // rmt_sig_out0
                 case 52:  // rmt_sig_out1

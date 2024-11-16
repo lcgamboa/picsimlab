@@ -42,6 +42,7 @@ void bitbang_pwm_rst(bitbang_pwm_t* pwm) {
         pwm->channels[i].duty = 0;
         pwm->channels[i].out = 0;
         pwm->channels[i].freq = 0;
+        pwm->channels[i].enabled = 0;
     }
 }
 
@@ -128,4 +129,8 @@ void bitbang_pwm_set_freq(bitbang_pwm_t* pwm, const unsigned char channel, unsig
         pwm->pboard->TimerChange_us(pwm->channels[channel].TimerID, 10000.0 / (freq * pwm->channels[channel].res));
         pwm->channels[channel].freq = freq;
     }
+}
+
+void bitbang_pwm_set_enable(bitbang_pwm_t* pwm, const unsigned char channel, unsigned char enable) {
+    pwm->channels[channel].enabled = enable;
 }

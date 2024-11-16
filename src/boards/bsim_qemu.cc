@@ -1251,7 +1251,7 @@ void bsim_qemu::MStep(void) {
             }
         }
         for (int i = 0; i < pwm_out.channels_count; i++) {
-            if (pwm_out.channels[i].pin) {
+            if (pwm_out.channels[i].pin && pwm_out.channels[i].enabled) {
                 pins[pwm_out.channels[i].pin - 1].dir = PD_OUT;
                 pins[pwm_out.channels[i].pin - 1].value = pwm_out.channels[i].out;
             }

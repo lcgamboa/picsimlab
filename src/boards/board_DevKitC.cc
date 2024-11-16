@@ -1010,6 +1010,7 @@ void cboard_DevKitC::PinsExtraConfig(int cfg) {
                 case 86:  // ledc_ls_sig_out7
                     // printf("LEDC channel %i in GPIO %i\n",function - 71, gpio);
                     bitbang_pwm_set_pin(&pwm_out, function - 71, io2pin(gpio));
+                    bitbang_pwm_set_enable(&pwm_out, function - 71, 1);
                     break;
                 case 87:  // rmt_sig_out0
                     // case 88:  // rmt_sig_out1  //FIXME only channel 0 enabled

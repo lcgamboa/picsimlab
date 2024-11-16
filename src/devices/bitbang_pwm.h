@@ -36,6 +36,7 @@ typedef struct {
     unsigned char pin;
     unsigned char out;
     unsigned char duty;
+    unsigned char enabled;
     unsigned int freq;
     unsigned int res;
 } channel_pwm_t;
@@ -53,5 +54,6 @@ void bitbang_pwm_set_duty(bitbang_pwm_t* pwm, const unsigned char channel, const
 void bitbang_pwm_set_duty_f(bitbang_pwm_t* pwm, const unsigned char channel, const float duty);
 void bitbang_pwm_set_pin(bitbang_pwm_t* pwm, const unsigned char channel, const char pin);
 void bitbang_pwm_set_freq(bitbang_pwm_t* pwm, const unsigned char channel, unsigned int freq);
+void bitbang_pwm_set_enable(bitbang_pwm_t* pwm, const unsigned char channel, unsigned char enable);
 
 #endif  // BITBANG_PWM

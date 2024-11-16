@@ -42,7 +42,6 @@ public:
     void PostProcess(void) override;
     std::string GetPictureFileName(void) override { return "VCD Dump/part.svg"; };
     std::string GetMapFile(void) override { return "VCD Dump/part.map"; };
-    std::string GetPropertiesWindowFile(void) override { return "VCD Dump/part.lxrad"; };
     void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
                             unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;

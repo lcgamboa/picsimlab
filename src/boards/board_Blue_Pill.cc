@@ -944,7 +944,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[1].tx_pin = iopin(A, 2);
                             master_uart[1].rx_pin = iopin(A, 3);
                             master_uart[1].ctrl_on = 1;
-                            break;
                         }
                         // tim2 ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
@@ -959,7 +958,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[1].tx_pin = iopin(A, 2);
                             master_uart[1].rx_pin = iopin(A, 3);
                             master_uart[1].ctrl_on = 1;
-                            break;
                         }
                         // tim2 ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
@@ -987,7 +985,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_spi[0].copi_pin = iopin(A, 7);
                             master_spi[0].cipo_pin = iopin(A, 6);
                             master_spi[0].ctrl_on = 1;
-                            break;
                         }
                         // tim3 ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
@@ -1003,13 +1000,11 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_spi[0].copi_pin = iopin(A, 7);
                             master_spi[0].cipo_pin = iopin(A, 6);
                             master_spi[0].ctrl_on = 1;
-                            break;
                         }
                         // tim1_ch1n (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
                             bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 0, iopin(A, 7));
-                            break;
                         }
                         // tim3 ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
@@ -1031,7 +1026,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[0].tx_pin = iopin(A, 9);
                             master_uart[0].rx_pin = iopin(A, 10);
                             master_uart[0].ctrl_on = 1;
-                            break;
                         }
                         // tim1 ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
@@ -1046,7 +1040,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[0].tx_pin = iopin(A, 9);
                             master_uart[0].rx_pin = iopin(A, 10);
                             master_uart[0].ctrl_on = 1;
-                            break;
                         }
                         // tim1 ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
@@ -1078,7 +1071,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
                             bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 1, iopin(B, 0));
-                            break;
                         }
                         // tim3_ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
@@ -1091,14 +1083,12 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM1);
                         if (*afio == 1) {
                             bitbang_pwm_set_pin(&pwm_out, (0 << 2) + 2, iopin(B, 1));
-                            break;
                         }
                         // tim3_ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 0) {
                             bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 3, iopin(B, 1));
                         }
-
                         break;
                     case 2:
                         break;
@@ -1107,15 +1097,15 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
                             bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 1, iopin(B, 3));
-                            break;
                         }
+                        break;
                     case 4:
                         // tim3_ch1n (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 2) {
                             bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 0, iopin(B, 4));
-                            break;
                         }
+                        break;
                     case 5:
                         // spi1 (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_SPI1);
@@ -1124,13 +1114,11 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_spi[0].copi_pin = iopin(B, 5);
                             master_spi[0].cipo_pin = iopin(B, 4);
                             master_spi[0].ctrl_on = 1;
-                            break;
                         }
                         // tim3_ch2n (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM3);
                         if (*afio == 2) {
                             bitbang_pwm_set_pin(&pwm_out, (2 << 2) + 1, iopin(B, 5));
-                            break;
                         }
                         break;
                     case 6:
@@ -1140,7 +1128,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[0].tx_pin = iopin(B, 6);
                             master_uart[0].rx_pin = iopin(B, 7);
                             master_uart[0].ctrl_on = 1;
-                            break;
                         }
                         // i2c
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
@@ -1148,7 +1135,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_i2c[0].scl_pin = iopin(B, 6);
                             master_i2c[0].sda_pin = iopin(B, 7);
                             master_i2c[0].ctrl_on = 1;
-                            break;
                         }
                         // tim4 ch1
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
@@ -1163,7 +1149,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_uart[0].tx_pin = iopin(B, 6);
                             master_uart[0].rx_pin = iopin(B, 7);
                             master_uart[0].ctrl_on = 1;
-                            break;
                         }
                         // i2c0
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
@@ -1171,7 +1156,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_i2c[0].scl_pin = iopin(B, 6);
                             master_i2c[0].sda_pin = iopin(B, 7);
                             master_i2c[0].ctrl_on = 1;
-                            break;
                         }
                         // tim4 ch2
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
@@ -1186,13 +1170,13 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_i2c[0].scl_pin = iopin(B, 8);
                             master_i2c[0].sda_pin = iopin(B, 9);
                             master_i2c[0].ctrl_on = 1;
-                            break;
                         }
                         // tim4 ch3
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
                         if (*afio == 0) {
                             bitbang_pwm_set_pin(&pwm_out, (3 << 2) + 2, iopin(B, 8));
                         }
+                        break;
                     case 9:
                         // i2c0 (alt)
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_I2C1);
@@ -1200,7 +1184,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_i2c[0].scl_pin = iopin(B, 8);
                             master_i2c[0].sda_pin = iopin(B, 9);
                             master_i2c[0].ctrl_on = 1;
-                            break;
                         }
                         // tim4 ch4
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM4);
@@ -1213,7 +1196,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
                             bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 2, iopin(B, 10));
-                            break;
                         }
                         /*
                         // uart3
@@ -1232,7 +1214,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_i2c[1].scl_pin = iopin(B, 10);
                             master_i2c[1].sda_pin = iopin(B, 11);
                             master_i2c[1].ctrl_on = 1;
-                            break;
                         }
                         break;
                     case 11:
@@ -1240,7 +1221,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                         afio = qemu_picsimlab_get_internals(0x1000 | STM32_TIM2);
                         if (*afio == 1) {
                             bitbang_pwm_set_pin(&pwm_out, (1 << 2) + 3, iopin(B, 10));
-                            break;
                         }
                         /*
                         // uart3
@@ -1259,7 +1239,6 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
                             master_i2c[1].scl_pin = iopin(B, 10);
                             master_i2c[1].sda_pin = iopin(B, 11);
                             master_i2c[1].ctrl_on = 1;
-                            break;
                         }
                         break;
                     case 12:
@@ -1303,17 +1282,24 @@ void cboard_Blue_Pill::PinsExtraConfig(int cfg) {
         int duty = (cfg & 0xFFFF0) >> 4;
         int chn = (cfg & 0x000C) >> 2;
         int timer = cfg & 0x0003;
-        // printf("TIM %i chn %i dut set to %i\n", timer +
-        // 1, chn + 1, duty);
+        // printf("TIM %i chn %i dut set to %i\n", timer + 1, chn + 1, duty);
         bitbang_pwm_set_duty(&pwm_out, (timer << 2) + chn, duty);
     } else if ((cfg & 0xF00000) == 0xD00000) {  // timer frequency
         int freq = (cfg & 0xFFFFC) >> 2;
         int timer = cfg & 0x0003;
         // printf("TIM %i freq set to %i\n", timer + 1, freq);
-        bitbang_pwm_set_freq(&pwm_out, timer + 0, freq);
-        bitbang_pwm_set_freq(&pwm_out, timer + 1, freq);
-        bitbang_pwm_set_freq(&pwm_out, timer + 2, freq);
-        bitbang_pwm_set_freq(&pwm_out, timer + 3, freq);
+        bitbang_pwm_set_freq(&pwm_out, (timer << 2) + 0, freq);
+        bitbang_pwm_set_freq(&pwm_out, (timer << 2) + 1, freq);
+        bitbang_pwm_set_freq(&pwm_out, (timer << 2) + 2, freq);
+        bitbang_pwm_set_freq(&pwm_out, (timer << 2) + 3, freq);
+    } else if ((cfg & 0xF00000) == 0xE00000) {  // timer enable output
+        int ccer = (cfg & 0xFFFFC) >> 2;
+        int timer = cfg & 0x0003;
+        // printf("TIM %i ccer 0x%04X\n", timer + 1, ccer);
+        bitbang_pwm_set_enable(&pwm_out, (timer << 2) + 0, (ccer & 0x0005) > 0);
+        bitbang_pwm_set_enable(&pwm_out, (timer << 2) + 1, (ccer & 0x0050) > 0);
+        bitbang_pwm_set_enable(&pwm_out, (timer << 2) + 2, (ccer & 0x0500) > 0);
+        bitbang_pwm_set_enable(&pwm_out, (timer << 2) + 3, (ccer & 0x5000) > 0);
     }
 }
 
