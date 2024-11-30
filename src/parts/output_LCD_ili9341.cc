@@ -617,8 +617,6 @@ void cpart_LCD_ili9341::ReadPropertiesWindow(void) {
     }
 
     if ((type_com == TC_8BITS_TOUCH) || (type_com == TC_SPI_TOUCH)) {
-        SpareParts.WPropCmd("combo11", PWA_COMBOGETTEXT, NULL, buff);
-        input_pins[9] = std::stoi(buff);
         SpareParts.WPropCmd("combo15", PWA_COMBOGETTEXT, NULL, buff);
         touch_pins[0] = std::stoi(buff);
         SpareParts.WPropCmd("combo16", PWA_COMBOGETTEXT, NULL, buff);
