@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
             matrix:
-                os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
+                os: [ubuntu-22.04, ubuntu-24.04]
 
     steps:
     
@@ -34,7 +34,7 @@ jobs:
         bscripts/build_package.sh
     
     - name: package artifacts appimage
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
+      if: ${{ matrix.os == 'ubuntu-22.04' }}
       run: |
         bscripts/build_appimage.sh
 
