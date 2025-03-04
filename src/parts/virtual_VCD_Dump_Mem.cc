@@ -33,7 +33,7 @@
 #include <emscripten.h>
 #endif
 
-static const char markers[] = "!$%&[()]";
+static const char markers[] = "!$%&[()]+*{}<>'^";
 
 /* outputs */
 enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O_L5, O_L6, O_L7, O_L8, O_NAME, O_REC };
@@ -41,7 +41,7 @@ enum { O_P1, O_P2, O_P3, O_P4, O_P5, O_P6, O_P7, O_P8, O_L1, O_L2, O_L3, O_L4, O
 /*inputs*/
 enum { I_START, I_VIEW };
 
-static PCWProp pcwprop[2] = {{PCW_SPIN, "Addr"}, /* {PCW_COMBO, "Size"},*/ {PCW_END, ""}};
+static PCWProp pcwprop[3] = {{PCW_SPIN, "Addr"}, {PCW_COMBO, "Size"}, {PCW_END, ""}};
 
 cpart_VCD_Dump_Mem::cpart_VCD_Dump_Mem(const unsigned x, const unsigned y, const char* name, const char* type,
                                        board* pboard_, const int id_)
@@ -210,13 +210,16 @@ unsigned short cpart_VCD_Dump_Mem::GetOutputId(char* name) {
 
 std::string cpart_VCD_Dump_Mem::WritePreferences(void) {
     char prefs[256];
-    sprintf(prefs, "%hu,%hhu", mem_addr, rec);
+    sprintf(prefs, "%hu,%hhu,%hhu", mem_addr, mem_size, rec);
     return prefs;
 }
 
 void cpart_VCD_Dump_Mem::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hu,%hhu", &mem_addr, &rec);
+    sscanf(value.c_str(), "%hu,%hhu,%hhu", &mem_addr, &mem_size, &rec);
     rec &= 0x01;
+    if (mem_size % 8) {
+        mem_size = 8;
+    }
 }
 
 void cpart_VCD_Dump_Mem::ConfigurePropertiesWindow(void) {
@@ -224,8 +227,8 @@ void cpart_VCD_Dump_Mem::ConfigurePropertiesWindow(void) {
     SpareParts.WPropCmd("spin1", PWA_SPINSETMAX, std::to_string(pboard->DBGGetRAMSize()).c_str());
     SpareParts.WPropCmd("spin1", PWA_SPINSETVALUE, std::to_string(mem_addr).c_str());
 
-    // SpareParts.WPropCmd("combo2", PWA_COMBOSETITEMS, "8, 16, 32, 64, ");
-    // SpareParts.WPropCmd("combo2", PWA_COMBOSETTEXT, std::to_string(mem_size).c_str());
+    SpareParts.WPropCmd("combo2", PWA_COMBOSETITEMS, "8, 16,");
+    SpareParts.WPropCmd("combo2", PWA_COMBOSETTEXT, std::to_string(mem_size).c_str());
 }
 
 void cpart_VCD_Dump_Mem::ReadPropertiesWindow(void) {
@@ -233,9 +236,9 @@ void cpart_VCD_Dump_Mem::ReadPropertiesWindow(void) {
     SpareParts.WPropCmd("spin1", PWA_SPINGETVALUE, NULL, &value);
     mem_addr = value;
 
-    // char buff[64];
-    // SpareParts.WPropCmd("combo2", PWA_COMBOGETTEXT, NULL, buff);
-    // sscanf(buff, "%hhu", &mem_size);
+    char buff[64];
+    SpareParts.WPropCmd("combo2", PWA_COMBOGETTEXT, NULL, buff);
+    sscanf(buff, "%hhu", &mem_size);
 }
 
 void cpart_VCD_Dump_Mem::PreProcess(void) {
@@ -244,7 +247,7 @@ void cpart_VCD_Dump_Mem::PreProcess(void) {
     mcount = JUMPSTEPS_;
 
     if ((pboard->DBGGetRAM_p() != NULL) && (mem_addr < pboard->DBGGetRAMSize())) {
-        mem_ptr = &(pboard->DBGGetRAM_p()[mem_addr]);
+        mem_ptr = (unsigned short*)&(pboard->DBGGetRAM_p()[mem_addr]);
         mem_old = (*mem_ptr) ^ 0xFF;
     } else {
         mem_ptr = NULL;
@@ -263,14 +266,25 @@ void cpart_VCD_Dump_Mem::PreProcess(void) {
                 "$scope module logic $end\n",
                 (int)tscale);
 
-        fprintf(f_vcd, "$var wire 1 !  1-mem[%d][0] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 $  2-mem[%d][1] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 %%  3-mem[%d][2] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 &  4-mem[%d][3] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 [  5-mem[%d][4] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 (  6-mem[%d][5] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 )  7-mem[%d][6] $end\n", mem_addr);
-        fprintf(f_vcd, "$var wire 1 ]  8-mem[%d][7] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 !  mem[%d][0] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 $  mem[%d][1] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 %%  mem[%d][2] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 &  mem[%d][3] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 [  mem[%d][4] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 (  mem[%d][5] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 )  mem[%d][6] $end\n", mem_addr);
+        fprintf(f_vcd, "$var wire 1 ]  mem[%d][7] $end\n", mem_addr);
+
+        if (mem_size == 16) {
+            fprintf(f_vcd, "$var wire 1 +  mem[%d][8] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 *  mem[%d][9] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 {  mem[%d][10] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 }  mem[%d][11] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 <  mem[%d][12] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 >  mem[%d][13] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 '  mem[%d][14] $end\n", mem_addr);
+            fprintf(f_vcd, "$var wire 1 ^  mem[%d][15] $end\n", mem_addr);
+        }
 
         fprintf(f_vcd,
                 "$upscope $end\n"
@@ -285,6 +299,16 @@ void cpart_VCD_Dump_Mem::PreProcess(void) {
         fprintf(f_vcd, "x(\n");
         fprintf(f_vcd, "x)\n");
         fprintf(f_vcd, "x[\n");
+        if (mem_size == 16) {
+            fprintf(f_vcd, "x+\n");
+            fprintf(f_vcd, "x*\n");
+            fprintf(f_vcd, "x{\n");
+            fprintf(f_vcd, "x}\n");
+            fprintf(f_vcd, "x<\n");
+            fprintf(f_vcd, "x>\n");
+            fprintf(f_vcd, "x'\n");
+            fprintf(f_vcd, "x^\n");
+        }
         fprintf(f_vcd, "$end\n");
     } else if (!rec && (f_vcd != NULL)) {
         if (f_vcd) {
@@ -300,7 +324,7 @@ void cpart_VCD_Dump_Mem::Process(void) {
         int tprint = 0;
 
         if ((mem_ptr != NULL) && ((*mem_ptr) ^ mem_old)) {
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < mem_size; i++) {
                 if (((*mem_ptr) & (1 << i)) != (mem_old & (1 << i))) {
                     if (!tprint) {
                         tprint = 1;

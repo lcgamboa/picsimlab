@@ -64,8 +64,8 @@ private:
     unsigned char rec;
     unsigned char mem_size;
     unsigned short mem_addr;
-    unsigned char* mem_ptr;
-    unsigned char mem_old;
+    unsigned short* mem_ptr;
+    unsigned short mem_old;
 };
 
 #endif /* PART_VCD_DUMP_MEM_H */
