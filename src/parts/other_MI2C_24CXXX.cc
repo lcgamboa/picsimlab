@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2019-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2019-2025  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -345,7 +345,7 @@ void cpart_MI2C_24CXXX::filedialog_EvOnClose(int retId) {
     if (retId) {
         int type;
         SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
-        if ((type == (PFD_OPEN | PFD_CHANGE_DIR))) {
+        if ((type == (PFD_SAVE | PFD_CHANGE_DIR))) {
             char buff[200];
             SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
             if (PICSimLab.SystemCmd(PSC_FILEEXISTS, buff)) {
