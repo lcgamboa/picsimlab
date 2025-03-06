@@ -26,8 +26,8 @@
 #ifndef BOARD_Breadboard_H
 #define BOARD_Breadboard_H
 
-#include "bsim_picsim.h"
-#include "bsim_simavr.h"
+#include "../sim_backend/bsim_picsim.h"
+#include "../sim_backend/bsim_simavr.h"
 
 #define BOARD_Breadboard_Name "Breadboard"
 

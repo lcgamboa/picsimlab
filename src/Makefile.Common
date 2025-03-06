@@ -5,9 +5,9 @@ PKG ?= "native"
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o  
 
 OBJS+= $(patsubst lib/%.cc,lib/%.o,$(wildcard lib/*.cc)) 
-OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/bsim*.cc)) 
+OBJS+= $(patsubst sim_backend/%.cc,sim_backend/%.o,$(wildcard sim_backend/bsim*.cc)) 
 OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/board*.cc)) 
-OBJS+= boards/bridge_gpsim.o
+OBJS+= sim_backend/bridge_gpsim.o
 OBJS+= $(patsubst devices/%.cc,devices/%.o,$(filter-out devices/prog_psp.cc,$(wildcard devices/*.cc)))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/part*.cc))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/input*.cc))
@@ -33,7 +33,7 @@ rebuild:
 override CXXFLAGS+= $(EFLAGS) -DEXT_BROWSER_EXAMPLES -DLEGACY081 -D_PKG_=\"${PKG}\"
 
 
-boards/bridge_gpsim.o: boards/bridge_gpsim.cc
+sim_backend/bridge_gpsim.o: sim_backend/bridge_gpsim.cc
 	@echo "Compiling $<"
-	@$(CXX) $(CXXFLAGS)  $(PKG_CONFIG)  boards/bridge_gpsim.cc  -c -o boards/bridge_gpsim.o 
+	@$(CXX) $(CXXFLAGS)  $(PKG_CONFIG)  sim_backend/bridge_gpsim.cc  -c -o sim_backend/bridge_gpsim.o 
 

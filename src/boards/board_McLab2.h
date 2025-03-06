@@ -30,7 +30,7 @@
 #include "../devices/mi2c_24CXXX.h"
 #include "../devices/rtc_ds1307.h"
 #include "../devices/swbounce.h"
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #define BOARD_McLab2_Name "McLab2"
 

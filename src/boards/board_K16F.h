@@ -26,7 +26,7 @@
 #ifndef BOARD_K16F_H
 #define BOARD_K16F_H
 
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #include "../devices/lcd_hd44780.h"
 #include "../devices/mi2c_24CXXX.h"

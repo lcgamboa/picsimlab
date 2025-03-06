@@ -26,7 +26,7 @@
 #ifndef BOARD_uCboard_H
 #define BOARD_uCboard_H
 
-#include "bsim_ucsim.h"
+#include "../sim_backend/bsim_ucsim.h"
 
 #define BOARD_uCboard_Name "uCboard"
 

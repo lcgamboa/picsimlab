@@ -26,7 +26,7 @@
 #ifndef BOARD_DevKitC_H
 #define BOARD_DevKitC_H
 
-#include "bsim_qemu.h"
+#include "../sim_backend/bsim_qemu.h"
 
 #define BOARD_DevKitC_Name "ESP32-DevKitC"
 

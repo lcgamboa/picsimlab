@@ -27,7 +27,7 @@
 #define BOARD_McLab1_H
 
 #include "../devices/swbounce.h"
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #define BOARD_McLab1_Name "McLab1"
 

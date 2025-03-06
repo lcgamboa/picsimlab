@@ -26,7 +26,7 @@
 #ifndef BOARD_Curiosity_H
 #define BOARD_Curiosity_H
 
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #define BOARD_Curiosity_Name "Curiosity"
 

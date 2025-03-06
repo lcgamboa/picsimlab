@@ -26,7 +26,7 @@
 #ifndef BOARD_Blue_Pill_H
 #define BOARD_Blue_Pill_H
 
-#include "bsim_qemu.h"
+#include "../sim_backend/bsim_qemu.h"
 
 #define BOARD_Blue_Pill_Name "Blue Pill"
 

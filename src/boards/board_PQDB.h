@@ -26,7 +26,7 @@
 #ifndef BOARD_PQDB_H
 #define BOARD_PQDB_H
 
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #include "../devices/io_74xx595.h"
 #include "../devices/lcd_hd44780.h"

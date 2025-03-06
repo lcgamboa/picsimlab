@@ -27,7 +27,7 @@
 #ifndef BOARD_Curiosity_HPC_H
 #define BOARD_Curiosity_HPC_H
 
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #define BOARD_Curiosity_HPC_Name "Curiosity HPC"
 

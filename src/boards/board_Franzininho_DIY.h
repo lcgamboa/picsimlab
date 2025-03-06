@@ -26,7 +26,7 @@
 #ifndef BOARD_Franzininho_DIY_H
 #define BOARD_Franzininho_DIY_H
 
-#include "bsim_simavr.h"
+#include "../sim_backend/bsim_simavr.h"
 
 #define BOARD_Franzininho_DIY_Name "Franzininho DIY"
 

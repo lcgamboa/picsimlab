@@ -26,7 +26,7 @@
 #ifndef BOARD_RemoteTCP_H
 #define BOARD_RemoteTCP_H
 
-#include "bsim_remote.h"
+#include "../sim_backend/bsim_remote.h"
 
 #define BOARD_RemoteTCP_Name "Remote TCP"
 

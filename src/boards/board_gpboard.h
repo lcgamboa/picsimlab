@@ -26,7 +26,7 @@
 #ifndef BOARD_gpboard_H
 #define BOARD_gpboard_H
 
-#include "bsim_gpsim.h"
+#include "../sim_backend/bsim_gpsim.h"
 
 #define BOARD_gpboard_Name "gpboard"
 

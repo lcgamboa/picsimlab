@@ -27,7 +27,7 @@
 #define BOARD_x_H
 
 #include "../devices/swbounce.h"
-#include "bsim_picsim.h"
+#include "../sim_backend/bsim_picsim.h"
 
 #define BOARD_x_Name "X"
 
