@@ -55,7 +55,11 @@ const char* bridge_gpsim_get_pin_name(int pin) {
 
 unsigned char bridge_gpsim_get_pin_value(int pin) {
     if (iopins[pin]) {
-        return iopins[pin]->getDrivingState();
+        if (iopins[pin]->get_direction() == IOPIN::DIR_INPUT) {
+            return (iopins[pin]->getForcedDrivenState() == '1') ? 1 : 0;
+        } else {
+            return iopins[pin]->getDrivingState();
+        }
     }
     return 0;
 }
@@ -77,10 +81,8 @@ void bridge_gpsim_set_pin_value(int pin, unsigned char value) {
         case '1':
             if (value) {
                 iopins[pin]->forceDrivenState('1');
-                iopins[pin]->putState(true);
             } else {
                 iopins[pin]->forceDrivenState('0');
-                iopins[pin]->putState(false);
             }
             break;
         case 'W':
