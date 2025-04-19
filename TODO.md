@@ -3,11 +3,11 @@
 |:------|:------:|:------|
 | [src/picsimlab1.cc](src/picsimlab1.cc#L1099) | 1099 | remote control disabled |
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L299) | 299 | NSTEP must be multiplied for 4 |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1601) | 1601 | avr CONFIG size |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L132) | 132 | only for BANK=0; |
 | [src/parts/input_MPU6050.cc](src/parts/input_MPU6050.cc#L26) | 26 | remove lxrad |
 | [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L173) | 173 | on slow speed output is not 90 degrees |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L228) | 228 | on slow speed output is not 90 degrees |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1623) | 1623 | avr CONFIG size |
 
 ### TODOs
 | Filename | line # | TODO |
@@ -18,10 +18,6 @@
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L100) | 100 | jumper support |
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L238) | 238 | TEMP cooler must don't work with AQUE=0 |
 | [src/boards/board_RemoteTCP.cc](src/boards/board_RemoteTCP.cc#L176) | 176 | define pins |
-| [src/boards/bsim_gpsim.cc](src/boards/bsim_gpsim.cc#L168) | 168 | add VCC and GND pins |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1211) | 1211 | default output value is not used yet (DOV) |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1584) | 1584 | avr ID pointer |
-| [src/boards/bsim_simavr.cc](src/boards/bsim_simavr.cc#L1606) | 1606 | avr ID size |
 | [src/devices/eth_w5500.cc](src/devices/eth_w5500.cc#L471) | 471 | add support to buffer size different of 2k |
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L123) | 123 | ssd1306 Scrolling Command Table |
 | [src/devices/lcd_ssd1306.cc](src/devices/lcd_ssd1306.cc#L134) | 134 | ssd1306 Continuous Vertical and Horizontal Scroll Setup |
@@ -39,3 +35,7 @@
 | [src/parts/other_IO_MCP23017.cc](src/parts/other_IO_MCP23017.cc#L411) | 411 | only write support implemented |
 | [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L417) | 417 | only write support implemented |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L175) | 175 | Add transfer funcion of dc motor |
+| [src/sim_backend/bsim_gpsim.cc](src/sim_backend/bsim_gpsim.cc#L168) | 168 | add VCC and GND pins |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1212) | 1212 | default output value is not used yet (DOV) |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1606) | 1606 | avr ID pointer |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1628) | 1628 | avr ID size |

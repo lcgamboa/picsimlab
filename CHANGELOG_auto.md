@@ -1,3 +1,36 @@
+## (unreleased)
+
+### New
+
+* New spare part VCD Dump Memory (RAM). [lcgamboa]
+
+* Version 0.9.2 realease! [lcgamboa]
+
+### Changes
+
+* Support to 16 bit memory in VCD Dump Memory part added. [lcgamboa]
+
+* PICGenios board demostration updated. [lcgamboa]
+
+* Github actions updated. [lcgamboa]
+
+* Github actions updated. [lcgamboa]
+
+### Fix
+
+* Fix gpboard write to input pins bug. [lcgamboa]
+
+* Fix: Fix I2C memory 24CXXX part Save button (https://github.com/lcgamboa/picsimlab/issues/139). Thanks to @kjellc. [lcgamboa]
+
+* Fix ili9341 with "spi+touch" crashes. Thanks to  m-meltner  https://github.com/lcgamboa/picsimlab/issues/131. [lcgamboa]
+
+* Fix BluePill board PWM outputs. [lcgamboa]
+
+### Other
+
+* Github build scripts updated. [lcgamboa]
+
+
 ## v0.9.2 (2024-10-05)
 
 ### New
