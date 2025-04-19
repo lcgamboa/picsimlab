@@ -1155,6 +1155,10 @@ void bsim_qemu::MSetPinDOV(int pin, unsigned char ovalue) {
     // set_pin_DOV (pin, ovalue);
 }
 
+void bsim_qemu::MSetPinOAV(int pin, float value) {
+    pins[pin - 1].oavalue = value;
+}
+
 unsigned char bsim_qemu::MGetPin(int pin) {
     if ((pin) && (pin < MGetPinCount())) {
         return pins[pin - 1].value;
@@ -1162,9 +1166,9 @@ unsigned char bsim_qemu::MGetPin(int pin) {
     return 0;
 }
 
-void bsim_qemu::MReset(int flags) {
+int bsim_qemu::MReset(int flags) {
     if (qemu_started != 1) {
-        return;
+        return 0;
     }
     PICSimLab.SystemCmd(PSC_MUTEXLOCK, (const char*)&mtx_qinitId);  // only for wait qemu start
     PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
@@ -1187,10 +1191,27 @@ void bsim_qemu::MReset(int flags) {
     bitbang_uart_rst(&master_uart[2]);
     bitbang_pwm_rst(&pwm_out);
     bitbang_out_rst(&rmt_out);
+    return 0;
+}
+
+int bsim_qemu::MGetResetPin(void) {
+    return 0;
+}
+
+int bsim_qemu::MGetIOUpdated(void) {
+    return ioupdated;
+}
+
+void bsim_qemu::MClearIOUpdated(void) {
+    ioupdated = 0;
 }
 
 const picpin* bsim_qemu::MGetPinsValues(void) {
     return pins;
+}
+
+float* bsim_qemu::MGetPinOAVPtr(int pin) {
+    return &pins[pin - 1].oavalue;
 }
 
 void bsim_qemu::MStep(void) {

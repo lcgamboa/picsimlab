@@ -225,6 +225,10 @@ void bsim_ucsim::MSetSerial(const char* port) {
      // set_pin_DOV (pin, ovalue);
  }
 
+ void bsim_ucsim::MSetPinOAV(int pin, float value) {
+     pins[pin - 1].oavalue = value;
+ }
+
  void bsim_ucsim::MSetAPin(int pin, float value) {
      // set_apin (pin, value);
  }
@@ -233,17 +237,35 @@ void bsim_ucsim::MSetSerial(const char* port) {
      return ucsim_get_pin(*pins[pin - 1].port, pins[pin - 1].pord);
  }
 
- void bsim_ucsim::MReset(int flags) {
+ int bsim_ucsim::MReset(int flags) {
      ucsim_reset();
 
      ports[0] = 0;
      ports[1] = 0;
      ports[2] = 0;
      ports[3] = 0;
+
+     return 0;
+ }
+
+ int bsim_ucsim::MGetResetPin(void) {
+     return 0;
+ }
+
+ int bsim_ucsim::MGetIOUpdated(void) {
+     return ioupdated;
+ }
+
+ void bsim_ucsim::MClearIOUpdated(void) {
+     ioupdated = 0;
  }
 
  const picpin* bsim_ucsim::MGetPinsValues(void) {
      return pins;
+ }
+
+ float* bsim_ucsim::MGetPinOAVPtr(int pin) {
+     return &pins[pin - 1].oavalue;
  }
 
  void bsim_ucsim::MStep(void) {

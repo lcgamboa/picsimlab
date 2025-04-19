@@ -180,6 +180,10 @@ void bsim_gpsim::MSetSerial(const char* port) {
      // set_pin_DOV (pin, ovalue);
  }
 
+ void bsim_gpsim::MSetPinOAV(int pin, float value) {
+     pins[pin - 1].oavalue = value;
+ }
+
  void bsim_gpsim::MSetAPin(int pin, float value) {
      if (pins[pin - 1].dir == PD_IN) {
          pins[pin - 1].ptype = PT_ANALOG;
@@ -192,12 +196,29 @@ void bsim_gpsim::MSetSerial(const char* port) {
      return bridge_gpsim_get_pin_value(pin);
  }
 
- void bsim_gpsim::MReset(int flags) {
+ int bsim_gpsim::MReset(int flags) {
      bridge_gpsim_reset();
+     return 0;
+ }
+
+ int bsim_gpsim::MGetResetPin(void) {
+     return 0;
+ }
+
+ int bsim_gpsim::MGetIOUpdated(void) {
+     return ioupdated;
+ }
+
+ void bsim_gpsim::MClearIOUpdated(void) {
+     ioupdated = 0;
  }
 
  const picpin* bsim_gpsim::MGetPinsValues(void) {
      return pins;
+ }
+
+ float* bsim_gpsim::MGetPinOAVPtr(int pin) {
+     return &pins[pin - 1].oavalue;
  }
 
  void bsim_gpsim::MStep(void) {

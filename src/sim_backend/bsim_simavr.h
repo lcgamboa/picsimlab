@@ -75,12 +75,17 @@ public:
     std::string MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
+    void MSetPinOAV(int pin, float value) override;
     void MSetAPin(int pin, float value) override;
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
+    float* MGetPinOAVPtr(int pin) override;
     void MStep(void) override;
     void MStepResume(void) override;
-    void MReset(int flags) override;
+    int MReset(int flags) override;
+    int MGetResetPin(void) override;
+    int MGetIOUpdated(void) override;
+    void MClearIOUpdated(void) override;
     unsigned short* DBGGetProcID_p(void) override;
     unsigned int DBGGetPC(void) override;
     void DBGSetPC(unsigned int pc) override;
@@ -98,6 +103,7 @@ public:
     int GetDefaultClock(void) override { return 16; };
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
+    std::string GetUARTStrStatus(const int uart_num) override;
     virtual void UpdateHardware(void);
 
     static void out_hook(struct avr_irq_t* irq, uint32_t value, void* param) {
@@ -119,7 +125,7 @@ public:
 protected:
     avr_t* avr;
     avr_irq_t* serial_irq[MAX_UART_COUNT];
-    picpin pins[256];
+    picpin pins[MAX_PIN_COUNT];
     avr_irq_t* Write_stat_irq[100];
     unsigned int serialbaud[MAX_UART_COUNT];
     float serialexbaud[MAX_UART_COUNT];

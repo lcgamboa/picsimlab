@@ -24,6 +24,7 @@
    ######################################################################## */
 
 #include "bsim_picsim.h"
+#include "math.h"
 
 #include "../lib/picsimlab.h"
 
@@ -57,7 +58,7 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
 
     pic.disable_debug(&pic);
 
-    pic.pins = (picpin*)realloc(pic.pins, sizeof(picpin) * 256);
+    pic.pins = (picpin*)realloc(pic.pins, sizeof(picpin) * MAX_PIN_COUNT);
 
     return ret;
 }
@@ -166,6 +167,10 @@ void bsim_picsim::MSetPinDOV(int pin, unsigned char ovalue) {
     pic_set_pin_DOV(&pic, pin, ovalue);
 }
 
+void bsim_picsim::MSetPinOAV(int pin, float value) {
+    pic.pins[pin - 1].oavalue = value;
+}
+
 void bsim_picsim::MSetAPin(int pin, float value) {
     pic_set_apin(&pic, pin, value);
 }
@@ -178,10 +183,12 @@ const picpin* bsim_picsim::MGetPinsValues(void) {
     return pic.pins;
 }
 
+float* bsim_picsim::MGetPinOAVPtr(int pin) {
+    return &pic.pins[pin - 1].oavalue;
+}
+
 void bsim_picsim::MStep(void) {
     pic_step(&pic);
-    if (pic.s2 == 1)
-        pic_step(&pic);
 }
 
 void bsim_picsim::MStepResume(void) {
@@ -189,8 +196,20 @@ void bsim_picsim::MStepResume(void) {
         pic_step(&pic);
 }
 
-void bsim_picsim::MReset(int flags) {
-    pic_reset(&pic, flags);
+int bsim_picsim::MReset(int flags) {
+    return pic_reset(&pic, flags);
+}
+
+int bsim_picsim::MGetResetPin(void) {
+    return pic.mclr;
+}
+
+int bsim_picsim::MGetIOUpdated(void) {
+    return pic.ioupdated;
+}
+
+void bsim_picsim::MClearIOUpdated(void) {
+    pic.ioupdated = 0;
 }
 
 unsigned short* bsim_picsim::DBGGetProcID_p(void) {
@@ -275,4 +294,15 @@ int bsim_picsim::GetUARTTX(const int uart_num) {
         return pic.usart_tx[uart_num];
     }
     return 0;
+}
+
+std::string bsim_picsim::GetUARTStrStatus(const int uart_num) {
+    if (pic.serial[uart_num].serialfd != INVALID_SERIAL)
+        return "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[uart_num].serialbaud) + "(" +
+               FloatStrFormat(
+                   "%4.1f", fabs((100.0 * pic.serial[uart_num].serialexbaud - 100.0 * pic.serial[uart_num].serialbaud) /
+                                 pic.serial[uart_num].serialexbaud)) +
+               "%)";
+    else
+        return "Serial: " + std::string(SERIALDEVICE) + " (ERROR)";
 }

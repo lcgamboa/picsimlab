@@ -102,34 +102,11 @@ cboard_Breadboard::~cboard_Breadboard(void) {
 void cboard_Breadboard::Reset(void) {
     switch (ptype) {
         case _PIC:
-
-            pic_reset(&pic, 1);
-
-            // verify serial port state and refresh status bar
-
-            if (pic.serial[0].serialfd != INVALID_SERIAL)
-                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
-                                                      std::to_string(pic.serial[0].serialbaud) + "(" +
-                                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                    100.0 * pic.serial[0].serialbaud) /
-                                                                                   pic.serial[0].serialexbaud)) +
-                                                      "%)");
-            else
-                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
-            break;
+            MReset(1);
         case _AVR:
             MReset(0);
-            // verify serial port state and refresh status bar
-            if (serialfd != INVALID_SERIAL)
-                PICSimLab.UpdateStatus(
-                    PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[0]) + "(" +
-                                   FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) /
-                                                                serialexbaud[0])) +
-                                   "%)");
-            else
-                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
-            break;
     }
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
     if (jmp[0]) {
         MSetVCC(3.3);
@@ -149,28 +126,11 @@ void cboard_Breadboard::RefreshStatus(void) {
     switch (ptype) {
         case _PIC:
             // verify serial port state and refresh status bar
-
-            if (pic.serial[0].serialfd != INVALID_SERIAL)
-                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" +
-                                                      std::to_string(pic.serial[0].serialbaud) + "(" +
-                                                      FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud -
-                                                                                    100.0 * pic.serial[0].serialbaud) /
-                                                                                   pic.serial[0].serialexbaud)) +
-                                                      "%)");
-            else
-                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+            PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
             break;
         case _AVR:
             // verify serial port state and refresh status bar
-
-            if (serialfd != INVALID_SERIAL)
-                PICSimLab.UpdateStatus(
-                    PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[0]) + "(" +
-                                   FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) /
-                                                                serialexbaud[0])) +
-                                   "%)");
-            else
-                PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+            PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
             if (PICSimLab.GetMcuPwr()) {
                 if (avr) {
@@ -886,6 +846,17 @@ void cboard_Breadboard::MSetPinDOV(int pin, unsigned char ovalue) {
     }
 }
 
+void cboard_Breadboard::MSetPinOAV(int pin, float ovalue) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::MSetPinOAV(pin, ovalue);
+            break;
+        case _AVR:
+            return bsim_simavr::MSetPinOAV(pin, ovalue);
+            break;
+    }
+}
+
 void cboard_Breadboard::MSetAPin(int pin, float value) {
     switch (ptype) {
         case _PIC:
@@ -921,6 +892,18 @@ const picpin* cboard_Breadboard::MGetPinsValues(void) {
     return NULL;
 }
 
+float* cboard_Breadboard::MGetPinOAVPtr(int pin) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::MGetPinOAVPtr(pin);
+            break;
+        case _AVR:
+            return bsim_simavr::MGetPinOAVPtr(pin);
+            break;
+    }
+    return NULL;
+}
+
 void cboard_Breadboard::MStep(void) {
     switch (ptype) {
         case _PIC:
@@ -943,13 +926,49 @@ void cboard_Breadboard::MStepResume(void) {
     }
 }
 
-void cboard_Breadboard::MReset(int flags) {
+int cboard_Breadboard::MReset(int flags) {
     switch (ptype) {
         case _PIC:
             return bsim_picsim::MReset(flags);
             break;
         case _AVR:
             return bsim_simavr::MReset(flags);
+            break;
+    }
+    return 0;
+}
+
+int cboard_Breadboard::MGetResetPin(void) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::MGetResetPin();
+            break;
+        case _AVR:
+            return bsim_simavr::MGetResetPin();
+            break;
+    }
+    return 0;
+}
+
+int cboard_Breadboard::MGetIOUpdated(void) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::MGetIOUpdated();
+            break;
+        case _AVR:
+            return bsim_simavr::MGetIOUpdated();
+            break;
+    }
+    return 0;
+}
+
+void cboard_Breadboard::MClearIOUpdated(void) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::MClearIOUpdated();
+            break;
+        case _AVR:
+            return bsim_simavr::MClearIOUpdated();
             break;
     }
 }
@@ -1145,6 +1164,18 @@ int cboard_Breadboard::GetUARTTX(const int uart_num) {
             break;
     }
     return 0;
+}
+
+std::string cboard_Breadboard::GetUARTStrStatus(const int uart_num) {
+    switch (ptype) {
+        case _PIC:
+            return bsim_picsim::GetUARTStrStatus(uart_num);
+            break;
+        case _AVR:
+            return bsim_simavr::GetUARTStrStatus(uart_num);
+            break;
+    }
+    return "Unknow type";
 }
 
 void cboard_Breadboard::SetScale(double scale) {

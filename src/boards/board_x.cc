@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2015-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2015-2025  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -131,26 +131,17 @@ cboard_x::~cboard_x(void) {
 // Reset board status
 
 void cboard_x::Reset(void) {
-    pic_reset(&pic, 1);
+    MReset(1);
 
     p_BT1 = 1;  // set push button  in default state (high)
 
-    // write button state to pic pin 19 (RD0)
-    pic_set_pin(&pic, 19, p_BT1);
-    // write switch state to pic pin 20 (RD1)
-    pic_set_pin(&pic, 20, p_BT2);
+    // write button state to pin 19 (RD0)
+    MSetPin(19, p_BT1);
+    // write switch state to pin 20 (RD1)
+    MSetPin(20, p_BT2);
 
     // verify serial port state and refresh status bar
-
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
     if (use_spare)
         SpareParts.Reset();
@@ -172,26 +163,17 @@ void cboard_x::RegisterRemoteControl(void) {
     input_ids[I_POT1]->update = &output_ids[O_POT1]->update;
 
     // register outputa
-    output_ids[O_RB0]->status = &pic.pins[32].oavalue;
-    output_ids[O_RB1]->status = &pic.pins[33].oavalue;
-    output_ids[O_LD0]->status = &pic.pins[18].oavalue;
-    output_ids[O_LD1]->status = &pic.pins[19].oavalue;
+    output_ids[O_RB0]->status = MGetPinOAVPtr(33);
+    output_ids[O_RB1]->status = MGetPinOAVPtr(34);
+    output_ids[O_LD0]->status = MGetPinOAVPtr(19);
+    output_ids[O_LD1]->status = MGetPinOAVPtr(20);
 }
 
 // Called ever 1s to refresh status
 
 void cboard_x::RefreshStatus(void) {
     // verify serial port state and refresh status bar
-
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 }
 
 // Called to save board preferences in configuration file
@@ -288,7 +270,7 @@ void cboard_x::EvMouseButtonPress(unsigned int button, unsigned int x, unsigned 
                     break;
                     // if event is over I_RST area then turn off and reset
                 case I_RST:
-                    if (PICSimLab.GetMcuPwr() && pic_reset(&pic, -1))  // if powered
+                    if (PICSimLab.GetMcuPwr() && MReset(-1))  // if powered
                     {
                         PICSimLab.SetMcuPwr(0);
                         PICSimLab.SetMcuRst(1);
@@ -357,7 +339,7 @@ void cboard_x::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigne
                         PICSimLab.SetMcuPwr(1);
                         PICSimLab.SetMcuRst(0);
 
-                        if (pic_reset(&pic, -1)) {
+                        if (MReset(-1)) {
                             Reset();
                         }
                     }
@@ -384,6 +366,7 @@ void cboard_x::EvMouseButtonRelease(unsigned int button, unsigned int x, unsigne
 void cboard_x::Draw(void) {
     int update = 0;  // verifiy if updated is needed
     int i;
+    const picpin* pins = MGetPinsValues();
 
     // board_x draw
     for (i = 0; i < outputc; i++)  // run over all outputs
@@ -474,27 +457,24 @@ void cboard_x::Draw(void) {
                 switch (output[i].id)  // search for color of output
                 {
                     case O_LD0:  // White using pin 19 mean value (RD0)
-                        PICSimLab.CanvasCmd(
-                            {.cmd = CC_SETBGCOLOR,
-                             .SetBgColor{(unsigned int)pic.pins[18].oavalue, (unsigned int)pic.pins[18].oavalue,
-                                         (unsigned int)pic.pins[18].oavalue}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR,
+                                             .SetBgColor{(unsigned int)pins[18].oavalue, (unsigned int)pins[18].oavalue,
+                                                         (unsigned int)pins[18].oavalue}});
                         break;
                     case O_LD1:  // Yelllow using pin 20 mean value (RD1)
                         PICSimLab.CanvasCmd(
                             {.cmd = CC_SETBGCOLOR,
-                             .SetBgColor{(unsigned int)pic.pins[19].oavalue, (unsigned int)pic.pins[19].oavalue, 0}});
+                             .SetBgColor{(unsigned int)pins[19].oavalue, (unsigned int)pins[19].oavalue, 0}});
                         break;
                     case O_LPWR:  // Blue using mcupwr value
                         PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR,
                                              .SetBgColor{0, 0, (unsigned int)(200 * PICSimLab.GetMcuPwr() + 55)}});
                         break;
                     case O_RB0:  // Green using pin 33 mean value (RB0)
-                        PICSimLab.CanvasCmd(
-                            {.cmd = CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pic.pins[32].oavalue, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{0, (unsigned int)pins[32].oavalue, 0}});
                         break;
                     case O_RB1:  // Red using pin 34 mean value (RB1)
-                        PICSimLab.CanvasCmd(
-                            {.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pic.pins[33].oavalue, 0, 0}});
+                        PICSimLab.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)pins[33].oavalue, 0, 0}});
                         break;
                 }
 
@@ -508,9 +488,9 @@ void cboard_x::Draw(void) {
         PICSimLab.CanvasCmd({.cmd = CC_END});
     }
 
-    int value = (pic.pins[33].oavalue - 55) / 2;  // RB0 mean value
+    int value = (pins[33].oavalue - 55) / 2;  // RB0 mean value
     PICSimLab.UpdateGUI(PWM0, GT_GAUGE, GA_SET, (void*)&value);
-    value = (pic.pins[32].oavalue - 55) / 2;  // RB1 mean value
+    value = (pins[32].oavalue - 55) / 2;  // RB1 mean value
     PICSimLab.UpdateGUI(PWM1, GT_GAUGE, GA_SET, (void*)&value);
 }
 
@@ -524,17 +504,15 @@ void cboard_x::Run_CPU(void) {
 
     const int JUMPSTEPS = PICSimLab.GetJUMPSTEPS();  // number of steps skipped
     const long int NSTEP = PICSimLab.GetNSTEP();     // number of steps in 100ms
-    const float RNSTEP = 200.0 * pic.PINCOUNT / NSTEP;
+    const float RNSTEP = 200.0 * MGetPinCount() / NSTEP;
 
     // reset pins mean value
     memset(alm, 0, 40 * sizeof(unsigned int));
 
-    // read pic.pins to a local
-    // variable to speed up
-    pins = pic.pins;
+    // read pins to a local variable to speed up
+    pins = MGetPinsValues();
 
-    // Spare parts window pre
-    // process
+    // Spare parts window pre process
     if (use_spare)
         SpareParts.PreProcess();
 
@@ -552,41 +530,15 @@ void cboard_x::Run_CPU(void) {
 
     j = JUMPSTEPS;  // step counter
     pi = 0;
-    if (PICSimLab.GetMcuPwr())       // if
-                                     // powered
-        for (i = 0; i < NSTEP; i++)  // repeat for
-                                     // number of
-                                     // steps in 100ms
+    if (PICSimLab.GetMcuPwr())       // if powered
+        for (i = 0; i < NSTEP; i++)  // repeat for number of steps in 100ms
         {
-            if (j >= JUMPSTEPS)  // if
-                                 // number
-                                 // of
-                                 // step
-                                 // is
-                                 // bigger
-                                 // than
-                                 // steps
-                                 // to
-                                 // skip
+            if (j >= JUMPSTEPS)  // if number of step is bigger than step to skip
             {
-                pic_set_pin(&pic, pic.mclr, p_RST);
+                MSetPin(MGetResetPin(), p_RST);
                 if (!bounce.do_bounce) {
-                    pic_set_pin(&pic, 19,
-                                p_BT1_);  // Set
-                                          // pin
-                                          // 19
-                                          // (RD0)
-                                          // with
-                                          // button
-                                          // state
-                    pic_set_pin(&pic, 20,
-                                p_BT2_);  // Set
-                                          // pin
-                                          // 20
-                                          // (RD1)
-                                          // with
-                                          // switch
-                                          // state
+                    MSetPin(19, p_BT1_);  // Set pin 19 (RD0) with button state
+                    MSetPin(20, p_BT2_);  // Set pin 20 (RD1) with switch state
                 }
             }
 
@@ -595,95 +547,74 @@ void cboard_x::Run_CPU(void) {
                 if (bret) {
                     if (bounce.bounce[0]) {
                         if (bret == 1) {
-                            pic_set_pin(&pic, 19, !pins[19 - 1].value);
+                            MSetPin(19, !pins[19 - 1].value);
                         } else {
-                            pic_set_pin(&pic, 19, p_BT1_);
+                            MSetPin(19, p_BT1_);
                         }
                     }
                     if (bounce.bounce[1]) {
                         if (bret == 1) {
-                            pic_set_pin(&pic, 20, !pins[20 - 1].value);
+                            MSetPin(20, !pins[20 - 1].value);
                         } else {
-                            pic_set_pin(&pic, 20, p_BT2_);
+                            MSetPin(20, p_BT2_);
                         }
                     }
                 }
             }
 
-            // verify if a
-            // breakpoint is reached
-            // if not run one
-            // instruction
+            // verify if a breakpoint is reached if not run one instruction
             if (!mplabxd_testbp())
-                pic_step(&pic);
-            ioupdated = pic.ioupdated;
+                MStep();
+            ioupdated = MGetIOUpdated();
             InstCounterInc();
-            // Oscilloscope window
-            // process
+            // Oscilloscope window process
             if (use_oscope)
                 Oscilloscope.SetSample();
-            // Spare parts window
-            // process
+            // Spare parts window process
             if (use_spare)
                 SpareParts.Process();
 
-            // increment mean value
-            // counter if pin is
-            // high
+            // increment mean value counter if pin is high
             alm[pi] += pins[pi].value;
             pi++;
-            if (pi == pic.PINCOUNT)
+            if (pi == MGetPinCount())
                 pi = 0;
 
-            if (j >= JUMPSTEPS)  // if
-                                 // number
-                                 // of
-                                 // step
-                                 // is
-                                 // bigger
-                                 // than
-                                 // steps
-                                 // to
-                                 // skip
+            if (j >= JUMPSTEPS)  // if number of step is bigger than steps to skip
             {
-                // set analog pin 2
-                // (AN0) with value
-                // from scroll
-                pic_set_apin(&pic, 2, (5.0 * pot1 / 199));
+                // set analog pin 2 (AN0) with value from scroll
+                MSetAPin(2, (5.0 * pot1 / 199));
 
-                j = -1;  // reset
-                         // counter
+                j = -1;  // reset counter
             }
-            j++;  // counter
-                  // increment
-            pic.ioupdated = 0;
+            j++;  // counter increment
+            MClearIOUpdated();
         }
 
     // calculate mean value
-    for (pi = 0; pi < pic.PINCOUNT; pi++) {
-        pic.pins[pi].oavalue = (int)((alm[pi] * RNSTEP) + 55);
+    for (pi = 0; pi < MGetPinCount(); pi++) {
+        MSetPinOAV(pi + 1, (alm[pi] * RNSTEP) + 55);
     }
 
-    // Spare parts window pre post
-    // process
+    // Spare parts window pre post process
     if (use_spare)
         SpareParts.PostProcess();
 
     // verifiy if LEDS need update
-    if (output_ids[O_LD0]->value != pic.pins[18].oavalue) {
-        output_ids[O_LD0]->value = pic.pins[18].oavalue;
+    if (output_ids[O_LD0]->value != pins[18].oavalue) {
+        output_ids[O_LD0]->value = pins[18].oavalue;
         output_ids[O_LD0]->update = 1;
     }
-    if (output_ids[O_LD1]->value != pic.pins[19].oavalue) {
-        output_ids[O_LD1]->value = pic.pins[19].oavalue;
+    if (output_ids[O_LD1]->value != pins[19].oavalue) {
+        output_ids[O_LD1]->value = pins[19].oavalue;
         output_ids[O_LD1]->update = 1;
     }
-    if (output_ids[O_RB0]->value != pic.pins[32].oavalue) {
-        output_ids[O_RB0]->value = pic.pins[32].oavalue;
+    if (output_ids[O_RB0]->value != pins[32].oavalue) {
+        output_ids[O_RB0]->value = pins[32].oavalue;
         output_ids[O_RB0]->update = 1;
     }
-    if (output_ids[O_RB1]->value != pic.pins[33].oavalue) {
-        output_ids[O_RB1]->value = pic.pins[33].oavalue;
+    if (output_ids[O_RB1]->value != pins[33].oavalue) {
+        output_ids[O_RB1]->value = pins[33].oavalue;
         output_ids[O_RB1]->update = 1;
     }
 }

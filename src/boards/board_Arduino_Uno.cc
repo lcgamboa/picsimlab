@@ -127,14 +127,7 @@ void cboard_Arduino_Uno::Reset(void) {
     MReset(0);
 
     // verify serial port state and refresh status bar
-    if (serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[0]) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
     /*
       //reset mean value
       for(int pi=0;pi < pic.PINCOUNT;pi++)
@@ -156,15 +149,7 @@ void cboard_Arduino_Uno::RegisterRemoteControl(void) {
 
 void cboard_Arduino_Uno::RefreshStatus(void) {
     // verify serial port state and refresh status bar
-
-    if (serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[0]) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[0] - 100.0 * serialbaud[0]) / serialexbaud[0])) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
     if (PICSimLab.GetMcuPwr()) {
         if (avr) {
             switch (avr->state) {

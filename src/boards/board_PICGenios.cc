@@ -1343,20 +1343,7 @@ void cboard_PICGenios::Reset(void) {
     pic_set_pin(&pic, PIN_RD3, 0);
     pic_set_pin(&pic, PIN_RC4, 0);
 
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                           FloatStrFormat("%4"
-                                          ".1"
-                                          "f",
-                                          fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                               pic.serial[0].serialexbaud)) +
-                           "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) +
-                                              " ("
-                                              "ERROR"
-                                              ")");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
     for (int i = 0; i < pic.PINCOUNT; i++) {
         lm1[i] = 30;
@@ -2413,20 +2400,7 @@ void cboard_PICGenios::RefreshStatus(void) {
     snprintf(svalue, 128, "Temp: %5.2fC", temp[0]);
     PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_SET_LABEL, (void*)svalue);
 
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                           FloatStrFormat("%4"
-                                          ".1"
-                                          "f",
-                                          fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                               pic.serial[0].serialexbaud)) +
-                           "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) +
-                                              " ("
-                                              "ERROR"
-                                              ")");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 }
 
 void cboard_PICGenios::WritePreferences(void) {

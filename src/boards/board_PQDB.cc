@@ -878,15 +878,7 @@ void cboard_PQDB::Reset(void) {
     p_KEY[8] = 0;
     p_KEY[9] = 0;
 
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
     if (use_spare)
         SpareParts.Reset();
@@ -1749,15 +1741,7 @@ unsigned short cboard_PQDB::GetOutputId(char* name) {
 }
 
 void cboard_PQDB::RefreshStatus(void) {
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 }
 
 void cboard_PQDB::WritePreferences(void) {

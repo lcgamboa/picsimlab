@@ -31,8 +31,6 @@
 #include "part.h"
 #include "types.h"
 
-#define IOINIT 110
-
 class CSpareParts {
 public:
     CSpareParts();
@@ -129,8 +127,8 @@ public:
 private:
     float scale;
     board* pboard;
-    std::string PinNames[256];
-    std::string PinAlias[256];
+    std::string PinNames[MAX_PIN_COUNT];
+    std::string PinAlias[MAX_PIN_COUNT];
     std::string alias_fname;
     std::string LoadConfigFile;
     picpin* Pins;

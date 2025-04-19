@@ -4,7 +4,7 @@
 
    ########################################################################
 
-   Copyright (c) : 2010-2024  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+   Copyright (c) : 2010-2025  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1212,6 +1213,10 @@ void bsim_simavr::MSetPinDOV(int pin, unsigned char ovalue) {
     pins[pin - 1].ovalue = ovalue;
 }
 
+void bsim_simavr::MSetPinOAV(int pin, float value) {
+    pins[pin - 1].oavalue = value;
+}
+
 void bsim_simavr::MSetAPin(int pin, float value) {
     if (pin <= 0 || pin > MGetPinCount())
         return;
@@ -1389,6 +1394,10 @@ const picpin* bsim_simavr::MGetPinsValues(void) {
     return pins;
 }
 
+float* bsim_simavr::MGetPinOAVPtr(int pin) {
+    return &pins[pin - 1].oavalue;
+}
+
 void bsim_simavr::SerialSend(bitbang_uart_t* _bb_uart, const unsigned char value) {
     if (_bb_uart == &bb_uart[0]) {  // send only serial 0
         serial_port_send(serialfd, value);
@@ -1532,7 +1541,7 @@ void bsim_simavr::MStep(void) {
 
 void bsim_simavr::MStepResume(void) {}
 
-void bsim_simavr::MReset(int flags) {
+int bsim_simavr::MReset(int flags) {
     avr_reset(avr);
     if (usart_count) {
         for (int i = 0; i < usart_count; i++) {
@@ -1554,6 +1563,19 @@ void bsim_simavr::MReset(int flags) {
         MSetPin(p + 1, 0);
     }
     pins_reset();
+    return 0;
+}
+
+int bsim_simavr::MGetResetPin(void) {
+    return 0;
+}
+
+int bsim_simavr::MGetIOUpdated(void) {
+    return ioupdated;
+}
+
+void bsim_simavr::MClearIOUpdated(void) {
+    ioupdated = 0;
 }
 
 unsigned short* bsim_simavr::DBGGetProcID_p(void) {
@@ -1626,6 +1648,17 @@ int bsim_simavr::GetUARTTX(const int uart_num) {
         return bb_uart[uart_num].tx_pin;
     }
     return 0;
+}
+
+std::string bsim_simavr::GetUARTStrStatus(const int uart_num) {
+    // verify serial port state and refresh status bar
+    if (serialfd != INVALID_SERIAL)
+        return "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[uart_num]) + "(" +
+               FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[uart_num] - 100.0 * serialbaud[uart_num]) /
+                                            serialexbaud[uart_num])) +
+               "%)";
+    else
+        return "Serial: " + std::string(SERIALDEVICE) + " (ERROR)";
 }
 
 // hexfile support ============================================================

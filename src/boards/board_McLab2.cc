@@ -870,15 +870,7 @@ void cboard_McLab2::Reset(void) {
     pic_set_pin(&pic, 35, p_BT[2]);
     pic_set_pin(&pic, 36, p_BT[3]);
 
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
     for (int pi = 0; pi < pic.PINCOUNT; pi++) {
         lm1[pi] = 30;
@@ -1354,15 +1346,7 @@ void cboard_McLab2::RefreshStatus(void) {
     snprintf(svalue, 128, "Temp: %5.2fC", temp[0]);
     PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_SET_LABEL, (void*)svalue);
 
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 }
 
 void cboard_McLab2::WritePreferences(void) {

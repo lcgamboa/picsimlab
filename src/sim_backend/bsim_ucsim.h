@@ -51,16 +51,21 @@ public:
     std::string MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
+    void MSetPinOAV(int pin, float value) override;
     void MSetAPin(int pin, float value) override;
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
+    float* MGetPinOAVPtr(int pin) override;
     void MStep(void) override;
     void MStepResume(void) override;
-    void MReset(int flags) override;
+    int MReset(int flags) override;
+    int MGetResetPin(void) override;
+    int MGetIOUpdated(void) override;
+    void MClearIOUpdated(void) override;
 
 protected:
     void pins_reset(void);
-    picpin pins[256];
+    picpin pins[MAX_PIN_COUNT];
     unsigned int serialbaud;
     float serialexbaud;
     float freq;

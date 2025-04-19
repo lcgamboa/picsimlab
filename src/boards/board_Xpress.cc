@@ -141,16 +141,7 @@ void cboard_Xpress::Reset(void) {
     pic_set_pin(&pic, 6, p_BT1);
 
     // verify serial port state and refresh status bar
-
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 
     if (use_spare)
         SpareParts.Reset();
@@ -174,16 +165,7 @@ void cboard_Xpress::RegisterRemoteControl(void) {
 
 void cboard_Xpress::RefreshStatus(void) {
     // verify serial port state and refresh status bar
-
-    if (pic.serial[0].serialfd != INVALID_SERIAL)
-        PICSimLab.UpdateStatus(
-            PS_SERIAL,
-            "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[0].serialbaud) + "(" +
-                FloatStrFormat("%4.1f", fabs((100.0 * pic.serial[0].serialexbaud - 100.0 * pic.serial[0].serialbaud) /
-                                             pic.serial[0].serialexbaud)) +
-                "%)");
-    else
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + " (ERROR)");
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 }
 
 // Called to save board preferences in configuration file

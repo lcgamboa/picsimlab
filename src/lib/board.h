@@ -90,6 +90,9 @@ typedef struct {
 
 #define INVALID_ID (MAX_IDS - 1)
 
+#define IOINIT 110         // IOINIT is the max CPU pins number
+#define MAX_PIN_COUNT 256  // MAX_PIN_COUNT- IOINIT is the max spare parts extra pins number
+
 /**
  * @brief internal timer struct
  *
@@ -392,6 +395,11 @@ public:
     virtual void MSetAPin(int pin, float value) = 0;
 
     /**
+     * @brief board microcontroller set digital pin output average value
+     */
+    virtual void MSetPinOAV(int pin, float value) = 0;
+
+    /**
      * @brief board microcontroller get digital pin value
      */
     virtual unsigned char MGetPin(int pin) = 0;
@@ -400,6 +408,11 @@ public:
      * @brief board microcontroller get all pins list struct
      */
     virtual const picpin* MGetPinsValues(void) = 0;
+
+    /**
+     * @brief board microcontroller get pointer to digital pin average value
+     */
+    virtual float* MGetPinOAVPtr(int pin) = 0;
 
     /**
      * @brief board microcontroller run one step
@@ -414,7 +427,22 @@ public:
     /**
      * @brief board microcontroller reset
      */
-    virtual void MReset(int flags) = 0;
+    virtual int MReset(int flags) = 0;
+
+    /**
+     * @brief Get the Reset pin of microcontroller
+     */
+    virtual int MGetResetPin(void) = 0;
+
+    /**
+     * @brief get microcontroler status IO updated
+     */
+    virtual int MGetIOUpdated(void) = 0;
+
+    /**
+     * @brief clear microcontroler status IO updated
+     */
+    virtual void MClearIOUpdated(void) = 0;
 
     /**
      * @brief board microcontroller get pointer to processor ID
@@ -640,6 +668,8 @@ public:
      * @brief Return the UART N TX pin number
      */
     virtual int GetUARTTX(const int uart_num) { return 0; };
+
+    virtual std::string GetUARTStrStatus(const int uart_num) { return "Not implemented!"; };
 
     /**
      * @brief Return the description of clk label

@@ -53,12 +53,17 @@ public:
     std::string MGetPinName(int pin) override;
     void MSetPin(int pin, unsigned char value) override;
     void MSetPinDOV(int pin, unsigned char ovalue) override;
+    void MSetPinOAV(int pin, float value) override;
     void MSetAPin(int pin, float value) override;
     unsigned char MGetPin(int pin) override;
     const picpin* MGetPinsValues(void) override;
+    float* MGetPinOAVPtr(int pin) override;
     void MStep(void) override;
     void MStepResume(void) override;
-    void MReset(int flags) override;
+    int MReset(int flags) override;
+    int MGetResetPin(void) override;
+    int MGetIOUpdated(void) override;
+    void MClearIOUpdated(void) override;
     unsigned short* DBGGetProcID_p(void) override;
     unsigned int DBGGetPC(void) override;
     void DBGSetPC(unsigned int pc) override;
@@ -78,6 +83,7 @@ public:
     int GetDefaultClock(void) override { return 8; };
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
+    std::string GetUARTStrStatus(const int uart_num) override;
 
 protected:
     _pic pic;

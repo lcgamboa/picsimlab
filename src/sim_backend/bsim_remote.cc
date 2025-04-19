@@ -595,6 +595,10 @@ void bsim_remote::MSetPinDOV(int pin, unsigned char ovalue) {
     // set_pin_DOV (pin, ovalue);
 }
 
+void bsim_remote::MSetPinOAV(int pin, float value) {
+    pins[pin - 1].oavalue = value;
+}
+
 void bsim_remote::MSetAPin(int pin, float value) {
     if (!pin)
         return;
@@ -686,7 +690,7 @@ unsigned char bsim_remote::MGetPin(int pin) {
     return 0;
 }
 
-void bsim_remote::MReset(int flags) {
+int bsim_remote::MReset(int flags) {
     // Disconnect();
     Dirs[0] = 0xFF;
     Dirs[1] = 0xFF;
@@ -704,10 +708,27 @@ void bsim_remote::MReset(int flags) {
     bitbang_spi_rst(&master_spi[1]);
     bitbang_uart_rst(&master_uart[0]);
     bitbang_uart_rst(&master_uart[1]);
+    return 0;
+}
+
+int bsim_remote::MGetResetPin(void) {
+    return 0;
+}
+
+int bsim_remote::MGetIOUpdated(void) {
+    return ioupdated;
+}
+
+void bsim_remote::MClearIOUpdated(void) {
+    ioupdated = 0;
 }
 
 const picpin* bsim_remote::MGetPinsValues(void) {
     return pins;
+}
+
+float* bsim_remote::MGetPinOAVPtr(int pin) {
+    return &pins[pin - 1].oavalue;
 }
 
 void bsim_remote::MStep() {

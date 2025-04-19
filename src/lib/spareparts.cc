@@ -92,7 +92,7 @@ void CSpareParts::DeleteParts(void) {
 }
 
 void CSpareParts::ClearPinAlias(void) {
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < MAX_PIN_COUNT; i++) {
         PinAlias[i] = PinNames[i];
     }
 }
@@ -130,7 +130,7 @@ std::string CSpareParts::GetPinsNames(void) {
             Items = Items + std::to_string(i) + "  " + spin + ",";
         }
     }
-    for (int i = IOINIT; i < 256; i++) {
+    for (int i = IOINIT; i < MAX_PIN_COUNT; i++) {
         if (useAlias) {
             spin = PinAlias[i];
         } else {
@@ -280,8 +280,8 @@ bool CSpareParts::SavePinAlias(std::string fname) {
     std::vector<std::string> lalias;
     lalias.clear();
     lalias.push_back(
-        "//N-PinName -ALias   --The pin name alias must start in column fourteen and have size less than seven chars ");
-    for (int i = 1; i < 256; i++) {
+        "//N-PinName -Alias   --The pin name alias must start in column fourteen and have size less than seven chars ");
+    for (int i = 1; i < MAX_PIN_COUNT; i++) {
         pin = PinNames[i].substr(0, 7);
         if (!pin.size())
             pin = " ";
@@ -306,7 +306,7 @@ bool CSpareParts::LoadPinAlias(std::string fname, unsigned char show_error_msg) 
     if (LoadFromFile(alias, fname.c_str())) {
         alias_fname = fname;
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < MAX_PIN_COUNT; i++) {
             line = alias.at(i);
             if (line.size() > 13) {
                 PinAlias[i] = line.substr(13, 7);
@@ -346,7 +346,7 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
         LoadConfigFile = "";
     }
 
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < MAX_PIN_COUNT; i++) {
         if ((i > 0) && (i <= pboard->MGetPinCount())) {
             PinNames[i] = pboard->MGetPinName(i);
         } else {
@@ -357,9 +357,9 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
     PinsCount = pboard->MGetPinCount();
     Pins = (picpin*)pboard->MGetPinsValues();
 
-    memset(&Pins[PinsCount], 0, sizeof(picpin) * (256 - PinsCount));
+    memset(&Pins[PinsCount], 0, sizeof(picpin) * (MAX_PIN_COUNT - PinsCount));
 
-    for (int i = PinsCount; i < (256 - PinsCount); i++) {
+    for (int i = PinsCount; i < (MAX_PIN_COUNT - PinsCount); i++) {
         Pins[i].avalue = 0;
         Pins[i].lvalue = 0;
         Pins[i].pord = 0;
