@@ -232,3 +232,15 @@ Credit to [Shields IO](https://shields.io) for the badges and to
 [Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
 for the individual file counters.
 
+
+---
+In papers and reports, please refer to PICSimLab as follows: 'L. C. G. Lopes. PICsimLab - Programmable IC Simulator Laboratory . https://github.com/lcgamboa/picsimlab', e.g. using the following BibTeX code:
+```
+@MISC{PICSimLab,
+	author = {L. C. G. Lopes},
+	title = {PICsimLab - Programmable IC Simulator Laboratory },
+	howpublished = "\url{https://github.com/lcgamboa/picsimLab}"
+}
+
+```
+
