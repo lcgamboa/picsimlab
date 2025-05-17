@@ -238,7 +238,7 @@ In papers and reports, please refer to PICSimLab as follows: 'L. C. G. Lopes. PI
 ```
 @MISC{PICSimLab,
 	author = {L. C. G. Lopes},
-	title = {PICsimLab - Programmable IC Simulator Laboratory },
+	title = {PICSimLab - Programmable IC Simulator Laboratory },
 	howpublished = "\url{https://github.com/lcgamboa/picsimLab}"
 }
 
