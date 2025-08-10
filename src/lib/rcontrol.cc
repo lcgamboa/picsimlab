@@ -914,7 +914,7 @@ int rcontrol_loop(void) {
                         int p2 = Board->MGetPinCount() / 2;
                         for (i = 0; i < p2; i++) {
                             snprintf(lstemp, 100,
-                                     "  pin[%02i] (%8s) %c %i                 pin[%02i] (%8s) %c %i "
+                                     "  pin[%02i] (%8.8s) %c %i                 pin[%02i] (%-8.8s) %c %i "
                                      "\r\n",
                                      i + 1, (const char*)Board->MGetPinName(i + 1).c_str(),
                                      (pins[i].dir == PD_IN) ? '<' : '>', pins[i].value, i + 1 + p2,
@@ -932,7 +932,7 @@ int rcontrol_loop(void) {
                                  (const char*)Board->GetProcessorName().c_str());
                         ret += sendtext(lstemp);
                         for (i = 0; i < Board->MGetPinCount(); i++) {
-                            snprintf(lstemp, 100, "  pin[%02i] %c %c %i %03i %5.3f \"%-8s\" \r\n", i + 1,
+                            snprintf(lstemp, 100, "  pin[%02i] %c %c %i %03i %5.3f \"%-8.8s\" \r\n", i + 1,
                                      pintypetoletter(pins[i].ptype), (pins[i].dir == PD_IN) ? 'I' : 'O', pins[i].value,
                                      (int)(pins[i].oavalue - 55), pins[i].avalue,
                                      (const char*)Board->MGetPinName(i + 1).c_str());

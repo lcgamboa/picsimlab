@@ -343,7 +343,7 @@ void CPWindow1::timer1_EvOnTime(CControl *control) {
       dvalue = strtok(NULL, " \"\r\n");
       mvalue = strtok(NULL, " \"\r\n");
       avalue = strtok(NULL, " \"\r\n");
-      name = strtok(NULL, " \"\r\n");
+      name = strtok(NULL, "\"\r\n");
 
       pins[i].type = type[0];
       pins[i].dir = dir[0];
