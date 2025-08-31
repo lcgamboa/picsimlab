@@ -275,7 +275,7 @@ void cpart_ADXL345::PostProcess(void) {
                     asens = 512 / 50.0;
                     break;
                 case 2:  // 8g
-                    asens = 1023 / 50.0;
+                    asens = 1024 / 50.0;
                     break;
                 case 3:  // 16g
                     asens = 2048 / 50.0;

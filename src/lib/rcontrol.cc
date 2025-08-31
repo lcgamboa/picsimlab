@@ -284,7 +284,7 @@ static int type_is_equal(const char* name, const char* type) {
 static void ProcessInput(const char* msg, input_t* Input, int* ret) {
     char lstemp[200];
     if (type_is_equal(Input->name, "VS")) {
-        short temp = ((*((unsigned char*)Input->status)) << 8) | (*(((unsigned char*)(Input->status)) + 1));
+        short temp = ((*((unsigned char*)Input->status)) << 8) | (*(((unsigned char*)(Input->status)) - 1));
         snprintf(lstemp, 199, "%s %s= %i\r\n", msg, Input->name, temp);
         *ret += sendtext(lstemp);
     } else if (type_is_equal(Input->name, "PB") || type_is_equal(Input->name, "KB") ||
@@ -1045,7 +1045,7 @@ int rcontrol_loop(void) {
                                     if (Input->status != NULL) {
                                         if (type_is_equal(Input->name, "VS")) {
                                             *((unsigned char*)Input->status) = (value & 0xFF00) >> 8;
-                                            *(((unsigned char*)Input->status) + 1) = value & 0x00FF;
+                                            *(((unsigned char*)Input->status) - 1) = value & 0x00FF;
                                         } else if (type_is_equal(Input->name, "PB") ||
                                                    type_is_equal(Input->name, "KB") ||
                                                    type_is_equal(Input->name, "PO") ||
