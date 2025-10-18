@@ -399,9 +399,11 @@ void cpart_vterm::Process(void) {
     if (pins[0]) {
         val = ppins[pins[0] - 1].value;
     }
-
     ret = vterm_io(&vt, val);
     SpareParts.SetPin(pins[1], ret);
+    if (vt.count_in) {
+        output_ids[O_TERM]->update = 1;
+    }
 }
 
 void cpart_vterm::OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,

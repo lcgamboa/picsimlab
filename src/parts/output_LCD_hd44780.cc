@@ -332,6 +332,9 @@ void cpart_LCD_hd44780::Process(void) {
                     } else {
                         lcd_data(&lcd, d);
                     }
+
+                    if (lcd.update)
+                        output_ids[O_LCD]->update = 1;
                 }
             } else {
                 // Read
