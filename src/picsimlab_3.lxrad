@@ -56,7 +56,7 @@
   <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
   <EvMouseWheel type="Event">FALSE</EvMouseWheel>
   <EvOnDropFile type="Event">FALSE</EvOnDropFile>
-  <Text type="lxString">Serial Port:</Text>
+  <Text type="lxString">HWSerial Port:</Text>
   <Align type="CAlign">1</Align>
 </label1>
 <label2>

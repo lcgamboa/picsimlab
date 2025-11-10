@@ -119,10 +119,12 @@ void CPWindow3::_EvOnShow(CControl* control) {
         std::string temp;
         temp = combo1.GetText();
         combo1.SetItems(resp);
+        combo1.AddItem("None");
         combo1.SetText(temp);
 
         temp = combo2.GetText();
         combo2.SetItems(resp);
+        combo2.AddItem("None");
         combo2.SetText(temp);
 
         free(resp);

@@ -969,16 +969,9 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         SetJUMPSTEPS(DEFAULTJS);
         SetClock(pboard->GetDefaultClock());
 
-#ifndef _WIN_
-        strcpy(SERIALDEVICE, "/dev/tnt2");
+        strcpy(SERIALDEVICE, "None");
 #ifdef _USE_PICSTARTP_
-        strcpy(PROGDEVICE, "/dev/tnt4");
-#endif
-#else
-        strcpy(SERIALDEVICE, "COM6");
-#ifdef _USE_PICSTARTP_
-        strcpy(PROGDEVICE, "COM8");
-#endif
+        strcpy(PROGDEVICE, "None");
 #endif
     }
 

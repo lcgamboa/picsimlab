@@ -29,7 +29,7 @@ CPWindow3::CPWindow3(void) {
     label1.SetEnable(1);
     label1.SetVisible(1);
     label1.SetPopupMenu(NULL);
-    label1.SetText(lxT("Serial Port:"));
+    label1.SetText(lxT("HWSerial Port:"));
     label1.SetAlign(1);
     CreateChild(&label1);
     // label2

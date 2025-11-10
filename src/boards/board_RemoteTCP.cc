@@ -212,7 +212,7 @@ cboard_RemoteTCP::~cboard_RemoteTCP(void) {
 void cboard_RemoteTCP::Reset(void) {
     MReset(1);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
 
     if (use_spare)
         SpareParts.Reset();
@@ -255,7 +255,7 @@ void cboard_RemoteTCP::RegisterRemoteControl(void) {}
 
 void cboard_RemoteTCP::RefreshStatus(void) {
     output_ids[O_LPWR]->update = 1;
-    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE));
+    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
 }
 
 // Called to save board preferences in configuration file

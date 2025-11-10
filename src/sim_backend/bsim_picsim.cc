@@ -297,12 +297,12 @@ int bsim_picsim::GetUARTTX(const int uart_num) {
 }
 
 std::string bsim_picsim::GetUARTStrStatus(const int uart_num) {
-    if (pic.serial[uart_num].serialfd != INVALID_SERIAL)
-        return "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[uart_num].serialbaud) + "(" +
+    if ((pic.serial[uart_num].serialfd != INVALID_SERIAL) || (!strcmp(SERIALDEVICE, "None")))
+        return "HWSerial: " + std::string(SERIALDEVICE) + ":" + std::to_string(pic.serial[uart_num].serialbaud) + "(" +
                FloatStrFormat(
                    "%4.1f", fabs((100.0 * pic.serial[uart_num].serialexbaud - 100.0 * pic.serial[uart_num].serialbaud) /
                                  pic.serial[uart_num].serialexbaud)) +
                "%)";
     else
-        return "Serial: " + std::string(SERIALDEVICE) + " (ERROR)";
+        return "HWSerial: " + std::string(SERIALDEVICE) + " (ERROR)";
 }

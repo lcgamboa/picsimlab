@@ -1652,13 +1652,13 @@ int bsim_simavr::GetUARTTX(const int uart_num) {
 
 std::string bsim_simavr::GetUARTStrStatus(const int uart_num) {
     // verify serial port state and refresh status bar
-    if (serialfd != INVALID_SERIAL)
-        return "Serial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[uart_num]) + "(" +
+    if ((serialfd != INVALID_SERIAL) || (!strcmp(SERIALDEVICE, "None")))
+        return "HWSerial: " + std::string(SERIALDEVICE) + ":" + std::to_string(serialbaud[uart_num]) + "(" +
                FloatStrFormat("%4.1f", fabs((100.0 * serialexbaud[uart_num] - 100.0 * serialbaud[uart_num]) /
                                             serialexbaud[uart_num])) +
                "%)";
     else
-        return "Serial: " + std::string(SERIALDEVICE) + " (ERROR)";
+        return "HWSerial: " + std::string(SERIALDEVICE) + " (ERROR)";
 }
 
 // hexfile support ============================================================

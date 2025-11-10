@@ -292,7 +292,7 @@ void cboard_Blue_Pill::Reset(void) {
 
     uint32_t baud_rate = *qemu_picsimlab_get_internals(QEMU_INTERNAL_UART0_BAUD);
     bitbang_uart_set_speed(&master_uart[0], baud_rate);
-    PICSimLab.UpdateStatus(PS_SERIAL, "Serial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
+    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
 
     if (use_spare)
         SpareParts.Reset();
@@ -307,13 +307,13 @@ void cboard_Blue_Pill::RegisterRemoteControl(void) {
 // Called ever 1s to refresh status
 
 void cboard_Blue_Pill::RefreshStatus(void) {
-    if (serial_open) {
+    if ((serial_open) || (!strcmp(SERIALDEVICE, "None"))) {
         uint32_t baud_rate = *qemu_picsimlab_get_internals(QEMU_INTERNAL_UART0_BAUD);
         bitbang_uart_set_speed(&master_uart[0], baud_rate);
         PICSimLab.UpdateStatus(PS_SERIAL,
-                               "Serial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
+                               "HWSerial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
     } else {
-        PICSimLab.UpdateStatus(PS_SERIAL, "Serial: Error");
+        PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: Error");
     }
 }
 
