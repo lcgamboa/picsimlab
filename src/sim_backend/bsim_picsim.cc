@@ -33,7 +33,11 @@ bsim_picsim::bsim_picsim(void) {
 }
 
 void bsim_picsim::MSetSerial(const char* port) {
-    pic_set_serial(&pic, 0, port, 0, 0, 0);
+    if (strcmp(port, "None")) {
+        pic_set_serial(&pic, 0, port, 0, 0, 0);
+    } else {
+        pic_set_serial(&pic, 0, "", 0, 0, 0);
+    }
     pic_set_serial(&pic, 1, "", 0, 0, 0);
 }
 

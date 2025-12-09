@@ -421,7 +421,9 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
         }
     }
 
-    serial_port_open(&serialfd, SERIALDEVICE);
+    if (strcmp(SERIALDEVICE, "None")) {
+        serial_port_open(&serialfd, SERIALDEVICE);
+    }
 
     serialexbaud[0] = 9600;
     serialbaud[0] = serial_port_cfg(serialfd, serialexbaud[0]);
