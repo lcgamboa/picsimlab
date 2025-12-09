@@ -51,6 +51,7 @@ public:
     void Event(const char* controlname) override;
     std::string WritePreferences(void) override;
     void ReadPreferences(std::string value) override;
+    void filedialog_EvOnClose(int retId) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     void SetId(int id_) override;
@@ -67,6 +68,9 @@ private:
     std::string text_to_send;
     unsigned char show;
     int wvtermId;
+    int enable_log;
+    char log_fname[200];
+    FILE* flog;
 };
 
 #endif /* PART_vterm_H */

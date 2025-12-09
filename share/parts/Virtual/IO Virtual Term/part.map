@@ -12,4 +12,5 @@
 <area shape="rect" coords="35,15,47,24" href="O_LD_TX" />
 <area shape="rect" coords="35,32,47,41" href="O_LD_RX" />
 <area shape="rect" coords="93,122,188,152" href="B_VT_VTERM" />
+<area shape="rect" coords="80,2,193,15" href="B_PB_LOG" />
 </map>

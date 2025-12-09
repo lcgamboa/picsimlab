@@ -29,10 +29,10 @@
 #include "../lib/spareparts.h"
 
 /* outputs */
-enum { O_RX, O_TX, O_LTX, O_LRX, O_VT };
+enum { O_RX, O_TX, O_LTX, O_LRX, O_VT, O_LOG };
 
 /* inputs */
-enum { I_TERM, I_VT };
+enum { I_TERM, I_VT, I_LOG };
 
 /* line ending*/
 enum { LE_NONE, LE_NL, LE_CR, LE_NL_CR, O_TERM };
@@ -92,6 +92,11 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
     }
 
     SetPCWProperties(pcwprop);
+
+    enable_log = 0;
+    log_fname[0] = '*';
+    log_fname[1] = 0;
+    flog = NULL;
 
     PinCount = 2;
     Pins = pins;
@@ -223,6 +228,22 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             vt.bb_uart.leds &= ~0x01;
             break;
+        case O_LOG:
+            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{9}});
+            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd(
+                {.cmd = CC_RECTANGLE,
+                 .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
+
+            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            if (enable_log) {
+                SpareParts.CanvasCmd(
+                    {.cmd = CC_ROTATEDTEXT, .RotatedText{"Log to File: On", output[i].x1, output[i].y1, 0.0}});
+            } else {
+                SpareParts.CanvasCmd(
+                    {.cmd = CC_ROTATEDTEXT, .RotatedText{"Log to File: Off", output[i].x1, output[i].y1, 0.0}});
+            }
+            break;
         case O_TERM:
             char str[SBUFFMAX];
 
@@ -243,6 +264,18 @@ void cpart_vterm::DrawOutput(const unsigned int i) {
             PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&vt.inMutexId);
 
             SpareParts.WindowCmd(wvtermId, "text1", PWA_TEXTAPPEND, str);
+            if (enable_log) {
+                if (strlen(str) > 0) {
+                    if (fprintf(flog, "%s", str) > 0) {
+                        fflush(flog);
+                    } else {
+                        enable_log = 0;
+                        fclose(flog);
+                        flog = NULL;
+                        output_ids[O_LOG]->update = 1;
+                    }
+                }
+            }
             break;
         default:
             SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{8}});
@@ -282,6 +315,8 @@ unsigned short cpart_vterm::GetInputId(char* name) {
         return I_TERM;
     if (strcmp(name, "VT_VTERM") == 0)
         return I_VT;
+    if (strcmp(name, "PB_LOG") == 0)
+        return I_LOG;
 
     printf("Error input '%s' don't have a valid id! \n", name);
     return INVALID_ID;
@@ -300,6 +335,8 @@ unsigned short cpart_vterm::GetOutputId(char* name) {
         return O_TERM;
     if (strcmp(name, "VT_VTERM") == 0)
         return O_VT;
+    if (strcmp(name, "PB_LOG") == 0)
+        return O_LOG;
 
     printf("Error output '%s' don't have a valid id! \n", name);
     return INVALID_ID;
@@ -315,15 +352,16 @@ std::string cpart_vterm::WritePreferences(void) {
     SpareParts.WindowCmd(wvtermId, NULL, PWA_GETWIDTH, NULL, &w);
     SpareParts.WindowCmd(wvtermId, NULL, PWA_GETHEIGHT, NULL, &h);
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", pins[0], pins[1], lending, vterm_speed, show, x, y, w, h);
+    sprintf(prefs, "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i,%i,%s", pins[0], pins[1], lending, vterm_speed, show, x, y, w, h,
+            enable_log, log_fname);
 
     return prefs;
 }
 
 void cpart_vterm::ReadPreferences(std::string value) {
     int x, y, w, h;
-    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i", &pins[0], &pins[1], &lending, &vterm_speed,
-                     &show, &x, &y, &w, &h);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i,%i,%s", &pins[0], &pins[1], &lending,
+                     &vterm_speed, &show, &x, &y, &w, &h, &enable_log, log_fname);
     show |= 0x80;
 
     SpareParts.WindowCmd(wvtermId, NULL, PWA_SETX, std::to_string(x).c_str());
@@ -341,6 +379,13 @@ void cpart_vterm::ReadPreferences(std::string value) {
     }
     SpareParts.WindowCmd(wvtermId, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
     SpareParts.WindowCmd(wvtermId, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
+
+    if (enable_log && (log_fname[0] != '*')) {
+        flog = fopen_UTF8(log_fname, "a");
+        if (!flog) {
+            enable_log = 0;
+        }
+    }
 
     Reset();
 }
@@ -415,6 +460,52 @@ void cpart_vterm::OnMouseButtonPress(unsigned int inputId, unsigned int button, 
                 show |= 0x80;
             }
             break;
+        case I_LOG:
+            if (button == 1) {
+                if (!enable_log) {
+                    SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETTYPE,
+                                         std::to_string(PFD_SAVE | PFD_CHANGE_DIR).c_str());
+                    SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFILTER, "Text file (*.txt)|*.txt");
+                    if (log_fname[0] == '*') {
+                        SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, "untitled.txt");
+                    } else {
+                        SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGSETFNAME, log_fname);
+                    }
+                    SpareParts.Setfdtype(id);
+                    SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGRUN, NULL);
+                } else {
+                    enable_log = 0;
+                    fclose(flog);
+                    flog = NULL;
+                    output_ids[O_LOG]->update = 1;
+
+#ifdef __EMSCRIPTEN__
+                    EM_ASM_(
+                        {
+                            var filename = UTF8ToString($0);
+                            var buf = FS.readFile(filename);
+                            var blob = new Blob([buf], { "type" : "application/octet-stream" });
+                            var text = URL.createObjectURL(blob);
+
+                            var element = document.createElement('a');
+                            element.setAttribute('href', text);
+                            element.setAttribute('download', filename);
+
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+
+                            element.click();
+
+                            document.body.removeChild(element);
+                            URL.revokeObjectURL(text);
+                        },
+                        log_fname);
+#else
+                    PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, log_fname);
+#endif
+                }
+            }
+            break;
     }
 }
 
@@ -447,6 +538,23 @@ void cpart_vterm::SetId(int id_) {
     SpareParts.WindowCmd(wvtermId, "text1", PWA_SETTAG, std::to_string(id).c_str());
     SpareParts.WindowCmd(wvtermId, "edit1", PWA_SETTAG, std::to_string(id).c_str());
     SpareParts.WindowCmd(wvtermId, NULL, PWA_SETTAG, std::to_string(id).c_str());
+}
+
+void cpart_vterm::filedialog_EvOnClose(int retId) {
+    if (retId) {
+        int type;
+        SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETTYPE, NULL, &type);
+        if ((type == (PFD_SAVE | PFD_CHANGE_DIR))) {
+            char buff[256];
+            SpareParts.WindowCmd(PW_MAIN, "filedialog1", PWA_FILEDIALOGGETFNAME, NULL, buff);
+            strcpy(log_fname, buff);
+            flog = fopen_UTF8(log_fname, "a");
+            if (flog) {
+                enable_log = 1;
+            }
+        }
+        output_ids[O_LOG]->update = 1;
+    }
 }
 
 part_init(PART_vterm_Name, cpart_vterm, "Virtual");
