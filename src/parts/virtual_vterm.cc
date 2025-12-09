@@ -437,4 +437,16 @@ void cpart_vterm::PostProcess(void) {
     }
 }
 
+void cpart_vterm::SetId(int id_) {
+    id = id_;
+
+    SpareParts.WindowCmd(wvtermId, "button1", PWA_SETTAG, std::to_string(id).c_str());
+    SpareParts.WindowCmd(wvtermId, "button2", PWA_SETTAG, std::to_string(id).c_str());
+    SpareParts.WindowCmd(wvtermId, "combo1", PWA_SETTAG, std::to_string(id).c_str());
+    SpareParts.WindowCmd(wvtermId, "combo2", PWA_SETTAG, std::to_string(id).c_str());
+    SpareParts.WindowCmd(wvtermId, "text1", PWA_SETTAG, std::to_string(id).c_str());
+    SpareParts.WindowCmd(wvtermId, "edit1", PWA_SETTAG, std::to_string(id).c_str());
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_SETTAG, std::to_string(id).c_str());
+}
+
 part_init(PART_vterm_Name, cpart_vterm, "Virtual");

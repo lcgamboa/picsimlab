@@ -53,6 +53,7 @@ public:
     void ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
+    void SetId(int id_) override;
 
     static int count;
 

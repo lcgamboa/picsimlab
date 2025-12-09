@@ -336,7 +336,7 @@ public:
     /**
      * @brief  Set the part ID
      */
-    void SetId(int id_) { id = id_; };
+    virtual void SetId(int id_) { id = id_; };
 
     /**
      * @brief  Return if part need Draw update
