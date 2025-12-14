@@ -764,7 +764,13 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
 
     // write spare part config
     snprintf(fname, 1279, "%s/parts_%s.pcf", home, boards_list[lab_].name_);
-    SpareParts.SaveConfig(fname);
+    if (SpareParts.GetLoadConfigFile().length() > 0) {
+        if (SystemCmd(PSC_FILEEXISTS, SpareParts.GetLoadConfigFile().c_str())) {
+            SystemCmd(PSC_COPYFILE, SpareParts.GetLoadConfigFile().c_str(), fname);
+        }
+    } else {
+        SpareParts.SaveConfig(fname);
+    }
     sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     SpareParts.SavePinAlias(fname);
 

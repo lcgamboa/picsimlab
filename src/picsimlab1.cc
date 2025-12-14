@@ -2075,6 +2075,9 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
         case PSC_RENAMEFILE:
             return lxRenameFile(Arg, (const char*)ReturnBuff);
             break;
+        case PSC_COPYFILE:
+            return lxCopyFile(Arg, (const char*)ReturnBuff);
+            break;
         case PSC_LAUNCHDEFAULTBROWSER:
             return lxLaunchDefaultBrowser(Arg);
             break;
