@@ -64,6 +64,8 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
 
     pic.pins = (picpin*)realloc(pic.pins, sizeof(picpin) * MAX_PIN_COUNT);
 
+    family = getfprocbyname((const char*)Proc.c_str());
+
     return ret;
 }
 
@@ -74,7 +76,7 @@ void bsim_picsim::MEnd(void) {
 }
 
 int bsim_picsim::MGetArchitecture(void) {
-    switch (getfprocbyname((const char*)Proc.c_str())) {
+    switch (family) {
         case P16:
             return ARCH_P16;
             break;
@@ -118,7 +120,7 @@ int bsim_picsim::CpuInitialized(void) {
 }
 
 int bsim_picsim::MDumpMemory(const char* fname) {
-    switch (getfprocbyname((const char*)Proc.c_str())) {
+    switch (family) {
         case P16:
             return write_ihx(&pic, fname);
             break;

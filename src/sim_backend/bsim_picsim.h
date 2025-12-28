@@ -87,6 +87,7 @@ public:
 
 protected:
     _pic pic;
+    int family;
 };
 
 #endif /* BOARD_PIC_H */
