@@ -89,6 +89,7 @@ public:
 protected:
     _pic pic;
     int family;
+    unsigned char error_flags;
 };
 
 #endif /* BOARD_PIC_H */

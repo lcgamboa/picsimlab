@@ -66,6 +66,8 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
 
     family = getfprocbyname((const char*)Proc.c_str());
 
+    error_flags = PE_NOERRO;
+
     return ret;
 }
 
@@ -203,6 +205,7 @@ void bsim_picsim::MStepResume(void) {
 }
 
 int bsim_picsim::MReset(int flags) {
+    error_flags = PE_NOERRO;
     return pic_reset(&pic, flags);
 }
 
@@ -314,5 +317,15 @@ std::string bsim_picsim::GetUARTStrStatus(const int uart_num) {
 }
 
 void bsim_picsim::RefreshStatus(void) {
+    if (pic.error_flags != error_flags) {
+        if ((error_flags ^ pic.error_flags) & PE_UNKOP) {
+            PICSimLab.RegisterError(
+                "Warning: Unknown opcode!\n"
+                "You are probably loading code compiled for a different microcontroller \n"
+                "than the one selected for use on the board.");
+        }
+        error_flags = pic.error_flags;
+    }
+
     PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
 }
