@@ -54,250 +54,256 @@ bsim_ucsim::bsim_ucsim(void) {
 }
 
 void bsim_ucsim::MSetSerial(const char* port) {
- /*
- set_serial (&pic,0, port, 0, 0, 0);
- set_serial (&pic,1, "", 0, 0, 0);
-  */ }
+/*
+set_serial (&pic,0, port, 0, 0, 0);
+set_serial (&pic,1, "", 0, 0, 0);
+ */ }
 
- int bsim_ucsim::MInit(const char* processor, const char* fname, float freq) {
-     char fbuff[20];
-     int ret = -1;
+int bsim_ucsim::MInit(const char* processor, const char* fname, float freq) {
+    char fbuff[20];
+    int ret = -1;
 
-     std::string sproc = GetSupportedDevices();
+    std::string sproc = GetSupportedDevices();
 
-     if (sproc.find(processor) != std::string::npos) {
-         if (!strcmp("C51", processor)) {
-             procid = PID_C51;
-         } else if (!strcmp("STM8S103", processor)) {
-             procid = PID_STM8S103;
-         } else if (!strcmp("Z80", processor)) {
-             procid = PID_Z80;
-         }
+    if (sproc.find(processor) != std::string::npos) {
+        if (!strcmp("C51", processor)) {
+            procid = PID_C51;
+        } else if (!strcmp("STM8S103", processor)) {
+            procid = PID_STM8S103;
+        } else if (!strcmp("Z80", processor)) {
+            procid = PID_Z80;
+        }
 
-         pins_reset();
+        pins_reset();
 
-         sprintf(fbuff, "%i", (int)freq);
+        sprintf(fbuff, "%i", (int)freq);
 
-         ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, PICSimLab.GetDebugPort());
-     }
+        ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, PICSimLab.GetDebugPort());
+    }
 
-     return ret;
- }
+    return ret;
+}
 
- void bsim_ucsim::MEnd(void) {
-     ucsim_end();
- }
+void bsim_ucsim::MEnd(void) {
+    ucsim_end();
+}
 
- int bsim_ucsim::MGetArchitecture(void) {
-     switch (procid) {
-         case PID_C51:
-             return ARCH_C51;
-             break;
-         case PID_STM8S103:
-             return ARCH_STM8;
-             break;
-         case PID_Z80:
-             return ARCH_Z80;
-             break;
-     }
-     return ARCH_UNKNOWN;
- }
+int bsim_ucsim::MGetArchitecture(void) {
+    switch (procid) {
+        case PID_C51:
+            return ARCH_C51;
+            break;
+        case PID_STM8S103:
+            return ARCH_STM8;
+            break;
+        case PID_Z80:
+            return ARCH_Z80;
+            break;
+    }
+    return ARCH_UNKNOWN;
+}
 
- void bsim_ucsim::MEraseFlash(void) {
-     // erase_flash ();
- }
+void bsim_ucsim::MEraseFlash(void) {
+    // erase_flash ();
+}
 
- void bsim_ucsim::MSetFreq(float freq_) {
-     freq = freq_;
-     TimerUpdateFrequency(freq);
- }
+void bsim_ucsim::MSetFreq(float freq_) {
+    freq = freq_;
+    TimerUpdateFrequency(freq);
+}
 
- float bsim_ucsim::MGetFreq(void) {
-     return freq;
- }
+float bsim_ucsim::MGetFreq(void) {
+    return freq;
+}
 
- void bsim_ucsim::MSetVCC(float vcc) {
-     printf("ucsim: Incomplete!!!!\n");
- }
+void bsim_ucsim::MSetVCC(float vcc) {
+    printf("ucsim: Incomplete!!!!\n");
+}
 
- float bsim_ucsim::MGetVCC(void) {
-     return 5.0;
- }
+float bsim_ucsim::MGetVCC(void) {
+    return 5.0;
+}
 
- float bsim_ucsim::MGetInstClockFreq(void) {
-     return freq;
- }
+float bsim_ucsim::MGetInstClockFreq(void) {
+    return freq;
+}
 
- int bsim_ucsim::CpuInitialized(void) {
-     return 1;
- }
+int bsim_ucsim::CpuInitialized(void) {
+    return 1;
+}
 
- void bsim_ucsim::DebugLoop(void) {}
+void bsim_ucsim::DebugLoop(void) {}
 
- std::string bsim_ucsim::MGetPinName(int pin) {
-     std::string pinname = "error";
+std::string bsim_ucsim::MGetPinName(int pin) {
+    std::string pinname = "error";
 
-     if ((pin) && (pin <= MGetPinCount()))
-         pinname = pinnames[procid][pin - 1];
+    if ((pin) && (pin <= MGetPinCount()))
+        pinname = pinnames[procid][pin - 1];
 
-     return pinname;
- }
+    return pinname;
+}
 
- int bsim_ucsim::MDumpMemory(const char* fname) {
-     return ucsim_dump(fname);
- }
+int bsim_ucsim::MDumpMemory(const char* fname) {
+    return ucsim_dump(fname);
+}
 
- int bsim_ucsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
- {
-     return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
- }
+int bsim_ucsim::DebugInit(int dtyppe)  // argument not used in picm only mplabx
+{
+    return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+}
 
- int bsim_ucsim::MGetPinCount(void) {
-     if (procid != -1) {
-         return pincount[procid];
-     } else {
-         return 40;
-     }
- }
+int bsim_ucsim::MGetPinCount(void) {
+    if (procid != -1) {
+        return pincount[procid];
+    } else {
+        return 40;
+    }
+}
 
- void bsim_ucsim::pins_reset(void) {
-     if ((procid == PID_C51) || (procid == PID_Z80)) {
-         for (int p = 0; p < MGetPinCount(); p++) {
-             std::string pname = MGetPinName(p + 1);
-             if (pname[0] == 'P') {
-                 pins[p].port = (unsigned char*)&UCSIM_PORTS[pname[1] - '0'];
-                 pins[p].pord = pname[3] - '0';
-             } else {
-                 pins[p].port = (unsigned char*)&UCSIM_PORTS[4];
-                 pins[p].pord = -1;
-             }
-             pins[p].avalue = 0;
-             pins[p].lvalue = 0;
-             pins[p].value = 0;
-             pins[p].ptype = PT_DIGITAL;
-             pins[p].dir = PD_IN;
-             pins[p].ovalue = 0;
-             pins[p].oavalue = 55;
-         }
+void bsim_ucsim::pins_reset(void) {
+    if ((procid == PID_C51) || (procid == PID_Z80)) {
+        for (int p = 0; p < MGetPinCount(); p++) {
+            std::string pname = MGetPinName(p + 1);
+            if (pname[0] == 'P') {
+                pins[p].port = (unsigned char*)&UCSIM_PORTS[pname[1] - '0'];
+                pins[p].pord = pname[3] - '0';
+            } else {
+                pins[p].port = (unsigned char*)&UCSIM_PORTS[4];
+                pins[p].pord = -1;
+            }
+            pins[p].avalue = 0;
+            pins[p].lvalue = 0;
+            pins[p].value = 0;
+            pins[p].ptype = PT_DIGITAL;
+            pins[p].dir = PD_IN;
+            pins[p].ovalue = 0;
+            pins[p].oavalue = 55;
+        }
 
-         if (procid == PID_C51) {
-             pins[20 - 1].value = 0;
-             pins[20 - 1].dir = PD_OUT;
-             pins[40 - 1].value = 1;
-             pins[40 - 1].dir = PD_OUT;
-         } else {
-             pins[39 - 1].value = 0;
-             pins[39 - 1].dir = PD_OUT;
-             pins[40 - 1].value = 1;
-             pins[40 - 1].dir = PD_OUT;
-         }
-     } else if (procid == PID_STM8S103) {
-         for (int p = 0; p < MGetPinCount(); p++) {
-             std::string pname = MGetPinName(p + 1);
-             if (pname[0] == 'P') {
-                 pins[p].port = (unsigned char*)&UCSIM_PORTS[pname[1] - 'A'];
-                 pins[p].pord = pname[2] - '0';
-             } else {
-                 pins[p].port = (unsigned char*)&UCSIM_PORTS[4];
-                 pins[p].pord = -1;
-             }
-             pins[p].avalue = 0;
-             pins[p].lvalue = 0;
-             pins[p].value = 0;
-             pins[p].ptype = PT_DIGITAL;
-             pins[p].dir = PD_IN;
-             pins[p].ovalue = 0;
-             pins[p].oavalue = 55;
-         }
+        if (procid == PID_C51) {
+            pins[20 - 1].value = 0;
+            pins[20 - 1].dir = PD_OUT;
+            pins[40 - 1].value = 1;
+            pins[40 - 1].dir = PD_OUT;
+        } else {
+            pins[39 - 1].value = 0;
+            pins[39 - 1].dir = PD_OUT;
+            pins[40 - 1].value = 1;
+            pins[40 - 1].dir = PD_OUT;
+        }
+    } else if (procid == PID_STM8S103) {
+        for (int p = 0; p < MGetPinCount(); p++) {
+            std::string pname = MGetPinName(p + 1);
+            if (pname[0] == 'P') {
+                pins[p].port = (unsigned char*)&UCSIM_PORTS[pname[1] - 'A'];
+                pins[p].pord = pname[2] - '0';
+            } else {
+                pins[p].port = (unsigned char*)&UCSIM_PORTS[4];
+                pins[p].pord = -1;
+            }
+            pins[p].avalue = 0;
+            pins[p].lvalue = 0;
+            pins[p].value = 0;
+            pins[p].ptype = PT_DIGITAL;
+            pins[p].dir = PD_IN;
+            pins[p].ovalue = 0;
+            pins[p].oavalue = 55;
+        }
 
-         pins[7 - 1].value = 0;
-         pins[7 - 1].dir = PD_OUT;
-         pins[9 - 1].value = 1;
-         pins[9 - 1].dir = PD_OUT;
-     }
- }
+        pins[7 - 1].value = 0;
+        pins[7 - 1].dir = PD_OUT;
+        pins[9 - 1].value = 1;
+        pins[9 - 1].dir = PD_OUT;
+    }
+}
 
- void bsim_ucsim::MSetPin(int pin, unsigned char value) {
-     ucsim_set_pin(*pins[pin - 1].port, pins[pin - 1].pord, value);
- }
+void bsim_ucsim::MSetPin(int pin, unsigned char value) {
+    ucsim_set_pin(*pins[pin - 1].port, pins[pin - 1].pord, value);
+}
 
- void bsim_ucsim::MSetPinDOV(int pin, unsigned char ovalue) {
-     // set_pin_DOV (pin, ovalue);
- }
+void bsim_ucsim::MSetPinDOV(int pin, unsigned char ovalue) {
+    // set_pin_DOV (pin, ovalue);
+}
 
- void bsim_ucsim::MSetPinOAV(int pin, float value) {
-     pins[pin - 1].oavalue = value;
- }
+void bsim_ucsim::MSetPinOAV(int pin, float value) {
+    pins[pin - 1].oavalue = value;
+}
 
- void bsim_ucsim::MSetAPin(int pin, float value) {
-     // set_apin (pin, value);
- }
+void bsim_ucsim::MSetAPin(int pin, float value) {
+    // set_apin (pin, value);
+}
 
- unsigned char bsim_ucsim::MGetPin(int pin) {
-     return ucsim_get_pin(*pins[pin - 1].port, pins[pin - 1].pord);
- }
+unsigned char bsim_ucsim::MGetPin(int pin) {
+    return ucsim_get_pin(*pins[pin - 1].port, pins[pin - 1].pord);
+}
 
- int bsim_ucsim::MReset(int flags) {
-     ucsim_reset();
+int bsim_ucsim::MReset(int flags) {
+    ucsim_reset();
 
-     ports[0] = 0;
-     ports[1] = 0;
-     ports[2] = 0;
-     ports[3] = 0;
+    ports[0] = 0;
+    ports[1] = 0;
+    ports[2] = 0;
+    ports[3] = 0;
 
-     return 0;
- }
+    return 0;
+}
 
- int bsim_ucsim::MGetResetPin(void) {
-     return 0;
- }
+int bsim_ucsim::MGetResetPin(void) {
+    return 0;
+}
 
- int bsim_ucsim::MGetIOUpdated(void) {
-     return ioupdated;
- }
+int bsim_ucsim::MGetIOUpdated(void) {
+    return ioupdated;
+}
 
- void bsim_ucsim::MClearIOUpdated(void) {
-     ioupdated = 0;
- }
+void bsim_ucsim::MClearIOUpdated(void) {
+    ioupdated = 0;
+}
 
- const picpin* bsim_ucsim::MGetPinsValues(void) {
-     return pins;
- }
+const picpin* bsim_ucsim::MGetPinsValues(void) {
+    return pins;
+}
 
- float* bsim_ucsim::MGetPinOAVPtr(int pin) {
-     return &pins[pin - 1].oavalue;
- }
+float* bsim_ucsim::MGetPinOAVPtr(int pin) {
+    return &pins[pin - 1].oavalue;
+}
 
- void bsim_ucsim::MStep(void) {
-     ioupdated = 0;
+void bsim_ucsim::MStep(void) {
+    ioupdated = 0;
 
-     ucsim_step();
+    ucsim_step();
 
-     volatile unsigned short p[4];
+    volatile unsigned short p[4];
 
-     p[0] = ucsim_get_port(0);
-     p[1] = ucsim_get_port(1);
-     p[2] = ucsim_get_port(2);
-     p[3] = ucsim_get_port(3);
+    p[0] = ucsim_get_port(0);
+    p[1] = ucsim_get_port(1);
+    p[2] = ucsim_get_port(2);
+    p[3] = ucsim_get_port(3);
 
-     if ((p[0] != ports[0]) || (p[1] != ports[1]) || (p[2] != ports[2]) || (p[3] != ports[3])) {
-         ioupdated = 1;
-         ports[0] = p[0];
-         ports[1] = p[1];
-         ports[2] = p[2];
-         ports[3] = p[3];
+    if ((p[0] != ports[0]) || (p[1] != ports[1]) || (p[2] != ports[2]) || (p[3] != ports[3])) {
+        ioupdated = 1;
+        ports[0] = p[0];
+        ports[1] = p[1];
+        ports[2] = p[2];
+        ports[3] = p[3];
 
-         for (int i = 0; i < MGetPinCount(); i++) {
-             if (*pins[i].port < 4) {
-                 pins[i].value = (ports[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
-                 if (procid != PID_C51) {
-                     pins[i].dir = (ports[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
-                 }
-             }
-         }
-     }
- }
+        for (int i = 0; i < MGetPinCount(); i++) {
+            if (*pins[i].port < 4) {
+                pins[i].value = (ports[*pins[i].port] & (0x0001 << pins[i].pord)) > 0;
+                if (procid != PID_C51) {
+                    pins[i].dir = (ports[*pins[i].port] & (0x0100 << pins[i].pord)) > 0;
+                }
+            }
+        }
+    }
+}
 
- void bsim_ucsim::MStepResume(void) {
-     // if (pic.s2 == 1)step ();
- }
+void bsim_ucsim::MStepResume(void) {
+    // if (pic.s2 == 1)step ();
+}
+
+// Called ever 1s to refresh status
+
+void bsim_ucsim::RefreshStatus(void) {
+    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
+}

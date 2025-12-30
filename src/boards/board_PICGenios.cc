@@ -2400,7 +2400,7 @@ void cboard_PICGenios::RefreshStatus(void) {
     snprintf(svalue, 128, "Temp: %5.2fC", temp[0]);
     PICSimLab.UpdateGUI(TEMP, GT_LABEL, GA_SET_LABEL, (void*)svalue);
 
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
+    bsim_picsim::RefreshStatus();
 }
 
 void cboard_PICGenios::WritePreferences(void) {

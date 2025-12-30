@@ -105,6 +105,7 @@ public:
     int GetUARTTX(const int uart_num) override;
     std::string GetUARTStrStatus(const int uart_num) override;
     virtual void UpdateHardware(void);
+    void RefreshStatus(void) override;
 
     static void out_hook(struct avr_irq_t* irq, uint32_t value, void* param) {
         picpin* p = (picpin*)param;

@@ -100,12 +100,6 @@ void cboard_uCboard::Reset(void) {
         SpareParts.Reset();
 }
 
-// Called ever 1s to refresh status
-
-void cboard_uCboard::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_uCboard::WritePreferences(void) {

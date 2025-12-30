@@ -910,6 +910,11 @@ unsigned short cboard_McLab1::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
+void cboard_McLab1::RefreshStatus(void) {
+    bsim_picsim::RefreshStatus();
+    PICSimLab.UpdateStatus(PS_SERIAL, "");
+}
+
 void cboard_McLab1::WritePreferences(void) {
     PICSimLab.SavePrefs("McLab1_proc", Proc);
     PICSimLab.SavePrefs("McLab1_jmp", std::to_string(jmp[0]));

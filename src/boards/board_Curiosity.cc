@@ -173,13 +173,6 @@ void cboard_Curiosity::RegisterRemoteControl(void) {
     output_ids[O_D7]->status = &pic.pins[4].oavalue;
 }
 
-// Called ever 1s to refresh status
-
-void cboard_Curiosity::RefreshStatus(void) {
-    // verify serial port state and refresh status bar
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_Curiosity::WritePreferences(void) {

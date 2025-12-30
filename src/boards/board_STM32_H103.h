@@ -65,8 +65,6 @@ public:
     void EvKeyPress(unsigned int key, unsigned int mask) override;
     // Event on the board
     void EvKeyRelease(unsigned int key, unsigned int mask) override;
-    // Called ever 1s to refresh status
-    void RefreshStatus(void) override;
     // Called to save board preferences in configuration file
     void WritePreferences(void) override;
     // Called whe configuration file load  preferences

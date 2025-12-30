@@ -1740,10 +1740,6 @@ unsigned short cboard_PQDB::GetOutputId(char* name) {
     return INVALID_ID;
 }
 
-void cboard_PQDB::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-}
-
 void cboard_PQDB::WritePreferences(void) {
     PICSimLab.SavePrefs(
         "PQ"

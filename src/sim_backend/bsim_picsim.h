@@ -84,6 +84,7 @@ public:
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
     std::string GetUARTStrStatus(const int uart_num) override;
+    void RefreshStatus(void) override;
 
 protected:
     _pic pic;

@@ -145,47 +145,6 @@ void cboard_Arduino_Uno::RegisterRemoteControl(void) {
     output_ids[O_L]->status = &pins[LED_pin].oavalue;
 }
 
-// Called ever 1s to refresh status
-
-void cboard_Arduino_Uno::RefreshStatus(void) {
-    // verify serial port state and refresh status bar
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-    if (PICSimLab.GetMcuPwr()) {
-        if (avr) {
-            switch (avr->state) {
-                case cpu_Limbo:
-                    PICSimLab.SetCpuState(CPU_ERROR);
-                    break;
-                case cpu_Stopped:
-                    PICSimLab.SetCpuState(CPU_HALTED);
-                    break;
-                case cpu_Running:
-                    PICSimLab.SetCpuState(CPU_RUNNING);
-                    break;
-                case cpu_Sleeping:
-                    PICSimLab.SetCpuState(CPU_HALTED);
-                    break;
-                case cpu_Step:
-                    PICSimLab.SetCpuState(CPU_STEPPING);
-                    break;
-                case cpu_StepDone:
-                    PICSimLab.SetCpuState(CPU_STEPPING);
-                    break;
-                case cpu_Done:
-                    PICSimLab.SetCpuState(CPU_HALTED);
-                    break;
-                case cpu_Crashed:
-                    PICSimLab.SetCpuState(CPU_ERROR);
-                    break;
-            }
-        } else {
-            PICSimLab.SetCpuState(CPU_ERROR);
-        }
-    } else {
-        PICSimLab.SetCpuState(CPU_POWER_OFF);
-    }
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_Arduino_Uno::WritePreferences(void) {

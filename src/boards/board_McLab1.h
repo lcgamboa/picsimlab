@@ -55,6 +55,7 @@ public:
     void EvMouseButtonRelease(unsigned int button, unsigned int x, unsigned int y, unsigned int state) override;
     void EvKeyPress(unsigned int key, unsigned int mask) override;
     void EvKeyRelease(unsigned int key, unsigned int mask) override;
+    void RefreshStatus(void) override;
     void WritePreferences(void) override;
     void ReadPreferences(char* name, char* value) override;
     unsigned short GetInputId(char* name) override;

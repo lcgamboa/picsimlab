@@ -62,6 +62,8 @@ public:
     int MGetResetPin(void) override;
     int MGetIOUpdated(void) override;
     void MClearIOUpdated(void) override;
+    // Called ever 1s to refresh status
+    void RefreshStatus(void) override;
 
 protected:
     void pins_reset(void);

@@ -312,3 +312,7 @@ std::string bsim_picsim::GetUARTStrStatus(const int uart_num) {
     else
         return "HWSerial: " + std::string(SERIALDEVICE) + " (ERROR)";
 }
+
+void bsim_picsim::RefreshStatus(void) {
+    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
+}

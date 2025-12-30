@@ -99,12 +99,6 @@ void cboard_gpboard::Reset(void) {
         SpareParts.Reset();
 }
 
-// Called ever 1s to refresh status
-
-void cboard_gpboard::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_gpboard::WritePreferences(void) {

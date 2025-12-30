@@ -69,7 +69,6 @@ public:
     void EvKeyPress(unsigned int key, unsigned int mask) override;
     void EvKeyRelease(unsigned int key, unsigned int mask) override;
     void EvOnShow(void) override;
-    void RefreshStatus(void) override;
     void WritePreferences(void) override;
     void ReadPreferences(char* name, char* value) override;
     unsigned short GetInputId(char* name) override;

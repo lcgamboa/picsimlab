@@ -63,6 +63,8 @@ public:
     int MGetIOUpdated(void) override;
     void MClearIOUpdated(void) override;
     int GetDefaultClock(void) override { return 8; };
+    // Called ever 1s to refresh status
+    void RefreshStatus(void) override;
 
 protected:
     void pins_reset(void);

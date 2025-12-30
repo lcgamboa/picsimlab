@@ -255,7 +255,7 @@ void cboard_RemoteTCP::RegisterRemoteControl(void) {}
 
 void cboard_RemoteTCP::RefreshStatus(void) {
     output_ids[O_LPWR]->update = 1;
-    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
+    bsim_remote::RefreshStatus();
 }
 
 // Called to save board preferences in configuration file

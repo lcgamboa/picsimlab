@@ -125,48 +125,11 @@ void cboard_Breadboard::Reset(void) {
 void cboard_Breadboard::RefreshStatus(void) {
     switch (ptype) {
         case _PIC:
-            // verify serial port state and refresh status bar
-            PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
+            bsim_picsim::RefreshStatus();
             break;
         case _AVR:
-            // verify serial port state and refresh status bar
-            PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-
-            if (PICSimLab.GetMcuPwr()) {
-                if (avr) {
-                    switch (avr->state) {
-                        case cpu_Limbo:
-                            PICSimLab.SetCpuState(CPU_ERROR);
-                            break;
-                        case cpu_Stopped:
-                            PICSimLab.SetCpuState(CPU_HALTED);
-                            break;
-                        case cpu_Running:
-                            PICSimLab.SetCpuState(CPU_RUNNING);
-                            break;
-                        case cpu_Sleeping:
-                            PICSimLab.SetCpuState(CPU_HALTED);
-                            break;
-                        case cpu_Step:
-                            PICSimLab.SetCpuState(CPU_STEPPING);
-                            break;
-                        case cpu_StepDone:
-                            PICSimLab.SetCpuState(CPU_STEPPING);
-                            break;
-                        case cpu_Done:
-                            PICSimLab.SetCpuState(CPU_HALTED);
-                            break;
-                        case cpu_Crashed:
-                            PICSimLab.SetCpuState(CPU_ERROR);
-                            break;
-                    }
-                    break;
-                } else {
-                    PICSimLab.SetCpuState(CPU_ERROR);
-                }
-            } else {
-                PICSimLab.SetCpuState(CPU_POWER_OFF);
-            }
+            bsim_simavr::RefreshStatus();
+            break;
     }
 }
 

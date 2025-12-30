@@ -84,6 +84,8 @@ public:
     int GetUARTRX(const int uart_num) override;
     int GetUARTTX(const int uart_num) override;
     virtual std::string GetClkLabel(void) override { return "IO (Mhz)"; };
+    // Called ever 1s to refresh status
+    void RefreshStatus(void) override;
 
 protected:
     const int TestConnection(void);

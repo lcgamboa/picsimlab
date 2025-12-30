@@ -935,8 +935,4 @@ void cboard_K16F::ReadPreferences(char* name, char* value) {
     }
 }
 
-void cboard_K16F::RefreshStatus(void) {
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-}
-
 board_init(BOARD_K16F_Name, cboard_K16F);

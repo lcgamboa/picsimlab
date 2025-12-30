@@ -893,4 +893,10 @@ int32_t bsim_remote::recv_cmd(cmd_header_t* cmd_header) {
     return ret;
 }
 
+// Called ever 1s to refresh status
+
+void bsim_remote::RefreshStatus(void) {
+    PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: " + std::string(SERIALDEVICE));
+}
+
 //==============================================================================

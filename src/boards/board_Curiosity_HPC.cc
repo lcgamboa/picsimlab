@@ -233,13 +233,6 @@ void cboard_Curiosity_HPC::RegisterRemoteControl(void) {
     }
 }
 
-// Called ever 1s to refresh status
-
-void cboard_Curiosity_HPC::RefreshStatus(void) {
-    // verify serial port state and refresh status bar
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_Curiosity_HPC::WritePreferences(void) {

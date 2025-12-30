@@ -1338,3 +1338,16 @@ int bsim_qemu::GetUARTTX(const int uart_num) {
     }
     return 0;
 }
+
+// Called ever 1s to refresh status
+
+void bsim_qemu::RefreshStatus(void) {
+    if ((serial_open) || (!strcmp(SERIALDEVICE, "None"))) {
+        uint32_t baud_rate = *qemu_picsimlab_get_internals(QEMU_INTERNAL_UART0_BAUD);
+        bitbang_uart_set_speed(&master_uart[0], baud_rate);
+        PICSimLab.UpdateStatus(PS_SERIAL,
+                               "HWSerial: " + std::string(SERIALDEVICE) + "(" + std::to_string(baud_rate) + ")");
+    } else {
+        PICSimLab.UpdateStatus(PS_SERIAL, "HWSerial: Error");
+    }
+}

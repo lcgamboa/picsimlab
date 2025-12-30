@@ -169,13 +169,6 @@ void cboard_x::RegisterRemoteControl(void) {
     output_ids[O_LD1]->status = MGetPinOAVPtr(20);
 }
 
-// Called ever 1s to refresh status
-
-void cboard_x::RefreshStatus(void) {
-    // verify serial port state and refresh status bar
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_x::WritePreferences(void) {

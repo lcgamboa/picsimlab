@@ -161,13 +161,6 @@ void cboard_Xpress::RegisterRemoteControl(void) {
     output_ids[O_D5]->status = &pic.pins[1].oavalue;
 }
 
-// Called ever 1s to refresh status
-
-void cboard_Xpress::RefreshStatus(void) {
-    // verify serial port state and refresh status bar
-    PICSimLab.UpdateStatus(PS_SERIAL, GetUARTStrStatus(0));
-}
-
 // Called to save board preferences in configuration file
 
 void cboard_Xpress::WritePreferences(void) {
