@@ -33,7 +33,7 @@ LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad/lib/liblxrad.a \
        $(LIBPATH)/simavr/simavr/obj-${shell $(CC) -dumpmachine}/libsimavr.a \
        $(LIBPATH)/lunasvg/build/liblunasvg.a \
        $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
-      -lopenal `wx-config --libs` `wx-config --libs stc` -ldl -lgpsim
+      -lopenal `wx-config --libs` `wx-config --libs stc` -ldl -lgpsim -lcurl
 
 #lxrad automatic generated block end, don't edit above!
 

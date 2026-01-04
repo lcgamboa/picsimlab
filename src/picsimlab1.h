@@ -104,6 +104,7 @@ public:
     CItemMenu menu1_Help_Examples;
     CItemMenu menu1_Help_About_Board;
     CItemMenu menu1_Help_About_PICSimLab;
+    CItemMenu menu1_Help_Check_for_Update;
     CStatusbar statusbar1;
     CToggleButton togglebutton1;
     CFileDialog filedialog2;
@@ -147,6 +148,7 @@ public:
     void menu1_Help_Board_EvMenuActive(CControl* control);
     void menu1_Help_About_Board_EvMenuActive(CControl* control);
     void menu1_Help_About_PICSimLab_EvMenuActive(CControl* control);
+    void menu1_Help_Check_for_Update_EvMenuActive(CControl* control);
     void togglebutton1_EvOnToggleButton(CControl* control);
     void filedialog2_EvOnClose(const int retId);
 

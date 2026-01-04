@@ -60,6 +60,7 @@ CPWindow1 Window1;
 #include <signal.h>
 #endif
 #endif
+#include <curl/curl.h>
 
 #ifdef _USE_PICSTARTP_
 // picstart plus
@@ -2475,3 +2476,141 @@ void __gxx_personality_sj0(int version, int actions, _Unwind_Exception_Class exc
     std::abort();
 }
 #endif
+
+// Check for update support
+
+#ifndef NO_TOOLS
+
+#define MEMMAX 512
+// #define DEBUG
+
+struct BufferStruct {
+    char data[MEMMAX];
+    size_t size;
+};
+
+static size_t write_cb(void* contents, size_t size, size_t nmemb, void* userp) {
+    size_t realsize = size * nmemb;
+    struct BufferStruct* mem = (struct BufferStruct*)userp;
+
+    if (mem->size + realsize + 1 > MEMMAX) {
+        /* out of data! */
+        printf("not enough data \n");
+        return 0;
+    }
+
+    memcpy(&(mem->data[mem->size]), contents, realsize);
+    mem->size += realsize;
+    mem->data[mem->size] = 0;
+
+    return realsize;
+}
+
+int CheckRemoteNewVersion(int check_for_devel) {
+    CURL* curl;
+
+    struct BufferStruct MemBuffer;
+
+    CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
+    if (result)
+        return -1;
+
+    MemBuffer.data[0] = 0;
+    MemBuffer.size = 0;
+
+    lxString ca_path = PICSimLab.GetSharePath() + "github-ca.crt";
+
+    curl = curl_easy_init();
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL,
+                         "https://raw.githubusercontent.com/lcgamboa/picsimlab/refs/heads/master/VERSION");
+
+        curl_easy_setopt(curl, CURLOPT_CAINFO, (const char*)ca_path.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&MemBuffer);
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+        curl_easy_setopt(curl, CURLOPT_CA_CACHE_TIMEOUT, 604800L);
+        result = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+    }
+    curl_global_cleanup();
+
+    /* Check for errors */
+    if (result != CURLE_OK) {
+        printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
+        printf("Cert file at:%s\n", (const char*)ca_path.c_str());
+        return -1;
+    }
+
+#ifdef DEBUG
+    printf("%s", MemBuffer.data);
+#endif
+
+    int maj, min, rev;
+
+    int remote_version = -1;
+    int remote_date = -1;
+
+    char* ptr = strtok(MemBuffer.data, "\n");
+
+    while (ptr) {
+        if (ptr) {
+            if (check_for_devel) {
+                if (!strncmp(ptr, "VERSION=", 8)) {
+                    sscanf(ptr + 8, "%i.%i.%i", &maj, &min, &rev);
+                    remote_version = maj * 10000 + min * 100 + rev;
+                }
+                if (!strncmp(ptr, "DATE=", 5)) {
+                    sscanf(ptr + 5, "%i", &remote_date);
+                }
+            } else {
+                if (!strncmp(ptr, "STABLE_VERSION=", 15)) {
+                    sscanf(ptr + 15, "%i.%i.%i", &maj, &min, &rev);
+                    remote_version = maj * 10000 + min * 100 + rev;
+                }
+                if (!strncmp(ptr, "STABLE_DATE=", 12)) {
+                    sscanf(ptr + 12, "%i", &remote_date);
+                }
+            }
+        }
+        ptr = strtok(NULL, "\n");
+    }
+
+    sscanf(_VERSION_, "%i.%i.%i", &maj, &min, &rev);
+    int my_version = maj * 10000 + min * 100 + rev;
+    int my_date;
+    sscanf(_DATE_, "%i", &my_date);
+
+    if ((remote_version > my_version) || (remote_date > my_date)) {
+#ifdef DEBUG
+        printf("PICSimLab: Remote version %i_%i is newer than PICSimLab %i_%i!\n", remote_version, remote_date,
+               my_version, my_date);
+#endif
+        return 1;
+    } else {
+#ifdef DEBUG
+        printf("PICSimLab: Remote version %i_%i is equal or lower than PICSimLab %i_%i!\n", remote_version, remote_date,
+               my_version, my_date);
+#endif
+    }
+
+    return 0;
+}
+#endif
+
+void CPWindow1::menu1_Help_Check_for_Update_EvMenuActive(CControl* control) {
+    int HasUpdate = CheckRemoteNewVersion(1);  // FIXME Add support to select argument from config windows
+    if (HasUpdate == 1) {
+        printf("PICSimLab: New version available!\n");
+        if (Dialog_sz("New version available!\n Open browser for download?", 400, 200)) {
+            lxLaunchDefaultBrowser("https://github.com/lcgamboa/picsimlab/releases/tag/latestbuild");
+        }
+
+    } else if (HasUpdate == 0) {
+        printf("PICSimLab: No update available.\n");
+        Message_sz("No update available.", 400, 200);
+    } else {
+        printf("PICSimLab: Error connecting to remote server.\n");
+        Message_sz("Error connecting to remote server.", 400, 200);
+    }
+}

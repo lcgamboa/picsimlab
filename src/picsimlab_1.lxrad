@@ -208,7 +208,7 @@
   <Name type="String">menu1_Help</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Help</Text>
-  <MenuItems type="MenuItems">Contents,Board,Examples,About Board,About PICSimLab,</MenuItems>
+  <MenuItems type="MenuItems">Contents,Board,Examples,About Board,About PICSimLab,Check for Updates,</MenuItems>
 </menu1_Help>
 <menu1_File_LoadHex>
   <Class type="String">CItemMenu</Class>
@@ -399,6 +399,15 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Help_About_PICSimLab>
+<menu1_Help_Check_for_Update>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Help_Check_for_Update</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Check for Update</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Help_Check_for_Update>
 <statusbar1>
   <Class type="String">CStatusbar</Class>
   <Name type="String">statusbar1</Name>

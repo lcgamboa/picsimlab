@@ -207,7 +207,7 @@ CPWindow1::CPWindow1(void) {
     menu1_Help.SetName(lxT("menu1_Help"));
     menu1_Help.SetTag(0);
     menu1_Help.SetText(lxT("Help"));
-    menu1_Help.SetMenuItems(lxT("Contents,Board,Examples,About Board,About PICSimLab,"));
+    menu1_Help.SetMenuItems(lxT("Contents,Board,Examples,About Board,About PICSimLab,Check for Update,"));
     menu1.CreateChild(&menu1_Help);
     // menu1_File_LoadHex
     menu1_File_LoadHex.SetFOwner(this);
@@ -421,6 +421,16 @@ CPWindow1::CPWindow1(void) {
     menu1_Help_About_PICSimLab.SetSubMenu(NULL);
     menu1_Help_About_PICSimLab.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive;
     menu1_Help.CreateChild(&menu1_Help_About_PICSimLab);
+    // menu1_Help_Check_for_Update
+    menu1_Help_Check_for_Update.SetFOwner(this);
+    menu1_Help_Check_for_Update.SetClass(lxT("CItemMenu"));
+    menu1_Help_Check_for_Update.SetName(lxT("menu1_Help_Check_for_Update"));
+    menu1_Help_Check_for_Update.SetTag(0);
+    menu1_Help_Check_for_Update.SetText(lxT("Check for Update"));
+    menu1_Help_Check_for_Update.SetEnable(1);
+    menu1_Help_Check_for_Update.SetSubMenu(NULL);
+    menu1_Help_Check_for_Update.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Help_Check_for_Update_EvMenuActive;
+    menu1_Help.CreateChild(&menu1_Help_Check_for_Update);
     // statusbar1
     statusbar1.SetFOwner(this);
     statusbar1.SetClass(lxT("CStatusbar"));
@@ -492,6 +502,7 @@ CPWindow1::CPWindow1(void) {
 
 #ifdef NO_TOOLS
     menu1.DestroyChild(&menu1_Tools);
+    menu1_Help.DestroyChild(&menu1_Help_Check_for_Update);
 #endif
 
 #ifdef NO_DEBUG
