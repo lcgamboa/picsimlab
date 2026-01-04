@@ -11,7 +11,6 @@ cl sudo apt-get -y install flatpak flatpak-builder bzip2
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak --user install  flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08 -y
 
-#VERSION="${VERSION_STABLE}"
 VERSION="${VERSION}_${DATE}"
 git config --global --add protocol.file.allow always
 

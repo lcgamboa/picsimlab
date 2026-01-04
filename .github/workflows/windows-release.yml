@@ -2,7 +2,7 @@ name: Windows release
 
 on:
   workflow_run:
-    workflows: ["Release setup"]
+    workflows: ["Linux release"]
     types: [completed]
 
 jobs:

@@ -2,7 +2,6 @@
 
 . VERSION
 
-#VERSION="${VERSION_STABLE}"
 VERSION="${VERSION}_${DATE}"
 
 DIR=`pwd`
