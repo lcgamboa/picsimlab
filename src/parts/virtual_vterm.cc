@@ -360,7 +360,7 @@ std::string cpart_vterm::WritePreferences(void) {
 
 void cpart_vterm::ReadPreferences(std::string value) {
     int x, y, w, h;
-    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i,%i,%s", &pins[0], &pins[1], &lending,
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i,%i,%[^\n]", &pins[0], &pins[1], &lending,
                      &vterm_speed, &show, &x, &y, &w, &h, &enable_log, log_fname);
     show |= 0x80;
 

@@ -185,7 +185,7 @@ std::string cpart_SDCard::WritePreferences(void) {
 }
 
 void cpart_SDCard::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%s", &pins[0], &pins[1], &pins[2], &pins[3], sdcard_fname);
+    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%[^\n]", &pins[0], &pins[1], &pins[2], &pins[3], sdcard_fname);
 
     Reset();
 
