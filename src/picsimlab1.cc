@@ -2529,7 +2529,6 @@ int CheckRemoteNewVersion(int check_for_devel) {
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&MemBuffer);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
-        curl_easy_setopt(curl, CURLOPT_CA_CACHE_TIMEOUT, 604800L);
         result = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
     }
