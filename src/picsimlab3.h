@@ -45,6 +45,7 @@ public:
     CButton button2;
     CButton button3;
     CCheckBox checkbox1;
+    CCheckBox checkbox2;
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);

@@ -5,7 +5,7 @@
   <X type="int">313</X>
   <Y type="int">223</Y>
   <Width type="uint">552</Width>
-  <Height type="uint">391</Height>
+  <Height type="uint">435</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
   <Visible type="bool">0</Visible>
@@ -91,8 +91,8 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">159</X>
-  <Y type="int">299</Y>
+  <X type="int">158</X>
+  <Y type="int">328</Y>
   <Width type="uint">93</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -352,8 +352,8 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button2</Name>
   <Tag type="int">0</Tag>
-  <X type="int">281</X>
-  <Y type="int">299</Y>
+  <X type="int">282</X>
+  <Y type="int">328</Y>
   <Width type="uint">93</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
@@ -431,4 +431,33 @@
   <Check type="Int">0</Check>
   <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
 </checkbox1>
+<checkbox2>
+  <Class type="lxString">CCheckBox</Class>
+  <Name type="lxString">checkbox2</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">145</X>
+  <Y type="int">279</Y>
+  <Width type="uint">272</Width>
+  <Height type="uint">25</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">FALSE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
+  <Text type="lxString">Check for development version updates</Text>
+  <Check type="Int">0</Check>
+  <EvOnCheckBox type="Event">FALSE</EvOnCheckBox>
+</checkbox2>
 </window3>

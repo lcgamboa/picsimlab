@@ -177,6 +177,16 @@ public:
     float GetClock(void);
 
     /**
+     * @brief  Return the selected debugger type
+     */
+    int GetCheckForDevelVersionUpdate(void) { return check_for_devel; };
+
+    /**
+     * @brief  Set debug type (MDB or GDB)
+     */
+    void SetCheckForDevelVersionUpdate(int cfd) { check_for_devel = cfd; };
+
+    /**
      * @brief  Save the preferences
      */
     void SavePrefs(std::string name, std::string value);
@@ -319,6 +329,7 @@ private:
     int settodestroy;
     unsigned char sync;
     char pzwtmpdir[1024];
+    int check_for_devel;
 };
 
 extern CPICSimLab PICSimLab;

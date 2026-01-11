@@ -79,6 +79,7 @@ CPICSimLab::CPICSimLab() {
     sync = 0;
     SHARE = "";
     pzwtmpdir[0] = 0;
+    check_for_devel = 0;
 
     OnUpdateStatus = NULL;
     OnConfigure = NULL;
@@ -334,6 +335,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     SavePrefs("picsimlab_debug", std::to_string(GetDebugStatus()));
     SavePrefs("picsimlab_debugt", std::to_string(GetDebugType()));
     SavePrefs("picsimlab_debugp", std::to_string(GetDebugPort()));
+    SavePrefs("picsimlab_c_dev", std::to_string(GetCheckForDevelVersionUpdate()));
     SavePrefs("picsimlab_remotecp", std::to_string(GetRemotecPort()));
     if (OnSavePrefs) {
         (*OnSavePrefs)();
@@ -736,6 +738,7 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     SavePrefs("picsimlab_debug", std::to_string(GetDebugStatus()));
     SavePrefs("picsimlab_debugt", std::to_string(GetDebugType()));
     SavePrefs("picsimlab_debugp", std::to_string(GetDebugPort()));
+    SavePrefs("picsimlab_c_dev", std::to_string(GetCheckForDevelVersionUpdate()));
     if (OnSavePrefs) {
         (*OnSavePrefs)();
     }
@@ -921,6 +924,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     int debug_type;
                     sscanf(value, "%i", &debug_type);
                     SetDebugType(debug_type);
+                }
+
+                if (!strcmp(name, "picsimlab_c_dev")) {
+                    sscanf(value, "%i", &check_for_devel);
                 }
 
                 if (!strcmp(name, "osc_on")) {

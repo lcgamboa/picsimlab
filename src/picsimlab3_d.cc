@@ -246,6 +246,22 @@ CPWindow3::CPWindow3(void) {
     checkbox1.SetText(lxT("DTR/RTS Reset"));
     checkbox1.SetCheck(0);
     CreateChild(&checkbox1);
+    // checkbox2
+    checkbox2.SetFOwner(this);
+    checkbox2.SetClass(lxT("CCheckBox"));
+    checkbox2.SetName(lxT("checkbox2"));
+    checkbox2.SetTag(0);
+    checkbox2.SetX(145);
+    checkbox2.SetY(245);
+    checkbox2.SetWidth(272);
+    checkbox2.SetHeight(25);
+    checkbox2.SetHint(lxT(""));
+    checkbox2.SetEnable(1);
+    checkbox2.SetVisible(1);
+    checkbox2.SetPopupMenu(NULL);
+    checkbox2.SetText(lxT("Check for development version updates"));
+    checkbox2.SetCheck(0);
+    CreateChild(&checkbox2);
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 };

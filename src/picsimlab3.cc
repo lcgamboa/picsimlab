@@ -83,6 +83,8 @@ void CPWindow3::button1_EvMouseButtonClick(CControl* control, unsigned int butto
 
     PICSimLab.SetUseDSRReset(checkbox1.GetCheck());
 
+    PICSimLab.SetCheckForDevelVersionUpdate(checkbox2.GetCheck());
+
     PICSimLab.EndSimulation();
     PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
 
@@ -143,6 +145,8 @@ void CPWindow3::_EvOnShow(CControl* control) {
     spin2.SetValue(PICSimLab.GetRemotecPort());
 
     checkbox1.SetCheck(PICSimLab.GetUseDSRReset());
+
+    checkbox2.SetCheck(PICSimLab.GetCheckForDevelVersionUpdate());
 
     if (PICSimLab.GetInstanceNumber()) {
         spin1.SetEnable(0);

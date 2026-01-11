@@ -2598,7 +2598,7 @@ int CheckRemoteNewVersion(int check_for_devel) {
 #endif
 
 void CPWindow1::menu1_Help_Check_for_Update_EvMenuActive(CControl* control) {
-    int HasUpdate = CheckRemoteNewVersion(1);  // FIXME Add support to select argument from config windows
+    int HasUpdate = CheckRemoteNewVersion(PICSimLab.GetCheckForDevelVersionUpdate());
     if (HasUpdate == 1) {
         printf("PICSimLab: New version available!\n");
         if (Dialog_sz("New version available!\n Open browser for download?", 400, 200)) {
