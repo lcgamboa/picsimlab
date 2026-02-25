@@ -80,6 +80,7 @@ public:
   int offsety;
   int mouse_scroll;
   lxFont *font;
+  float fscale;
   int port;
 };
 
