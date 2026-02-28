@@ -97,9 +97,8 @@ static int64_t GotoNow(void) {
 static void picsimlab_write_pin(int pin, int value) {
     // printf("================> IO    <====================== %ji\n", now - g_board->timer.last);
     ioupdated = 1;
-    g_board->Run_CPU_ns(GotoNow());
-
     g_pins[pin - 1].value = value;
+    g_board->Run_CPU_ns(GotoNow());
     // printf("pin[%i]=%i\n", pin, value);
 }
 
