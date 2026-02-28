@@ -123,6 +123,7 @@ CPWindow1::CPWindow1(void) {
   offsetx = 0;
   offsety = 0;
   scale = 1.0;
+  fscale = 1.0f;
   mouse_scroll = 0;
   port = 5000;
 };
