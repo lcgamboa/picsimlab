@@ -62,7 +62,8 @@ CPWindow5::CPWindow5(void) {
     menu1_Edit.SetName(lxT("menu1_Edit"));
     menu1_Edit.SetTag(0);
     menu1_Edit.SetText(lxT("Edit"));
-    menu1_Edit.SetMenuItems(lxT("Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,"));
+    menu1_Edit.SetMenuItems(
+        lxT("Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,Changebgcolor,"));
     menu1.CreateChild(&menu1_Edit);
     // menu1_Inputs
     menu1_Inputs.SetFOwner(this);
@@ -221,6 +222,15 @@ CPWindow5::CPWindow5(void) {
     menu1_Edit_Zoomout.SetSubMenu(NULL);
     menu1_Edit_Zoomout.EvMenuActive = EVMENUACTIVE & CPWindow5::menu1_Edit_Zoomout_EvMenuActive;
     menu1_Edit.CreateChild(&menu1_Edit_Zoomout);
+    // menu1_Edit_Changebgcolor
+    menu1_Edit_Changebgcolor.SetFOwner(this);
+    menu1_Edit_Changebgcolor.SetClass(lxT("CItemMenu"));
+    menu1_Edit_Changebgcolor.SetName(lxT("menu1_Edit_Changebgcolor"));
+    menu1_Edit_Changebgcolor.SetTag(0);
+    menu1_Edit_Changebgcolor.SetText(lxT("Change bg color"));
+    menu1_Edit_Changebgcolor.SetSubMenu(NULL);
+    menu1_Edit_Changebgcolor.EvMenuActive = EVMENUACTIVE & CPWindow5::menu1_Edit_Changebgcolor_EvMenuActive;
+    menu1_Edit.CreateChild(&menu1_Edit_Changebgcolor);
     // pmenu2_Move
     pmenu2_Move.SetFOwner(this);
     pmenu2_Move.SetClass(lxT("CItemMenu"));
@@ -309,6 +319,14 @@ CPWindow5::CPWindow5(void) {
     statusbar1.SetTag(0);
     statusbar1.SetFields(lxT("alias,scale,offset,"));
     CreateChild(&statusbar1);
+    // colordialog1
+    colordialog1.SetFOwner(this);
+    colordialog1.SetClass(lxT("CColorDialog"));
+    colordialog1.SetName(lxT("colordialog1"));
+    colordialog1.SetTag(0);
+    colordialog1.SetColorName(lxT("red"));
+    colordialog1.EvOnClose = EVONCLOSE & CPWindow5::colordialog1_EvOnClose;
+    CreateChild(&colordialog1);
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 

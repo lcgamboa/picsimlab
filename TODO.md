@@ -1,13 +1,13 @@
 ### FIXMEs
 | Filename | line # | FIXME |
 |:------|:------:|:------|
-| [src/picsimlab1.cc](src/picsimlab1.cc#L1099) | 1099 | remote control disabled |
-| [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L299) | 299 | NSTEP must be multiplied for 4 |
+| [src/picsimlab1.cc](src/picsimlab1.cc#L1100) | 1100 | remote control disabled |
+| [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L293) | 293 | NSTEP must be multiplied for 4 |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L132) | 132 | only for BANK=0; |
 | [src/parts/input_MPU6050.cc](src/parts/input_MPU6050.cc#L26) | 26 | remove lxrad |
 | [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L173) | 173 | on slow speed output is not 90 degrees |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L228) | 228 | on slow speed output is not 90 degrees |
-| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1623) | 1623 | avr CONFIG size |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1625) | 1625 | avr CONFIG size |
 
 ### TODOs
 | Filename | line # | TODO |
@@ -36,6 +36,6 @@
 | [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L417) | 417 | only write support implemented |
 | [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L175) | 175 | Add transfer funcion of dc motor |
 | [src/sim_backend/bsim_gpsim.cc](src/sim_backend/bsim_gpsim.cc#L168) | 168 | add VCC and GND pins |
-| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1212) | 1212 | default output value is not used yet (DOV) |
-| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1606) | 1606 | avr ID pointer |
-| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1628) | 1628 | avr ID size |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1214) | 1214 | default output value is not used yet (DOV) |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1608) | 1608 | avr ID pointer |
+| [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1630) | 1630 | avr ID size |

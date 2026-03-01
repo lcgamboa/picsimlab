@@ -2,11 +2,25 @@
 
 ### New
 
+* Support to change Spare Parts Window background color. [lcgamboa]
+
+* Add option for check for development version update. [lcgamboa]
+
+* Support to check version update. [lcgamboa]
+
+* IO Virtual Term support to write to logfile. [lcgamboa]
+
 * New spare part VCD Dump Memory (RAM). [lcgamboa]
 
 * Version 0.9.2 realease! [lcgamboa]
 
 ### Changes
+
+* Build scritps updated. [lcgamboa]
+
+* Add support to show messages when unknown opcodes are detected in PIC based boards. [lcgamboa]
+
+* Add support to choose do not use Hardware Serial Port. [lcgamboa]
 
 * Support to 16 bit memory in VCD Dump Memory part added. [lcgamboa]
 
@@ -18,6 +32,26 @@
 
 ### Fix
 
+* Merge pull request #160 from fariouche/fix_spare_parts_not_fully_updated. [lcgamboa]
+
+* Merge pull request #158 from fariouche/pinviewer_hidpi_support. [lcgamboa]
+
+* Fix the error of using file paths with space in some spare parts. [lcgamboa]
+
+* Fix code to work with old ubuntu versions. [lcgamboa]
+
+* Fixes flash memory and configuration bits corruption (in .hex file) when switching between PIC processors. [lcgamboa]
+
+* Fix the empty spare parts config in backup when errors are detected. [lcgamboa]
+
+* Remove error log message when None HWSerial is selected. [lcgamboa]
+
+* Fix IO Virtual terminal window controls response when one part deleted. [lcgamboa]
+
+* Fix LCD hd44780 and Virtual terminal to update on debug stepping. [lcgamboa]
+
+* ADXL345 spare part remote control register access. Related to https://github.com/lcgamboa/picsimlab/issues/149. [lcgamboa]
+
 * Fix gpboard write to input pins bug. [lcgamboa]
 
 * Fix: Fix I2C memory 24CXXX part Save button (https://github.com/lcgamboa/picsimlab/issues/139). Thanks to @kjellc. [lcgamboa]
@@ -27,6 +61,10 @@
 * Fix BluePill board PWM outputs. [lcgamboa]
 
 ### Other
+
+* Moved pin update before cpu update to have latest pin updated in spare parts. [fariouche]
+
+* Fixed pinviewer not correctly displaying with highdpi font, by scaling verything depending on the font size and not hardcoded font size in pixels. [fariouche]
 
 * Github build scripts updated. [lcgamboa]
 

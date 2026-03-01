@@ -93,6 +93,9 @@ public:
     void SetScale(float s) { scale = s; };
     void Reset(void);
 
+    void SetBGColor(std::string bgc) { bgcolor = bgc; };
+    std::string GetBGColor(void) { return bgcolor; };
+
     void Setfdtype(int value);
 
     int Getfdtype(void) { return fdtype; };
@@ -144,6 +147,7 @@ private:
     int fdtype;
     std::string oldfname;
     int PartOnDraw;
+    std::string bgcolor;
 };
 
 extern CSpareParts SpareParts;

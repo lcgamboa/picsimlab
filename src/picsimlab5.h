@@ -65,11 +65,13 @@ public:
     CItemMenu menu1_Edit_Reloadpinalias;
     CItemMenu menu1_Edit_Zoomin;
     CItemMenu menu1_Edit_Zoomout;
+    CItemMenu menu1_Edit_Changebgcolor;
     CPMenu menu1_Help;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_About;
     CFileDialog filedialog1;
     CStatusbar statusbar1;
+    CColorDialog colordialog1;
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
@@ -87,6 +89,7 @@ public:
     void draw1_EvMouseWheel(CControl* control, const int rotation);
     void pmenu2_Properties_EvMenuActive(CControl* control);
     void timer1_EvOnTime(CControl* control);
+    void colordialog1_EvOnClose(const int retId);
     void menu1_File_Newconfiguration_EvMenuActive(CControl* control);
     void menu1_File_Saveconfiguration_EvMenuActive(CControl* control);
     void menu1_File_Loadconfiguration_EvMenuActive(CControl* control);
@@ -98,6 +101,7 @@ public:
     void menu1_Edit_Reloadpinalias_EvMenuActive(CControl* control);
     void menu1_Edit_Zoomin_EvMenuActive(CControl* control);
     void menu1_Edit_Zoomout_EvMenuActive(CControl* control);
+    void menu1_Edit_Changebgcolor_EvMenuActive(CControl* control);
     void pmenu2_Move_EvMenuActive(CControl* control);
     void pmenu2_Rotate_EvMenuActive(CControl* control);
     void pmenu2_Delete_EvMenuActive(CControl* control);

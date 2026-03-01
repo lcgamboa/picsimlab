@@ -75,7 +75,7 @@
   <Name type="String">menu1_Edit</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Edit</Text>
-  <MenuItems type="MenuItems">Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,</MenuItems>
+  <MenuItems type="MenuItems">Clear pin alias,Toggle pin alias,Edit pin alias,Reload pin alias,Zoom in,Zoom out,Change bg. color</MenuItems>
 </menu1_Edit>
 <menu1_Inputs>
   <Class type="String">CPMenu</Class>
@@ -216,6 +216,14 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Edit_Zoomout>
+<menu1_Edit_Changebgcolor>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Edit_Changebgcolor</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Change bg color</Text>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Edit_Changebgcolor>
 <pmenu2_Move>
   <Class type="String">CItemMenu</Class>
   <Name type="String">pmenu2_Move</Name>
@@ -294,4 +302,11 @@
   <Tag type="int">0</Tag>
   <Fields type="StringList">alias,scale,offset,</Fields>
 </statusbar1>
+<colordialog1>
+  <Class type="lxString">CColorDialog</Class>
+  <Name type="lxString">colordialog1</Name>
+  <Tag type="int">0</Tag>
+  <ColorName type="lxString">RED</ColorName>
+  <EvOnClose type="Event">TRUE</EvOnClose>
+</colordialog1>
 </window5>
