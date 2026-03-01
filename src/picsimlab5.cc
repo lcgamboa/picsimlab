@@ -529,8 +529,8 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
         draw1.Canvas.SetFontWeight(lxFONTWEIGHT_BOLD);
 
         if (update_all) {
-            draw1.Canvas.SetFgColor(50, 50, 50);
-            draw1.Canvas.SetBgColor(50, 50, 50);
+            draw1.Canvas.SetFgColor(lxColor(SpareParts.GetBGColor()));
+            draw1.Canvas.SetBgColor(lxColor(SpareParts.GetBGColor()));
             draw1.Canvas.Rectangle(1, 0, 0, draw1.GetWidth(), draw1.GetHeight());
             update_all = 0;
         }
@@ -780,6 +780,18 @@ void CPWindow5::menu1_Edit_Zoomout_EvMenuActive(CControl* control) {
         SpareParts.GetPart(i)->SetScale(SpareParts.GetScale());
     }
     update_all = 1;
+}
+
+void CPWindow5::menu1_Edit_Changebgcolor_EvMenuActive(CControl* control) {
+    colordialog1.SetColor(lxColor(SpareParts.GetBGColor()));
+    colordialog1.Run();
+}
+
+void CPWindow5::colordialog1_EvOnClose(int retId) {
+    if (retId) {
+        SpareParts.SetBGColor((const char*)colordialog1.GetColor().GetAsString(lxC2S_HTML_SYNTAX).c_str());
+        update_all = 1;
+    }
 }
 
 void CPWindow5::_EvOnHide(CControl* control) {

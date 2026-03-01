@@ -42,6 +42,7 @@ CSpareParts::CSpareParts() {
     LoadConfigFile = "";
     fdtype = -1;
     PartOnDraw = -1;
+    bgcolor = "#323232";
 
     OnCanvasCmd = NULL;
     OnWindowCmd = NULL;
@@ -413,6 +414,8 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 Oscilloscope.SetBaseTimer();
             } else if (!strcmp(name, "version")) {
                 // use planed in future
+            } else if (!strcmp(name, "bgcolor")) {
+                bgcolor = temp;
             } else if (!strcmp(name, "position")) {
                 int w, h;
                 w = orient;
@@ -645,6 +648,8 @@ bool CSpareParts::SaveConfig(std::string fname) {
     snprintf(temp, 256, "useAlias,0,0,0:%i", GetUseAlias());
     prefs.push_back(temp);
     snprintf(temp, 256, "debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
+    prefs.push_back(temp);
+    snprintf(temp, 256, "bgcolor,0,0,0:%s", bgcolor.c_str());
     prefs.push_back(temp);
 
     std::vector<std::string> osc_list = Oscilloscope.WritePreferencesList();
