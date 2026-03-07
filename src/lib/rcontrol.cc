@@ -129,7 +129,7 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
             return 1;
         };
         /*
-	    int reuse = 1;
+            int reuse = 1;
             if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
                 perror("rcontrol: setsockopt(SO_REUSEADDR) failed");
         */
