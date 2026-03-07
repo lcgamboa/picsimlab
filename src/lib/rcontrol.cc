@@ -128,9 +128,11 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
             printf("rcontrol: socket error : %s \n", strerror(errno));
             return 1;
         };
-        int reuse = 1;
-        if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
-            perror("rcontrol: setsockopt(SO_REUSEADDR) failed");
+        /*
+	    int reuse = 1;
+            if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
+                perror("rcontrol: setsockopt(SO_REUSEADDR) failed");
+        */
         memset(&serv, 0, sizeof(serv));
         serv.sin_family = AF_INET;
         serv.sin_addr.s_addr = htonl(INADDR_ANY);
