@@ -364,6 +364,8 @@ void cboard_DevKitC::Reset(void) {
 
 void cboard_DevKitC::RegisterRemoteControl(void) {
     output_ids[O_LED]->status = &pins[23].oavalue;
+    input_ids[I_BOOT]->status = &p_BOOT;
+    input_ids[I_BOOT]->update = &output_ids[O_BOOT]->update;
 }
 
 // Called to save board preferences in configuration file

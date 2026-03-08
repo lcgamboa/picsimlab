@@ -59,6 +59,7 @@
 #include <unistd.h>
 
 #include "../devices/lcd_hd44780.h"
+#include "../devices/ldd_max72xx.h"
 #include "../devices/vterm.h"
 #include "picsimlab.h"
 #include "rcontrol.h"
@@ -388,6 +389,14 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
             snprintf(lstemp, SBUFFMAX + 255, "%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
             *ret += sendtext(lstemp);
         }
+    } else if (type_is_equal(Output->name, "LM")) {
+        // LED Matrix (MAX7219/MAX7221) - 8x8 LED matrix, 8 bytes representing rows
+        ldd_max72xx_t* ldd = (ldd_max72xx_t*)Output->status;
+        snprintf(lstemp, 199, "%s %s= %02X %02X %02X %02X %02X %02X %02X %02X\r\n",
+                 msg, Output->name,
+                 ldd->ram[0], ldd->ram[1], ldd->ram[2], ldd->ram[3],
+                 ldd->ram[4], ldd->ram[5], ldd->ram[6], ldd->ram[7]);
+        *ret += sendtext(lstemp);
     } else {
         snprintf(lstemp, 199, "%s %s= unknow type !\r\n", msg, Output->name);
         *ret += sendtext(lstemp);
@@ -1135,8 +1144,12 @@ int rcontrol_loop(void) {
                 bp = BSIZE;
         }
     } else {
-        // socket close by client
-        if (n < 0) {
+        if (n == 0) {
+            // Client closed connection (FIN received)
+            dprint("rcontrol: client disconnected (recv returned 0)\n");
+            ret = 1;
+        } else {
+            // n < 0: check if it's a real error or just no data available
 #ifndef _WIN_
             if (errno != EAGAIN)
 #else
@@ -1145,16 +1158,13 @@ int rcontrol_loop(void) {
             {
                 ret = 1;  // recv ERROR
             } else {
-                ret = 0;  // recv no data
+                ret = 0;  // recv no data (non-blocking socket, try again later)
             }
-        } else {
-            ret = 0;  // recv no data
         }
     }
 
     // close connection
     if (ret) {
-        sleep(1);  // wait client to close socket first
         rcontrol_stop();
     }
 
