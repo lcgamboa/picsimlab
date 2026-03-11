@@ -652,6 +652,8 @@ int rcontrol_loop(void) {
                         // Command exit
                         // ========================================================
                         sendtext("Ok\r\n>");
+                        // Resume simulation if stopped, so timer2 can process the destroy
+                        PICSimLab.SetSimulationRun(1);
                         PICSimLab.SetWorkspaceFileName("");
                         PICSimLab.SetToDestroy();
                         return 0;
@@ -1092,8 +1094,14 @@ int rcontrol_loop(void) {
 
                         if (strstr(cmd + 3, "stop")) {
                             PICSimLab.SetSimulationRun(0);
+                            if (PICSimLab.GetBoard()) {
+                                PICSimLab.GetBoard()->MSetSimulationRun(0);
+                            }
                             ret = sendtext("Ok\r\n>");
                         } else if (strstr(cmd + 3, "start")) {
+                            if (PICSimLab.GetBoard()) {
+                                PICSimLab.GetBoard()->MSetSimulationRun(1);
+                            }
                             PICSimLab.SetSimulationRun(1);
                             ret = sendtext("Ok\r\n>");
                         } else {

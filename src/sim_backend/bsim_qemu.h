@@ -88,6 +88,7 @@ public:
     virtual std::string GetClkLabel(void) override { return "IO (Mhz)"; };
     // Called ever 1s to refresh status
     void RefreshStatus(void) override;
+    void MSetSimulationRun(int run) override;
 
 protected:
     int MipsStrToIcount(const char* mipstr);

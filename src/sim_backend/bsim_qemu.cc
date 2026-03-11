@@ -248,6 +248,20 @@ static callbacks_t callbacks = {picsimlab_write_pin, picsimlab_dir_pins,      pi
                                 picsimlab_spi_event, picsimlab_uart_tx_event, NULL,
                                 picsimlab_rmt_event};
 
+void bsim_qemu::MSetSimulationRun(int run) {
+    if (qemu_started != 1)
+        return;
+    if (run) {
+        qemu_mutex_lock_iothread();
+        qmp_cont(NULL);
+        qemu_mutex_unlock_iothread();
+    } else {
+        qemu_mutex_lock_iothread();
+        qmp_stop(NULL);
+        qemu_mutex_unlock_iothread();
+    }
+}
+
 int bsim_qemu::load_qemu_lib(const char* path) {
 #ifndef _WIN_  // LINUX
     std::string fullpath = PICSimLab.GetLibPath() + "qemu/" + path + ".so";

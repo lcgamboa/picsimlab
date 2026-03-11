@@ -424,6 +424,7 @@ public:
      */
     virtual void MStepResume(void) = 0;
 
+
     /**
      * @brief board microcontroller reset
      */
@@ -675,6 +676,11 @@ public:
      * @brief Return the description of clk label
      */
     virtual std::string GetClkLabel(void) { return "Clk (Mhz)"; };
+
+    /**
+     * @brief  Called when simulation is paused or resumed
+     */
+    virtual void MSetSimulationRun(int run) {};
 
 protected:
     /**
