@@ -22,6 +22,7 @@ override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
 override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -g -O2 -flto=auto -D_SHARE_=\"../share/picsimlab/\" \
 -D_LIB_=\"../lib/picsimlab/\" `lxrad-config --cxxflags`
 override CXXFLAGS+= -DEXT_BROWSER
+override CXXFLAGS+= -I${prefix}/include -L${prefix}/lib
 #override CXXFLAGS+=-fsanitize=address
 #override CXXFLAGS+=-fno-omit-frame-pointer
 
@@ -52,7 +53,8 @@ install: all
 	strip ${execdir}picsimlab	
 	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
 	xdg-icon-resource install --context mimetypes --size 64 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
-	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
+	#no need for --mode system, xdg-mime will install to system if executed under root
+	xdg-mime install ../share/application-x-picsimlab-workspace.xml
 	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
 	update-mime-database /usr/share/mime &
 	update-desktop-database ${appdir} &
