@@ -1094,14 +1094,8 @@ int rcontrol_loop(void) {
 
                         if (strstr(cmd + 3, "stop")) {
                             PICSimLab.SetSimulationRun(0);
-                            if (PICSimLab.GetBoard()) {
-                                PICSimLab.GetBoard()->MSetSimulationRun(0);
-                            }
                             ret = sendtext("Ok\r\n>");
                         } else if (strstr(cmd + 3, "start")) {
-                            if (PICSimLab.GetBoard()) {
-                                PICSimLab.GetBoard()->MSetSimulationRun(1);
-                            }
                             PICSimLab.SetSimulationRun(1);
                             ret = sendtext("Ok\r\n>");
                         } else {

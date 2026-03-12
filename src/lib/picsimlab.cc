@@ -816,9 +816,15 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
 
 void CPICSimLab::SetSimulationRun(int run) {
     if (run) {
+        if (pboard) {
+            pboard->MSetSimulationRun(1);
+        }
         status &= ~ST_DI;
     } else {
         status |= ST_DI;
+        if (pboard) {
+            pboard->MSetSimulationRun(0);
+        }
     }
 }
 
