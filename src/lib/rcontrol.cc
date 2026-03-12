@@ -652,6 +652,8 @@ int rcontrol_loop(void) {
                         // Command exit
                         // ========================================================
                         sendtext("Ok\r\n>");
+                        // Resume simulation if stopped, so timer2 can process the destroy
+                        PICSimLab.SetSimulationRun(1);
                         PICSimLab.SetWorkspaceFileName("");
                         PICSimLab.SetToDestroy();
                         return 0;
