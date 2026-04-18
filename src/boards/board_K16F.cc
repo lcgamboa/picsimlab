@@ -181,7 +181,7 @@ void cboard_K16F::Draw(void) {
                             {.cmd = CC_RECTANGLE,
                              .Rectangle{1, output[i].x1 - 1, output[i].y1 - 1, output[i].x2 - output[i].x1 + 2,
                                         output[i].y2 - output[i].y1 + 3}});
-                        lcd_draw(&lcd, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                        lcd_draw(&lcd, 0, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                                  output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                     }
                 } else if (output[i].id == O_RST) {
@@ -245,7 +245,7 @@ void cboard_K16F::Draw(void) {
                         break;
                 }
 
-                DrawLED(PICSimLab.CanvasCmd, &output[i]);
+                DrawLED(0, PICSimLab.CanvasCmd, &output[i]);
             }
         }
     }

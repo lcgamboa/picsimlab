@@ -114,9 +114,9 @@ void cpart_lblock::Reset(void) {
 
 cpart_lblock::~cpart_lblock(void) {
     SpareParts.UnregisterIOpin(output_pins[1]);
-    SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
 }
 
 void cpart_lblock::DrawOutput(const unsigned int i) {
@@ -131,29 +131,35 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
         case O_P6:
         case O_P7:
         case O_P8:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
+                SpareParts.CanvasCmd(
+                    {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                SpareParts.CanvasCmd({.partn = id,
+                                      .cmd = CC_ROTATEDTEXT,
                                       .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
                                                    output[i].x1, output[i].y1, 0}});
             break;
         case O_P9:
         case O_P10:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
-            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id,
+                                  .cmd = CC_RECTANGLE,
                                   .Rectangle{1, output[i].x1 - xoff, output[i].y1, output[i].x2 - output[i].x1,
                                              output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P9] == 0)
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1 - xoff, output[i].y1, 0}});
+                SpareParts.CanvasCmd(
+                    {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1 - xoff, output[i].y1, 0}});
             else
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                SpareParts.CanvasCmd({.partn = id,
+                                      .cmd = CC_ROTATEDTEXT,
                                       .RotatedText{SpareParts.GetPinName(output_pins[output[i].id - O_P9]).c_str(),
                                                    output[i].x1 - xoff, output[i].y1, 0}});
             break;
@@ -170,30 +176,34 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
             } else {
                 color = 0;
             }
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetBgColor{(unsigned int)color, 0, 0}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetBgColor{(unsigned int)color, 0, 0}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             break;
         case O_OUT:
             SpareParts.CanvasCmd(
-                {.cmd = CC_SETCOLOR, .SetBgColor{(unsigned int)ppins[output_pins[1] - 1].oavalue, 0, 0}});
-            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+                {.partn = id, .cmd = CC_SETCOLOR, .SetBgColor{(unsigned int)ppins[output_pins[1] - 1].oavalue, 0, 0}});
+            SpareParts.CanvasCmd({.partn = id,
+                                  .cmd = CC_RECTANGLE,
                                   .Rectangle{1, output[i].x1 - xoff, output[i].y1, output[i].x2 - output[i].x1,
                                              output[i].y2 - output[i].y1}});
             break;
         case O_TYPE:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{255, 255, 255}});
-            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id,
+                                  .cmd = CC_RECTANGLE,
                                   .Rectangle{1, output[i].x1 - xoff, output[i].y1, output[i].x2 - output[i].x1,
                                              output[i].y2 - output[i].y1}});
 
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-            SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{250, 250, 180}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{250, 250, 180}});
 
             switch (gatetype) {
                 case LG_NOT:
-                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 16 - xoff, output[i].cy + 0, 3}});
+                    SpareParts.CanvasCmd(
+                        {.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx + 16 - xoff, output[i].cy + 0, 3}});
                 case LG_BUFFER: {
                     Point_t pts[] = {{-10, -13}, {-10, 13}, {13, 0}};
                     for (int p = 0; p < 3; p++) {
@@ -201,12 +211,13 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
                         pts[p].x += output[i].cx - xoff;
                         pts[p].y += output[i].cy;
                     }
-                    SpareParts.CanvasCmd({.cmd = CC_POLYGON, .Polygon{1, pts, 3}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_POLYGON, .Polygon{1, pts, 3}});
 
                 } break;
 
                 case LG_NAND:
-                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 19 - xoff, output[i].cy + 0, 3}});
+                    SpareParts.CanvasCmd(
+                        {.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx + 19 - xoff, output[i].cy + 0, 3}});
                 case LG_AND: {
                     Point_t pts[] = {{0, -16}, {-21, -16}, {-21, 16}, {0, 16}};
                     for (int p = 0; p < 4; p++) {
@@ -214,17 +225,19 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
                         pts[p].x += output[i].cx - xoff;
                         pts[p].y += output[i].cy;
                     }
-                    SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{250, 250, 180}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{250, 250, 180}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, -21, 32}});
-                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{pts, 4}});
+                        {.partn = id, .cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, -21, 32}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_LINES, .Lines{pts, 4}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx + 0 - 16 - xoff, output[i].cy + 0 - 16, 32, 32, -90, 90}});
                 } break;
                 case LG_NOR:
-                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 25 - xoff, output[i].cy + 0, 3}});
+                    SpareParts.CanvasCmd(
+                        {.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx + 25 - xoff, output[i].cy + 0, 3}});
                 case LG_OR: {
                     Point_t pts[] = {{-16, 16}, {-6, 16}, {-6, -16}, {-16, -16}};
                     for (int p = 0; p < 4; p++) {
@@ -232,28 +245,32 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
                         pts[p].x += output[i].cx - xoff;
                         pts[p].y += output[i].cy;
                     }
-                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{250, 255, 0}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{250, 255, 0}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, 14, -32}});
-                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{pts, 2}});
+                        {.partn = id, .cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, 14, -32}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_LINES, .Lines{pts, 2}});
 
-                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{&pts[2], 2}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_LINES, .Lines{&pts[2], 2}});
 
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy + 16 - 32, 64, 64, 30, 90}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy - 16 - 32, 64, 64, 270, 330}});
-                    SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 37 - 26 - xoff, output[i].cy - 0 - 26, 52, 52, -37, 37}});
 
                 } break;
                 case LG_XNOR:
-                    SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + 25 - xoff, output[i].cy + 0, 3}});
+                    SpareParts.CanvasCmd(
+                        {.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx + 25 - xoff, output[i].cy + 0, 3}});
                 case LG_XOR: {
                     Point_t pts[] = {{-16, 16}, {-6, 16}, {-6, -16}, {-16, -16}};
                     for (int p = 0; p < 4; p++) {
@@ -261,24 +278,28 @@ void cpart_lblock::DrawOutput(const unsigned int i) {
                         pts[p].x += output[i].cx - xoff;
                         pts[p].y += output[i].cy;
                     }
-                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{250, 255, 0}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{250, 255, 0}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, 14, -32}});
-                    SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{pts, 2}});
-                    SpareParts.CanvasCmd({.cmd = CC_LINES, .Lines{&pts[2], 2}});
+                        {.partn = id, .cmd = CC_RECTANGLE, .Rectangle{1, (float)pts[0].x, (float)pts[0].y, 14, -32}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_LINES, .Lines{pts, 2}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_LINES, .Lines{&pts[2], 2}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy + 16 - 32, 64, 64, 30, 90}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 6 - 32 - xoff, output[i].cy - 16 - 32, 64, 64, 270, 330}});
-                    SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
+                    SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{255, 255, 255}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 37 - 26 - xoff, output[i].cy - 0 - 26, 52, 52, -37, 37}});
                     SpareParts.CanvasCmd(
-                        {.cmd = CC_ELLIPTICARC,
+                        {.partn = id,
+                         .cmd = CC_ELLIPTICARC,
                          .EllipticArc{1, output[i].cx - 42 - 26 - xoff, output[i].cy - 0 - 26, 52, 52, -37, 37}});
 
                 } break;
@@ -617,8 +638,7 @@ void cpart_lblock::ComboChange(const char* controlname, std::string value) {
 void cpart_lblock::ChangeSize(const unsigned int sz) {
     if (Size != sz) {
         if (BitmapId >= 0) {
-            SpareParts.SetPartOnDraw(id);
-            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
             BitmapId = -1;
         }
         Size = sz;
@@ -638,31 +658,32 @@ void cpart_lblock::LoadPartImage(void) {
         Width = OWidth - xoff;
         Height = OHeight;
 
-        SpareParts.SetPartOnDraw(id);
         if (BitmapId >= 0) {
-            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
         }
-        BitmapId = SpareParts.CanvasCmd({.cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
+        BitmapId = SpareParts.CanvasCmd(
+            {.partn = id, .cmd = CC_CREATEIMAGE, .CreateImage{Width, Height, Scale, 0, Orientation}});
 
-        SpareParts.CanvasCmd({.cmd = CC_DESTROY});
-        SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_CREATE, .Create{BitmapId}});
 
         int BackBitmap = SpareParts.CanvasCmd(
-            {.cmd = CC_LOADIMAGE,
+            {.partn = id,
+             .cmd = CC_LOADIMAGE,
              .LoadImage{(PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName()).c_str(), Scale, 0,
                         Orientation}});
 
-        SpareParts.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
-        SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
-        SpareParts.CanvasCmd({.cmd = CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{0x31, 0x3d, 0x63}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_RECTANGLE, .Rectangle{1, 0, 0, (float)Width, (float)Height}});
 
-        SpareParts.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
-        SpareParts.CanvasCmd({.cmd = CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_CHANGESCALE, .ChangeScale{1.0, 1.0}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_PUTBITMAP, .PutBitmap{BackBitmap, -xoff * Scale, 0}});
 
-        SpareParts.CanvasCmd({.cmd = CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
-        SpareParts.CanvasCmd({.cmd = CC_END});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_CHANGESCALE, .ChangeScale{Scale, Scale}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_END});
 
-        SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BackBitmap}});
 
     } else {
         Width = OWidth;

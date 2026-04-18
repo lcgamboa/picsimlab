@@ -73,6 +73,7 @@ unsigned char lcd_ssd1306_SPI_io(lcd_ssd1306_t* lcd, unsigned char din, unsigned
                                  unsigned char nrst, unsigned char dc);
 unsigned char lcd_ssd1306_I2C_io(lcd_ssd1306_t* lcd, unsigned char sda, unsigned char scl);
 
-void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr);
+void lcd_ssd1306_draw(lcd_ssd1306_t* lcd, const int id, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1,
+                      int picpwr);
 
 #endif  // LCD_SSD1306

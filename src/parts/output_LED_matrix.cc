@@ -66,9 +66,9 @@ cpart_led_matrix::cpart_led_matrix(const unsigned x, const unsigned y, const cha
 
 cpart_led_matrix::~cpart_led_matrix(void) {
     SpareParts.UnregisterIOpin(output_pins[0]);
-    SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
 }
 
 void cpart_led_matrix::DrawOutput(const unsigned int i) {
@@ -76,55 +76,65 @@ void cpart_led_matrix::DrawOutput(const unsigned int i) {
         case O_P1:
         case O_P2:
         case O_P3:
-            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{8}});
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (input_pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
+                SpareParts.CanvasCmd(
+                    {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                SpareParts.CanvasCmd({.partn = id,
+                                      .cmd = CC_ROTATEDTEXT,
                                       .RotatedText{SpareParts.GetPinName(input_pins[output[i].id - O_P1]).c_str(),
                                                    output[i].x1, output[i].y2, 90.0}});
             break;
         case O_P4:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (output_pins[output[i].id - O_P4] == 0)
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
+                SpareParts.CanvasCmd(
+                    {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                SpareParts.CanvasCmd({.partn = id,
+                                      .cmd = CC_ROTATEDTEXT,
                                       .RotatedText{std::to_string(output_pins[output[i].id - O_P4]).c_str(),
                                                    output[i].x1, output[i].y2, 90.0}});
             break;
             break;
         case O_F1:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"5V", output[i].x1, output[i].y2, 90.0}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd(
+                {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"5V", output[i].x1, output[i].y2, 90.0}});
             break;
         case O_F2:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
-            SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90.0}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd(
+                {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"GND", output[i].x1, output[i].y2, 90.0}});
             break;
         case O_LED:
             // draw ldd text
             if (ldd.update) {
-                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
-                ldd_max72xx_draw(&ldd, SpareParts.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                 output[i].y2 - output[i].y1, 1, angle, lmode);
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{0, 90 + 40, 0}});
+                ldd_max72xx_draw(&ldd, id, SpareParts.CanvasCmd, output[i].x1, output[i].y1,
+                                 output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, 1, angle, lmode);
             }
             break;
     }

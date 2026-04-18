@@ -83,9 +83,8 @@ void cpart_dcmotor::RegisterRemoteControl(void) {
 }
 
 cpart_dcmotor::~cpart_dcmotor(void) {
-    SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
 }
 
 void cpart_dcmotor::DrawOutput(const unsigned int i) {
@@ -97,60 +96,67 @@ void cpart_dcmotor::DrawOutput(const unsigned int i) {
         case O_P3:
         case O_P4:
         case O_P5:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             if (pins[output[i].id - O_P1] == 0)
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1 - 3, output[i].y2, 90}});
+                SpareParts.CanvasCmd(
+                    {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1 - 3, output[i].y2, 90}});
             else
-                SpareParts.CanvasCmd({.cmd = CC_ROTATEDTEXT,
+                SpareParts.CanvasCmd({.partn = id,
+                                      .cmd = CC_ROTATEDTEXT,
                                       .RotatedText{SpareParts.GetPinName(pins[output[i].id - O_P1]).c_str(),
                                                    output[i].x1 - 3, output[i].y2, 90}});
             break;
         case O_MT1:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{153, 153, 153}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{153, 153, 153}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{250, 250, 250}});
-            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 25}});
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{5, 5, 5}});
-            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 2}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{250, 250, 250}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 25}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{5, 5, 5}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx, output[i].cy, 2}});
 
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{250, 0, 0}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{250, 0, 0}});
             x = -18 * sin((2 * M_PI * (value / 200.0)));
             y = 18 * cos((2 * M_PI * (value / 200.0)));
-            SpareParts.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].cx + x, output[i].cy + y, 5}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_CIRCLE, .Circle{1, output[i].cx + x, output[i].cy + y, 5}});
             break;
         case O_ST:
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
-            SpareParts.CanvasCmd({.cmd = CC_SETBGCOLOR, .SetBgColor{200, 200, 200}});
-            SpareParts.CanvasCmd({.cmd = CC_RECTANGLE,
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{200, 200, 200}});
+            SpareParts.CanvasCmd({.partn = id,
+                                  .cmd = CC_RECTANGLE,
                                   .Rectangle{1, output[i].x1 - 2, output[i].y1 - 2, output[i].x2 - output[i].x1 + 4,
                                              output[i].y2 - output[i].y1 + 4}});
 
             hsp = (speed / 3);
 
             if (hsp > 21) {
-                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{0, 255, 0}});
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{0, 255, 0}});
                 if (hsp > 32)
                     hsp = 32;
             } else if (hsp > 10) {
-                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{255, 255, 0}});
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{255, 255, 0}});
             } else {
-                SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{255, 0, 0}});
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{255, 0, 0}});
             }
 
             if (dir) {
                 SpareParts.CanvasCmd(
-                    {.cmd = CC_RECTANGLE,
+                    {.partn = id,
+                     .cmd = CC_RECTANGLE,
                      .Rectangle{1, output[i].x1, output[i].y1 + 32, output[i].x2 - output[i].x1, (float)hsp}});
             } else {
                 SpareParts.CanvasCmd(
-                    {.cmd = CC_RECTANGLE,
+                    {.partn = id,
+                     .cmd = CC_RECTANGLE,
                      .Rectangle{1, output[i].x1, output[i].y1 + (32 - hsp), output[i].x2 - output[i].x1, (float)hsp}});
             }
             break;

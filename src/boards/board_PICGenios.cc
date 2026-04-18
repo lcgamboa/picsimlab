@@ -675,8 +675,8 @@ void cboard_PICGenios::Draw(void) {
                              .Rectangle{1, output[i].x1 - 1, output[i].y1 - 2, output[i].x2 - output[i].x1 + 2,
                                         output[i].y2 - output[i].y1 + ((lcd.lnum == 2) ? 3 : 78)}});
                         if (dip[0]) {
-                            lcd_draw(&lcd, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
-                                     output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
+                            lcd_draw(&lcd, 0, PICSimLab.CanvasCmd, output[i].x1, output[i].y1,
+                                     output[i].x2 - output[i].x1, output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                         }
                     }
                 } else if ((output[i].name[0] == 'D') && (output[i].name[1] == 'P')) {
@@ -847,7 +847,7 @@ void cboard_PICGenios::Draw(void) {
                 }
 
                 if (led) {
-                    DrawLED(PICSimLab.CanvasCmd, &output[i]);
+                    DrawLED(0, PICSimLab.CanvasCmd, &output[i]);
                 } else {
                     PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r - 1}});
                 }

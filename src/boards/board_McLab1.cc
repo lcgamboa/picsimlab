@@ -331,7 +331,7 @@ void cboard_McLab1::Draw(void) {
                 }
 
                 if (led) {
-                    DrawLED(PICSimLab.CanvasCmd, &output[i]);
+                    DrawLED(0, PICSimLab.CanvasCmd, &output[i]);
                 } else {
                     PICSimLab.CanvasCmd({.cmd = CC_CIRCLE, .Circle{1, output[i].x1, output[i].y1, output[i].r}});
                 }

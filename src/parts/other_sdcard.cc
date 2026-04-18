@@ -81,9 +81,8 @@ cpart_SDCard::cpart_SDCard(const unsigned x, const unsigned y, const char* name,
 }
 
 cpart_SDCard::~cpart_SDCard(void) {
-    SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
-    SpareParts.CanvasCmd({.cmd = CC_DESTROY});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
     sdcard_end(&sd);
 }
 
@@ -96,12 +95,13 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
 
     switch (output[i].id) {
         case O_FILE:
-            SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{8}});
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFONTSIZE, .SetFontSize{8}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
             to = strlen(sdcard_fname) + 4;
             if (to < 38) {
                 to = 0;
@@ -109,16 +109,18 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
                 to = to - 38;
             }
             SpareParts.CanvasCmd(
-                {.cmd = CC_ROTATEDTEXT,
+                {.partn = id,
+                 .cmd = CC_ROTATEDTEXT,
                  .RotatedText{("Img:" + std::string(sdcard_fname + to)).c_str(), output[i].x1, output[i].y1, 0}});
             break;
         default:
-            SpareParts.CanvasCmd({.cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETCOLOR, .SetColor{49, 61, 99}});
             SpareParts.CanvasCmd(
-                {.cmd = CC_RECTANGLE,
+                {.partn = id,
+                 .cmd = CC_RECTANGLE,
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
-            SpareParts.CanvasCmd({.cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{155, 155, 155}});
 
             int pinv = output[i].id - O_P3;
             int pin = 0;
@@ -128,10 +130,11 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
                     pin = 3;
                     if (pins[pin] == 0)
                         SpareParts.CanvasCmd(
-                            {.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
+                            {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
                         SpareParts.CanvasCmd(
-                            {.cmd = CC_ROTATEDTEXT,
+                            {.partn = id,
+                             .cmd = CC_ROTATEDTEXT,
                              .RotatedText{SpareParts.GetPinName(pins[pin]).c_str(), output[i].x1, output[i].y2, 90.0}});
                     break;
                 case 1:
@@ -142,10 +145,11 @@ void cpart_SDCard::DrawOutput(const unsigned int i) {
                     pin = pinv - 2;
                     if (pins[pin] == 0)
                         SpareParts.CanvasCmd(
-                            {.cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
+                            {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
                     else
                         SpareParts.CanvasCmd(
-                            {.cmd = CC_ROTATEDTEXT,
+                            {.partn = id,
+                             .cmd = CC_ROTATEDTEXT,
                              .RotatedText{SpareParts.GetPinName(pins[pin]).c_str(), output[i].x1, output[i].y2, 90.0}});
             }
             break;

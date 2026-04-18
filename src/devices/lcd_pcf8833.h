@@ -67,6 +67,7 @@ void lcd_pcf8833_update(lcd_pcf8833_t* lcd);
 unsigned char lcd_pcf8833_io(lcd_pcf8833_t* lcd, unsigned char pdat, unsigned char clk, unsigned char ncs,
                              unsigned char nrst);
 
-void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr);
+void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, const int id, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1,
+                      int picpwr);
 
 #endif  // LCD_PCF8833

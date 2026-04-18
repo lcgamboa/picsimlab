@@ -108,8 +108,8 @@ unsigned char ldd_max72xx_io(ldd_max72xx_t* ldd, unsigned char din, unsigned cha
     return ldd->bb_spi.ret;
 }
 
-void ldd_max72xx_draw(ldd_max72xx_t* ldd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr, int angle,
-                      int mode) {
+void ldd_max72xx_draw(ldd_max72xx_t* ldd, const int id, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1,
+                      int picpwr, int angle, int mode) {
     int x, y, a, b;
 
     ldd->update = 0;
@@ -140,22 +140,24 @@ void ldd_max72xx_draw(ldd_max72xx_t* ldd, CanvasCmd_ft CanvasCmd, int x1, int y1
             }
 
             if (ldd->ram[a] & (1 << (b))) {
-                (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
-                (*CanvasCmd)({.cmd = CC_SETBGCOLOR, .SetBgColor{250, 0, 0}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{250, 0, 0}});
             } else {
-                (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
-                (*CanvasCmd)({.cmd = CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{50, 50, 50}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{70, 70, 70}});
             }
 
             switch (mode) {
                 case 1:
-                    (*CanvasCmd)({.cmd = CC_CIRCLE,
+                    (*CanvasCmd)({.partn = id,
+                                  .cmd = CC_CIRCLE,
                                   .Circle{1, (float)(x1 + ((7 - x) * 20) + 10), (float)(y1 + ((7 - y) * 20) + 10),
                                           9}});  // Parola
                     break;
                 default:
                     (*CanvasCmd)(
-                        {.cmd = CC_CIRCLE,
+                        {.partn = id,
+                         .cmd = CC_CIRCLE,
                          .Circle{1, (float)(x1 + ((x) * 20) + 10), (float)(y1 + ((7 - y) * 20) + 10), 9}});  // FC16
                     break;
             }

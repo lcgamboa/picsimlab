@@ -592,8 +592,8 @@ unsigned short lcd_ili9341_8_io(lcd_ili9341_t* lcd, const unsigned char** pins_v
     return lcd->out;
 }
 
-void lcd_ili9341_draw(lcd_ili9341_t* lcd, CanvasCmd_ft CanvasCmd, const int x1, const int y1, const int w1,
-                      const int h1, const int picpwr) {
+void lcd_ili9341_draw(lcd_ili9341_t* lcd, const int id, CanvasCmd_ft CanvasCmd, const int x1, const int y1,
+                      const int w1, const int h1, const int picpwr) {
     unsigned short x, y;
     unsigned char r, g, b;
 
@@ -620,11 +620,11 @@ void lcd_ili9341_draw(lcd_ili9341_t* lcd, CanvasCmd_ft CanvasCmd, const int x1, 
                 b = (lcd->ram[x][y] & 0x00001F)*8.23;
                  */
 
-                (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{r, g, b}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETCOLOR, .SetColor{r, g, b}});
 
                 // canvas->Rectangle (1, x1 + (x * 2), y1 + (y * 8 * 2)+(z * 2), 2, 2);
 
-                (*CanvasCmd)({.cmd = CC_POINT, .Point{(float)(x1 + y), (float)(y1 + (239 - x))}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_POINT, .Point{(float)(x1 + y), (float)(y1 + (239 - x))}});
             }
         }
     }

@@ -109,12 +109,12 @@ unsigned char led_ws2812b_io(led_ws2812b_t* led, const unsigned char din) {
     return din;
 }
 
-void led_ws2812b_draw(led_ws2812b_t* led, CanvasCmd_ft CanvasCmd, const int x1, const int y1, const int w1,
-                      const int h1, const int picpwr) {
+void led_ws2812b_draw(led_ws2812b_t* led, const int id, CanvasCmd_ft CanvasCmd, const int x1, const int y1,
+                      const int w1, const int h1, const int picpwr) {
     unsigned int x, y, index;
     int R, G, B;
     led->update = 0;
-    (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
+    (*CanvasCmd)({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{0, 0, 0}});
     for (x = 0; x < led->nrows; x++) {
         for (y = 0; y < led->ncols; y++) {
             index = (x * led->ncols) + y;
@@ -123,17 +123,21 @@ void led_ws2812b_draw(led_ws2812b_t* led, CanvasCmd_ft CanvasCmd, const int x1, 
             G = ((led->color[index].G * 4) > 255) ? 255 : (led->color[index].G * 4);
             B = ((led->color[index].B * 4) > 255) ? 255 : (led->color[index].B * 4);
 
-            (*CanvasCmd)({.cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)R, (unsigned int)G, (unsigned int)B}});
+            (*CanvasCmd)(
+                {.partn = id, .cmd = CC_SETBGCOLOR, .SetBgColor{(unsigned int)R, (unsigned int)G, (unsigned int)B}});
 
             if (led->diffuser) {
-                (*CanvasCmd)({.cmd = CC_RECTANGLE,
+                (*CanvasCmd)({.partn = id,
+                              .cmd = CC_RECTANGLE,
                               .Rectangle{1, (float)(x1 + (y * 40) - 8), (float)(y1 - (x * 40) - 8), (float)(w1 + 16),
                                          (float)(h1 + 16)}});
             } else {
-                (*CanvasCmd)(
-                    {.cmd = CC_SETFGCOLOR, .SetFgColor{led->color[index].R, led->color[index].G, led->color[index].B}});
-                (*CanvasCmd)(
-                    {.cmd = CC_CIRCLE, .Circle{1, (float)(x1 + (y * 40) + 12), (float)(y1 - (x * 40) + 12), 7}});
+                (*CanvasCmd)({.partn = id,
+                              .cmd = CC_SETFGCOLOR,
+                              .SetFgColor{led->color[index].R, led->color[index].G, led->color[index].B}});
+                (*CanvasCmd)({.partn = id,
+                              .cmd = CC_CIRCLE,
+                              .Circle{1, (float)(x1 + (y * 40) + 12), (float)(y1 - (x * 40) + 12), 7}});
             }
         }
     }

@@ -111,9 +111,6 @@ public:
 
     std::string GetOldFilename(void) { return oldfname; };
 
-    void SetPartOnDraw(int pod) { PartOnDraw = pod; };
-    int GetPartOnDraw(void) { return PartOnDraw; };
-
     static int CanvasCmd(const CanvasCmd_t cmd);
 
     static int WPropCmd(const char* ControlName, const PICSimLabWindowAction action, const char* Value,

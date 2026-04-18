@@ -78,6 +78,7 @@ typedef struct {
 } Point_t;
 
 typedef struct {
+    int partn;
     PICSimLabCanvasCmd cmd;
     union {
         struct {
@@ -220,13 +221,13 @@ typedef struct {
     };
 } CanvasCmd_t;
 
-typedef int (*CanvasCmd_ft)(CanvasCmd_t);
+typedef int (*CanvasCmd_ft)(const CanvasCmd_t);
 
 // Draw Functions
-void DrawLED(CanvasCmd_ft CanvasCmd, const output_t* output);
-void DrawSlider(CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos, const std::string val,
-                const int FontPointSize);
-void DrawPotentiometer(CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos, const std::string val,
-                       const int FontPointSize);
+void DrawLED(int partn, CanvasCmd_ft CanvasCmd, const output_t* output);
+void DrawSlider(int partn, CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos,
+                const std::string val, const int FontPointSize);
+void DrawPotentiometer(int partn, CanvasCmd_ft CanvasCmd, const output_t* output, const unsigned char pos,
+                       const std::string val, const int FontPointSize);
 
 #endif  // PCANVACMD_H

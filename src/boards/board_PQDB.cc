@@ -428,7 +428,7 @@ void cboard_PQDB::Draw(void) {
                         {.cmd = CC_RECTANGLE,
                          .Rectangle{1, output[i].x1 - 15, output[i].y1 - 5, output[i].x2 - output[i].x1 + 32,
                                     output[i].y2 - output[i].y1 + 13}});
-                    lcd_draw(&lcd, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
+                    lcd_draw(&lcd, 0, PICSimLab.CanvasCmd, output[i].x1, output[i].y1, output[i].x2 - output[i].x1,
                              output[i].y2 - output[i].y1, PICSimLab.GetMcuPwr());
                 } else if (output[i].id == O_MP) {
                     PICSimLab.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{10}});
@@ -450,7 +450,7 @@ void cboard_PQDB::Draw(void) {
                                          .SetBgColor{(unsigned int)pic.pins[LED_RED_PIN].oavalue,
                                                      (unsigned int)pic.pins[LED_GREEN_PIN].oavalue,
                                                      (unsigned int)pic.pins[LED_BLUE_PIN].oavalue}});
-                    DrawLED(PICSimLab.CanvasCmd, &output[i]);
+                    DrawLED(0, PICSimLab.CanvasCmd, &output[i]);
                 } else if ((output[i].id == O_P1) || (output[i].id == O_P2) || (output[i].id == O_P3) ||
                            (output[i].id == O_P4)) {
                     PICSimLab.CanvasCmd(

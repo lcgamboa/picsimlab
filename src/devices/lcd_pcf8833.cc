@@ -359,7 +359,8 @@ unsigned char lcd_pcf8833_io(lcd_pcf8833_t* lcd, unsigned char pdat, unsigned ch
     return 1;
 }
 
-void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1, int picpwr) {
+void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, const int id, CanvasCmd_ft CanvasCmd, int x1, int y1, int w1, int h1,
+                      int picpwr) {
     unsigned char x, y;
 
     // canvas->Rectangle (1, x1, y1, w1, h1);//erase all
@@ -376,10 +377,10 @@ void lcd_pcf8833_draw(lcd_pcf8833_t* lcd, CanvasCmd_ft CanvasCmd, int x1, int y1
 
                 lcd->ram[x][y] &= 0x00FFFFFF;  // clear draw
 
-                (*CanvasCmd)({.cmd = CC_SETFGCOLOR, .SetFgColor{r, g, b}});
-                (*CanvasCmd)({.cmd = CC_SETCOLOR, .SetColor{r, g, b}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{r, g, b}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_SETCOLOR, .SetColor{r, g, b}});
                 // canvas->Rectangle (1, x1+(x*2), y1+(y*2), 2,2 );
-                (*CanvasCmd)({.cmd = CC_POINT, .Point{(float)(x1 + x), (float)(y1 + y)}});
+                (*CanvasCmd)({.partn = id, .cmd = CC_POINT, .Point{(float)(x1 + x), (float)(y1 + y)}});
             }
         }
     }

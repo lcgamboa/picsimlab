@@ -471,7 +471,7 @@ void cboard_x::Draw(void) {
                         break;
                 }
 
-                DrawLED(PICSimLab.CanvasCmd, &output[i]);
+                DrawLED(0, PICSimLab.CanvasCmd, &output[i]);
             }
         }
     }

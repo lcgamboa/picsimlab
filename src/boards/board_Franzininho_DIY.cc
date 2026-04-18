@@ -327,7 +327,7 @@ void cboard_Franzininho_DIY::Draw(void) {
                         break;
                 }
 
-                DrawLED(PICSimLab.CanvasCmd, &output[i]);
+                DrawLED(0, PICSimLab.CanvasCmd, &output[i]);
             }
         }
     }

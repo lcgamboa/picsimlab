@@ -315,27 +315,28 @@ void part::LoadPartImage(void) {
     int created = 0;
     SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
     if (created == 1) {
-        SpareParts.SetPartOnDraw(id);
         std::string iname = PICSimLab.GetSharePath() + "parts/" + Type + "/" + GetPictureFileName();
 
         if (BitmapId >= 0) {
-            SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
             BitmapId = -1;
         }
 
-        int bmp = SpareParts.CanvasCmd({.cmd = CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
+        int bmp =
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_LOADIMAGE, .LoadImage{iname.c_str(), Scale, 0, Orientation}});
 
         if (bmp >= 0) {
             BitmapId = bmp;
-            SpareParts.CanvasCmd({.cmd = CC_DESTROY});
-            SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_CREATE, .Create{BitmapId}});
         } else if ((bmp = SpareParts.CanvasCmd(
-                        {.cmd = CC_LOADIMAGE,
+                        {.partn = id,
+                         .cmd = CC_LOADIMAGE,
                          .LoadImage{(PICSimLab.GetSharePath() + "parts/Common/notfound.svg").c_str(), Scale, 0,
                                     Orientation}})) >= 0) {
             BitmapId = bmp;
-            SpareParts.CanvasCmd({.cmd = CC_DESTROY});
-            SpareParts.CanvasCmd({.cmd = CC_CREATE, .Create{BitmapId}});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
+            SpareParts.CanvasCmd({.partn = id, .cmd = CC_CREATE, .Create{BitmapId}});
 
             printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
             PICSimLab.RegisterError("Error loading image:\n " + iname);
@@ -359,8 +360,7 @@ void part::SetOrientation(int orientation) {
     if (BitmapId < 0)
         return;
 
-    SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     BitmapId = -1;
 
     LoadPartImage();
@@ -383,8 +383,7 @@ void part::SetScale(double scale) {
 
     Scale = scale;
 
-    SpareParts.SetPartOnDraw(id);
-    SpareParts.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
+    SpareParts.CanvasCmd({.partn = id, .cmd = CC_FREEBITMAP, .FreeBitmap{BitmapId}});
     BitmapId = -1;
 
     LoadPartImage();
@@ -549,9 +548,9 @@ void part::Draw(void) {
             output[i].update = 0;
 
             if (!Update) {
-                SpareParts.CanvasCmd({.cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
-                SpareParts.CanvasCmd({.cmd = CC_SETFONTSIZE, .SetFontSize{Fsize}});
-                SpareParts.CanvasCmd({.cmd = CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_INIT, .Init{Scale, Scale, Orientation}});
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFONTSIZE, .SetFontSize{Fsize}});
+                SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFONTWEIGHT, .SetFontWeight{CC_FONTWEIGHT_BOLD}});
             }
             Update++;  // set to update buffer
 
@@ -560,7 +559,7 @@ void part::Draw(void) {
     }
 
     if (Update) {
-        SpareParts.CanvasCmd({.cmd = CC_END});
+        SpareParts.CanvasCmd({.partn = id, .cmd = CC_END});
     }
 }
 
