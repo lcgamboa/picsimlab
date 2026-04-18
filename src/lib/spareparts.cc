@@ -66,13 +66,13 @@ part* CSpareParts::GetPart(const int partn) {
     return NULL;
 }
 
-part* CSpareParts::AddPart(const char* partname, const int x, const int y, const float scale) {
+part* CSpareParts::AddPart(const char* partname, const int x, const int y) {
     part* newpart = create_part(partname, x, y, pboard, partsc);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
         PICSimLab.RegisterError("Erro creating part: " + std::string(partname));
     } else {
-        parts[partsc]->SetScale(scale);
+        parts[partsc]->SetScale(GetScale());
         parts[partsc]->Reset();
         partsc++;
     }

@@ -392,10 +392,8 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
     } else if (type_is_equal(Output->name, "LM")) {
         // LED Matrix (MAX7219/MAX7221) - 8x8 LED matrix, 8 bytes representing rows
         ldd_max72xx_t* ldd = (ldd_max72xx_t*)Output->status;
-        snprintf(lstemp, 199, "%s %s= %02X %02X %02X %02X %02X %02X %02X %02X\r\n",
-                 msg, Output->name,
-                 ldd->ram[0], ldd->ram[1], ldd->ram[2], ldd->ram[3],
-                 ldd->ram[4], ldd->ram[5], ldd->ram[6], ldd->ram[7]);
+        snprintf(lstemp, 199, "%s %s= %02X %02X %02X %02X %02X %02X %02X %02X\r\n", msg, Output->name, ldd->ram[0],
+                 ldd->ram[1], ldd->ram[2], ldd->ram[3], ldd->ram[4], ldd->ram[5], ldd->ram[6], ldd->ram[7]);
         *ret += sendtext(lstemp);
     } else {
         snprintf(lstemp, 199, "%s %s= unknow type !\r\n", msg, Output->name);
@@ -495,6 +493,8 @@ int rcontrol_loop(void) {
                             snprintf(lstemp, 100, "Set to %2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
                             ret = sendtext(lstemp);
                         }
+                    } else {
+                        ret = sendtext("ERROR\r\n>");
                     }
                     break;
                 case 'd':
@@ -819,9 +819,11 @@ int rcontrol_loop(void) {
                         ret += sendtext("  quit         - exit remote control interface\r\n");
                         ret += sendtext("  reset        - reset the board\r\n");
                         ret += sendtext("  set ob vl    - set object with value\r\n");
-                        ret += sendtext(
-                            "  sim [cmd]    - show simulation status or execute "
-                            "cmd start/stop\r\n");
+                        ret += sendtext("  sim [cmd]    - show simulation status or execute \r\n");
+                        ret += sendtext("                 cmd start/stop\r\n");
+                        ret += sendtext("  spadd \"pname\" xpos ypos \r\n");
+                        ret += sendtext("               - adds the named spare part\r\n");
+                        ret += sendtext("  splist       - list supported spare parts\r\n");
                         ret += sendtext("  sync         - wait to syncronize with timer event\r\n");
                         ret += sendtext("  version      - show PICSimLab version\r\n");
 
@@ -888,7 +890,7 @@ int rcontrol_loop(void) {
                     }
                     break;
                 case 'l':
-                    if (!strncmp(cmd, "loadhex", 7)) {
+                    if (!strncmp(cmd, "loadhex ", 8)) {
                         // Command loadhex
                         // ========================================================
                         char* ptr;
@@ -1108,7 +1110,33 @@ int rcontrol_loop(void) {
                                 ret = sendtext("Simulation stopped\r\nOk\r\n>");
                             }
                         }
+                    } else if (!strncmp(cmd, "spadd ", 6)) {
+                        // Command spadd =====================================================
 
+                        char pname[100];
+                        int xpos, ypos;
+                        sscanf(cmd + 6, " \"%99[^\"]\" %i %i", pname, &xpos, &ypos);
+
+                        part* sp = SpareParts.AddPart(pname, xpos, ypos);
+                        if (sp) {
+                            sp->Draw();
+                            SpareParts.UpdateAll(1);
+                            ret = sendtext("Ok\r\n>");
+                        } else {
+                            ret = sendtext("ERROR\r\n>");
+                        }
+
+                    } else if (!strcmp(cmd, "splist")) {
+                        // Command splist
+                        // ========================================================
+                        ret += sendtext("Supported Spare Parts:\r\n");
+                        for (int i = 0; i < NUM_PARTS; i++) {
+                            ret += sendtext("\"");
+                            ret += sendtext(parts_list[i].name);
+                            ret += sendtext("\", ");
+                        }
+                        ret += sendtext("\r\n");
+                        ret += sendtext("Ok\r\n>");
                     } else if (!strcmp(cmd, "sync")) {
                         // Command sync =====================================================
                         PICSimLab.SetSync(0);

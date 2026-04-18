@@ -428,7 +428,7 @@ part_init(PART_LCD_HD44780_Name, cpart_LCD_hd44780, "Output");
 // Combined hd44780 + IO PCF8574
 
 static part* cpart_LCD_hd44780_i2c_create(const unsigned int x, const unsigned int y, board* pboard_, const int id_) {
-    cpart_IO_PCF8574* pcf = (cpart_IO_PCF8574*)SpareParts.AddPart("IO PCF8574", x, y + 365, SpareParts.GetScale());
+    cpart_IO_PCF8574* pcf = (cpart_IO_PCF8574*)SpareParts.AddPart("IO PCF8574", x, y + 365);
 
     const unsigned char* pcf_pins = pcf->GetOutputPins();
 
