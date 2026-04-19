@@ -53,7 +53,7 @@ void CPWindow5::_EvOnShow(CControl* control) {
     if (Visible) {
         need_resize = 0;
         timer1.SetRunState(1);
-        SpareParts.UpdateAll(1);
+        SpareParts.SetUpdateAll(1);
     }
 }
 
@@ -498,7 +498,7 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     static int tc = 0;
     int update = 0;
 
-    if (need_resize == 1) {
+    if ((need_resize == 1) || SpareParts.GetUpdateAll()) {
         int w = GetClientWidth() - 10;
         int h = GetClientHeight() - 10;
         draw1.SetWidth((w > 0) ? w : 1);
@@ -516,8 +516,9 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
     }
 
     if (update_all) {
-        SpareParts.UpdateAll();
+        SpareParts.SetUpdateAll(1);
         update = 1;
+        SpareParts.SetUpdateAll(0);
     }
 
     // printf ("part update %i\n", update);

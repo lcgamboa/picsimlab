@@ -819,10 +819,13 @@ int rcontrol_loop(void) {
                         ret += sendtext("  quit         - exit remote control interface\r\n");
                         ret += sendtext("  reset        - reset the board\r\n");
                         ret += sendtext("  set ob vl    - set object with value\r\n");
-                        ret += sendtext("  sim [cmd]    - show simulation status or execute \r\n");
+                        ret += sendtext("  sim [cmd]    - show simulation status or execute\r\n");
                         ret += sendtext("                 cmd start/stop\r\n");
                         ret += sendtext("  spadd \"pname\" xpos ypos \r\n");
                         ret += sendtext("               - adds the named spare part\r\n");
+                        ret += sendtext("  sprdcfg pid  - read spare part configuration\r\n");
+                        ret += sendtext("  spwrcfg pid \"cfg\"  \r\n");
+                        ret += sendtext("               - write spare part configuration\r\n");
                         ret += sendtext("  splist       - list supported spare parts\r\n");
                         ret += sendtext("  sync         - wait to syncronize with timer event\r\n");
                         ret += sendtext("  version      - show PICSimLab version\r\n");
@@ -1119,13 +1122,38 @@ int rcontrol_loop(void) {
 
                         part* sp = SpareParts.AddPart(pname, xpos, ypos);
                         if (sp) {
-                            sp->Draw();
-                            SpareParts.UpdateAll(1);
+                            SpareParts.SetUpdateAll(1);
                             ret = sendtext("Ok\r\n>");
                         } else {
                             ret = sendtext("ERROR\r\n>");
                         }
+                    } else if (!strncmp(cmd, "sprdcfg ", 8)) {
+                        int pid = -1;
+                        sscanf(cmd + 8, "%d", &pid);
+                        Part = SpareParts.GetPart(pid);
+                        if (Part) {
+                            ret = sendtext("\"");
+                            ret = sendtext(Part->WritePreferences().c_str());
+                            ret += sendtext("\"\r\nOk\r\n>");
+                        } else {
+                            ret = sendtext("ERROR\r\n>");
+                        }
 
+                    } else if (!strncmp(cmd, "spwrcfg ", 8)) {
+                        int pid = -1;
+                        char scfg[512];
+                        sscanf(cmd + 8, "%d \"%511[^\"]\"", &pid, scfg);
+                        Part = SpareParts.GetPart(pid);
+                        if (Part) {
+                            if (Part->ReadPreferences(scfg) != Part->PreferencesNumberFields()) {
+                                ret = sendtext("ERROR\r\n>");
+                            } else {
+                                SpareParts.SetUpdateAll(1);
+                                ret = sendtext("Ok\r\n>");
+                            }
+                        } else {
+                            ret = sendtext("ERROR\r\n>");
+                        }
                     } else if (!strcmp(cmd, "splist")) {
                         // Command splist
                         // ========================================================

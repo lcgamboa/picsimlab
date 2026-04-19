@@ -43,6 +43,7 @@ CSpareParts::CSpareParts() {
     fdtype = -1;
     PartOnDraw = -1;
     bgcolor = "#323232";
+    need_update = 0;
 
     OnCanvasCmd = NULL;
     OnWindowCmd = NULL;
@@ -50,13 +51,16 @@ CSpareParts::CSpareParts() {
 
 void CSpareParts::Init(void) {}
 
-void CSpareParts::UpdateAll(const int force) {
-    for (int i = 0; i < partsc; i++) {
-        parts[i]->SetUpdate(1);
+void CSpareParts::SetUpdateAll(const int update) {
+    if (update) {
+        for (int i = 0; i < partsc; i++) {
+            parts[i]->SetUpdate(1);
 #if defined(_LX_SDL2) || defined(__EMSCRIPTEN__)
-        parts[i]->SetScale(parts[i]->GetScale() + 1e-3);
+            parts[i]->SetScale(parts[i]->GetScale() + 1e-3);
 #endif
+        }
     }
+    need_update = update;
 }
 
 part* CSpareParts::GetPart(const int partn) {
@@ -318,7 +322,7 @@ bool CSpareParts::LoadPinAlias(std::string fname, unsigned char show_error_msg) 
         PinAlias[0] = "NC";
         if (show_error_msg) {
             useAlias = 1;
-            UpdateAll();
+            SetUpdateAll(1);
             Oscilloscope.SetBaseTimer();
         }
         return 1;

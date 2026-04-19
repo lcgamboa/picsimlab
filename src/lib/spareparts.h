@@ -37,7 +37,9 @@ public:
 
     void Init(void);
 
-    void UpdateAll(const int force = 0);
+    void SetUpdateAll(const int update);
+    int GetUpdateAll(void) { return need_update; };
+
     int GetCount(void) { return partsc; };
     part* GetPart(const int partn);
     void DeleteParts(void);
@@ -145,6 +147,7 @@ private:
     std::string oldfname;
     int PartOnDraw;
     std::string bgcolor;
+    int need_update;
 };
 
 extern CSpareParts SpareParts;
