@@ -2518,7 +2518,7 @@ int CheckRemoteNewVersion(int check_for_devel) {
     MemBuffer.data[0] = 0;
     MemBuffer.size = 0;
 
-    lxString ca_path = PICSimLab.GetSharePath() + "github-ca.crt";
+    lxString ca_path = PICSimLab.GetSharePath() + "cacert.pem";
 
     curl = curl_easy_init();
     if (curl) {
