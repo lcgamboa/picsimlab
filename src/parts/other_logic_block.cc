@@ -498,17 +498,18 @@ std::string cpart_lblock::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_lblock::ReadPreferences(std::string value) {
+int cpart_lblock::ReadPreferences(std::string value) {
     unsigned int sz;
     unsigned char outp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0], &input_pins[1],
-           &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7],
-           &output_pins[0], &outp, &gatetype, &sz);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &input_pins[0],
+                     &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6],
+                     &input_pins[7], &output_pins[0], &outp, &gatetype, &sz);
 
     SpareParts.UnregisterIOpin(output_pins[1]);
     output_pins[1] = SpareParts.RegisterIOpin("LB0", outp);
 
     ChangeSize(sz);
+    return ret;
 }
 
 void cpart_lblock::ConfigurePropertiesWindow(void) {

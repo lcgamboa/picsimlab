@@ -399,9 +399,9 @@ std::string cpart_SignalGenerator::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_SignalGenerator::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1], &type, &maxfreq,
-           &input_pins[1], &values[2]);
+int cpart_SignalGenerator::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1], &type,
+                  &maxfreq, &input_pins[1], &values[2]);
 }
 
 void cpart_SignalGenerator::RegisterRemoteControl(void) {

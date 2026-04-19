@@ -43,8 +43,9 @@ public:
     void EvKeyRelease(unsigned int key, unsigned int mask) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
+    int PreferencesNumberFields(void) override { return 17; };
     std::string WritePreferences(void) override;
-    void ReadPreferences(std::string value) override;
+    int ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
 

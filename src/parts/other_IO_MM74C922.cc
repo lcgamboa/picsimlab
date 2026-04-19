@@ -262,10 +262,10 @@ std::string cpart_IO_MM74C922::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_IO_MM74C922::ReadPreferences(std::string value) {
+int cpart_IO_MM74C922::ReadPreferences(std::string value) {
     unsigned char inp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[4], &output_pins[5], &output_pins[6],
-           &output_pins[7], &output_pins[8], &inp);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[4], &output_pins[5], &output_pins[6],
+                     &output_pins[7], &output_pins[8], &inp);
 
     if (input_pins[0] != inp) {
         for (int i = 0; i < 4; i++) {
@@ -289,6 +289,7 @@ void cpart_IO_MM74C922::ReadPreferences(std::string value) {
     }
 
     Reset();
+    return ret;
 }
 
 void cpart_IO_MM74C922::ConfigurePropertiesWindow(void) {

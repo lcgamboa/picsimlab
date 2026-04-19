@@ -365,7 +365,7 @@ std::string cpart_vterm::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_vterm::ReadPreferences(std::string value) {
+int cpart_vterm::ReadPreferences(std::string value) {
     int x, y, w, h;
     int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%u,%hhu,%i,%i,%i,%i,%i,%[^\n]", &pins[0], &pins[1], &lending,
                      &vterm_speed, &show, &x, &y, &w, &h, &enable_log, log_fname);
@@ -395,6 +395,7 @@ void cpart_vterm::ReadPreferences(std::string value) {
     }
 
     Reset();
+    return ret;
 }
 
 void cpart_vterm::ConfigurePropertiesWindow(void) {

@@ -229,11 +229,11 @@ std::string cpart_led_ws2812b::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_led_ws2812b::ReadPreferences(std::string value) {
+int cpart_led_ws2812b::ReadPreferences(std::string value) {
     unsigned char outp;
     unsigned int rows, cols;
     unsigned char diffuser;
-    sscanf(value.c_str(), "%hhu,%hhu,%u,%u,%hhu", &input_pins[0], &outp, &rows, &cols, &diffuser);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%u,%u,%hhu", &input_pins[0], &outp, &rows, &cols, &diffuser);
 
     SpareParts.UnregisterIOpin(output_pins[0]);
     output_pins[0] = SpareParts.RegisterIOpin("DOUT", outp);
@@ -241,6 +241,7 @@ void cpart_led_ws2812b::ReadPreferences(std::string value) {
     ChangeType(rows, cols, diffuser);
 
     Reset();
+    return ret;
 }
 
 void cpart_led_ws2812b::ChangeType(const unsigned int rows, const unsigned int cols, const unsigned char diffuser) {

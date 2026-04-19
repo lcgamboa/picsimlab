@@ -329,9 +329,10 @@ std::string cpart_gamepad_an::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_gamepad_an::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu", &output_pins[0], &active);
+int cpart_gamepad_an::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu", &output_pins[0], &active);
     output_value_an = active * vmax;
+    return ret;
 }
 
 void cpart_gamepad_an::ConfigurePropertiesWindow(void) {

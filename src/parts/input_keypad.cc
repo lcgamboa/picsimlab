@@ -620,14 +620,15 @@ std::string cpart_keypad::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_keypad::ReadPreferences(std::string value) {
+int cpart_keypad::ReadPreferences(std::string value) {
     unsigned char tp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
-           &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7], &pull,
-           &tp);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0],
+                     &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5],
+                     &output_pins[6], &output_pins[7], &pull, &tp);
     memset(keys, 0, 16);
     memset(keys2, 0, 10);
     ChangeType(tp);
+    return ret;
 }
 
 void cpart_keypad::ConfigurePropertiesWindow(void) {

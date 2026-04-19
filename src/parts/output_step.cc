@@ -408,9 +408,9 @@ std::string cpart_step::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_step::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3],
-           &output_pins[0]);
+int cpart_step::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
+                  &input_pins[3], &output_pins[0]);
 }
 
 void cpart_step::RegisterRemoteControl(void) {

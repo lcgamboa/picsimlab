@@ -144,9 +144,10 @@ std::string cpart_hx711::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_hx711::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &values[0]);
+int cpart_hx711::ReadPreferences(std::string value_) {
+    int ret = sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &values[0]);
     Reset();
+    return ret;
 }
 
 void cpart_hx711::ConfigurePropertiesWindow(void) {

@@ -281,11 +281,12 @@ std::string cpart_tempsys::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_tempsys::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%f,%f", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3],
-           &ambient, &tvoff);
+int cpart_tempsys::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%f,%f", &input_pins[0], &input_pins[1], &input_pins[2],
+                     &input_pins[3], &ambient, &tvoff);
     temp[0] = ambient;
     temp[1] = ambient;
+    return ret;
 }
 
 void cpart_tempsys::ConfigurePropertiesWindow(void) {

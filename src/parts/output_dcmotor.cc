@@ -332,8 +332,8 @@ std::string cpart_dcmotor::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_dcmotor::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4]);
+int cpart_dcmotor::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4]);
 }
 
 void cpart_dcmotor::ConfigurePropertiesWindow(void) {

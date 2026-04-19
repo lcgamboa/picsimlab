@@ -45,12 +45,13 @@ public:
                             unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
+    int PreferencesNumberFields(void) override { return 11; };
     void ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
                      unsigned int state) override;
     void KeyEvent(const char* controlname, unsigned int keysym, unsigned int ukeysym, unsigned int state) override;
     void Event(const char* controlname) override;
     std::string WritePreferences(void) override;
-    void ReadPreferences(std::string value) override;
+    int ReadPreferences(std::string value) override;
     void filedialog_EvOnClose(int retId) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;

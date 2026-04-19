@@ -182,9 +182,14 @@ public:
     virtual std::string WritePreferences(void) = 0;
 
     /**
-     * @brief  Called whe configuration file load  preferences
+     * @brief  Called whe configuration file load  preferences, return the number of preferences processed
      */
-    virtual void ReadPreferences(std::string value) = 0;
+    virtual int ReadPreferences(std::string value) = 0;
+
+    /**
+     * @brief  Return the number of fields in preferences
+     */
+    virtual int PreferencesNumberFields(void) = 0;
 
     /**
      * @brief  return the input ids numbers of names used in input map

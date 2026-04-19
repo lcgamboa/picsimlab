@@ -236,8 +236,8 @@ std::string cpart_sht3x::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_sht3x::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &values[0], &values[1]);
+int cpart_sht3x::ReadPreferences(std::string value_) {
+    return sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &values[0], &values[1]);
 }
 
 void cpart_sht3x::ConfigurePropertiesWindow(void) {

@@ -165,10 +165,11 @@ std::string cpart_LCD_ssd1306::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LCD_ssd1306::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
-           &input_pins[3], &input_pins[4], &type_com);
+int cpart_LCD_ssd1306::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
+                     &input_pins[3], &input_pins[4], &type_com);
     Reset();
+    return ret;
 }
 
 void cpart_LCD_ssd1306::ConfigurePropertiesWindow(void) {

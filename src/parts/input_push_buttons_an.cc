@@ -353,8 +353,8 @@ std::string cpart_pbuttons_an::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_pbuttons_an::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu", &output_pins[0], &active);
+int cpart_pbuttons_an::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu", &output_pins[0], &active);
     output_value = active * vmax;
     output_value_[0] = !active;
     output_value_[1] = !active;
@@ -364,6 +364,7 @@ void cpart_pbuttons_an::ReadPreferences(std::string value) {
     output_value_[5] = !active;
     output_value_[6] = !active;
     output_value_[7] = !active;
+    return ret;
 }
 
 void cpart_pbuttons_an::ConfigurePropertiesWindow(void) {

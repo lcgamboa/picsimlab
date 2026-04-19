@@ -189,8 +189,8 @@ std::string cpart_fm50::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_fm50::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
+int cpart_fm50::ReadPreferences(std::string value_) {
+    return sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
 }
 
 void cpart_fm50::ConfigurePropertiesWindow(void) {

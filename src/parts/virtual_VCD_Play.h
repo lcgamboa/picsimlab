@@ -50,8 +50,9 @@ public:
     void ConfigurePropertiesWindow(void) override;
     void filedialog_EvOnClose(int retId) override;
     void ReadPropertiesWindow(void) override;
+    int PreferencesNumberFields(void) override { return 10; };
     std::string WritePreferences(void) override;
-    void ReadPreferences(std::string value) override;
+    int ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     int LoadVCD(std::string fname);

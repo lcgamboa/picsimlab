@@ -52,9 +52,10 @@ public:
     void Reset(void) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
+    int PreferencesNumberFields(void) override { return 12; };
     std::string WritePreferences(void) override;
     void LoadPartImage(void) override;
-    void ReadPreferences(std::string value) override;
+    int ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     unsigned char input_pins[11];

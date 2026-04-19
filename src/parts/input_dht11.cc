@@ -261,8 +261,8 @@ std::string cpart_dht11::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_dht11::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &output_pins[0], &values[0], &values[1]);
+int cpart_dht11::ReadPreferences(std::string value_) {
+    return sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &output_pins[0], &values[0], &values[1]);
 }
 
 void cpart_dht11::ConfigurePropertiesWindow(void) {

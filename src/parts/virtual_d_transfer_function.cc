@@ -287,10 +287,10 @@ std::string cpart_dtfunc::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_dtfunc::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &pins[0], &pins[1], &sample,
-           &in_gain, &in_off, &out_gain, &out_off, &ordern, &orderd, &num[0], &num[1], &num[2], &num[3], &den[0],
-           &den[1], &den[2], &den[3]);
+int cpart_dtfunc::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu,%hhu,%f,%f,%f,%f,%f,%i,%i,%f,%f,%f,%f,%f,%f,%f,%f", &pins[0], &pins[1], &sample,
+                  &in_gain, &in_off, &out_gain, &out_off, &ordern, &orderd, &num[0], &num[1], &num[2], &num[3], &den[0],
+                  &den[1], &den[2], &den[3]);
 }
 
 void cpart_dtfunc::ConfigurePropertiesWindow(void) {

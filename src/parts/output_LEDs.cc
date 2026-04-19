@@ -225,14 +225,16 @@ std::string cpart_leds::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_leds::ReadPreferences(std::string value) {
+int cpart_leds::ReadPreferences(std::string value) {
     unsigned int sz;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
-           &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5],
-           &input_pins[6], &input_pins[7], &active, &colors[0], &colors[1], &colors[2], &colors[3], &colors[4],
-           &colors[5], &colors[6], &colors[7], &sz);
+    int ret =
+        sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
+               &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5],
+               &input_pins[6], &input_pins[7], &active, &colors[0], &colors[1], &colors[2], &colors[3], &colors[4],
+               &colors[5], &colors[6], &colors[7], &sz);
 
     ChangeSize(sz);
+    return ret;
 }
 
 void cpart_leds::RegisterRemoteControl(void) {

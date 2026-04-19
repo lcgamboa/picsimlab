@@ -47,9 +47,10 @@ public:
                               unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
+    int PreferencesNumberFields(void) override { return 11; };
     void LoadPartImage(void) override;
     std::string WritePreferences(void) override;
-    void ReadPreferences(std::string value) override;
+    int ReadPreferences(std::string value) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;
     void SpinChange(const char* controlname, int value) override;

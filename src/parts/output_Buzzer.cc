@@ -169,10 +169,11 @@ std::string cpart_Buzzer::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_Buzzer::ReadPreferences(std::string value) {
+int cpart_Buzzer::ReadPreferences(std::string value) {
     unsigned char tp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu", &input_pins[0], &tp, &active);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu", &input_pins[0], &tp, &active);
     ChangeType(tp);
+    return ret;
 }
 
 void cpart_Buzzer::RegisterRemoteControl(void) {

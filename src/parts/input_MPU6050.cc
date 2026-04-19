@@ -243,11 +243,12 @@ std::string cpart_MPU6050::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_MPU6050::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &mpu_pins[0], &mpu_pins[1], &mpu_pins[2], &mpu_pins[3],
-           &mpu_pins[4], &mpu_pins[5]);
+int cpart_MPU6050::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &mpu_pins[0], &mpu_pins[1], &mpu_pins[2],
+                     &mpu_pins[3], &mpu_pins[4], &mpu_pins[5]);
 
     Reset();
+    return ret;
 }
 
 void cpart_MPU6050::ConfigurePropertiesWindow(void) {

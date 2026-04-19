@@ -214,10 +214,11 @@ std::string cpart_ds18b20::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ds18b20::ReadPreferences(std::string value_) {
+int cpart_ds18b20::ReadPreferences(std::string value_) {
     uint64_t addr;
-    sscanf(value_.c_str(), "%hhu,%hhu,%" SCNu64, &output_pins[0], &values[0], &addr);
+    int ret = sscanf(value_.c_str(), "%hhu,%hhu,%" SCNu64, &output_pins[0], &values[0], &addr);
     sen_ds18b20_set_addr(&ds18b20, addr);
+    return ret;
 }
 
 void cpart_ds18b20::ConfigurePropertiesWindow(void) {

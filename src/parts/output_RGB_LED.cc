@@ -157,8 +157,8 @@ std::string cpart_rgb_led::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_rgb_led::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &active);
+int cpart_rgb_led::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &active);
 }
 
 void cpart_rgb_led::RegisterRemoteControl(void) {

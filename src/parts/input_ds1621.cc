@@ -170,10 +170,11 @@ std::string cpart_ds1621::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ds1621::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
-           &input_pins[3], &input_pins[4], &input_pins[5], &value);
+int cpart_ds1621::ReadPreferences(std::string value_) {
+    int ret = sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
+                     &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &value);
     Reset();
+    return ret;
 }
 
 void cpart_ds1621::ConfigurePropertiesWindow(void) {

@@ -155,9 +155,10 @@ std::string cpart_bmp180::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_bmp180::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &values[0], &values[1]);
+int cpart_bmp180::ReadPreferences(std::string value_) {
+    int ret = sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &values[0], &values[1]);
     Reset();
+    return ret;
 }
 
 void cpart_bmp180::ConfigurePropertiesWindow(void) {

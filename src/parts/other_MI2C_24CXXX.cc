@@ -198,9 +198,9 @@ std::string cpart_MI2C_24CXXX::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_MI2C_24CXXX::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%[^\n]", &input_pins[0], &input_pins[1], &input_pins[2],
-           &input_pins[3], &input_pins[4], &kbits, f_mi2c_name);
+int cpart_MI2C_24CXXX::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%u,%[^\n]", &input_pins[0], &input_pins[1],
+                     &input_pins[2], &input_pins[3], &input_pins[4], &kbits, f_mi2c_name);
 
     mi2c_end(&mi2c);
     mi2c_init(&mi2c, kbits);
@@ -217,6 +217,7 @@ void cpart_MI2C_24CXXX::ReadPreferences(std::string value) {
         }
     }
     Reset();
+    return ret;
 }
 
 void cpart_MI2C_24CXXX::ConfigurePropertiesWindow(void) {

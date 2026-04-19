@@ -162,8 +162,8 @@ std::string cpart_servo::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_servo::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu", &input_pin);
+int cpart_servo::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu", &input_pin);
 }
 
 void cpart_servo::RegisterRemoteControl(void) {

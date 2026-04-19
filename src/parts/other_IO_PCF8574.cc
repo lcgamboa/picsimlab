@@ -222,10 +222,10 @@ std::string cpart_IO_PCF8574::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_IO_PCF8574::ReadPreferences(std::string value) {
+int cpart_IO_PCF8574::ReadPreferences(std::string value) {
     unsigned char outp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
-           &input_pins[3], &input_pins[4], &outp);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
+                     &input_pins[3], &input_pins[4], &outp);
 
     if (output_pins[0] != outp) {
         for (int i = 0; i < 9; i++)
@@ -243,6 +243,7 @@ void cpart_IO_PCF8574::ReadPreferences(std::string value) {
     }
 
     Reset();
+    return ret;
 }
 
 void cpart_IO_PCF8574::ConfigurePropertiesWindow(void) {

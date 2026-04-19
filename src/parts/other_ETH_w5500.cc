@@ -338,10 +338,12 @@ std::string cpart_ETH_w5500::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ETH_w5500::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4], &pins[5]);
+int cpart_ETH_w5500::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &pins[0], &pins[1], &pins[2], &pins[3], &pins[4],
+                     &pins[5]);
 
     Reset();
+    return ret;
 }
 
 void cpart_ETH_w5500::RegisterRemoteControl(void) {

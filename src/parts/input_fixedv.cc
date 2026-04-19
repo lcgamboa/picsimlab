@@ -149,8 +149,9 @@ std::string cpart_fixedv::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_fixedv::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
+int cpart_fixedv::ReadPreferences(std::string value_) {
+    int ret = sscanf(value_.c_str(), "%hhu,%hhu", &output_pins[0], &value);
+    return ret;
 }
 
 void cpart_fixedv::ConfigurePropertiesWindow(void) {

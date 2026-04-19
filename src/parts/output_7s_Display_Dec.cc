@@ -573,13 +573,15 @@ std::string cpart_7s_display_dec::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_7s_display_dec::ReadPreferences(std::string value) {
+int cpart_7s_display_dec::ReadPreferences(std::string value) {
     unsigned char dtype_;
 
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
-           &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &dtype_);
+    int ret =
+        sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
+               &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &dtype_);
 
     ChangeType(dtype_);
+    return ret;
 }
 
 void cpart_7s_display_dec::RegisterRemoteControl(void) {

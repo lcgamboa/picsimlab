@@ -147,9 +147,11 @@ std::string cpart_RTC_pfc8563::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_RTC_pfc8563::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
+int cpart_RTC_pfc8563::ReadPreferences(std::string value) {
+    int ret =
+        sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3]);
     Reset();
+    return ret;
 }
 
 void cpart_RTC_pfc8563::ConfigurePropertiesWindow(void) {

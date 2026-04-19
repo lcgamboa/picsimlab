@@ -45,9 +45,10 @@ public:
                      unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
+    int PreferencesNumberFields(void) override { return 9; };
     void LoadPartImage(void) override;
     std::string WritePreferences(void) override;
-    void ReadPreferences(std::string value) override;
+    int ReadPreferences(std::string value) override;
     void Reset(void) override;
     unsigned short GetInputId(char* name) override;
     unsigned short GetOutputId(char* name) override;

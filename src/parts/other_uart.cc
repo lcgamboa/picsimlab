@@ -190,13 +190,14 @@ std::string cpart_UART::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_UART::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%u,%[^\n]", &pins[0], &pins[1], &uart_speed, uart_name);
+int cpart_UART::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%u,%[^\n]", &pins[0], &pins[1], &uart_speed, uart_name);
 
     Reset();
     if (uart_name[0] != '*') {
         uart_set_port(&sr, uart_name, uart_speed);
     }
+    return ret;
 }
 
 void cpart_UART::ConfigurePropertiesWindow(void) {

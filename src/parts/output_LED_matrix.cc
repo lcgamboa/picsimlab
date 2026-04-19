@@ -176,15 +176,16 @@ std::string cpart_led_matrix::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_led_matrix::ReadPreferences(std::string value) {
+int cpart_led_matrix::ReadPreferences(std::string value) {
     unsigned char outp;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%i,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp, &angle,
-           &lmode);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%i,%i", &input_pins[0], &input_pins[1], &input_pins[2], &outp,
+                     &angle, &lmode);
 
     SpareParts.UnregisterIOpin(output_pins[0]);
     output_pins[0] = SpareParts.RegisterIOpin("DOUT", outp);
 
     Reset();
+    return ret;
 }
 
 void cpart_led_matrix::RegisterRemoteControl(void) {

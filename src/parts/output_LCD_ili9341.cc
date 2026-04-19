@@ -303,16 +303,18 @@ std::string cpart_LCD_ili9341::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LCD_ili9341::ReadPreferences(std::string value) {
+int cpart_LCD_ili9341::ReadPreferences(std::string value) {
     unsigned char tp;
-    sscanf(value.c_str(),
-           "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,"
-           "%hhu,%hhu,%hhu,%hhu",
-           &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &tp, &input_pins[5],
-           &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11],
-           &input_pins[12], &touch_pins[0], &touch_pins[1], &touch_pins[2], &touch_pins[3], &touch_pins[4]);
+    int ret =
+        sscanf(value.c_str(),
+               "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,"
+               "%hhu,%hhu,%hhu,%hhu",
+               &input_pins[0], &input_pins[1], &input_pins[2], &input_pins[3], &input_pins[4], &tp, &input_pins[5],
+               &input_pins[6], &input_pins[7], &input_pins[8], &input_pins[9], &input_pins[10], &input_pins[11],
+               &input_pins[12], &touch_pins[0], &touch_pins[1], &touch_pins[2], &touch_pins[3], &touch_pins[4]);
     Reset();
     ChangeType(tp);
+    return ret;
 }
 
 void cpart_LCD_ili9341::ConfigurePropertiesWindow(void) {

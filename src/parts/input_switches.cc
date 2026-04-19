@@ -380,14 +380,15 @@ std::string cpart_switches::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_switches::ReadPreferences(std::string value) {
+int cpart_switches::ReadPreferences(std::string value) {
     unsigned int sz;
-    sscanf(value.c_str(),
-           "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
-           &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5],
-           &output_pins[6], &output_pins[7], &output_value[0], &output_value[1], &output_value[2], &output_value[3],
-           &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active, &mode, &sz);
+    int ret = sscanf(
+        value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u",
+        &output_pins[0], &output_pins[1], &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5],
+        &output_pins[6], &output_pins[7], &output_value[0], &output_value[1], &output_value[2], &output_value[3],
+        &output_value[4], &output_value[5], &output_value[6], &output_value[7], &active, &mode, &sz);
     ChangeSize(sz);
+    return ret;
 }
 
 void cpart_switches::ConfigurePropertiesWindow(void) {

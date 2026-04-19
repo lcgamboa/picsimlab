@@ -335,19 +335,20 @@ std::string cpart_Jumpers::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_Jumpers::ReadPreferences(std::string value) {
+int cpart_Jumpers::ReadPreferences(std::string value) {
     unsigned char inp[16];
     unsigned char outp[16];
 
     char c;
     unsigned char ntype;
 
-    sscanf(value.c_str(),
-           "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%"
-           "hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%c",
-           &inp[0], &inp[1], &inp[2], &inp[3], &inp[4], &inp[5], &inp[6], &inp[7], &inp[8], &inp[9], &inp[10], &inp[11],
-           &inp[12], &inp[13], &inp[14], &inp[15], &outp[0], &outp[1], &outp[2], &outp[3], &outp[4], &outp[5], &outp[6],
-           &outp[7], &outp[8], &outp[9], &outp[10], &outp[11], &outp[12], &outp[13], &outp[14], &outp[15], &ntype, &c);
+    int ret = sscanf(
+        value.c_str(),
+        "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%"
+        "hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%c",
+        &inp[0], &inp[1], &inp[2], &inp[3], &inp[4], &inp[5], &inp[6], &inp[7], &inp[8], &inp[9], &inp[10], &inp[11],
+        &inp[12], &inp[13], &inp[14], &inp[15], &outp[0], &outp[1], &outp[2], &outp[3], &outp[4], &outp[5], &outp[6],
+        &outp[7], &outp[8], &outp[9], &outp[10], &outp[11], &outp[12], &outp[13], &outp[14], &outp[15], &ntype, &c);
 
     ChangeType(ntype);
 
@@ -434,6 +435,7 @@ void cpart_Jumpers::ReadPreferences(std::string value) {
     }
 
     Reset();
+    return ret;
 }
 
 void cpart_Jumpers::RegisterRemoteControl(void) {

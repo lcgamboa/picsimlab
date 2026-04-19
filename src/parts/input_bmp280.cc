@@ -171,10 +171,11 @@ std::string cpart_bmp280::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_bmp280::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
-           &output_pins[0], &values[0], &values[1]);
+int cpart_bmp280::ReadPreferences(std::string value_) {
+    int ret = sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1], &input_pins[2],
+                     &output_pins[0], &values[0], &values[1]);
     Reset();
+    return ret;
 }
 
 void cpart_bmp280::ConfigurePropertiesWindow(void) {

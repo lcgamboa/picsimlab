@@ -290,11 +290,12 @@ std::string cpart_pot_r::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_pot_r::ReadPreferences(std::string value) {
+int cpart_pot_r::ReadPreferences(std::string value) {
     unsigned int sz;
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &output_pins[0], &output_pins[1],
-           &output_pins[2], &output_pins[3], &values[0], &values[1], &values[2], &values[3], &sz);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%u", &output_pins[0], &output_pins[1],
+                     &output_pins[2], &output_pins[3], &values[0], &values[1], &values[2], &values[3], &sz);
     ChangeSize(sz);
+    return ret;
 }
 
 void cpart_pot_r::ConfigurePropertiesWindow(void) {

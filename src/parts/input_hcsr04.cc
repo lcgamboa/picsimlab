@@ -225,8 +225,8 @@ std::string cpart_hcsr04::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_hcsr04::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &value);
+int cpart_hcsr04::ReadPreferences(std::string value_) {
+    return sscanf(value_.c_str(), "%hhu,%hhu,%hhu", &pins[0], &pins[1], &value);
 }
 
 void cpart_hcsr04::ConfigurePropertiesWindow(void) {

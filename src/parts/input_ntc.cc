@@ -205,8 +205,8 @@ std::string cpart_ntc::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_ntc::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%i", &output_pins[0], &value, &Beta);
+int cpart_ntc::ReadPreferences(std::string value_) {
+    return sscanf(value_.c_str(), "%hhu,%hhu,%i", &output_pins[0], &value, &Beta);
 }
 
 void cpart_ntc::ConfigurePropertiesWindow(void) {

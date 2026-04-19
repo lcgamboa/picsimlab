@@ -242,8 +242,8 @@ std::string cpart_LDR::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_LDR::ReadPreferences(std::string value_) {
-    sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%f", &output_pins[0], &output_pins[1], &value, &vthreshold);
+int cpart_LDR::ReadPreferences(std::string value_) {
+    return sscanf(value_.c_str(), "%hhu,%hhu,%hhu,%f", &output_pins[0], &output_pins[1], &value, &vthreshold);
 }
 
 void cpart_LDR::ConfigurePropertiesWindow(void) {

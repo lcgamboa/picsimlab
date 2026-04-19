@@ -484,7 +484,16 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
             } else if ((parts[partsc_] = create_part(name, x, y, PICSimLab.GetBoard(), partsc_))) {
                 printf("Spare parts: parts[%02i] (%s) created \n", partsc_, name);
                 partsc = partsc_ + 1;
-                parts[partsc_]->ReadPreferences(temp);
+
+                int pfc = parts[partsc_]->ReadPreferences(temp);
+                if (pfc != parts[partsc_]->PreferencesNumberFields()) {
+                    char temp[512];
+                    sprintf(temp, "Spare parts: parts[%02i] (%s) Error reading preferences! Readed(%i) != Expected(%i)",
+                            partsc_, name, pfc, parts[partsc_]->PreferencesNumberFields());
+                    printf("%s\n", temp);
+                    PICSimLab.RegisterError(temp);
+                }
+
                 if (newformat) {
                     parts[partsc_]->SetOrientation(orient);
                     parts[partsc_]->SetScale(scale);

@@ -218,12 +218,13 @@ std::string cpart_VCD_Dump_Mem::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_VCD_Dump_Mem::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hu,%hhu,%hhu", &mem_addr, &mem_size, &rec);
+int cpart_VCD_Dump_Mem::ReadPreferences(std::string value) {
+    int ret = sscanf(value.c_str(), "%hu,%hhu,%hhu", &mem_addr, &mem_size, &rec);
     rec &= 0x01;
     if (mem_size % 8) {
         mem_size = 8;
     }
+    return ret;
 }
 
 void cpart_VCD_Dump_Mem::ConfigurePropertiesWindow(void) {

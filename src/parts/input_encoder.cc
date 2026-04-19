@@ -332,10 +332,12 @@ std::string cpart_encoder::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_encoder::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &this->value);
+int cpart_encoder::ReadPreferences(std::string value) {
+    int ret =
+        sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &this->value);
 
     value_old = this->value;
+    return ret;
 }
 
 void cpart_encoder::ConfigurePropertiesWindow(void) {

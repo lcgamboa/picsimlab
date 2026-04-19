@@ -244,9 +244,9 @@ std::string cpart_VCD_Dump::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_VCD_Dump::ReadPreferences(std::string value) {
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
-           &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &rec);
+int cpart_VCD_Dump::ReadPreferences(std::string value) {
+    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &input_pins[0], &input_pins[1],
+                  &input_pins[2], &input_pins[3], &input_pins[4], &input_pins[5], &input_pins[6], &input_pins[7], &rec);
 }
 
 void cpart_VCD_Dump::ConfigurePropertiesWindow(void) {

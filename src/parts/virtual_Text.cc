@@ -181,12 +181,12 @@ std::string cpart_TEXT::WritePreferences(void) {
     return prefs;
 }
 
-void cpart_TEXT::ReadPreferences(std::string value) {
+int cpart_TEXT::ReadPreferences(std::string value) {
     char text[2048 + 1024];
     char link[1024 + 1024];
     char* line;
 
-    sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^%%]%%%[^\n]", &Size, &Textcolor, &Bgcolor, link, text);
+    int ret = sscanf(value.c_str(), "%hhu,%hhu,%hhu,%[^%%]%%%[^\n]", &Size, &Textcolor, &Bgcolor, link, text);
 
     Lines.clear();
     line = strtok(text, "\a\n");
@@ -204,6 +204,7 @@ void cpart_TEXT::ReadPreferences(std::string value) {
     ChangeText(Size, Textcolor, Bgcolor);
 
     Reset();
+    return ret;
 }
 
 void cpart_TEXT::ChangeText(int size, int textcolor, int bgcolor) {
