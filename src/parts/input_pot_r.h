@@ -45,7 +45,7 @@ public:
                      unsigned int state) override;
     void ConfigurePropertiesWindow(void) override;
     void ReadPropertiesWindow(void) override;
-    int PreferencesNumberFields(void) override { return 4; };
+    int PreferencesNumberFields(void) override { return 9; };
     void LoadPartImage(void) override;
     std::string WritePreferences(void) override;
     int ReadPreferences(std::string value) override;
