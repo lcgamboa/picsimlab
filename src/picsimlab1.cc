@@ -2518,14 +2518,10 @@ int CheckRemoteNewVersion(int check_for_devel) {
     MemBuffer.data[0] = 0;
     MemBuffer.size = 0;
 
-    lxString ca_path = PICSimLab.GetSharePath() + "cacert.pem";
-
     curl = curl_easy_init();
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL,
                          "https://raw.githubusercontent.com/lcgamboa/picsimlab/refs/heads/master/VERSION");
-
-        curl_easy_setopt(curl, CURLOPT_CAINFO, (const char*)ca_path.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&MemBuffer);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -2537,7 +2533,6 @@ int CheckRemoteNewVersion(int check_for_devel) {
     /* Check for errors */
     if (result != CURLE_OK) {
         printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(result));
-        printf("Cert file at:%s\n", (const char*)ca_path.c_str());
         return -1;
     }
 
