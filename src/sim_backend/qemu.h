@@ -27,6 +27,10 @@
 
 extern "C" {
 #define Error char
+
+#define qemu_mutex_lock_iothread_impl bql_lock_impl
+#define qemu_mutex_unlock_iothread bql_unlock
+
 #define qemu_mutex_lock_iothread() qemu_mutex_lock_iothread_impl(__FILE__, __LINE__)
 
 typedef uint64_t hwaddr;

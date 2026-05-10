@@ -268,15 +268,15 @@ int bsim_qemu::load_qemu_lib(const char* path) {
 
     void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
-        printf("picsimlab qemu: %s\n", dlerror());
+        printf("PICSimLab Qemu: %s\n", dlerror());
         return 0;
     }
 
-#define GET_SYMBOL_AND_CHECK(X)                   \
-    *((void**)(&X)) = dlsym(handle, #X);          \
-    if (nullptr == X) {                           \
-        printf("Qemu lib Lost symbol: " #X "\n"); \
-        return 0;                                 \
+#define GET_SYMBOL_AND_CHECK(X)                             \
+    *((void**)(&X)) = dlsym(handle, #X);                    \
+    if (nullptr == X) {                                     \
+        printf("PICSimLab Qemu lib Lost symbol: " #X "\n"); \
+        return 0;                                           \
     }
 #else  // WINDOWS
     char expath[512];
@@ -287,7 +287,7 @@ int bsim_qemu::load_qemu_lib(const char* path) {
 
     HMODULE handle = LoadLibraryA((const char*)fullpath.c_str());
     if (handle == NULL) {
-        printf("picsimlab qemu: Error loading %s\n", (const char*)fullpath.c_str());
+        printf("PICSimLab  Qemu: Error [0x%lX] loading %s\n", GetLastError(), (const char*)fullpath.c_str());
         return 0;
     }
 
@@ -307,8 +307,8 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(qmp_pmemsave);
     GET_SYMBOL_AND_CHECK(qmp_memsave);
     GET_SYMBOL_AND_CHECK(qmp_cont);
-    GET_SYMBOL_AND_CHECK(qemu_mutex_lock_iothread_impl);
-    GET_SYMBOL_AND_CHECK(qemu_mutex_unlock_iothread);
+    GET_SYMBOL_AND_CHECK(bql_lock_impl /*qemu_mutex_lock_iothread_impl*/);
+    GET_SYMBOL_AND_CHECK(bql_unlock /*qemu_mutex_unlock_iothread*/);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_register_callbacks);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_pin);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_apin);
@@ -863,10 +863,13 @@ void bsim_qemu::EvThreadRun(void) {
                 strcpy(argv[argc++], "-serial");
                 strcpy(argv[argc++], SERIALDEVICE);
                 serial_open = 1;
-            } else {
-                serial_open = 0;
             }
         }
+    }
+
+    if (!serial_open && ConfEnableSerial) {
+        strcpy(argv[argc++], "-serial");
+        strcpy(argv[argc++], "none");
     }
 
     if ((icount >= 0) && (icount < 11)) {
