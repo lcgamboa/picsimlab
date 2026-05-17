@@ -1241,11 +1241,20 @@ unsigned short eth_w5500_io(eth_w5500_t* eth, unsigned char mosi, unsigned char 
                                                                 eth->Socket[n][Sn_SR] = SOCK_CLOSED;
                                                                 break;
                                                             }
-
+#ifdef _WIN_
+                                                            if (setsockopt(eth->listenfd[eth->listenfd_map[n]],
+                                                                           SOL_SOCKET, SO_EXCLUSIVEADDRUSE,
+                                                                           (const char*)&reuse, sizeof(reuse)) < 0) {
+                                                                perror(
+                                                                    "eth_w5500: setsockopt(SO_EXCLUSIVEADDRUSE) "
+                                                                    "failed");
+#else
                                                             if (setsockopt(eth->listenfd[eth->listenfd_map[n]],
                                                                            SOL_SOCKET, SO_REUSEADDR,
                                                                            (const char*)&reuse, sizeof(reuse)) < 0) {
                                                                 perror("eth_w5500: setsockopt(SO_REUSEADDR) failed");
+
+#endif
                                                                 close(eth->sockfd[n]);
                                                                 eth->sockfd[n] = INVALID_SOCKET_VALUE;
                                                                 eth->Socket[n][Sn_SR] = SOCK_CLOSED;

@@ -130,9 +130,13 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
             exit(1);
         }
 
+#ifdef _WIN_
+        if (setsockopt(listenfd, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (const char*)&reuse, sizeof(reuse)) < 0)
+            perror("setsockopt(SO_EXCLUSIVEADDRUSE) failed");
+#else
         if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
             perror("setsockopt(SO_REUSEADDR) failed");
-
+#endif
         memset(&serv, 0, sizeof(serv));
         serv.sin_family = AF_INET;
         serv.sin_addr.s_addr = htonl(INADDR_ANY);

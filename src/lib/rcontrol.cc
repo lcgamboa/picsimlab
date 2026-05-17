@@ -69,6 +69,8 @@ static int sockfd = -1;
 static int listenfd = -1;
 static int server_started = 0;
 
+static int waiting_exit = 0;
+
 #define BSIZE 1024
 static char buffer[BSIZE];
 static int bp = 0;
@@ -128,11 +130,14 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
             printf("rcontrol: socket error : %s \n", strerror(errno));
             return 1;
         };
-        /*
-                int reuse = 1;
-                if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
-                    perror("rcontrol: setsockopt(SO_REUSEADDR) failed");
-        */
+        int reuse = 1;
+#ifdef _WIN_
+        if (setsockopt(listenfd, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (const char*)&reuse, sizeof(reuse)) < 0)
+            perror("rcontrol: setsockopt(SO_EXCLUSIVEADDRUSE) failed");
+#else
+        if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
+            perror("rcontrol: setsockopt(SO_REUSEADDR) failed");
+#endif
         memset(&serv, 0, sizeof(serv));
         serv.sin_family = AF_INET;
         serv.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -201,12 +206,14 @@ int rcontrol_start(void) {
 }
 
 void rcontrol_stop(void) {
-    dprint("rcontrol: Client disconnected!---------------------------------\n");
-    if (sockfd >= 0) {
-        shutdown(sockfd, SHUT_RDWR);
-        close(sockfd);
+    if (!waiting_exit) {
+        dprint("rcontrol: Client disconnected!---------------------------------\n");
+        if (sockfd >= 0) {
+            shutdown(sockfd, SHUT_RDWR);
+            close(sockfd);
+        }
+        sockfd = -1;
     }
-    sockfd = -1;
 }
 
 void rcontrol_end(void) {
@@ -216,6 +223,11 @@ void rcontrol_end(void) {
 
 void rcontrol_server_end(void) {
     if (server_started) {
+        if (waiting_exit) {
+            sendtext("Ok\r\n>");
+            waiting_exit = 0;
+            rcontrol_stop();
+        }
         server_started = 0;
         dprint("rcontrol: server end\n");
         shutdown(listenfd, SHUT_RDWR);
@@ -651,11 +663,12 @@ int rcontrol_loop(void) {
                     if (!strcmp(cmd, "exit")) {
                         // Command exit
                         // ========================================================
-                        sendtext("Ok\r\n>");
+                        // sendtext("Ok\r\n>");
                         // Resume simulation if stopped, so timer2 can process the destroy
                         PICSimLab.SetSimulationRun(1);
                         PICSimLab.SetWorkspaceFileName("");
                         PICSimLab.SetToDestroy();
+                        waiting_exit = 1;
                         return 0;
                     } else {
                         ret = sendtext("ERROR\r\n>");

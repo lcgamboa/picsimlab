@@ -23,8 +23,6 @@
    For e-mail suggestions :  lcgamboa@yahoo.com
    ######################################################################## */
 
-#include "mplabxd.h"
-
 // #define _DEBUG_
 #define dprint \
     if (1) {   \
@@ -45,7 +43,7 @@
 #include <fcntl.h>
 #include <sys/unistd.h>
 #else
-#include <winsock.h>
+#include <winsock2.h>
 static WORD wVersionRequested = 2;
 static WSADATA wsaData;
 #ifndef MSG_WAITALL
@@ -60,6 +58,8 @@ static WSADATA wsaData;
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "mplabxd.h"
 
 #include "../lib/picsimlab.h"
 
@@ -134,8 +134,13 @@ int mplabxd_init(board* mboard, unsigned short tcpport) {
         };
 
         int reuse = 1;
+#ifdef _WIN_
+        if (setsockopt(listenfd, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (const char*)&reuse, sizeof(reuse)) < 0)
+            perror("mplabxd: setsockopt(SO_EXCLUSIVEADDRUSE) failed");
+#else
         if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
             perror("mplabxd: setsockopt(SO_REUSEADDR) failed");
+#endif
 
         memset(&serv, 0, sizeof(serv));
         serv.sin_family = AF_INET;
