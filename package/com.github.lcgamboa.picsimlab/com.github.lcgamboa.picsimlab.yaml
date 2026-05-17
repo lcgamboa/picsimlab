@@ -1,6 +1,6 @@
 app-id: com.github.lcgamboa.picsimlab
 runtime: org.freedesktop.Platform
-runtime-version: '22.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 command: picsimlab
 rename-desktop-file: picsimlab.desktop
@@ -102,6 +102,15 @@ modules:
           - type: git
             url: https://github.com/lcgamboa/qemu.git
             branch: picsimlab-stm32 
+        modules:
+         - name: python3-distlib
+           buildsystem: simple 
+           build-commands:
+            - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST} "distlib" --no-build-isolation
+           sources:
+            - type: file
+              url: https://files.pythonhosted.org/packages/33/6b/e0547afaf41bf2c42e52430072fa5658766e3d65bd4b03a563d1b6336f57/distlib-0.4.0-py2.py3-none-any.whl
+              sha256: 9659f7d87e46584a30b5780e43ac7a2143098441670ff0a49d5f9034c54a6c16
       - name: qemu-esp32
         buildsystem: simple
         build-options:
