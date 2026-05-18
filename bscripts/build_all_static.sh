@@ -9,7 +9,7 @@ cl sudo apt-get update
 cl sudo apt-get -y upgrade
 cl sudo apt-get -y install git doxygen gcc g++ make libwxgtk3.*-dev \
 libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave \
-gedit cmake ccache bison flex file  pulseview libcurl4-openssl-dev
+gedit cmake ccache bison flex file  pulseview libcurl4-openssl-dev python3-distlib
 cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all
@@ -52,7 +52,7 @@ ln -s . ucsim
 cd ../../
 echo -e "\033[1;32m ---------------------- build qemu --------------------- \033[0m"
 cd qemu
-cl git checkout picsimlab-stm32
+cl git checkout -f picsimlab-stm32
 git pull --no-rebase
 cl ./build_libqemu-stm32.sh
 cd build
@@ -60,7 +60,7 @@ cl strip libqemu-stm32.so
 cl install -d ../../../lib/qemu/
 cl cp libqemu-stm32.so ../../../lib/qemu/
 cd ..
-cl git checkout picsimlab-esp32
+cl git checkout -f picsimlab-esp32
 cl ./build_libqemu-esp32.sh
 cd build
 cl strip libqemu-xtensa.so
