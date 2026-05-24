@@ -1282,10 +1282,17 @@ void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_Help_About_PICSimLab_EvMenuActive(CControl* control) {
-    char stemp[256];
-    snprintf(stemp, 255, "Developed by L.C. Gamboa\n <lcgamboa@yahoo.com>\n Version: %s %s %s %s", _VERSION_, _DATE_,
-             _ARCH_, _PKG_);
-    Message_sz(stemp, 400, 200);
+    char stemp[300];
+    snprintf(stemp, 299,
+             "Developed by L.C. Gamboa\n "
+             "<lcgamboa@yahoo.com>\n "
+             "Version: %s %s %s %s \n\n"
+             "This program comes with absolutely no warranty, \n"
+             "and is distributed under the\n"
+             "GNU General Public License version 2.\n\n"
+             "Official Homepage: <https://github.com/lcgamboa/picsimlab>",
+             _VERSION_, _DATE_, _ARCH_, _PKG_);
+    Message_sz(stemp, 500, 280);
 }
 
 void CPWindow1::menu1_Help_Examples_EvMenuActive(CControl* control) {
@@ -2506,12 +2513,15 @@ static size_t write_cb(void* contents, size_t size, size_t nmemb, void* userp) {
     return realsize;
 }
 
-int CheckRemoteNewVersion(int check_for_devel) {
+int CheckRemoteNewVersion(const int check_for_devel, char* new_version) {
     CURL* curl;
 
     struct BufferStruct MemBuffer;
 
     CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
+
+    strcpy(new_version, "\"Not disponible\"");
+
     if (result)
         return -1;
 
@@ -2570,6 +2580,8 @@ int CheckRemoteNewVersion(int check_for_devel) {
         ptr = strtok(NULL, "\n");
     }
 
+    snprintf(new_version, 99, "\"%i.%i.%i %06i\"", maj, min, rev, remote_date);
+
     sscanf(_VERSION_, "%i.%i.%i", &maj, &min, &rev);
     int my_version = maj * 10000 + min * 100 + rev;
     int my_date;
@@ -2593,18 +2605,29 @@ int CheckRemoteNewVersion(int check_for_devel) {
 #endif
 
 void CPWindow1::menu1_Help_Check_for_Update_EvMenuActive(CControl* control) {
-    int HasUpdate = CheckRemoteNewVersion(PICSimLab.GetCheckForDevelVersionUpdate());
+    char version[200];
+    char nversion[100];
+    char msg[300];
+
+    int HasUpdate = CheckRemoteNewVersion(PICSimLab.GetCheckForDevelVersionUpdate(), nversion);
+
+    sprintf(version, "Installed version: \"%s %s %s %s\"\n\n %s remote version: %s\n", _VERSION_, _DATE_, _ARCH_, _PKG_,
+            (PICSimLab.GetCheckForDevelVersionUpdate() == 1) ? "Development" : "Stable", nversion);
+
     if (HasUpdate == 1) {
+        sprintf(msg, "%s \nNew version available!\n Open browser for download?", version);
         printf("PICSimLab: New version available!\n");
-        if (Dialog_sz("New version available!\n Open browser for download?", 400, 200)) {
+        if (Dialog_sz(msg, 500, 250)) {
             lxLaunchDefaultBrowser("https://github.com/lcgamboa/picsimlab/releases/tag/latestbuild");
         }
 
     } else if (HasUpdate == 0) {
+        sprintf(msg, "%s \n No update available.", version);
         printf("PICSimLab: No update available.\n");
-        Message_sz("No update available.", 400, 200);
+        Message_sz(msg, 500, 250);
     } else {
+        sprintf(msg, "%s \n Error connecting to remote server.", version);
         printf("PICSimLab: Error connecting to remote server.\n");
-        Message_sz("Error connecting to remote server.", 400, 200);
+        Message_sz(msg, 500, 250);
     }
 }
