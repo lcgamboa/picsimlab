@@ -22,15 +22,17 @@ jobs:
 
         #- name: Install sudo package
         #run:  apt update && apt install sudo
-    
+
+    - name: install_deps
+      run: bscripts/install_deps.sh    
+
     - name: build_all_static
       run: |
         bscripts/build_w64.sh
         bscripts/build_w32.sh
 
     - name: package artifacts
-      run: |
-        bscripts/build_windows_zip.sh
+      run: bscripts/build_windows_zip.sh
 
     - uses: actions/upload-artifact@v4
       if: github.ref == 'refs/heads/master' 

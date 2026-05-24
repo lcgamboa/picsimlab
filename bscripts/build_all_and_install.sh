@@ -3,13 +3,6 @@
 set -o pipefail
 cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
-echo -e "\033[1;32m ---------------------- update and install packages ---------------------- \033[0m"
-cl sudo apt-get update
-cl sudo apt-get -y upgrade
-cl sudo apt-get -y install git doxygen gcc g++ make libwxgtk3.*-dev \
-libelf-dev freeglut3-dev cutecom gcc-avr avr-libc libopenal-dev libncurses-dev gtkwave \
-gedit cmake bison flex file pulseview libcurl4-openssl-dev python3-distlib
-cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 cl mkdir build_all
 cd build_all
 echo -e "\033[1;32m ---------------------- download deps -------------------------------------\033[0m"
@@ -18,8 +11,6 @@ git clone --depth=1 https://github.com/lcgamboa/lxrad.git
 git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
 git clone --depth=1 https://github.com/lcgamboa/simavr.git
 git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
-cl sudo apt-get -y install python3 libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
-ninja-build meson libgcrypt-dev libslirp-dev
 git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu.git	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
 cd picsim

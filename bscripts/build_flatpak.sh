@@ -4,10 +4,6 @@
 set -o pipefail
 cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
-cl sudo apt-get update
-cl sudo apt-get -y upgrade
-cl sudo apt-get -y install flatpak flatpak-builder bzip2
-
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak --user install  flathub org.freedesktop.Platform//24.08 org.freedesktop.Sdk//24.08 -y
 

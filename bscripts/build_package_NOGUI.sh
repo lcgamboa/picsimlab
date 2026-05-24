@@ -4,7 +4,6 @@
 VERSION_="${VERSION}_${DATE}"
 
 rm -rf build_all/picsimlab*
-sudo apt-get install debmake debhelper sed
 git archive --format=tar master > build_all/picsimlab-${VERSION}.tar 
 cd build_all
 git clone https://github.com/lcgamboa/lxrad_nogui.git
