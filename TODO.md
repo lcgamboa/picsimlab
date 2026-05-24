@@ -5,8 +5,8 @@
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L293) | 293 | NSTEP must be multiplied for 4 |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L132) | 132 | only for BANK=0; |
 | [src/parts/input_MPU6050.cc](src/parts/input_MPU6050.cc#L26) | 26 | remove lxrad |
-| [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L173) | 173 | on slow speed output is not 90 degrees |
-| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L228) | 228 | on slow speed output is not 90 degrees |
+| [src/parts/input_encoder.cc](src/parts/input_encoder.cc#L176) | 176 | on slow speed output is not 90 degrees |
+| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L234) | 234 | on slow speed output is not 90 degrees |
 | [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1625) | 1625 | avr CONFIG size |
 
 ### TODOs
@@ -30,11 +30,11 @@
 | [src/devices/ldd_max72xx.cc](src/devices/ldd_max72xx.cc#L88) | 88 | display test |
 | [src/devices/rtc_ds1307.cc](src/devices/rtc_ds1307.cc#L426) | 426 | int output |
 | [src/devices/rtc_pfc8563.cc](src/devices/rtc_pfc8563.cc#L288) | 288 | int output and countdown timer |
-| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L211) | 211 | set addr |
-| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L223) | 223 | implement Tout output |
-| [src/parts/other_IO_MCP23017.cc](src/parts/other_IO_MCP23017.cc#L411) | 411 | only write support implemented |
-| [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L417) | 417 | only write support implemented |
-| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L175) | 175 | Add transfer funcion of dc motor |
+| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L219) | 219 | set addr |
+| [src/parts/input_ds1621.cc](src/parts/input_ds1621.cc#L231) | 231 | implement Tout output |
+| [src/parts/other_IO_MCP23017.cc](src/parts/other_IO_MCP23017.cc#L421) | 421 | only write support implemented |
+| [src/parts/other_IO_MCP23S17.cc](src/parts/other_IO_MCP23S17.cc#L426) | 426 | only write support implemented |
+| [src/parts/output_dcmotor.cc](src/parts/output_dcmotor.cc#L181) | 181 | Add transfer funcion of dc motor |
 | [src/sim_backend/bsim_gpsim.cc](src/sim_backend/bsim_gpsim.cc#L168) | 168 | add VCC and GND pins |
 | [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1214) | 1214 | default output value is not used yet (DOV) |
 | [src/sim_backend/bsim_simavr.cc](src/sim_backend/bsim_simavr.cc#L1608) | 1608 | avr ID pointer |

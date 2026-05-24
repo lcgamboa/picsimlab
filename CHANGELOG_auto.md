@@ -2,6 +2,14 @@
 
 ### New
 
+* Rcontrol added support for up to 4 simultaneous connections. [lcgamboa]
+
+* New rcontrols commands sprdcfg and spwrcfg to configure spare parts. [lcgamboa]
+
+* New rcontrol commands splist and spadd. [lcgamboa]
+
+* Support to change Spare Parts Window background color. [lcgamboa]
+
 * Support to change Spare Parts Window background color. [lcgamboa]
 
 * Add option for check for development version update. [lcgamboa]
@@ -15,6 +23,20 @@
 * Version 0.9.2 realease! [lcgamboa]
 
 ### Changes
+
+* More information has been added to the about and the update windows. [lcgamboa]
+
+* Using SO_EXCLUSIVEADDRUSE instead of SO_REUSEADDR to correct Windows behavior. [lcgamboa]
+
+* Updated to use qemu-esp32 0.9.2. [lcgamboa]
+
+* Use system certificates instead local. [lcgamboa]
+
+* Add support to check spare parts fields count on configuration load. [lcgamboa]
+
+* Updated libcurl to use cacert.pem. [lcgamboa]
+
+* Led matrix rcontrol and Boot Button ESP32C3 support added. [lcgamboa]
 
 * Build scritps updated. [lcgamboa]
 
@@ -31,6 +53,8 @@
 * Github actions updated. [lcgamboa]
 
 ### Fix
+
+* Test if the test number is valid. [lcgamboa]
 
 * Merge pull request #160 from fariouche/fix_spare_parts_not_fully_updated. [lcgamboa]
 
@@ -61,6 +85,28 @@
 * Fix BluePill board PWM outputs. [lcgamboa]
 
 ### Other
+
+* Merge pull request #163 from fariouche/qemu_sim_stop_implementation. [lcgamboa]
+
+* Removed unneeded condition to pboard. [fariouche]
+
+* Moved call to board::MSetSimulationRun inside CPICSimLab::SetSimulationRun. [fariouche]
+
+* Implemented qemu sim stop/start. [fariouche]
+
+* Merge pull request #164 from fariouche/fixes_for_local_build_and_install ! [lcgamboa]
+
+* Fixed compilation issues when building using non system dir (local build only) [fariouche]
+
+* Corrected indentation. [fariouche]
+
+* Removed tabs. [fariouche]
+
+* Reverted rcontrol SO_REUSEADDR. [fariouche]
+
+* Merge branch 'lcgamboa:master' into upstream. [fariouche]
+
+* Fix led matrix not exposed to rcontrol and register pBoot to be able to set the gpio0 state. [fariouche]
 
 * Moved pin update before cpu update to have latest pin updated in spare parts. [fariouche]
 

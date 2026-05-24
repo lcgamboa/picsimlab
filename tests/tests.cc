@@ -112,6 +112,10 @@ int main(int argc, char** argv) {
     if (argc == 3) {
         sscanf(argv[2], "%d", &FIRSTTEST);
 #endif
+        if ((FIRSTTEST < 0) || (FIRSTTEST >= NUM_TESTS)) {
+            printf("Test number invalid [%i]! Valid tests numbers 0 to %i\n", FIRSTTEST, NUM_TESTS - 1);
+            return -1;
+        }
         NUM_TESTS = 1;
     }
 
