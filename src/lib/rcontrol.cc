@@ -65,16 +65,22 @@
 #include "rcontrol.h"
 #include "spareparts.h"
 
-static int sockfd = -1;
+#define MAX_CLIENTS 4
+#define BSIZE 1024
+
 static int listenfd = -1;
 static int server_started = 0;
 
-static int waiting_exit = 0;
-
-#define BSIZE 1024
-static char buffer[BSIZE];
-static int bp = 0;
 static char file_to_load[BSIZE];
+
+typedef struct {
+    int sockfd;
+    int waiting_exit;
+    char buffer[BSIZE];
+    int bp;
+} client_t;
+
+static client_t clients[MAX_CLIENTS];
 
 void setnblock(int sock_descriptor) {
 #ifndef _WIN_
@@ -162,14 +168,20 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
         }
         setnblock(listenfd);
         server_started = 1;
+
+        for (int client_id = 0; client_id < MAX_CLIENTS; client_id++) {
+            clients[client_id].sockfd = -1;
+            clients[client_id].waiting_exit = 0;
+            clients[client_id].bp = 0;
+        }
     }
     return 0;
 }
 
-static int sendtext(const char* str) {
+static int sendtext(const int client_id, const char* str) {
     int size = strlen(str);
 
-    if (send(sockfd, str, size, MSG_NOSIGNAL) != size) {
+    if (send(clients[client_id].sockfd, str, size, MSG_NOSIGNAL) != size) {
         printf("rcontrol: send error : %s \n", strerror(errno));
         return 1;
     }
@@ -177,7 +189,7 @@ static int sendtext(const char* str) {
     return 0;
 }
 
-int rcontrol_start(void) {
+static int rcontrol_start(const int client_id) {
     struct sockaddr_in cli;
 #ifndef _WIN_
     unsigned int clilen;
@@ -190,43 +202,47 @@ int rcontrol_start(void) {
         return 1;
     }
 
-    if ((sockfd = accept(listenfd, (sockaddr*)&cli, &clilen)) < 0) {
+    if ((clients[client_id].sockfd = accept(listenfd, (sockaddr*)&cli, &clilen)) < 0) {
         return 1;
     }
 
-    setnblock(sockfd);
-    dprint("rcontrol: Client connected!---------------------------------\n");
+    setnblock(clients[client_id].sockfd);
+    dprint("rcontrol: Client connected [%i]!---------------------------------\n", client_id);
 
-    memset(buffer, 0, BSIZE);
-    bp = 0;
+    memset(clients[client_id].buffer, 0, BSIZE);
+    clients[client_id].bp = 0;
 
-    return sendtext(
-        "\r\nPICSimLab Remote Control Interface\r\n\r\n  Type help "
-        "to see supported commands\r\n\r\n>");
+    return sendtext(client_id,
+                    "\r\nPICSimLab Remote Control Interface\r\n\r\n  Type help "
+                    "to see supported commands\r\n\r\n>");
 }
 
-void rcontrol_stop(void) {
-    if (!waiting_exit) {
-        dprint("rcontrol: Client disconnected!---------------------------------\n");
-        if (sockfd >= 0) {
-            shutdown(sockfd, SHUT_RDWR);
-            close(sockfd);
+void rcontrol_stop(const int client_id) {
+    if (!clients[client_id].waiting_exit) {
+        dprint("rcontrol: Client disconnected [%i]!---------------------------------\n", client_id);
+        if (clients[client_id].sockfd >= 0) {
+            shutdown(clients[client_id].sockfd, SHUT_RDWR);
+            close(clients[client_id].sockfd);
         }
-        sockfd = -1;
+        clients[client_id].sockfd = -1;
     }
 }
 
 void rcontrol_end(void) {
-    rcontrol_stop();
+    for (int client_id = 0; client_id < MAX_CLIENTS; client_id++) {
+        rcontrol_stop(client_id);
+    }
     dprint("rcontrol: end\n");
 }
 
 void rcontrol_server_end(void) {
     if (server_started) {
-        if (waiting_exit) {
-            sendtext("Ok\r\n>");
-            waiting_exit = 0;
-            rcontrol_stop();
+        for (int client_id = 0; client_id < MAX_CLIENTS; client_id++) {
+            if (clients[client_id].waiting_exit) {
+                sendtext(client_id, "Ok\r\n>");
+                clients[client_id].waiting_exit = 0;
+                rcontrol_stop(client_id);
+            }
         }
         server_started = 0;
         dprint("rcontrol: server end\n");
@@ -294,36 +310,36 @@ static int type_is_equal(const char* name, const char* type) {
     return ((name[0] == type[0]) && (name[1] == type[1]));
 }
 
-static void ProcessInput(const char* msg, input_t* Input, int* ret) {
+static void ProcessInput(const int client_id, const char* msg, input_t* Input, int* ret) {
     char lstemp[200];
     if (type_is_equal(Input->name, "VS")) {
         short temp = ((*((unsigned char*)Input->status)) << 8) | (*(((unsigned char*)(Input->status)) - 1));
         snprintf(lstemp, 199, "%s %s= %i\r\n", msg, Input->name, temp);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else if (type_is_equal(Input->name, "PB") || type_is_equal(Input->name, "KB") ||
                type_is_equal(Input->name, "PO") || type_is_equal(Input->name, "JP")) {
         snprintf(lstemp, 199, "%s %s= %i\r\n", msg, Input->name, *((unsigned char*)Input->status));
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else if (type_is_equal(Input->name, "VT")) {
         vterm_t* vt = (vterm_t*)Input->status;
         if (!vt->ReceiveCallback) {
             vt->ReceiveCallback = VtReceiveCallback;
         }
         snprintf(lstemp, 199, "%s %s= %3i\r\n", msg, Input->name, vt->count_in);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else {
         snprintf(lstemp, 199, "%s %s= Unknow type!\r\n", msg, Input->name);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     }
 }
 
-static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full = 0) {
+static void ProcessOutput(const int client_id, const char* msg, output_t* Output, int* ret, int full = 0) {
     char lstemp[SBUFFMAX + 256];
     static unsigned char ss = 0;  // seven segment
 
     if (type_is_equal(Output->name, "LD")) {
         snprintf(lstemp, 199, "%s %s= %3.0f\r\n", msg, Output->name, *((float*)Output->status) - 55);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else if (type_is_equal(Output->name, "DS")) {
         lcd_t* lcd = (lcd_t*)Output->status;
         char lbuff[81];
@@ -340,15 +356,15 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
             lstemp[x + size + 19] = ' ';
         }
         snprintf(lstemp + (2 * size + 19), 199, "|%.16s\r\n", &lbuff[40]);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else if (type_is_equal(Output->name, "MT")) {
         unsigned char** status = (unsigned char**)Output->status;
         snprintf(lstemp, 199, "%s %s-> dir= %i speed= %3i position= %3i\r\n", msg, Output->name, *status[0], *status[1],
                  *status[2]);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else if (type_is_equal(Output->name, "DG")) {
         snprintf(lstemp, 199, "%s %s-> angle= %5.1f\r\n", msg, Output->name, *((float*)Output->status) * 180.0 / M_PI);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else if (type_is_equal(Output->name, "SS")) {
         switch (Output->name[3]) {
             case 'A':
@@ -384,7 +400,7 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
                 if (*((int*)Output->status) > 60)
                     ss |= 0x80;
                 snprintf(lstemp, 199, "%s SS_%c= %c\r\n", msg, Output->name[4], decodess(ss));
-                *ret += sendtext(lstemp);
+                *ret += sendtext(client_id, lstemp);
                 break;
         }
     } else if (type_is_equal(Output->name, "VT")) {
@@ -394,22 +410,22 @@ static void ProcessOutput(const char* msg, output_t* Output, int* ret, int full 
         }
         if (full) {
             snprintf(lstemp, SBUFFMAX + 255, "%s %s= %3i\r\n%s\r\n", msg, Output->name, Vtcount_in, Vtbuff_in);
-            *ret += sendtext(lstemp);
+            *ret += sendtext(client_id, lstemp);
             Vtbuff_in[0] = 0;
             Vtcount_in = 0;
         } else {
             snprintf(lstemp, SBUFFMAX + 255, "%s %s= %3i\r\n", msg, Output->name, Vtcount_in);
-            *ret += sendtext(lstemp);
+            *ret += sendtext(client_id, lstemp);
         }
     } else if (type_is_equal(Output->name, "LM")) {
         // LED Matrix (MAX7219/MAX7221) - 8x8 LED matrix, 8 bytes representing rows
         ldd_max72xx_t* ldd = (ldd_max72xx_t*)Output->status;
         snprintf(lstemp, 199, "%s %s= %02X %02X %02X %02X %02X %02X %02X %02X\r\n", msg, Output->name, ldd->ram[0],
                  ldd->ram[1], ldd->ram[2], ldd->ram[3], ldd->ram[4], ldd->ram[5], ldd->ram[6], ldd->ram[7]);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     } else {
         snprintf(lstemp, 199, "%s %s= unknow type !\r\n", msg, Output->name);
-        *ret += sendtext(lstemp);
+        *ret += sendtext(client_id, lstemp);
     }
 }
 
@@ -441,6 +457,7 @@ int rcontrol_loop(void) {
     int i, j;
     int n;
     int ret = 0;
+    int ret_all = 0;
     char lstemp[200];
     board* Board;
     part* Part;
@@ -448,796 +465,810 @@ int rcontrol_loop(void) {
     output_t* Output;
     const picpin* pins;
 
-    // open connection
-    if (sockfd < 0) {
-        return rcontrol_start();
-    }
+    for (int client_id = 0; client_id < MAX_CLIENTS; client_id++) {
+        client_t* client = &clients[client_id];
 
-    n = recv(sockfd, (char*)&buffer[bp], 1024 - bp, 0);
-
-    if (n > 0) {
-        // remove putty telnet handshake
-        if (buffer[bp + n] == 3) {
-            for (int x = 0; x < bp + n + 1; x++) {
-                buffer[x] = 0;
-            }
-            n = 0;
-            bp = 0;
+        // open connection
+        if (client->sockfd < 0) {
+            ret_all |= rcontrol_start(client_id);
+            continue;
         }
 
-        if (strchr(buffer, '\n')) {
-            char cmd[BSIZE];
-            int cmdsize = 0;
+        n = recv(client->sockfd, (char*)&client->buffer[client->bp], 1024 - client->bp, 0);
 
-            while (buffer[cmdsize] != '\n') {
-                cmd[cmdsize] = buffer[cmdsize];
-                cmdsize++;
-            }
-            cmd[cmdsize] = 0;
-
-            for (int i = 0; i < BSIZE - cmdsize - 1; i++) {
-                buffer[i] = buffer[i + cmdsize + 1];
-            }
-            bp -= cmdsize - n + 1;
-
-            if (cmd[cmdsize - 1] == '\r') {
-                cmd[cmdsize - 1] = 0;  // strip \r
+        if (n > 0) {
+            // remove putty telnet handshake
+            if (client->buffer[client->bp + n] == 3) {
+                for (int x = 0; x < client->bp + n + 1; x++) {
+                    client->buffer[x] = 0;
+                }
+                n = 0;
+                client->bp = 0;
             }
 
-            // strcpy (cmd, (const char *) lowercase (cmd).c_str ());
+            if (strchr(client->buffer, '\n')) {
+                char cmd[BSIZE];
+                int cmdsize = 0;
 
-            dprint("cmd[%s]\n", cmd);
+                while (client->buffer[cmdsize] != '\n') {
+                    cmd[cmdsize] = client->buffer[cmdsize];
+                    cmdsize++;
+                }
+                cmd[cmdsize] = 0;
 
-            switch (cmd[0]) {
-                case 'c':
-                    if (!strncmp(cmd, "clk", 3)) {
-                        // Command clk =====================================================
+                for (int i = 0; i < BSIZE - cmdsize - 1; i++) {
+                    client->buffer[i] = client->buffer[i + cmdsize + 1];
+                }
+                client->bp -= cmdsize - n + 1;
 
-                        if (strlen(cmd) < 4) {
-                            snprintf(lstemp, 100, "%2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
-                            ret = sendtext(lstemp);
+                if (cmd[cmdsize - 1] == '\r') {
+                    cmd[cmdsize - 1] = 0;  // strip \r
+                }
+
+                // strcpy (cmd, (const char *) lowercase (cmd).c_str ());
+
+                dprint("cmd[%s] [%i]\n", cmd, client_id);
+
+                switch (cmd[0]) {
+                    case 'c':
+                        if (!strncmp(cmd, "clk", 3)) {
+                            // Command clk =====================================================
+
+                            if (strlen(cmd) < 4) {
+                                snprintf(lstemp, 100, "%2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
+                                ret = sendtext(client_id, lstemp);
+                            } else {
+                                float clk;
+                                sscanf(cmd + 3, "%f", &clk);
+
+                                PICSimLab.SetClock(clk, 0);
+
+                                snprintf(lstemp, 100, "Set to %2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
+                                ret = sendtext(client_id, lstemp);
+                            }
                         } else {
-                            float clk;
-                            sscanf(cmd + 3, "%f", &clk);
-
-                            PICSimLab.SetClock(clk, 0);
-
-                            snprintf(lstemp, 100, "Set to %2.1f MHz\r\nOk\r\n>", PICSimLab.GetClock());
-                            ret = sendtext(lstemp);
+                            ret = sendtext(client_id, "ERROR\r\n>");
                         }
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'd':
-                    if (strstr(cmd, "dumpr")) {
-                        // Command dumpr
-                        // ========================================================
-                        Board = PICSimLab.GetBoard();
-                        unsigned int addr;
-                        unsigned int size;
-                        int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
+                        break;
+                    case 'd':
+                        if (strstr(cmd, "dumpr")) {
+                            // Command dumpr
+                            // ========================================================
+                            Board = PICSimLab.GetBoard();
+                            unsigned int addr;
+                            unsigned int size;
+                            int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
 
-                        if (ret == -1)  // all
-                        {
-                            for (unsigned int i = 0; i < Board->DBGGetRAMSize(); i += 16) {
-                                snprintf(lstemp, 100, "%04X: ", i);
-                                ret += sendtext(lstemp);
-                                for (int j = 0; j < 16; j++) {
-                                    snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[j + i]);
-                                    ret += sendtext(lstemp);
+                            if (ret == -1)  // all
+                            {
+                                for (unsigned int i = 0; i < Board->DBGGetRAMSize(); i += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", i);
+                                    ret += sendtext(client_id, lstemp);
+                                    for (int j = 0; j < 16; j++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[j + i]);
+                                        ret += sendtext(client_id, lstemp);
+                                    }
+                                    snprintf(lstemp, 100, "\r\n");
+                                    ret += sendtext(client_id, lstemp);
                                 }
-                                snprintf(lstemp, 100, "\r\n");
-                                ret += sendtext(lstemp);
-                            }
-                            snprintf(lstemp, 100, "\r\nOk\r\n>");
-                            ret += sendtext(lstemp);
-                        } else if (ret == 1)  // only one addr
-                        {
-                            if (addr < Board->DBGGetRAMSize()) {
-                                snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetRAM_p()[addr]);
-                                ret += sendtext(lstemp);
-                            } else {
-                                ret = sendtext("ERROR\r\n>");
-                            }
-                        } else  // vector from addr
-                        {
-                            for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetRAMSize(); i += 16) {
-                                snprintf(lstemp, 100, "%04X: ", i);
-                                ret += sendtext(lstemp);
-
-                                for (unsigned int j = 0;
-                                     (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetRAMSize(); j++) {
-                                    snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[j + i]);
-                                    ret += sendtext(lstemp);
-                                }
-
-                                snprintf(lstemp, 100, "\r\n");
-                                ret += sendtext(lstemp);
-                            }
-                            snprintf(lstemp, 100, "\r\nOk\r\n>");
-                            ret += sendtext(lstemp);
-                        }
-                    } else if (strstr(cmd, "dumpe")) {
-                        // Command dumpe
-                        // ========================================================
-                        Board = PICSimLab.GetBoard();
-                        unsigned int addr;
-                        unsigned int size;
-                        int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
-
-                        if (ret == -1)  // all
-                        {
-                            for (unsigned int i = 0; i < Board->DBGGetEEPROM_Size(); i += 16) {
-                                snprintf(lstemp, 100, "%04X: ", i);
-                                ret += sendtext(lstemp);
-                                for (int j = 0; j < 16; j++) {
-                                    snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[j + i]);
-                                    ret += sendtext(lstemp);
-                                }
-                                snprintf(lstemp, 100, "\r\n");
-                                ret += sendtext(lstemp);
-                            }
-                            snprintf(lstemp, 100, "\r\nOk\r\n>");
-                            ret += sendtext(lstemp);
-                        } else if (ret == 1)  // only one addr
-                        {
-                            if (addr < Board->DBGGetEEPROM_Size()) {
-                                snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetEEPROM_p()[addr]);
-                                ret += sendtext(lstemp);
-                            } else {
-                                ret = sendtext("ERROR\r\n>");
-                            }
-                        } else  // vector from addr
-                        {
-                            for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetEEPROM_Size();
-                                 i += 16) {
-                                snprintf(lstemp, 100, "%04X: ", i);
-                                ret += sendtext(lstemp);
-
-                                for (unsigned int j = 0;
-                                     (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetEEPROM_Size(); j++) {
-                                    snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[j + i]);
-                                    ret += sendtext(lstemp);
-                                }
-
-                                snprintf(lstemp, 100, "\r\n");
-                                ret += sendtext(lstemp);
-                            }
-                            snprintf(lstemp, 100, "\r\nOk\r\n>");
-                            ret += sendtext(lstemp);
-                        }
-                    } else if (strstr(cmd, "dumpf")) {
-                        // Command dumpf
-                        // ========================================================
-                        Board = PICSimLab.GetBoard();
-                        unsigned int addr;
-                        unsigned int size;
-                        int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
-
-                        if (ret == -1)  // all
-                        {
-                            for (unsigned int i = 0; i < Board->DBGGetROMSize(); i += 16) {
-                                snprintf(lstemp, 100, "%04X: ", i);
-                                ret += sendtext(lstemp);
-                                for (int j = 0; j < 16; j++) {
-                                    snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[j + i]);
-                                    ret += sendtext(lstemp);
-                                }
-                                snprintf(lstemp, 100, "\r\n");
-                                ret += sendtext(lstemp);
-                            }
-                            snprintf(lstemp, 100, "\r\nOk\r\n>");
-                            ret += sendtext(lstemp);
-                        } else if (ret == 1)  // only one addr
-                        {
-                            if (addr < Board->DBGGetROMSize()) {
-                                snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetROM_p()[addr]);
-                                ret += sendtext(lstemp);
-                            } else {
-                                ret = sendtext("ERROR\r\n>");
-                            }
-                        } else  // vector from addr
-                        {
-                            for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetROMSize(); i += 16) {
-                                snprintf(lstemp, 100, "%04X: ", i);
-                                ret += sendtext(lstemp);
-
-                                for (unsigned int j = 0;
-                                     (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetROMSize(); j++) {
-                                    snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[j + i]);
-                                    ret += sendtext(lstemp);
-                                }
-
-                                snprintf(lstemp, 100, "\r\n");
-                                ret += sendtext(lstemp);
-                            }
-                            snprintf(lstemp, 100, "\r\nOk\r\n>");
-                            ret += sendtext(lstemp);
-                        }
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'e':
-                    if (!strcmp(cmd, "exit")) {
-                        // Command exit
-                        // ========================================================
-                        // sendtext("Ok\r\n>");
-                        // Resume simulation if stopped, so timer2 can process the destroy
-                        PICSimLab.SetSimulationRun(1);
-                        PICSimLab.SetWorkspaceFileName("");
-                        PICSimLab.SetToDestroy();
-                        waiting_exit = 1;
-                        return 0;
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'g':
-                    if (!strncmp(cmd, "get ", 4)) {
-                        // Command
-                        // get==========================================================
-                        char* ptr;
-                        char* ptr2;
-                        Board = PICSimLab.GetBoard();
-
-                        if ((ptr = strstr(cmd, " board.in["))) {
-                            int in = (ptr[10] - '0') * 10 + (ptr[11] - '0');
-
-                            if (in < Board->GetInputCount()) {
-                                Input = Board->GetInput(in);
-
-                                if (Input->status != NULL) {
-                                    snprintf(lstemp, 100, "board.in[%02i]", in);
-                                    ProcessInput(lstemp, Input, &ret);
-                                    sendtext("Ok\r\n>");
+                                snprintf(lstemp, 100, "\r\nOk\r\n>");
+                                ret += sendtext(client_id, lstemp);
+                            } else if (ret == 1)  // only one addr
+                            {
+                                if (addr < Board->DBGGetRAMSize()) {
+                                    snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetRAM_p()[addr]);
+                                    ret += sendtext(client_id, lstemp);
                                 } else {
-                                    ret = sendtext("ERROR\r\n>");
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            } else  // vector from addr
+                            {
+                                for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetRAMSize();
+                                     i += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", i);
+                                    ret += sendtext(client_id, lstemp);
+
+                                    for (unsigned int j = 0;
+                                         (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetRAMSize(); j++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[j + i]);
+                                        ret += sendtext(client_id, lstemp);
+                                    }
+
+                                    snprintf(lstemp, 100, "\r\n");
+                                    ret += sendtext(client_id, lstemp);
+                                }
+                                snprintf(lstemp, 100, "\r\nOk\r\n>");
+                                ret += sendtext(client_id, lstemp);
+                            }
+                        } else if (strstr(cmd, "dumpe")) {
+                            // Command dumpe
+                            // ========================================================
+                            Board = PICSimLab.GetBoard();
+                            unsigned int addr;
+                            unsigned int size;
+                            int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
+
+                            if (ret == -1)  // all
+                            {
+                                for (unsigned int i = 0; i < Board->DBGGetEEPROM_Size(); i += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", i);
+                                    ret += sendtext(client_id, lstemp);
+                                    for (int j = 0; j < 16; j++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[j + i]);
+                                        ret += sendtext(client_id, lstemp);
+                                    }
+                                    snprintf(lstemp, 100, "\r\n");
+                                    ret += sendtext(client_id, lstemp);
+                                }
+                                snprintf(lstemp, 100, "\r\nOk\r\n>");
+                                ret += sendtext(client_id, lstemp);
+                            } else if (ret == 1)  // only one addr
+                            {
+                                if (addr < Board->DBGGetEEPROM_Size()) {
+                                    snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr,
+                                             Board->DBGGetEEPROM_p()[addr]);
+                                    ret += sendtext(client_id, lstemp);
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            } else  // vector from addr
+                            {
+                                for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetEEPROM_Size();
+                                     i += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", i);
+                                    ret += sendtext(client_id, lstemp);
+
+                                    for (unsigned int j = 0;
+                                         (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetEEPROM_Size();
+                                         j++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[j + i]);
+                                        ret += sendtext(client_id, lstemp);
+                                    }
+
+                                    snprintf(lstemp, 100, "\r\n");
+                                    ret += sendtext(client_id, lstemp);
+                                }
+                                snprintf(lstemp, 100, "\r\nOk\r\n>");
+                                ret += sendtext(client_id, lstemp);
+                            }
+                        } else if (strstr(cmd, "dumpf")) {
+                            // Command dumpf
+                            // ========================================================
+                            Board = PICSimLab.GetBoard();
+                            unsigned int addr;
+                            unsigned int size;
+                            int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
+
+                            if (ret == -1)  // all
+                            {
+                                for (unsigned int i = 0; i < Board->DBGGetROMSize(); i += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", i);
+                                    ret += sendtext(client_id, lstemp);
+                                    for (int j = 0; j < 16; j++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[j + i]);
+                                        ret += sendtext(client_id, lstemp);
+                                    }
+                                    snprintf(lstemp, 100, "\r\n");
+                                    ret += sendtext(client_id, lstemp);
+                                }
+                                snprintf(lstemp, 100, "\r\nOk\r\n>");
+                                ret += sendtext(client_id, lstemp);
+                            } else if (ret == 1)  // only one addr
+                            {
+                                if (addr < Board->DBGGetROMSize()) {
+                                    snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetROM_p()[addr]);
+                                    ret += sendtext(client_id, lstemp);
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            } else  // vector from addr
+                            {
+                                for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetROMSize();
+                                     i += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", i);
+                                    ret += sendtext(client_id, lstemp);
+
+                                    for (unsigned int j = 0;
+                                         (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetROMSize(); j++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[j + i]);
+                                        ret += sendtext(client_id, lstemp);
+                                    }
+
+                                    snprintf(lstemp, 100, "\r\n");
+                                    ret += sendtext(client_id, lstemp);
+                                }
+                                snprintf(lstemp, 100, "\r\nOk\r\n>");
+                                ret += sendtext(client_id, lstemp);
+                            }
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'e':
+                        if (!strcmp(cmd, "exit")) {
+                            // Command exit
+                            // ========================================================
+                            // sendtext(client_id, "Ok\r\n>");
+                            // Resume simulation if stopped, so timer2 can process the destroy
+                            PICSimLab.SetSimulationRun(1);
+                            PICSimLab.SetWorkspaceFileName("");
+                            PICSimLab.SetToDestroy();
+                            client->waiting_exit = 1;
+                            return 0;
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'g':
+                        if (!strncmp(cmd, "get ", 4)) {
+                            // Command
+                            // get==========================================================
+                            char* ptr;
+                            char* ptr2;
+                            Board = PICSimLab.GetBoard();
+
+                            if ((ptr = strstr(cmd, " board.in["))) {
+                                int in = (ptr[10] - '0') * 10 + (ptr[11] - '0');
+
+                                if (in < Board->GetInputCount()) {
+                                    Input = Board->GetInput(in);
+
+                                    if (Input->status != NULL) {
+                                        snprintf(lstemp, 100, "board.in[%02i]", in);
+                                        ProcessInput(client_id, lstemp, Input, &ret);
+                                        sendtext(client_id, "Ok\r\n>");
+                                    } else {
+                                        ret = sendtext(client_id, "ERROR\r\n>");
+                                    }
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            } else if ((ptr = strstr(cmd, " board.out["))) {
+                                int out = (ptr[11] - '0') * 10 + (ptr[12] - '0');
+
+                                if (out < Board->GetOutputCount()) {
+                                    Output = Board->GetOutput(out);
+
+                                    if (Output->status != NULL) {
+                                        snprintf(lstemp, 100, "board.out[%02i]", out);
+                                        ProcessOutput(client_id, lstemp, Output, &ret, 1);
+                                        sendtext(client_id, "Ok\r\n>");
+                                    } else {
+                                        ret = sendtext(client_id, "ERROR\r\n>");
+                                    }
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            } else if ((ptr = strstr(cmd, " apin["))) {
+                                int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
+                                if (Board->GetUseSpareParts()) {
+                                    pins = SpareParts.GetPinsValues();
+                                } else {
+                                    Board = PICSimLab.GetBoard();
+                                    pins = Board->MGetPinsValues();
+                                }
+                                snprintf(lstemp, 100, "apin[%02i]= %5.3f \r\nOk\r\n>", pin, pins[pin - 1].avalue);
+                                ret = sendtext(client_id, lstemp);
+                            } else if ((ptr = strstr(cmd, " pin["))) {
+                                int pin = (ptr[5] - '0') * 10 + (ptr[6] - '0');
+                                if (Board->GetUseSpareParts()) {
+                                    pins = SpareParts.GetPinsValues();
+                                } else {
+                                    Board = PICSimLab.GetBoard();
+                                    pins = Board->MGetPinsValues();
+                                }
+                                snprintf(lstemp, 100, "pin[%02i]= %i \r\nOk\r\n>", pin, pins[pin - 1].value);
+                                sendtext(client_id, lstemp);
+                            } else if ((ptr = strstr(cmd, " pinl["))) {
+                                int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
+                                if (Board->GetUseSpareParts()) {
+                                    pins = SpareParts.GetPinsValues();
+                                } else {
+                                    Board = PICSimLab.GetBoard();
+                                    pins = Board->MGetPinsValues();
+                                }
+                                snprintf(lstemp, 100, "pin[%02i] %c %c %i %03i %5.3f \"%-8s\" \r\nOk\r\n>", pin,
+                                         pintypetoletter(pins[pin - 1].ptype), (pins[pin - 1].dir == PD_IN) ? 'I' : 'O',
+                                         pins[pin - 1].value, (int)(pins[pin - 1].oavalue - 55), pins[pin - 1].avalue,
+                                         (const char*)Board->MGetPinName(pin).c_str());
+                                ret = sendtext(client_id, lstemp);
+                            } else if ((ptr = strstr(cmd, " pinm["))) {
+                                int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
+                                if (Board->GetUseSpareParts()) {
+                                    pins = SpareParts.GetPinsValues();
+                                } else {
+                                    Board = PICSimLab.GetBoard();
+                                    pins = Board->MGetPinsValues();
+                                }
+                                snprintf(lstemp, 100, "pin[%02i] %03i\r\nOk\r\n>", pin,
+                                         (int)(pins[pin - 1].oavalue - 55));
+                                ret = sendtext(client_id, lstemp);
+                            } else if (Board->GetUseSpareParts()) {
+                                if ((ptr = strstr(cmd, "part[")) && (ptr2 = strstr(cmd, "].in["))) {
+                                    int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
+                                    int in = (ptr2[5] - '0') * 10 + (ptr2[6] - '0');
+
+                                    if (pn < SpareParts.GetCount()) {
+                                        Part = SpareParts.GetPart(pn);
+                                        if (in < Part->GetInputCount()) {
+                                            Input = Part->GetInput(in);
+
+                                            if (Input->status != NULL) {
+                                                snprintf(lstemp, 100, "part[%02i].in[%02i]", pn, in);
+                                                ProcessInput(client_id, lstemp, Input, &ret);
+                                                sendtext(client_id, "Ok\r\n>");
+                                            } else {
+                                                ret = sendtext(client_id, "ERROR\r\n>");
+                                            }
+                                        } else {
+                                            ret = sendtext(client_id, "ERROR\r\n>");
+                                        }
+                                    } else {
+                                        ret = sendtext(client_id, "ERROR\r\n>");
+                                    }
+                                } else if ((ptr = strstr(cmd, "part[")) && (ptr2 = strstr(cmd, "].out["))) {
+                                    int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
+                                    int out = (ptr2[6] - '0') * 10 + (ptr2[7] - '0');
+
+                                    if (pn < SpareParts.GetCount()) {
+                                        Part = SpareParts.GetPart(pn);
+                                        if (out < Part->GetOutputCount()) {
+                                            Output = Part->GetOutput(out);
+
+                                            if (Output->status != NULL) {
+                                                snprintf(lstemp, 100, "part[%02i].out[%02i]", pn, out);
+                                                ProcessOutput(client_id, lstemp, Output, &ret, 1);
+                                                sendtext(client_id, "Ok\r\n>");
+                                            } else {
+                                                ret = sendtext(client_id, "ERROR\r\n>");
+                                            }
+                                        } else {
+                                            ret = sendtext(client_id, "ERROR\r\n>");
+                                        }
+                                    } else {
+                                        ret = sendtext(client_id, "ERROR\r\n>");
+                                    }
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
                                 }
                             } else {
-                                ret = sendtext("ERROR\r\n>");
+                                ret = sendtext(client_id, "ERROR\r\n>");
                             }
-                        } else if ((ptr = strstr(cmd, " board.out["))) {
-                            int out = (ptr[11] - '0') * 10 + (ptr[12] - '0');
+                            return 0;
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'h':
+                        if (!strcmp(cmd, "help")) {
+                            // Command help
+                            // ========================================================
+                            ret += sendtext(client_id, "List of supported commands:\r\n");
+                            ret += sendtext(client_id, "  clk [val MHz]- show or set simulation clock\r\n");
+                            ret += sendtext(client_id, "  dumpe [a] [s]- dump internal EEPROM memory\r\n");
+                            ret += sendtext(client_id, "  dumpf [a] [s]- dump Flash memory\r\n");
+                            ret += sendtext(client_id, "  dumpr [a] [s]- dump RAM memory\r\n");
+                            ret += sendtext(client_id, "  exit         - shutdown PICSimLab\r\n");
+                            ret += sendtext(client_id, "  get ob       - get object value\r\n");
+                            ret += sendtext(client_id, "  help         - show this message\r\n");
+                            ret += sendtext(client_id, "  info         - show actual setup info and objects\r\n");
+                            ret += sendtext(client_id, "  loadhex file - load hex file (use full path)\r\n");
+                            ret += sendtext(client_id, "  pins         - show pins directions and values\r\n");
+                            ret += sendtext(client_id, "  pinsl        - show pins formated info\r\n");
+                            ret += sendtext(client_id, "  quit         - exit remote control interface\r\n");
+                            ret += sendtext(client_id, "  reset        - reset the board\r\n");
+                            ret += sendtext(client_id, "  set ob vl    - set object with value\r\n");
+                            ret += sendtext(client_id, "  sim [cmd]    - show simulation status or execute\r\n");
+                            ret += sendtext(client_id, "                 cmd start/stop\r\n");
+                            ret += sendtext(client_id, "  spadd \"pname\" xpos ypos \r\n");
+                            ret += sendtext(client_id, "               - adds the named spare part\r\n");
+                            ret += sendtext(client_id, "  sprdcfg pid  - read spare part configuration\r\n");
+                            ret += sendtext(client_id, "  spwrcfg pid \"cfg\"  \r\n");
+                            ret += sendtext(client_id, "               - write spare part configuration\r\n");
+                            ret += sendtext(client_id, "  splist       - list supported spare parts\r\n");
+                            ret += sendtext(client_id, "  sync         - wait to syncronize with timer event\r\n");
+                            ret += sendtext(client_id, "  version      - show PICSimLab version\r\n");
 
-                            if (out < Board->GetOutputCount()) {
-                                Output = Board->GetOutput(out);
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'i':
+                        if (!strcmp(cmd, "info")) {
+                            // Command info
+                            // ========================================================
+                            Board = PICSimLab.GetBoard();
+                            snprintf(lstemp, 100, "Board:     %s\r\n", (const char*)Board->GetName().c_str());
+                            ret += sendtext(client_id, lstemp);
+                            snprintf(lstemp, 100, "Processor: %s\r\n", (const char*)Board->GetProcessorName().c_str());
+                            ret += sendtext(client_id, lstemp);
+                            snprintf(lstemp, 100, "Frequency: %10.0f Hz\r\n", Board->MGetFreq());
+                            ret += sendtext(client_id, lstemp);
+                            snprintf(lstemp, 100, "Use Spare: %i\r\n", Board->GetUseSpareParts());
+                            ret += sendtext(client_id, lstemp);
 
+                            for (i = 0; i < Board->GetInputCount(); i++) {
+                                Input = Board->GetInput(i);
+                                if ((Input->status != NULL)) {
+                                    snprintf(lstemp, 100, "    board.in[%02i]", i);
+                                    ProcessInput(client_id, lstemp, Input, &ret);
+                                }
+                            }
+
+                            for (i = 0; i < Board->GetOutputCount(); i++) {
+                                Output = Board->GetOutput(i);
                                 if (Output->status != NULL) {
-                                    snprintf(lstemp, 100, "board.out[%02i]", out);
-                                    ProcessOutput(lstemp, Output, &ret, 1);
-                                    sendtext("Ok\r\n>");
-                                } else {
-                                    ret = sendtext("ERROR\r\n>");
+                                    snprintf(lstemp, 100, "    board.out[%02i]", i);
+                                    ProcessOutput(client_id, lstemp, Output, &ret);
                                 }
-                            } else {
-                                ret = sendtext("ERROR\r\n>");
                             }
-                        } else if ((ptr = strstr(cmd, " apin["))) {
-                            int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
+
                             if (Board->GetUseSpareParts()) {
-                                pins = SpareParts.GetPinsValues();
-                            } else {
-                                Board = PICSimLab.GetBoard();
-                                pins = Board->MGetPinsValues();
+                                for (i = 0; i < SpareParts.GetCount(); i++) {
+                                    Part = SpareParts.GetPart(i);
+                                    snprintf(lstemp, 100, "  part[%02i]: %s\r\n", i,
+                                             (const char*)Part->GetName().c_str());
+                                    ret += sendtext(client_id, lstemp);
+
+                                    for (j = 0; j < Part->GetInputCount(); j++) {
+                                        Input = Part->GetInput(j);
+                                        if (Input->status != NULL) {
+                                            snprintf(lstemp, 100, "    part[%02i].in[%02i]", i, j);
+                                            ProcessInput(client_id, lstemp, Input, &ret);
+                                        }
+                                    }
+                                    for (j = 0; j < Part->GetOutputCount(); j++) {
+                                        Output = Part->GetOutput(j);
+                                        if (Output->status != NULL) {
+                                            snprintf(lstemp, 100, "    part[%02i].out[%02i]", i, j);
+                                            ProcessOutput(client_id, lstemp, Output, &ret);
+                                        }
+                                    }
+                                }
                             }
-                            snprintf(lstemp, 100, "apin[%02i]= %5.3f \r\nOk\r\n>", pin, pins[pin - 1].avalue);
-                            ret = sendtext(lstemp);
-                        } else if ((ptr = strstr(cmd, " pin["))) {
-                            int pin = (ptr[5] - '0') * 10 + (ptr[6] - '0');
-                            if (Board->GetUseSpareParts()) {
-                                pins = SpareParts.GetPinsValues();
-                            } else {
-                                Board = PICSimLab.GetBoard();
-                                pins = Board->MGetPinsValues();
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'l':
+                        if (!strncmp(cmd, "loadhex ", 8)) {
+                            // Command loadhex
+                            // ========================================================
+                            char* ptr;
+                            if ((ptr = strchr(cmd, '\r'))) {
+                                ptr[0] = 0;
                             }
-                            snprintf(lstemp, 100, "pin[%02i]= %i \r\nOk\r\n>", pin, pins[pin - 1].value);
-                            sendtext(lstemp);
-                        } else if ((ptr = strstr(cmd, " pinl["))) {
-                            int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
-                            if (Board->GetUseSpareParts()) {
-                                pins = SpareParts.GetPinsValues();
-                            } else {
-                                Board = PICSimLab.GetBoard();
-                                pins = Board->MGetPinsValues();
+                            if ((ptr = strchr(cmd, '\n'))) {
+                                ptr[0] = 0;
                             }
-                            snprintf(lstemp, 100, "pin[%02i] %c %c %i %03i %5.3f \"%-8s\" \r\nOk\r\n>", pin,
-                                     pintypetoletter(pins[pin - 1].ptype), (pins[pin - 1].dir == PD_IN) ? 'I' : 'O',
-                                     pins[pin - 1].value, (int)(pins[pin - 1].oavalue - 55), pins[pin - 1].avalue,
-                                     (const char*)Board->MGetPinName(pin).c_str());
-                            ret = sendtext(lstemp);
-                        } else if ((ptr = strstr(cmd, " pinm["))) {
-                            int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
-                            if (Board->GetUseSpareParts()) {
-                                pins = SpareParts.GetPinsValues();
+
+                            if (PICSimLab.GetNeedReboot()) {
+                                PICSimLab.SetWorkspaceFileName("");
+                                PICSimLab.SetToDestroy(RC_LOAD);
+                                ret += sendtext(client_id, "Ok\r\n>");
+                                strcpy(file_to_load, cmd + 8);
+                                ret = 1;
                             } else {
-                                Board = PICSimLab.GetBoard();
-                                pins = Board->MGetPinsValues();
+                                if (PICSimLab.LoadHexFile(cmd + 8)) {
+                                    ret += sendtext(client_id, "ERROR\r\n>");
+                                } else {
+                                    ret += sendtext(client_id, "Ok\r\n>");
+                                }
                             }
-                            snprintf(lstemp, 100, "pin[%02i] %03i\r\nOk\r\n>", pin, (int)(pins[pin - 1].oavalue - 55));
-                            ret = sendtext(lstemp);
-                        } else if (Board->GetUseSpareParts()) {
-                            if ((ptr = strstr(cmd, "part[")) && (ptr2 = strstr(cmd, "].in["))) {
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'p':
+                        if (!strcmp(cmd, "pins")) {
+                            // Command pins
+                            // ========================================================
+                            Board = PICSimLab.GetBoard();
+                            pins = Board->MGetPinsValues();
+                            int p2 = Board->MGetPinCount() / 2;
+                            for (i = 0; i < p2; i++) {
+                                snprintf(lstemp, 100,
+                                         "  pin[%02i] (%8.8s) %c %i                 pin[%02i] (%-8.8s) %c %i "
+                                         "\r\n",
+                                         i + 1, (const char*)Board->MGetPinName(i + 1).c_str(),
+                                         (pins[i].dir == PD_IN) ? '<' : '>', pins[i].value, i + 1 + p2,
+                                         (const char*)Board->MGetPinName(i + 1 + p2).c_str(),
+                                         (pins[i + p2].dir == PD_IN) ? '<' : '>', pins[i + p2].value);
+                                ret += sendtext(client_id, lstemp);
+                            }
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else if (!strcmp(cmd, "pinsl")) {
+                            // Command pinsl
+                            // ========================================================
+                            Board = PICSimLab.GetBoard();
+                            pins = Board->MGetPinsValues();
+                            snprintf(lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount(),
+                                     (const char*)Board->GetProcessorName().c_str());
+                            ret += sendtext(client_id, lstemp);
+                            for (i = 0; i < Board->MGetPinCount(); i++) {
+                                snprintf(lstemp, 100, "  pin[%02i] %c %c %i %03i %5.3f \"%-8.8s\" \r\n", i + 1,
+                                         pintypetoletter(pins[i].ptype), (pins[i].dir == PD_IN) ? 'I' : 'O',
+                                         pins[i].value, (int)(pins[i].oavalue - 55), pins[i].avalue,
+                                         (const char*)Board->MGetPinName(i + 1).c_str());
+                                ret += sendtext(client_id, lstemp);
+                            }
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'q':
+                        if (!strcmp(cmd, "quit")) {
+                            // Command quit
+                            // ========================================================
+                            sendtext(client_id, "Ok\r\n>");
+                            ret = 1;
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'r':
+                        if (!strcmp(cmd, "reset")) {
+                            // Command reset
+                            // =======================================================
+                            PICSimLab.GetBoard()->MReset(0);
+                            ret = sendtext(client_id, "Ok\r\n>");
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 's':
+                        if (!strncmp(cmd, "set ", 4)) {
+                            // Command set
+                            // =========================================================
+                            char* ptr;
+                            char* ptr2;
+                            Board = PICSimLab.GetBoard();
+
+                            if ((ptr = strstr(cmd, " board.in["))) {
+                                int in = (ptr[10] - '0') * 10 + (ptr[11] - '0');
+                                int value;
+
+                                sscanf(ptr + 13, "%i", &value);
+
+                                dprint("board.in[%02i] = %i [%i]\r\n", in, value, client_id);
+
+                                if (in < Board->GetInputCount()) {
+                                    Input = Board->GetInput(in);
+
+                                    if (Input->status != NULL) {
+                                        *((unsigned char*)Input->status) = value;
+                                        sendtext(client_id, "Ok\r\n>");
+                                        if (Input->update) {
+                                            *Input->update = 1;
+                                        }
+                                    } else {
+                                        ret = sendtext(client_id, "ERROR\r\n>");
+                                    }
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            } else if ((ptr = strstr(cmd, " apin["))) {
+                                int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
+                                float value;
+
+                                sscanf(ptr + 9, "%f", &value);
+
+                                dprint("apin[%02i] = %f [%i]\r\n", pin, value, client_id);
+
+                                if (Board->GetUseSpareParts()) {
+                                    SpareParts.SetAPin(pin, value);
+                                } else {
+                                    Board = PICSimLab.GetBoard();
+                                    Board->MSetAPin(pin, value);
+                                }
+                                sendtext(client_id, "Ok\r\n>");
+                            } else if ((ptr = strstr(cmd, " pin["))) {
+                                int pin = (ptr[5] - '0') * 10 + (ptr[6] - '0');
+                                int value;
+
+                                sscanf(ptr + 8, "%i", &value);
+
+                                dprint("pin[%02i] = %i [%i]\r\n", pin, value, client_id);
+
+                                Board->IoLockAccess();
+                                if (Board->GetUseSpareParts()) {
+                                    SpareParts.SetPin(pin, value);
+                                } else {
+                                    Board = PICSimLab.GetBoard();
+                                    Board->MSetPin(pin, value);
+                                }
+                                Board->IoUnlockAccess();
+                                sendtext(client_id, "Ok\r\n>");
+                            } else if (Board->GetUseSpareParts() && (ptr = strstr(cmd, "part[")) &&
+                                       (ptr2 = strstr(cmd, "].in["))) {
                                 int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
                                 int in = (ptr2[5] - '0') * 10 + (ptr2[6] - '0');
+                                int value;
+
+                                sscanf(ptr2 + 8, "%i", &value);
+
+                                dprint("part[%02i].in[%02i] = %i [%i]\r\n", pn, in, value, client_id);
 
                                 if (pn < SpareParts.GetCount()) {
                                     Part = SpareParts.GetPart(pn);
+
                                     if (in < Part->GetInputCount()) {
                                         Input = Part->GetInput(in);
 
                                         if (Input->status != NULL) {
-                                            snprintf(lstemp, 100, "part[%02i].in[%02i]", pn, in);
-                                            ProcessInput(lstemp, Input, &ret);
-                                            sendtext("Ok\r\n>");
-                                        } else {
-                                            ret = sendtext("ERROR\r\n>");
-                                        }
-                                    } else {
-                                        ret = sendtext("ERROR\r\n>");
-                                    }
-                                } else {
-                                    ret = sendtext("ERROR\r\n>");
-                                }
-                            } else if ((ptr = strstr(cmd, "part[")) && (ptr2 = strstr(cmd, "].out["))) {
-                                int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
-                                int out = (ptr2[6] - '0') * 10 + (ptr2[7] - '0');
-
-                                if (pn < SpareParts.GetCount()) {
-                                    Part = SpareParts.GetPart(pn);
-                                    if (out < Part->GetOutputCount()) {
-                                        Output = Part->GetOutput(out);
-
-                                        if (Output->status != NULL) {
-                                            snprintf(lstemp, 100, "part[%02i].out[%02i]", pn, out);
-                                            ProcessOutput(lstemp, Output, &ret, 1);
-                                            sendtext("Ok\r\n>");
-                                        } else {
-                                            ret = sendtext("ERROR\r\n>");
-                                        }
-                                    } else {
-                                        ret = sendtext("ERROR\r\n>");
-                                    }
-                                } else {
-                                    ret = sendtext("ERROR\r\n>");
-                                }
-                            } else {
-                                ret = sendtext("ERROR\r\n>");
-                            }
-                        } else {
-                            ret = sendtext("ERROR\r\n>");
-                        }
-                        return 0;
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'h':
-                    if (!strcmp(cmd, "help")) {
-                        // Command help
-                        // ========================================================
-                        ret += sendtext("List of supported commands:\r\n");
-                        ret += sendtext("  clk [val MHz]- show or set simulation clock\r\n");
-                        ret += sendtext("  dumpe [a] [s]- dump internal EEPROM memory\r\n");
-                        ret += sendtext("  dumpf [a] [s]- dump Flash memory\r\n");
-                        ret += sendtext("  dumpr [a] [s]- dump RAM memory\r\n");
-                        ret += sendtext("  exit         - shutdown PICSimLab\r\n");
-                        ret += sendtext("  get ob       - get object value\r\n");
-                        ret += sendtext("  help         - show this message\r\n");
-                        ret += sendtext("  info         - show actual setup info and objects\r\n");
-                        ret += sendtext("  loadhex file - load hex file (use full path)\r\n");
-                        ret += sendtext("  pins         - show pins directions and values\r\n");
-                        ret += sendtext("  pinsl        - show pins formated info\r\n");
-                        ret += sendtext("  quit         - exit remote control interface\r\n");
-                        ret += sendtext("  reset        - reset the board\r\n");
-                        ret += sendtext("  set ob vl    - set object with value\r\n");
-                        ret += sendtext("  sim [cmd]    - show simulation status or execute\r\n");
-                        ret += sendtext("                 cmd start/stop\r\n");
-                        ret += sendtext("  spadd \"pname\" xpos ypos \r\n");
-                        ret += sendtext("               - adds the named spare part\r\n");
-                        ret += sendtext("  sprdcfg pid  - read spare part configuration\r\n");
-                        ret += sendtext("  spwrcfg pid \"cfg\"  \r\n");
-                        ret += sendtext("               - write spare part configuration\r\n");
-                        ret += sendtext("  splist       - list supported spare parts\r\n");
-                        ret += sendtext("  sync         - wait to syncronize with timer event\r\n");
-                        ret += sendtext("  version      - show PICSimLab version\r\n");
-
-                        ret += sendtext("Ok\r\n>");
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'i':
-                    if (!strcmp(cmd, "info")) {
-                        // Command info
-                        // ========================================================
-                        Board = PICSimLab.GetBoard();
-                        snprintf(lstemp, 100, "Board:     %s\r\n", (const char*)Board->GetName().c_str());
-                        ret += sendtext(lstemp);
-                        snprintf(lstemp, 100, "Processor: %s\r\n", (const char*)Board->GetProcessorName().c_str());
-                        ret += sendtext(lstemp);
-                        snprintf(lstemp, 100, "Frequency: %10.0f Hz\r\n", Board->MGetFreq());
-                        ret += sendtext(lstemp);
-                        snprintf(lstemp, 100, "Use Spare: %i\r\n", Board->GetUseSpareParts());
-                        ret += sendtext(lstemp);
-
-                        for (i = 0; i < Board->GetInputCount(); i++) {
-                            Input = Board->GetInput(i);
-                            if ((Input->status != NULL)) {
-                                snprintf(lstemp, 100, "    board.in[%02i]", i);
-                                ProcessInput(lstemp, Input, &ret);
-                            }
-                        }
-
-                        for (i = 0; i < Board->GetOutputCount(); i++) {
-                            Output = Board->GetOutput(i);
-                            if (Output->status != NULL) {
-                                snprintf(lstemp, 100, "    board.out[%02i]", i);
-                                ProcessOutput(lstemp, Output, &ret);
-                            }
-                        }
-
-                        if (Board->GetUseSpareParts()) {
-                            for (i = 0; i < SpareParts.GetCount(); i++) {
-                                Part = SpareParts.GetPart(i);
-                                snprintf(lstemp, 100, "  part[%02i]: %s\r\n", i, (const char*)Part->GetName().c_str());
-                                ret += sendtext(lstemp);
-
-                                for (j = 0; j < Part->GetInputCount(); j++) {
-                                    Input = Part->GetInput(j);
-                                    if (Input->status != NULL) {
-                                        snprintf(lstemp, 100, "    part[%02i].in[%02i]", i, j);
-                                        ProcessInput(lstemp, Input, &ret);
-                                    }
-                                }
-                                for (j = 0; j < Part->GetOutputCount(); j++) {
-                                    Output = Part->GetOutput(j);
-                                    if (Output->status != NULL) {
-                                        snprintf(lstemp, 100, "    part[%02i].out[%02i]", i, j);
-                                        ProcessOutput(lstemp, Output, &ret);
-                                    }
-                                }
-                            }
-                        }
-                        ret += sendtext("Ok\r\n>");
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'l':
-                    if (!strncmp(cmd, "loadhex ", 8)) {
-                        // Command loadhex
-                        // ========================================================
-                        char* ptr;
-                        if ((ptr = strchr(cmd, '\r'))) {
-                            ptr[0] = 0;
-                        }
-                        if ((ptr = strchr(cmd, '\n'))) {
-                            ptr[0] = 0;
-                        }
-
-                        if (PICSimLab.GetNeedReboot()) {
-                            PICSimLab.SetWorkspaceFileName("");
-                            PICSimLab.SetToDestroy(RC_LOAD);
-                            ret += sendtext("Ok\r\n>");
-                            strcpy(file_to_load, cmd + 8);
-                            ret = 1;
-                        } else {
-                            if (PICSimLab.LoadHexFile(cmd + 8)) {
-                                ret += sendtext("ERROR\r\n>");
-                            } else {
-                                ret += sendtext("Ok\r\n>");
-                            }
-                        }
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'p':
-                    if (!strcmp(cmd, "pins")) {
-                        // Command pins
-                        // ========================================================
-                        Board = PICSimLab.GetBoard();
-                        pins = Board->MGetPinsValues();
-                        int p2 = Board->MGetPinCount() / 2;
-                        for (i = 0; i < p2; i++) {
-                            snprintf(lstemp, 100,
-                                     "  pin[%02i] (%8.8s) %c %i                 pin[%02i] (%-8.8s) %c %i "
-                                     "\r\n",
-                                     i + 1, (const char*)Board->MGetPinName(i + 1).c_str(),
-                                     (pins[i].dir == PD_IN) ? '<' : '>', pins[i].value, i + 1 + p2,
-                                     (const char*)Board->MGetPinName(i + 1 + p2).c_str(),
-                                     (pins[i + p2].dir == PD_IN) ? '<' : '>', pins[i + p2].value);
-                            ret += sendtext(lstemp);
-                        }
-                        ret += sendtext("Ok\r\n>");
-                    } else if (!strcmp(cmd, "pinsl")) {
-                        // Command pinsl
-                        // ========================================================
-                        Board = PICSimLab.GetBoard();
-                        pins = Board->MGetPinsValues();
-                        snprintf(lstemp, 100, "%i pins [%s]:\r\n", Board->MGetPinCount(),
-                                 (const char*)Board->GetProcessorName().c_str());
-                        ret += sendtext(lstemp);
-                        for (i = 0; i < Board->MGetPinCount(); i++) {
-                            snprintf(lstemp, 100, "  pin[%02i] %c %c %i %03i %5.3f \"%-8.8s\" \r\n", i + 1,
-                                     pintypetoletter(pins[i].ptype), (pins[i].dir == PD_IN) ? 'I' : 'O', pins[i].value,
-                                     (int)(pins[i].oavalue - 55), pins[i].avalue,
-                                     (const char*)Board->MGetPinName(i + 1).c_str());
-                            ret += sendtext(lstemp);
-                        }
-                        ret += sendtext("Ok\r\n>");
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'q':
-                    if (!strcmp(cmd, "quit")) {
-                        // Command quit
-                        // ========================================================
-                        sendtext("Ok\r\n>");
-                        ret = 1;
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'r':
-                    if (!strcmp(cmd, "reset")) {
-                        // Command reset
-                        // =======================================================
-                        PICSimLab.GetBoard()->MReset(0);
-                        ret = sendtext("Ok\r\n>");
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 's':
-                    if (!strncmp(cmd, "set ", 4)) {
-                        // Command set
-                        // =========================================================
-                        char* ptr;
-                        char* ptr2;
-                        Board = PICSimLab.GetBoard();
-
-                        if ((ptr = strstr(cmd, " board.in["))) {
-                            int in = (ptr[10] - '0') * 10 + (ptr[11] - '0');
-                            int value;
-
-                            sscanf(ptr + 13, "%i", &value);
-
-                            dprint("board.in[%02i] = %i \r\n", in, value);
-
-                            if (in < Board->GetInputCount()) {
-                                Input = Board->GetInput(in);
-
-                                if (Input->status != NULL) {
-                                    *((unsigned char*)Input->status) = value;
-                                    sendtext("Ok\r\n>");
-                                    if (Input->update) {
-                                        *Input->update = 1;
-                                    }
-                                } else {
-                                    ret = sendtext("ERROR\r\n>");
-                                }
-                            } else {
-                                ret = sendtext("ERROR\r\n>");
-                            }
-                        } else if ((ptr = strstr(cmd, " apin["))) {
-                            int pin = (ptr[6] - '0') * 10 + (ptr[7] - '0');
-                            float value;
-
-                            sscanf(ptr + 9, "%f", &value);
-
-                            dprint("apin[%02i] = %f \r\n", pin, value);
-
-                            if (Board->GetUseSpareParts()) {
-                                SpareParts.SetAPin(pin, value);
-                            } else {
-                                Board = PICSimLab.GetBoard();
-                                Board->MSetAPin(pin, value);
-                            }
-                            sendtext("Ok\r\n>");
-                        } else if ((ptr = strstr(cmd, " pin["))) {
-                            int pin = (ptr[5] - '0') * 10 + (ptr[6] - '0');
-                            int value;
-
-                            sscanf(ptr + 8, "%i", &value);
-
-                            dprint("pin[%02i] = %i \r\n", pin, value);
-
-                            Board->IoLockAccess();
-                            if (Board->GetUseSpareParts()) {
-                                SpareParts.SetPin(pin, value);
-                            } else {
-                                Board = PICSimLab.GetBoard();
-                                Board->MSetPin(pin, value);
-                            }
-                            Board->IoUnlockAccess();
-                            sendtext("Ok\r\n>");
-                        } else if (Board->GetUseSpareParts() && (ptr = strstr(cmd, "part[")) &&
-                                   (ptr2 = strstr(cmd, "].in["))) {
-                            int pn = (ptr[5] - '0') * 10 + (ptr[6] - '0');
-                            int in = (ptr2[5] - '0') * 10 + (ptr2[6] - '0');
-                            int value;
-
-                            sscanf(ptr2 + 8, "%i", &value);
-
-                            dprint("part[%02i].in[%02i] = %i \r\n", pn, in, value);
-
-                            if (pn < SpareParts.GetCount()) {
-                                Part = SpareParts.GetPart(pn);
-
-                                if (in < Part->GetInputCount()) {
-                                    Input = Part->GetInput(in);
-
-                                    if (Input->status != NULL) {
-                                        if (type_is_equal(Input->name, "VS")) {
-                                            *((unsigned char*)Input->status) = (value & 0xFF00) >> 8;
-                                            *(((unsigned char*)Input->status) - 1) = value & 0x00FF;
-                                        } else if (type_is_equal(Input->name, "PB") ||
-                                                   type_is_equal(Input->name, "KB") ||
-                                                   type_is_equal(Input->name, "PO") ||
-                                                   type_is_equal(Input->name, "JP")) {
-                                            *((unsigned char*)Input->status) = value;
-                                        } else if (type_is_equal(Input->name, "VT")) {
-                                            vterm_t* vt = (vterm_t*)Input->status;
-                                            if (!vt->ReceiveCallback) {
-                                                vt->ReceiveCallback = VtReceiveCallback;
+                                            if (type_is_equal(Input->name, "VS")) {
+                                                *((unsigned char*)Input->status) = (value & 0xFF00) >> 8;
+                                                *(((unsigned char*)Input->status) - 1) = value & 0x00FF;
+                                            } else if (type_is_equal(Input->name, "PB") ||
+                                                       type_is_equal(Input->name, "KB") ||
+                                                       type_is_equal(Input->name, "PO") ||
+                                                       type_is_equal(Input->name, "JP")) {
+                                                *((unsigned char*)Input->status) = value;
+                                            } else if (type_is_equal(Input->name, "VT")) {
+                                                vterm_t* vt = (vterm_t*)Input->status;
+                                                if (!vt->ReceiveCallback) {
+                                                    vt->ReceiveCallback = VtReceiveCallback;
+                                                }
+                                                const char* sval = ptr2 + 9;
+                                                strcpy((char*)vt->buff_out, sval);
+                                                vt->count_out = strlen(sval);
                                             }
-                                            const char* sval = ptr2 + 9;
-                                            strcpy((char*)vt->buff_out, sval);
-                                            vt->count_out = strlen(sval);
+                                            if (Input->update) {
+                                                *Input->update = 1;
+                                            }
+                                            sendtext(client_id, "Ok\r\n>");
+                                        } else {
+                                            ret = sendtext(client_id, "ERROR\r\n>");
                                         }
-                                        if (Input->update) {
-                                            *Input->update = 1;
-                                        }
-                                        sendtext("Ok\r\n>");
                                     } else {
-                                        ret = sendtext("ERROR\r\n>");
+                                        ret = sendtext(client_id, "ERROR\r\n>");
                                     }
                                 } else {
-                                    ret = sendtext("ERROR\r\n>");
+                                    ret = sendtext(client_id, "ERROR\r\n>");
                                 }
                             } else {
-                                ret = sendtext("ERROR\r\n>");
+                                ret = sendtext(client_id, "ERROR\r\n>");
                             }
-                        } else {
-                            ret = sendtext("ERROR\r\n>");
-                        }
-                        return 0;
-                    } else if (!strncmp(cmd, "sim", 3)) {
-                        // Command sim =====================================================
-                        PICSimLab.SetSync(0);
+                            return 0;
+                        } else if (!strncmp(cmd, "sim", 3)) {
+                            // Command sim =====================================================
+                            PICSimLab.SetSync(0);
 
-                        if (strstr(cmd + 3, "stop")) {
-                            PICSimLab.SetSimulationRun(0);
-                            ret = sendtext("Ok\r\n>");
-                        } else if (strstr(cmd + 3, "start")) {
-                            PICSimLab.SetSimulationRun(1);
-                            ret = sendtext("Ok\r\n>");
-                        } else {
-                            if (PICSimLab.GetSimulationRun()) {
-                                int time;
-                                PICSimLab.WindowCmd(PW_MAIN, "timer1", PWA_TIMERGETTIME, NULL, &time);
-                                ret = sendtext(
-                                    FloatStrFormat("Simulation running %5.2fx\r\nOk\r\n>", 100.0 / time).c_str());
+                            if (strstr(cmd + 3, "stop")) {
+                                PICSimLab.SetSimulationRun(0);
+                                ret = sendtext(client_id, "Ok\r\n>");
+                            } else if (strstr(cmd + 3, "start")) {
+                                PICSimLab.SetSimulationRun(1);
+                                ret = sendtext(client_id, "Ok\r\n>");
                             } else {
-                                ret = sendtext("Simulation stopped\r\nOk\r\n>");
+                                if (PICSimLab.GetSimulationRun()) {
+                                    int time;
+                                    PICSimLab.WindowCmd(PW_MAIN, "timer1", PWA_TIMERGETTIME, NULL, &time);
+                                    ret = sendtext(
+                                        client_id,
+                                        FloatStrFormat("Simulation running %5.2fx\r\nOk\r\n>", 100.0 / time).c_str());
+                                } else {
+                                    ret = sendtext(client_id, "Simulation stopped\r\nOk\r\n>");
+                                }
                             }
-                        }
-                    } else if (!strncmp(cmd, "spadd ", 6)) {
-                        // Command spadd =====================================================
+                        } else if (!strncmp(cmd, "spadd ", 6)) {
+                            // Command spadd =====================================================
 
-                        char pname[100];
-                        int xpos, ypos;
-                        sscanf(cmd + 6, " \"%99[^\"]\" %i %i", pname, &xpos, &ypos);
+                            char pname[100];
+                            int xpos, ypos;
+                            sscanf(cmd + 6, " \"%99[^\"]\" %i %i", pname, &xpos, &ypos);
 
-                        part* sp = SpareParts.AddPart(pname, xpos, ypos);
-                        if (sp) {
-                            SpareParts.SetUpdateAll(1);
-                            ret = sendtext("Ok\r\n>");
-                        } else {
-                            ret = sendtext("ERROR\r\n>");
-                        }
-                    } else if (!strncmp(cmd, "sprdcfg ", 8)) {
-                        int pid = -1;
-                        sscanf(cmd + 8, "%d", &pid);
-                        Part = SpareParts.GetPart(pid);
-                        if (Part) {
-                            ret = sendtext("\"");
-                            ret = sendtext(Part->WritePreferences().c_str());
-                            ret += sendtext("\"\r\nOk\r\n>");
-                        } else {
-                            ret = sendtext("ERROR\r\n>");
-                        }
-
-                    } else if (!strncmp(cmd, "spwrcfg ", 8)) {
-                        int pid = -1;
-                        char scfg[512];
-                        sscanf(cmd + 8, "%d \"%511[^\"]\"", &pid, scfg);
-                        Part = SpareParts.GetPart(pid);
-                        if (Part) {
-                            if (Part->ReadPreferences(scfg) != Part->PreferencesNumberFields()) {
-                                ret = sendtext("ERROR\r\n>");
-                            } else {
+                            part* sp = SpareParts.AddPart(pname, xpos, ypos);
+                            if (sp) {
                                 SpareParts.SetUpdateAll(1);
-                                ret = sendtext("Ok\r\n>");
+                                ret = sendtext(client_id, "Ok\r\n>");
+                            } else {
+                                ret = sendtext(client_id, "ERROR\r\n>");
                             }
+                        } else if (!strncmp(cmd, "sprdcfg ", 8)) {
+                            int pid = -1;
+                            sscanf(cmd + 8, "%d", &pid);
+                            Part = SpareParts.GetPart(pid);
+                            if (Part) {
+                                ret = sendtext(client_id, "\"");
+                                ret = sendtext(client_id, Part->WritePreferences().c_str());
+                                ret += sendtext(client_id, "\"\r\nOk\r\n>");
+                            } else {
+                                ret = sendtext(client_id, "ERROR\r\n>");
+                            }
+
+                        } else if (!strncmp(cmd, "spwrcfg ", 8)) {
+                            int pid = -1;
+                            char scfg[512];
+                            sscanf(cmd + 8, "%d \"%511[^\"]\"", &pid, scfg);
+                            Part = SpareParts.GetPart(pid);
+                            if (Part) {
+                                if (Part->ReadPreferences(scfg) != Part->PreferencesNumberFields()) {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                } else {
+                                    SpareParts.SetUpdateAll(1);
+                                    ret = sendtext(client_id, "Ok\r\n>");
+                                }
+                            } else {
+                                ret = sendtext(client_id, "ERROR\r\n>");
+                            }
+                        } else if (!strcmp(cmd, "splist")) {
+                            // Command splist
+                            // ========================================================
+                            ret += sendtext(client_id, "Supported Spare Parts:\r\n");
+                            for (int i = 0; i < NUM_PARTS; i++) {
+                                ret += sendtext(client_id, "\"");
+                                ret += sendtext(client_id, parts_list[i].name);
+                                ret += sendtext(client_id, "\", ");
+                            }
+                            ret += sendtext(client_id, "\r\n");
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else if (!strcmp(cmd, "sync")) {
+                            // Command sync =====================================================
+                            PICSimLab.SetSync(0);
+                            while (!PICSimLab.GetSync()) {
+                                usleep(1);  // FIXME avoid use of usleep to reduce cpu usage
+                            }
+                            ret = sendtext(client_id, "Ok\r\n>");
                         } else {
-                            ret = sendtext("ERROR\r\n>");
+                            ret = sendtext(client_id, "ERROR\r\n>");
                         }
-                    } else if (!strcmp(cmd, "splist")) {
-                        // Command splist
+                        break;
+                    case 'v':
+                        if (!strcmp(cmd, "version")) {
+                            // Command version
+                            // =====================================================
+                            snprintf(lstemp, 100,
+                                     "Developed by L.C. Gamboa\r\n "
+                                     "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n",
+                                     _VERSION_, _DATE_, _ARCH_, _PKG_);
+                            ret += sendtext(client_id, lstemp);
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    default:
+                        // Uknown command
                         // ========================================================
-                        ret += sendtext("Supported Spare Parts:\r\n");
-                        for (int i = 0; i < NUM_PARTS; i++) {
-                            ret += sendtext("\"");
-                            ret += sendtext(parts_list[i].name);
-                            ret += sendtext("\", ");
-                        }
-                        ret += sendtext("\r\n");
-                        ret += sendtext("Ok\r\n>");
-                    } else if (!strcmp(cmd, "sync")) {
-                        // Command sync =====================================================
-                        PICSimLab.SetSync(0);
-                        while (!PICSimLab.GetSync()) {
-                            usleep(1);  // FIXME avoid use of usleep to reduce cpu usage
-                        }
-                        ret = sendtext("Ok\r\n>");
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                case 'v':
-                    if (!strcmp(cmd, "version")) {
-                        // Command version
-                        // =====================================================
-                        snprintf(lstemp, 100,
-                                 "Developed by L.C. Gamboa\r\n "
-                                 "<lcgamboa@yahoo.com>\r\n Version: %s %s %s %s\r\n",
-                                 _VERSION_, _DATE_, _ARCH_, _PKG_);
-                        ret += sendtext(lstemp);
-                        ret += sendtext("Ok\r\n>");
-                    } else {
-                        ret = sendtext("ERROR\r\n>");
-                    }
-                    break;
-                default:
-                    // Uknown command
-                    // ========================================================
-                    ret = sendtext("ERROR\r\n>");
-                    break;
-            }
-        } else {
-            bp += n;
-            if (bp > BSIZE)
-                bp = BSIZE;
-        }
-    } else {
-        if (n == 0) {
-            // Client closed connection (FIN received)
-            dprint("rcontrol: client disconnected (recv returned 0)\n");
-            ret = 1;
-        } else {
-            // n < 0: check if it's a real error or just no data available
-#ifndef _WIN_
-            if (errno != EAGAIN)
-#else
-            if (WSAGetLastError() != WSAEWOULDBLOCK)
-#endif
-            {
-                ret = 1;  // recv ERROR
+                        ret = sendtext(client_id, "ERROR\r\n>");
+                        break;
+                }
             } else {
-                ret = 0;  // recv no data (non-blocking socket, try again later)
+                client->bp += n;
+                if (client->bp > BSIZE)
+                    client->bp = BSIZE;
+            }
+        } else {
+            if (n == 0) {
+                // Client closed connection (FIN received)
+                dprint("rcontrol: client disconnected (recv returned 0)[%i]\n", client_id);
+                ret = 1;
+            } else {
+                // n < 0: check if it's a real error or just no data available
+#ifndef _WIN_
+                if (errno != EAGAIN)
+#else
+                if (WSAGetLastError() != WSAEWOULDBLOCK)
+#endif
+                {
+                    ret = 1;  // recv ERROR
+                } else {
+                    ret = 0;  // recv no data (non-blocking socket, try again later)
+                }
             }
         }
+
+        // close connection
+        if (ret) {
+            rcontrol_stop(client_id);
+        }
+
+        ret_all |= ret;
     }
 
-    // close connection
-    if (ret) {
-        rcontrol_stop();
-    }
-
-    return ret;
+    return ret_all;
 }
