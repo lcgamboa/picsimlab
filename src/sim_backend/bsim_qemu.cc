@@ -307,8 +307,8 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(qmp_pmemsave);
     GET_SYMBOL_AND_CHECK(qmp_memsave);
     GET_SYMBOL_AND_CHECK(qmp_cont);
-    GET_SYMBOL_AND_CHECK(bql_lock_impl /*qemu_mutex_lock_iothread_impl*/);
-    GET_SYMBOL_AND_CHECK(bql_unlock /*qemu_mutex_unlock_iothread*/);
+    GET_SYMBOL_AND_CHECK(bql_lock_impl);
+    GET_SYMBOL_AND_CHECK(bql_unlock);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_register_callbacks);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_pin);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_set_apin);
