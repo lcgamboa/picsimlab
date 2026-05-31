@@ -578,6 +578,7 @@ CPWindow4::CPWindow4(void) {
     togglebutton7.SetPopupMenu(NULL);
     togglebutton7.SetText(lxT("Single"));
     togglebutton7.SetCheck(0);
+    togglebutton7.EvOnToggleButton = EVONTOGGLEBUTTON & CPWindow4::togglebutton7_EvOnToggleButton;
     CreateChild(&togglebutton7);
     // button4
     button4.SetFOwner(this);

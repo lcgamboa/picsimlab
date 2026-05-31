@@ -72,9 +72,6 @@ void CPWindow5::menu1_EvMenuActive(CControl* control) {
 }
 
 void CPWindow5::_EvOnCreate(CControl* control) {
-    if (SpareParts.GetLoadConfigFile().length() > 0)
-        SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
-
     for (int i = 0; i < NUM_PARTS; i++) {
         MParts[i].SetFOwner(this);
         MParts[i].SetName(parts_list[i].name);
@@ -97,8 +94,8 @@ void CPWindow5::_EvOnCreate(CControl* control) {
                   : ("PICSimLab - ")) +
              "Spare parts");
 
-    msleep(BASETIMER);
-    PICSimLab.GetBoard()->Reset();
+    if (SpareParts.GetLoadConfigFile().length() > 0)
+        SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
 }
 
 void CPWindow5::draw1_EvMouseButtonPress(CControl* control, unsigned int button, unsigned int x, unsigned int y,

@@ -461,6 +461,10 @@ void CPWindow4::togglebutton6_EvOnToggleButton(CControl* control) {
     combo3.SetEnable(Oscilloscope.GetRun());
 }
 
+void CPWindow4::togglebutton7_EvOnToggleButton(CControl* control) {
+    Oscilloscope.SetSingle(togglebutton7.GetCheck());
+}
+
 // save PNG
 
 void CPWindow4::button4_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,

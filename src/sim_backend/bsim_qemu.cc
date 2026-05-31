@@ -1032,7 +1032,7 @@ float bsim_qemu::MGetInstClockFreq(void) {
 }
 
 int bsim_qemu::CpuInitialized(void) {
-    return 1;
+    return qemu_started;
 }
 
 void bsim_qemu::DebugLoop(void) {}

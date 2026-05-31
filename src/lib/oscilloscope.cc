@@ -48,6 +48,8 @@ COscilloscope::COscilloscope() {
     t = 0;
     tr = 0;
     update = 0;
+    single = 0;
+    update_stop = 0;
 
     measures[0] = 1;
     measures[1] = 2;
@@ -62,7 +64,6 @@ COscilloscope::COscilloscope() {
 
 void COscilloscope::SetSample(void) {
     double pins[2];
-
     const picpin* ppins = pboard->MGetPinsValues();
 
     if (!run)
@@ -100,11 +101,11 @@ void COscilloscope::SetSample(void) {
             }
         } else if (is >= NPOINTS)  // buffer full
         {
-            int checked;
-            WindowCmd(PW_MAIN, "togglebutton7", PWA_TOGGLEBGETCHECK, NULL, &checked);
-            if (tr && checked) {
-                WindowCmd(PW_MAIN, "togglebutton6", PWA_TOGGLEBSETCHECK, "1");
+            if (tr && single) {
+                run = 0;
+                update_stop = 1;
             }
+
             tr = 0;
             t = 0;
             if (tscale > 30) {
@@ -239,6 +240,14 @@ void COscilloscope::CalculateStats(int channel) {
 
 void COscilloscope::ClearStats(int channel) {
     memset(&ch_status[channel], 0, sizeof(ch_status_t));
+}
+
+int COscilloscope::GetUpdate(void) {
+    if (update_stop) {
+        update_stop = 0;
+        WindowCmd(PW_MAIN, "togglebutton6", PWA_TOGGLEBSETCHECK, "1");
+    }
+    return update;
 }
 
 void COscilloscope::Reset(void) {

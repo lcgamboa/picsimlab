@@ -29,6 +29,8 @@
 #include "oscilloscope.h"
 #include "picsimlab.h"
 
+#include <unistd.h>
+
 // Global objects;
 CSpareParts SpareParts;
 
@@ -338,6 +340,7 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
     std::vector<std::string> prefs;
     int newformat = 0;
     std::vector<std::string> osc_list;
+    unsigned char spare_on = 0;
 
     pboard = PICSimLab.GetBoard();
 
@@ -446,13 +449,11 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
                 PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
             } else if (!strcmp(name, "spare_on")) {
-                unsigned char spare_on;
                 sscanf(temp, "%hhu", &spare_on);
                 PICSimLab.GetBoard()->SetUseSpareParts(spare_on);
 
                 if (spare_on) {
                     SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSHOW, NULL);
-                    PICSimLab.GetBoard()->Reset();
                 } else {
                     SpareParts.WindowCmd(PW_MAIN, NULL, PWA_WINDOWHIDE, NULL);
                 }
@@ -514,6 +515,11 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
         }
         partsc = partsc_;
         partsc_aup = partsc_aup_;
+    }
+
+    if (spare_on) {
+        msleep(BASETIMER);
+        PICSimLab.GetBoard()->Reset();
     }
 
     return ret;

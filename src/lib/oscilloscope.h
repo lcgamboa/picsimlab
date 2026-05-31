@@ -80,7 +80,8 @@ public:
 
     ch_status_t GetChannelStatus(int cn) { return ch_status[cn]; };
 
-    int GetUpdate(void) { return update; };
+    int GetUpdate(void);
+
     void SetUpdate(int up) { update = up; };
 
     void SetChannelPin(int ch, int pin) { chpin[ch] = pin; };
@@ -91,6 +92,8 @@ public:
 
     int GetRun(void) { return run; };
     void SetRun(int r) { run = r; };
+
+    void SetSingle(int s) { single = s; };
 
     void SetTriggerLevel(double tl) { triggerlv = tl; };
 
@@ -140,6 +143,8 @@ private:
     double xz;
     float tscale;
     float toffset;
+    int single;
+    int update_stop;
 };
 
 extern COscilloscope Oscilloscope;

@@ -101,6 +101,7 @@ public:
     void button3_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
                                     const unsigned int y, const unsigned int state);
     void togglebutton6_EvOnToggleButton(CControl* control);
+    void togglebutton7_EvOnToggleButton(CControl* control);
     void button4_EvMouseButtonClick(CControl* control, const unsigned int button, const unsigned int x,
                                     const unsigned int y, const unsigned int state);
     void filedialog1_EvOnClose(const int retId);

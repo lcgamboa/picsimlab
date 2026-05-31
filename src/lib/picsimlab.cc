@@ -1047,12 +1047,6 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
             break;
     }
 
-    if ((OnConfigure)) {
-        (*OnConfigure)();
-    } else {
-        pboard->Reset();
-    }
-
     SetProcessorName(pboard->GetProcessorName());
 
 #ifdef _USE_PICSTARTP_
@@ -1086,6 +1080,12 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         sprintf(fname, "%s/palias_%s.ppa", home, boards_list[lab_].name_);
     }
     SpareParts.LoadPinAlias(fname);
+
+    if ((OnConfigure)) {
+        (*OnConfigure)();
+    } else {
+        pboard->Reset();
+    }
 
     printf("PICSimLab: Debug On=%i  Type=%s Port=%i\n", debug, (debug_type) ? "GDB" : "MDB", GetDebugPort());
 
