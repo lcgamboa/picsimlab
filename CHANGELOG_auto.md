@@ -24,6 +24,8 @@
 
 ### Changes
 
+* Changing the logfile writing policy from block to line. [lcgamboa]
+
 * More information has been added to the about and the update windows. [lcgamboa]
 
 * Using SO_EXCLUSIVEADDRUSE instead of SO_REUSEADDR to correct Windows behavior. [lcgamboa]
@@ -53,6 +55,8 @@
 * Github actions updated. [lcgamboa]
 
 ### Fix
+
+* Fixes crashes that occurred when using an oscilloscope on qemu-based boards in Windows. [lcgamboa]
 
 * Test if the test number is valid. [lcgamboa]
 
