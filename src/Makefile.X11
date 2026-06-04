@@ -37,9 +37,9 @@ LIBS+= -lopenal -lminizip -lXpm -lImlib2 -lX11 -lpthread \
 
 #lxrad automatic generated block end, don't edit above!
 
-all: $(OBJS) picsimlab_X11
+all: picsimlab_X11
 
-picsimlab_X11:
+picsimlab_X11:  $(OBJS) 
 	@echo "Linking picsimlab"
 	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab_X11 $(LIBS) 
 

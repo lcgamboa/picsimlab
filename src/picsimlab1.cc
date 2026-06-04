@@ -2611,14 +2611,18 @@ int CheckRemoteNewVersion(const int check_for_devel, char* new_version) {
 
     return 0;
 }
-#endif
+#endif  // NO_TOOLS
 
 void CPWindow1::menu1_Help_Check_for_Update_EvMenuActive(CControl* control) {
     char version[200];
     char nversion[100];
     char msg[300];
 
+#ifndef NO_TOOLS
     int HasUpdate = CheckRemoteNewVersion(PICSimLab.GetCheckForDevelVersionUpdate(), nversion);
+#else
+    int HasUpdate = -1;
+#endif
 
     sprintf(version, "Installed version: \"%s %s %s %s\"\n\n %s remote version: %s\n", _VERSION_, _DATE_, _ARCH_, _PKG_,
             (PICSimLab.GetCheckForDevelVersionUpdate() == 1) ? "Development" : "Stable", nversion);

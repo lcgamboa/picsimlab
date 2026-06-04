@@ -825,10 +825,10 @@ void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
     PartToMove = -1;
     SpareParts.DeletePart(PartSelected);
 
+    Canvas[PartSelected].Destroy();
     for (int i = PartSelected; i < SpareParts.GetCount(); i++) {
         Canvas[i] = Canvas[i + 1];
     }
-    Canvas[PartSelected].Destroy();
 
     update_all = 1;
 }
