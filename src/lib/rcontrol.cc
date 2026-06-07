@@ -510,6 +510,28 @@ int rcontrol_loop(void) {
                 dprint("cmd[%s] [%i]\n", cmd, client_id);
 
                 switch (cmd[0]) {
+                    case 'b':
+                        if (!strcmp(cmd, "blist")) {
+                            // Command blist
+                            // ========================================================
+                            ret += sendtext(client_id, "Supported Boards:\r\n");
+                            for (int i = 0; i < BOARDS_LAST; i++) {
+                                ret += sendtext(client_id, boards_list[i].name_);
+                                ret += sendtext(client_id, ", ");
+                            }
+                            ret += sendtext(client_id, "\r\n");
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else if (!strcmp(cmd, "buclist")) {
+                            // Command buclist
+                            // ========================================================
+                            ret += sendtext(client_id, "Supported Microcontrollers:\r\n");
+                            ret += sendtext(client_id, PICSimLab.GetBoard()->GetSupportedDevices().c_str());
+                            ret += sendtext(client_id, "\r\n");
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
                     case 'c':
                         if (!strncmp(cmd, "clk", 3)) {
                             // Command clk =====================================================
@@ -844,6 +866,8 @@ int rcontrol_loop(void) {
                             // Command help
                             // ========================================================
                             ret += sendtext(client_id, "List of supported commands:\r\n");
+                            ret += sendtext(client_id, "  blist        - list supported boards\r\n");
+                            ret += sendtext(client_id, "  buclist      - list board supported microcontrollers\n");
                             ret += sendtext(client_id, "  clk [val MHz]- show or set simulation clock\r\n");
                             ret += sendtext(client_id, "  dumpe [a] [s]- dump internal EEPROM memory\r\n");
                             ret += sendtext(client_id, "  dumpf [a] [s]- dump Flash memory\r\n");

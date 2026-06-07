@@ -511,10 +511,11 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
 
     strncpy(line, (const char*)pl.at(0).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < 14; i++) {
         tokens[i] = strtok(NULL, ",:\n");
         if (tokens[i] == NULL) {
-            break;
+            printf("Oscilloscope: Read preferences error!\n");
+            return;
         }
     }
 
@@ -545,10 +546,11 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
 
     strncpy(line, (const char*)pl.at(1).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < 10; i++) {
         tokens[i] = strtok(NULL, ",:\n");
         if (tokens[i] == NULL) {
-            break;
+            printf("Oscilloscope: Read preferences error!\n");
+            return;
         }
     }
 
@@ -574,10 +576,11 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
 
     strncpy(line, (const char*)pl.at(2).c_str(), 1023);
     tokens[0] = strtok(line, ",:\n");
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < 10; i++) {
         tokens[i] = strtok(NULL, ",:\n");
         if (tokens[i] == NULL) {
-            break;
+            printf("Oscilloscope: Read preferences error!\n");
+            return;
         }
     }
     // ch2
