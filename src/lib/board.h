@@ -124,9 +124,14 @@ public:
     virtual void Run_CPU(void) = 0;
 
     /**
-     * @brief  Return a list of supported microcontrollers
+     * @brief Return a list of supported microcontrollers
      */
     virtual std::string GetSupportedDevices(void) = 0;
+
+    /**
+     * @brief Return a list of supported IDEs in project wizard
+     */
+    virtual std::string GetSupportedIDEs(void) { return "N/A,"; };
 
     /**
      * @brief Return the filename of board picture
@@ -423,7 +428,6 @@ public:
      * @brief board microcontroller run one or two steps to resume instruction
      */
     virtual void MStepResume(void) = 0;
-
 
     /**
      * @brief board microcontroller reset

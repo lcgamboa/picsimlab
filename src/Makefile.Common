@@ -2,7 +2,7 @@ include ../VERSION
 
 PKG ?= "native"
 
-OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o  
+OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o picsimlab6.o 
 
 OBJS+= $(patsubst lib/%.cc,lib/%.o,$(wildcard lib/*.cc)) 
 OBJS+= $(patsubst sim_backend/%.cc,sim_backend/%.o,$(wildcard sim_backend/bsim*.cc)) 

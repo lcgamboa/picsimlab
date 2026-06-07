@@ -41,6 +41,7 @@ CPWindow1 Window1;
 #include "picsimlab3.h"
 #include "picsimlab4.h"
 #include "picsimlab5.h"
+#include "picsimlab6.h"
 
 #include "lib/oscilloscope.h"
 #include "lib/picsimlab.h"
@@ -1011,14 +1012,13 @@ void CPWindow1::OnLoadHexFile(const std::string fname) {
         Window1.SetTitle(((PICSimLab.GetInstanceNumber() > 0)
                               ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                               : ("PICSimLab - ")) +
-                         std::string(boards_list[PICSimLab.GetLab()].name) + " - " +
-                         PICSimLab.GetBoard()->GetProcessorName() + " - " + ((const char*)basename(fname).c_str()));
+                         PICSimLab.GetBoard()->GetName() + " - " + PICSimLab.GetBoard()->GetProcessorName() + " - " +
+                         ((const char*)basename(fname).c_str()));
     else
         Window1.SetTitle(((PICSimLab.GetInstanceNumber() > 0)
                               ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                               : ("PICSimLab - ")) +
-                         std::string(boards_list[PICSimLab.GetLab()].name) + " - " +
-                         PICSimLab.GetBoard()->GetProcessorName());
+                         PICSimLab.GetBoard()->GetName() + " - " + PICSimLab.GetBoard()->GetProcessorName());
 }
 
 void CPWindow1::OnOpenLoadHexFileDialog(void) {
@@ -1102,7 +1102,7 @@ void CPWindow1::Configure(void) {
     SetTitle(((PICSimLab.GetInstanceNumber() > 0)
                   ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                   : ("PICSimLab - ")) +
-             std::string(boards_list[PICSimLab.GetLab()].name) + " - " + PICSimLab.GetBoard()->GetProcessorName());
+             PICSimLab.GetBoard()->GetName() + " - " + PICSimLab.GetBoard()->GetProcessorName());
 
     thread1.Run();  // parallel thread
 #ifndef __EMSCRIPTEN__
@@ -1285,7 +1285,7 @@ void CPWindow1::menu1_Help_Board_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
-    Message_sz("Board " + lxString(boards_list[PICSimLab.GetLab()].name) + "\nDeveloped by " +
+    Message_sz("Board " + PICSimLab.GetBoard()->GetName() + "\nDeveloped by " +
                    lxString::FromUTF8(PICSimLab.GetBoard()->GetAboutInfo().c_str()),
                400, 200);
 }
@@ -1353,6 +1353,10 @@ void CPWindow1::board_ButtonEvent(CControl* control, unsigned int button, unsign
     PICSimLab.GetBoard()->board_ButtonEvent(control->GetName().c_str(), button, x, y, state);
 }
 
+void CPWindow1::menu1_Modules_Project_Wizard_EvMenuActive(CControl* control) {
+    Window6.Show();
+}
+
 void CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl* control) {
     PICSimLab.GetBoard()->SetUseOscilloscope(1);
     Window4.Show();
@@ -1388,7 +1392,7 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
         SetTitle(((PICSimLab.GetInstanceNumber() > 0)
                       ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                       : ("PICSimLab - ")) +
-                 std::string(boards_list[PICSimLab.GetLab()].name) + " - " + PICSimLab.GetBoard()->GetProcessorName());
+                 PICSimLab.GetBoard()->GetName() + " - " + PICSimLab.GetBoard()->GetProcessorName());
 
         PICSimLab.SetFNAME(" ");
         PICSimLab.EndSimulation();
@@ -1936,15 +1940,14 @@ void CPWindow1::menu1_File_LoadWorkspace_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
-    std::string fdemo =
-        PICSimLab.GetSharePath() + "boards/" + std::string(boards_list[PICSimLab.GetLab()].name) + "/demo.pzw";
+    std::string fdemo = PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetName() + "/demo.pzw";
 
     if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fdemo.c_str())) {
         PICSimLab.LoadWorkspace(fdemo);
         PICSimLab.SetWorkspaceFileName("");
     } else {
-        PICSimLab.RegisterError("Demo for board " + std::string(boards_list[PICSimLab.GetLab()].name) + " not found!");
-        printf("PICSimLab: Demo for board  %s not found! (%s)\n", boards_list[PICSimLab.GetLab()].name,
+        PICSimLab.RegisterError("Demo for board " + PICSimLab.GetBoard()->GetName() + " not found!");
+        printf("PICSimLab: Demo for board  %s not found! (%s)\n", PICSimLab.GetBoard()->GetName().c_str(),
                (const char*)fdemo.c_str());
     }
 }
@@ -2061,6 +2064,9 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
     switch (cmd) {
         case PSC_FILEEXISTS:
             return lxFileExists(lxString::FromUTF8(Arg));
+            break;
+        case PSC_DIREXISTS:
+            return lxDirExists(lxString::FromUTF8(Arg));
             break;
         case PSC_GETUSERDATADIR:
             strcpy((char*)ReturnBuff, (const char*)lxGetUserDataDir(Arg).utf8_str());

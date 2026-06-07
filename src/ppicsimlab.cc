@@ -28,6 +28,7 @@
 #include "picsimlab3.h"
 #include "picsimlab4.h"
 #include "picsimlab5.h"
+#include "picsimlab6.h"
 
 // Program____________________________________________________________
 
@@ -40,6 +41,7 @@ Initialize {
     Application->ACreateWindow(&Window3);
     Application->ACreateWindow(&Window4);
     Application->ACreateWindow(&Window5);
+    Application->ACreateWindow(&Window6);
     Application->Load();
 
     return 0;

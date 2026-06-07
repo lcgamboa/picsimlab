@@ -135,6 +135,7 @@ enum PICSimLabWindowAction {
 
 enum PICSimLabSystemCmd {
     PSC_FILEEXISTS = 0,
+    PSC_DIREXISTS,
     PSC_GETUSERDATADIR,
     PSC_GETEXECUTABLEPATH,
     PSC_GETTEMPDIR,

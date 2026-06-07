@@ -52,6 +52,11 @@ void CPWindow3::_EvOnCreate(CControl* control) {
     combo2.SetVisible(false);
     label2.SetVisible(false);
 #endif
+
+    SetTitle(((PICSimLab.GetInstanceNumber() > 0)
+                  ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
+                  : ("PICSimLab - ")) +
+             "Configuration");
 }
 
 void CPWindow3::button1_EvMouseButtonClick(CControl* control, unsigned int button, unsigned int x, unsigned int y,

@@ -189,7 +189,7 @@ CPWindow1::CPWindow1(void) {
     menu1_Modules.SetName(lxT("menu1_Modules"));
     menu1_Modules.SetTag(0);
     menu1_Modules.SetText(lxT("Modules"));
-    menu1_Modules.SetMenuItems(lxT("Oscilloscope,Spare parts,"));
+    menu1_Modules.SetMenuItems(lxT("Oscilloscope,Project Wizard,Spare parts,"));
     menu1.CreateChild(&menu1_Modules);
     // menu1_Tools
     menu1_Tools.SetFOwner(this);
@@ -299,6 +299,16 @@ CPWindow1::CPWindow1(void) {
     menu1_Modules_Oscilloscope.SetSubMenu(NULL);
     menu1_Modules_Oscilloscope.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive;
     menu1_Modules.CreateChild(&menu1_Modules_Oscilloscope);
+    // menu1_Modules_Project_Wizard
+    menu1_Modules_Project_Wizard.SetFOwner(this);
+    menu1_Modules_Project_Wizard.SetClass(lxT("CItemMenu"));
+    menu1_Modules_Project_Wizard.SetName(lxT("menu1_Modules_Project_Wizard"));
+    menu1_Modules_Project_Wizard.SetTag(0);
+    menu1_Modules_Project_Wizard.SetText(lxT("Project Wizard"));
+    menu1_Modules_Project_Wizard.SetEnable(1);
+    menu1_Modules_Project_Wizard.SetSubMenu(NULL);
+    menu1_Modules_Project_Wizard.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Modules_Project_Wizard_EvMenuActive;
+    menu1_Modules.CreateChild(&menu1_Modules_Project_Wizard);
     // menu1_Modules_Spareparts
     menu1_Modules_Spareparts.SetFOwner(this);
     menu1_Modules_Spareparts.SetClass(lxT("CItemMenu"));
