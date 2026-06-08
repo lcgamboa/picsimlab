@@ -141,7 +141,7 @@ void CPWindow6::combo2_EvOnComboChange(CControl* control) {
 void CPWindow6::dirdialog1_EvOnClose(int retId) {
     if (retId) {
         std::string prjdir = (const char*)dirdialog1.GetDirName().c_str();
-        prjdir += std::string("/") + edit1.GetText() + std::string("/");
+        prjdir += std::string("/") + ((const char*)edit1.GetText().c_str()) + std::string("/");
 
         if (PICSimLab.SystemCmd(PSC_DIREXISTS, prjdir.c_str())) {
             printf("Existe (%s)\n", (const char*)prjdir.c_str());

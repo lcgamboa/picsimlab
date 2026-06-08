@@ -1285,7 +1285,7 @@ void CPWindow1::menu1_Help_Board_EvMenuActive(CControl* control) {
 }
 
 void CPWindow1::menu1_Help_About_Board_EvMenuActive(CControl* control) {
-    Message_sz("Board " + PICSimLab.GetBoard()->GetName() + "\nDeveloped by " +
+    Message_sz(lxString("Board ") + PICSimLab.GetBoard()->GetName() + "\nDeveloped by " +
                    lxString::FromUTF8(PICSimLab.GetBoard()->GetAboutInfo().c_str()),
                400, 200);
 }
