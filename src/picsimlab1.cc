@@ -1344,9 +1344,9 @@ void CPWindow1::_EvOnShow(CControl* control) {
     }
 }
 
-void CPWindow1::_EvOnDropFile(CControl* control, const std::string fname) {
-    printf("PICSimLab: File droped: %s\n", (const char*)fname.c_str());
-    file_ready(basename(fname), dirname(fname));
+void CPWindow1::_EvOnDropFile(CControl* control, const lxString fname) {
+    printf("PICSimLab: File dropped: %s\n", (const char*)fname.utf8_str());
+    file_ready(basename(fname).utf8_str(), dirname(fname).utf8_str());
 }
 
 void CPWindow1::menu1_File_Configure_EvMenuActive(CControl* control) {
@@ -2066,33 +2066,27 @@ void file_ready(const char* fname, const char* dir) {
     }
 
     char fullpath[1024];
-    snprintf(fullpath, 1023, "%s/%s", dir, fname);
+    snprintf(fullpath, 1023, "%s%s", dir, fname);
 
     if (strstr(fname, ".pzw")) {
         printf("PICSimLab: Loading .pzw...\n");
         Window1.filedialog2.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
         Window1.filedialog2.SetDir(dir);
-        Window1.filedialog2.SetFileName(fname);
+        Window1.filedialog2.SetFileName(lxString::FromUTF8(fullpath));
         Window1.filedialog2_EvOnClose(1);
     } else if (strstr(fname, ".hex")) {
         printf("PICSimLab: Loading .hex...\n");
         Window1.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
         Window1.filedialog1.SetDir(dir);
-        Window1.filedialog1.SetFileName(fullpath);
+        Window1.filedialog1.SetFileName(lxString::FromUTF8(fullpath));
         Window1.filedialog1_EvOnClose(1);
     } else if (strstr(fname, ".pcf")) {
-        char buff[1024];
-        strncpy(buff, dir, 1023);
-        strncat(buff, fname, 1023);
         printf("PICSimLab: Loading .pcf...\n");
-        SpareParts.LoadConfig(buff);
+        SpareParts.LoadConfig(fullpath);
         Window1.menu1_Modules_Spareparts_EvMenuActive(&Window1);
     } else if (strstr(fname, ".ppa")) {
-        char buff[1024];
-        strncpy(buff, dir, 1023);
-        strncat(buff, fname, 1023);
         printf("PICSimLab: Loading .ppa...\n");
-        SpareParts.LoadPinAlias(buff);
+        SpareParts.LoadPinAlias(fullpath);
     } else {
         printf("PICSimLab: Unknow file type %s !!\n", fname);
     }

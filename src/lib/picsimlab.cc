@@ -289,7 +289,7 @@ void CPICSimLab::SetNeedReboot(int nr) {
 }
 
 void CPICSimLab::RegisterError(const std::string module, const std::string error) {
-    printf("%s Error: %s\n", module.c_str(), error.c_str());
+    printf("#Error# %s: %s\n", module.c_str(), error.c_str());
     Errors.push_back(error);
 }
 
