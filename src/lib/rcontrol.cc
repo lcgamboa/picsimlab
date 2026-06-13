@@ -157,7 +157,7 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
                          "Can't open rcontrol TCP port %i\n It is already "
                          "in use by another application!",
                          tcpport);
-                PICSimLab.RegisterError(stemp);
+                PICSimLab.RegisterError("PICSimLab", stemp);
             }
             return 1;
         }
@@ -890,7 +890,7 @@ int rcontrol_loop(void) {
                             ret += sendtext(client_id, "  spwrcfg pid \"cfg\"  \r\n");
                             ret += sendtext(client_id, "               - write spare part configuration\r\n");
                             ret += sendtext(client_id, "  splist       - list supported spare parts\r\n");
-                            ret += sendtext(client_id, "  sync         - wait to syncronize with timer event\r\n");
+                            ret += sendtext(client_id, "  sync         - wait to synchronize with timer event\r\n");
                             ret += sendtext(client_id, "  version      - show PICSimLab version\r\n");
 
                             ret += sendtext(client_id, "Ok\r\n>");

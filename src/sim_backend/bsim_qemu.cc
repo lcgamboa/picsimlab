@@ -452,7 +452,7 @@ void bsim_qemu::EvThreadRun(void) {
 
     if (SimType == QEMU_SIM_STM32) {
         if (!load_qemu_lib("libqemu-stm32")) {
-            PICSimLab.RegisterError("Error loading libqemu-stm32");
+            PICSimLab.RegisterError("Qemu-stm32", "Error loading libqemu-stm32");
             qemu_started = -1;
             PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
@@ -504,7 +504,7 @@ void bsim_qemu::EvThreadRun(void) {
 
     } else if (SimType == QEMU_SIM_ESP32) {
         if (!load_qemu_lib("libqemu-xtensa")) {
-            PICSimLab.RegisterError("Error loading libqemu-xtensa");
+            PICSimLab.RegisterError("Qemu-esp32", "Error loading libqemu-xtensa");
             qemu_started = -1;
             PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
@@ -602,7 +602,7 @@ void bsim_qemu::EvThreadRun(void) {
 
         if ((!PICSimLab.SystemCmd(PSC_FILEEXISTS, (fullpath + "esp32-v3-rom.bin").c_str())) ||
             (!PICSimLab.SystemCmd(PSC_FILEEXISTS, (fullpath + "esp32-v3-rom-app.bin").c_str()))) {
-            PICSimLab.RegisterError("Error loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
+            PICSimLab.RegisterError("Qemu-esp32", "Error loading esp32-v3-rom.bin or esp32-v3-rom-app.bin");
             qemu_started = -1;
             PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
@@ -676,7 +676,7 @@ void bsim_qemu::EvThreadRun(void) {
         sprintf(argv[argc++], "driver=nvram.esp32.efuse,property=drive,value=efuse");
     } else if (SimType == QEMU_SIM_ESP32_C3) {
         if (!load_qemu_lib("libqemu-riscv32")) {
-            PICSimLab.RegisterError("Error loading libqemu-riscv32");
+            PICSimLab.RegisterError("Qemu-esp32", "Error loading libqemu-riscv32");
             qemu_started = -1;
             PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
@@ -772,7 +772,7 @@ void bsim_qemu::EvThreadRun(void) {
 #endif
 
         if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, (fullpath + "esp32c3-rom.bin").c_str())) {
-            PICSimLab.RegisterError("Error loading esp32c3-rom.bin");
+            PICSimLab.RegisterError("Qemu-esp32", "Error loading esp32c3-rom.bin");
             qemu_started = -1;
             PICSimLab.SystemCmd(PSC_MUTEXUNLOCK, (const char*)&mtx_qinitId);
             return;
@@ -902,7 +902,7 @@ void bsim_qemu::EvThreadRun(void) {
 
     if (PICSimLab.SystemCmd(PSC_FILEEXISTS, ftest)) {
         use_cmdline_extra = 0;
-        PICSimLab.RegisterError("Invalid qemu extra option!");
+        PICSimLab.RegisterError("Qemu", "Invalid qemu extra option!");
         PICSimLab.SystemCmd(PSC_REMOVEFILE, ftest);
     }
 

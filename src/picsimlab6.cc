@@ -26,6 +26,7 @@
 // Project Wizard
 
 #include "picsimlab6.h"
+#include "picsimlab1.h"
 #include "picsimlab6_d.cc"
 #include "picsimlab6_data.h"
 
@@ -80,6 +81,7 @@ void CPWindow6::button1_EvMouseButtonClick(CControl* control, const uint button,
 void CPWindow6::button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
     dirdialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
+    dirdialog1.SetDirName(PICSimLab.GetBoard()->GetPWActiveProject());
     run_ide = 1;
     dirdialog1.Run();
 }
@@ -140,23 +142,35 @@ void CPWindow6::combo2_EvOnComboChange(CControl* control) {
 
 void CPWindow6::dirdialog1_EvOnClose(int retId) {
     if (retId) {
-        std::string prjdir = (const char*)dirdialog1.GetDirName().c_str();
-        prjdir += std::string("/") + ((const char*)edit1.GetText().c_str()) + std::string("/");
+        lxString prjdir = dirdialog1.GetDirName();
+        prjdir += lxString("/") + edit1.GetText() + "/";
 
-        if (PICSimLab.SystemCmd(PSC_DIREXISTS, prjdir.c_str())) {
-            printf("Existe (%s)\n", (const char*)prjdir.c_str());
-            PICSimLab.RegisterError(std::string("Project dir ") + prjdir + " already exists!");
+        if (PICSimLab.SystemCmd(PSC_DIREXISTS, prjdir.utf8_str())) {
+            PICSimLab.RegisterError("PICSimLab",
+                                    (const char*)(lxString("Project dir ") + prjdir + " already exists!").utf8_str());
             return;
         } else {
-            if (PICSimLab.SystemCmd(PSC_CREATEDIR, prjdir.c_str()) == 0) {
-                std::string fzip = PICSimLab.GetSharePath() + "prj_wizard/platformio.zip";
-                PICSimLab.SystemCmd(PSC_UNZIPDIR, fzip.c_str(), (void*)prjdir.c_str());
+            if (PICSimLab.SystemCmd(PSC_CREATEDIR, prjdir.utf8_str()) == 0) {
+                lxString fzip = PICSimLab.GetSharePath() + "prj_wizard/platformio.zip";
+                PICSimLab.SystemCmd(PSC_UNZIPDIR, fzip.utf8_str(), (void*)((const char*)prjdir.utf8_str()));
 
-                FILE* fmain = fopen_UTF8((prjdir + "src/main.cpp").c_str(), "w");
+                FILE* fmain = fopen_UTF8((prjdir + "src/main.cpp").utf8_str(), "w");
+                if (fmain == NULL) {
+                    PICSimLab.RegisterError(
+                        "PICSimLab",
+                        (const char*)(lxString("File ") + prjdir + "src/main.cpp can't be open!").utf8_str());
+                    return;
+                }
                 fprintf(fmain, blink_code, "13");
                 fclose(fmain);
 
-                FILE* fpio = fopen_UTF8((prjdir + "platformio.ini").c_str(), "w");
+                FILE* fpio = fopen_UTF8((prjdir + "platformio.ini").utf8_str(), "w");
+                if (fpio == NULL) {
+                    PICSimLab.RegisterError(
+                        "PICSimLab",
+                        (const char*)(lxString("File ") + prjdir + "platformio.ini can't be open!").utf8_str());
+                    return;
+                }
 #ifdef _WIN_
                 fprintf(fpio, platformio_ini, "Windows");
 #else
@@ -164,19 +178,95 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
 #endif
                 fclose(fpio);
 
+                PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
+                PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
+                Window1.menu1_Code_Open_Active_Project.SetEnable(1);
+
                 if (run_ide) {
-// FIXME use configurable IDE path
-#ifdef _WIN_
-                    lxExecute((std::string("C:\\Program Files\\Microsoft VS Code\\Code.exe ") + prjdir).c_str());
-#else
-                    lxExecute((std::string("/usr/bin/code ") + prjdir).c_str());
-#endif
+                    OpenProject(prjdir, ide);
                 }
+
             } else {
-                PICSimLab.RegisterError(std::string("Project dir ") + prjdir + " can't be created!");
+                PICSimLab.RegisterError(
+                    "PICSimLab", (const char*)(lxString("Project dir ") + prjdir + " can't be created!").utf8_str());
                 return;
             }
         }
     }
     WDestroy();
+}
+
+void CPWindow6::filedialog1_EvOnClose(const int retId) {
+    if (retId) {
+        PICSimLab.SetPWVscodePath((const char*)filedialog1.GetFileName().utf8_str());
+        OpenProject(PICSimLab.GetBoard()->GetPWActiveProject(), PICSimLab.GetBoard()->GetPWProjectType());
+    }
+}
+
+int CPWindow6::OpenProject(lxString path, lxString type) {
+    if (!type.compare("PlatformIO IDE for VSCode")) {
+        char vscode_path[1024];
+
+        if (!PICSimLab.SystemCmd(PSC_DIREXISTS, path.utf8_str())) {
+            PICSimLab.RegisterError("PICSimLab", (const char*)("Project dir not found!\n" + path).utf8_str());
+            PICSimLab.GetBoard()->SetPWActiveProject(" ");
+            Window1.menu1_Code_Open_Active_Project.SetEnable(0);
+            return 1;
+        }
+
+        strncpy(vscode_path, PICSimLab.GetPWVscodePath().c_str(), 1023);
+
+        if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, vscode_path)) {
+#ifdef _WIN_
+
+            lxString vscode_user_path = "";
+            strncpy(vscode_path, (const char*)lxGetUserDataDir("picsimlab"), 1023);
+            printf("%s\n", (const char*)vscode_path);
+            char* ptr = strstr(vscode_path, "AppData\\");
+            if (ptr) {
+                ptr[8] = 0;
+                vscode_user_path = (lxString(vscode_path) + "Local\\Programs\\Microsoft VS Code\\Code.exe").utf8_str();
+            }
+
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, (const char*)vscode_user_path.utf8_str())) {
+                strncpy(vscode_path, vscode_user_path.utf8_str(), 1023);
+            } else if (PICSimLab.SystemCmd(PSC_FILEEXISTS, "C:\\Program Files\\Microsoft VS Code\\Code.exe")) {
+                strncpy(vscode_path, "C:\\Program Files\\Microsoft VS Code\\Code.exe", 1023);
+            } else {
+                if (Dialog_sz("VS code executable not found!\n Search on disk?", 400, 200)) {
+                    filedialog1.SetFileName(vscode_path);
+                    filedialog1.SetFilter(lxT("All Files (*.exe)|*.exe"));
+                    filedialog1.Run();
+                }
+                return 1;
+            }
+#else
+
+            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, "/usr/bin/code")) {
+                strncpy(vscode_path, "/usr/bin/code", 1023);
+            } else if (PICSimLab.SystemCmd(PSC_FILEEXISTS, "/snap/bin/code")) {
+                strncpy(vscode_path, "/snap/bin/code", 1023);
+            } else {
+                if (Dialog_sz("VS code executable not found!\n Search on disk?", 400, 200)) {
+                    filedialog1.SetFileName(vscode_path);
+                    filedialog1.SetFilter(lxT("All Files (*)|*"));
+                    filedialog1.Run();
+                }
+                return 1;
+            }
+
+#endif
+            PICSimLab.SetPWVscodePath(vscode_path);
+        }
+
+        printf("PICSimLab: Open project [%s]\n", (const char*)(lxString(vscode_path) + " \"" + path + "\"").utf8_str());
+        lxExecute((lxString(vscode_path) + " \"" + path + "\""));
+
+        return 0;
+    } else {
+        PICSimLab.RegisterError("PICSimLab", "Project type not supported!");
+        Window1.menu1_Code_Open_Active_Project.SetEnable(0);
+        Window1.menu1_Code_Project_Wizard.SetEnable(0);
+    }
+    return -1;
 }

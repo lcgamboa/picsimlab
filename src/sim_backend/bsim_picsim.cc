@@ -141,7 +141,7 @@ int bsim_picsim::DebugInit(int dtyppe)  // argument not used in pic, it only use
     int ret = !mplabxd_init(this, PICSimLab.GetDebugPort()) - 1;
 
     if (ret < 0) {
-        PICSimLab.RegisterError("Error starting MPLABX debugger support !");
+        PICSimLab.RegisterError("PICSimLab", "Error starting MPLABX debugger support !");
     }
 
     return ret;
@@ -319,10 +319,10 @@ std::string bsim_picsim::GetUARTStrStatus(const int uart_num) {
 void bsim_picsim::RefreshStatus(void) {
     if (pic.error_flags != error_flags) {
         if ((error_flags ^ pic.error_flags) & PE_UNKOP) {
-            PICSimLab.RegisterError(
-                "Warning: Unknown opcode!\n"
-                "You are probably loading code compiled for a different microcontroller \n"
-                "than the one selected for use on the board.");
+            PICSimLab.RegisterError("PICSimLab",
+                                    "Warning: Unknown opcode!\n"
+                                    "You are probably loading code compiled for a different microcontroller \n"
+                                    "than the one selected for use on the board.");
         }
         error_flags = pic.error_flags;
     }

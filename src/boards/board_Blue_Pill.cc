@@ -875,7 +875,7 @@ void cboard_Blue_Pill::board_ButtonEvent(const char* controlname, unsigned int b
                 PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
             }
         } else {
-            PICSimLab.RegisterError("File " + fname + " not found!");
+            PICSimLab.RegisterError("Qemu-stm32", "File " + fname + " not found!");
         }
     } else if (!strcmp(controlname, "button1")) {
         PICSimLab.WindowCmd(wconfigId, "checkbox3", PWA_CHECKBOXGETCHECK, NULL, &use_cmdline_extra);

@@ -54,6 +54,9 @@ board::board(void) {
         input_ids[i] = &input[i];
         output_ids[i] = &output[i];
     }
+
+    pw_active_project = " ";
+    pw_project_type = " ";
 }
 
 board::~board(void) {}
@@ -198,8 +201,7 @@ void board::ReadInputMap(std::string fname) {
         }
         fclose(fin);
     } else {
-        printf("PICSimLab: Error open input.map \"%s\"!\n", (const char*)fname.c_str());
-        PICSimLab.RegisterError("Error open input.map:\n" + fname);
+        PICSimLab.RegisterError("PICSimLab", "Error open input.map:\n" + fname);
     }
 }
 
@@ -275,8 +277,7 @@ void board::ReadOutputMap(std::string fname) {
 
         fclose(fin);
     } else {
-        printf("PICSimLab: Error open output.map \"%s\"!\n", (const char*)fname.c_str());
-        PICSimLab.RegisterError("Error open output.map:\n" + fname);
+        PICSimLab.RegisterError("PICSimLab", "Error open output.map:\n" + fname);
     }
 }
 

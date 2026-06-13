@@ -597,7 +597,7 @@ int bsim_simavr::DebugInit(int dtyppe) {
     if (avr_debug_type) {
         avr->gdb_port = PICSimLab.GetDebugPort();
         if (avr_gdb_init(avr)) {
-            PICSimLab.RegisterError("Error starting GDB debugger support !");
+            PICSimLab.RegisterError("PICSimLab", "Error starting GDB debugger support !");
             return -1;
         } else {
             avr->run = avr_callback_run_gdb_;
@@ -608,7 +608,7 @@ int bsim_simavr::DebugInit(int dtyppe) {
         int ret = !mplabxd_init(this, PICSimLab.GetDebugPort()) - 1;
 
         if (ret < 0) {
-            PICSimLab.RegisterError("Error starting MPLABX debugger support !");
+            PICSimLab.RegisterError("PICSimLab", "Error starting MPLABX debugger support !");
         }
         return ret;
     }

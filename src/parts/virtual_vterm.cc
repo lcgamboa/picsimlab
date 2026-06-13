@@ -85,8 +85,7 @@ cpart_vterm::cpart_vterm(const unsigned x, const unsigned y, const char* name, c
         SpareParts.WindowCmd(wvtermId, "edit1", PWA_SETTAG, std::to_string(id).c_str());
         SpareParts.WindowCmd(wvtermId, NULL, PWA_SETTAG, std::to_string(id).c_str());
     } else {
-        printf("PICSimLab: Vterm error loading file %s\n", (const char*)fname.c_str());
-        PICSimLab.RegisterError("Vterm error loading file:\n" + fname);
+        PICSimLab.RegisterError("PICSimLab", "Vterm error loading file:\n" + fname);
         SpareParts.WindowCmd(wvtermId, NULL, PWA_SETVISIBLE, "0");
         SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
     }

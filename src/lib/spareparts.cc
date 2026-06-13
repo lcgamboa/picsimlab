@@ -76,7 +76,7 @@ part* CSpareParts::AddPart(const char* partname, const int x, const int y) {
     part* newpart = create_part(partname, x, y, pboard, partsc);
     parts[partsc] = newpart;
     if (parts[partsc] == NULL) {
-        PICSimLab.RegisterError("Erro creating part: " + std::string(partname));
+        PICSimLab.RegisterError("PICSimLab", "Erro creating part: " + std::string(partname));
     } else {
         parts[partsc]->SetScale(GetScale());
         parts[partsc]->Reset();
@@ -493,10 +493,9 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 int pfc = parts[partsc_]->ReadPreferences(temp);
                 if (pfc != parts[partsc_]->PreferencesNumberFields()) {
                     char temp[512];
-                    sprintf(temp, "Spare parts: parts[%02i] (%s) Error reading preferences! Readed(%i) != Expected(%i)",
-                            partsc_, name, pfc, parts[partsc_]->PreferencesNumberFields());
-                    printf("%s\n", temp);
-                    PICSimLab.RegisterError(temp);
+                    sprintf(temp, " parts[%02i] (%s) Error reading preferences! Readed(%i) != Expected(%i)", partsc_,
+                            name, pfc, parts[partsc_]->PreferencesNumberFields());
+                    PICSimLab.RegisterError("Spare parts", temp);
                 }
 
                 if (newformat) {
@@ -507,10 +506,9 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 }
                 partsc_++;
             } else {
-                printf("Spare parts: Error loading part: %s \n", name);
                 char temp[512];
-                snprintf(temp, 512, "Spare parts:\nError loading part: %s \n", name);
-                PICSimLab.RegisterError(temp);
+                snprintf(temp, 512, "Error loading part: %s \n", name);
+                PICSimLab.RegisterError("Spare parts", temp);
             }
         }
         partsc = partsc_;

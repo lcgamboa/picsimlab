@@ -151,6 +151,8 @@ void cboard_Arduino_Uno::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs("Arduino_Uno_proc", Proc);
     PICSimLab.SavePrefs("Arduino_Uno_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Arduino_Uno_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("Arduino_Uno_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -163,6 +165,14 @@ void cboard_Arduino_Uno::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "Arduino_Uno_clock")) {
         PICSimLab.SetClock(atof(value));
+    }
+
+    if (!strcmp(name, "Arduino_Uno_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "Arduino_Uno_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 

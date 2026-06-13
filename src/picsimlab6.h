@@ -46,6 +46,7 @@ public:
     CLabel label6;
     CEdit edit1;
     CDirDialog dirdialog1;
+    CFileDialog filedialog1;
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
@@ -55,16 +56,20 @@ public:
     void combo1_EvOnComboChange(CControl* control);
     void combo2_EvOnComboChange(CControl* control);
     void dirdialog1_EvOnClose(const int retId);
+    void filedialog1_EvOnClose(const int retId);
 
     /*#Others*/
     CPWindow6(void);
     // lxrad automatic generated block end, don't edit above!
+
+    int OpenProject(lxString path, lxString type);
+
 private:
-    std::string bname;
-    std::string pname;
-    std::string ide;
-    std::string framework;
-    std::string ctemplate;
+    lxString bname;
+    lxString pname;
+    lxString ide;
+    lxString framework;
+    lxString ctemplate;
     int run_ide;
 };
 

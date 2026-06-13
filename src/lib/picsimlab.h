@@ -66,6 +66,9 @@ public:
     std::string GetOldPath(void) { return OldPath; };
     void SetOldPath(std::string op) { OldPath = op; };
 
+    std::string GetPWVscodePath(void) { return pw_vscode_path; };
+    void SetPWVscodePath(std::string path) { pw_vscode_path = path; };
+
     std::string GetProcessorName(void) { return proc_; };
     void SetProcessorName(std::string pn) { proc_ = pn; };
 
@@ -202,7 +205,7 @@ public:
     void SetNeedReboot(int nr = 1);
     int GetNeedReboot(void) { return NeedReboot; };
 
-    void RegisterError(const std::string error);
+    void RegisterError(const std::string module, const std::string error);
     int GetErrorCount(void) { return Errors.size(); };
 
     std::string GetError(int en) { return Errors.at(en); };
@@ -330,6 +333,7 @@ private:
     unsigned char sync;
     char pzwtmpdir[1024];
     int check_for_devel;
+    std::string pw_vscode_path;
 };
 
 extern CPICSimLab PICSimLab;

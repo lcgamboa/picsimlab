@@ -9,7 +9,6 @@ OBJS+= $(patsubst sim_backend/%.cc,sim_backend/%.o,$(wildcard sim_backend/bsim*.
 OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/board*.cc)) 
 OBJS+= sim_backend/bridge_gpsim.o
 OBJS+= $(patsubst devices/%.cc,devices/%.o,$(filter-out devices/prog_psp.cc,$(wildcard devices/*.cc)))
-OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/part*.cc))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/input*.cc))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/output*.cc))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/virtual*.cc))

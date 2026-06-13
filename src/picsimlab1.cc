@@ -329,11 +329,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
     label2.SetText(FloatStrFormat("Spd: %3.2fx", ((float)BASETIMER) / timer1.GetTime()));
 
     if (PICSimLab.GetErrorCount()) {
-#ifndef __EMSCRIPTEN__
         Message_sz(lxString::FromUTF8(PICSimLab.GetError(0).c_str()), 600, 240);
-#else
-        printf("Error: %s\n", PICSimLab.GetError(0).c_str());
-#endif
         PICSimLab.DeleteError(0);
     }
     PICSimLab.status &= ~ST_T2;
@@ -944,14 +940,32 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         // force use demo
         PICSimLab.Configure(home, 2, 1);
 
-        PICSimLab.RegisterError("Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " +
-                                std::string(fname_error) +
-                                "\n If the problem persists, please consider opening an issue on github.\n ");
+        PICSimLab.RegisterError("PICSimLab",
+                                "Error closing PICSimLab in last time!\n Using default mode.\n Error log file: " +
+                                    std::string(fname_error) +
+                                    "\n If the problem persists, please consider opening an issue on github.\n ");
     } else {  // no arguments
         // load options
         PICSimLab.Configure(home, 0, 1);
     }
     label1.SetText(PICSimLab.GetBoard()->GetClkLabel());
+    if (!PICSimLab.GetBoard()->GetSupportedIDEs().compare("N/A,")) {
+        menu1_Code_Project_Wizard.SetEnable(0);
+        menu1_Code_Open_Active_Project.SetEnable(0);
+    } else {
+        menu1_Code_Project_Wizard.SetEnable(1);
+
+        if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
+                   PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
+            if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+                menu1_Code_Open_Active_Project.SetEnable(1);
+            } else {
+                menu1_Code_Open_Active_Project.SetEnable(0);
+            }
+        } else {
+            menu1_Code_Open_Active_Project.SetEnable(0);
+        }
+    }
 }
 
 void CPWindow1::OnConfigure(void) {
@@ -1222,9 +1236,8 @@ void CPWindow1::filedialog1_EvOnClose(int retId) {
 
     if (retId && (filedialog1.GetType() == (lxFD_SAVE | lxFD_CHANGE_DIR))) {
         if (PICSimLab.GetBoard()->MDumpMemory((const char*)filedialog1.GetFileName().utf8_str())) {
-            PICSimLab.RegisterError(std::string("Error saving file: ") +
-                                    (const char*)filedialog1.GetFileName().utf8_str());
-            printf("PICSimLab: Error saving file: %s\n", (const char*)filedialog1.GetFileName().utf8_str());
+            PICSimLab.RegisterError(
+                "PICSimLab", std::string("Error saving file: ") + (const char*)filedialog1.GetFileName().utf8_str());
         }
 #ifdef __EMSCRIPTEN__
         EM_ASM_(
@@ -1353,10 +1366,6 @@ void CPWindow1::board_ButtonEvent(CControl* control, unsigned int button, unsign
     PICSimLab.GetBoard()->board_ButtonEvent(control->GetName().c_str(), button, x, y, state);
 }
 
-void CPWindow1::menu1_Modules_Project_Wizard_EvMenuActive(CControl* control) {
-    Window6.Show();
-}
-
 void CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive(CControl* control) {
     PICSimLab.GetBoard()->SetUseOscilloscope(1);
     Window4.Show();
@@ -1369,6 +1378,15 @@ void CPWindow1::menu1_Modules_Spareparts_EvMenuActive(CControl* control) {
     PICSimLab.GetBoard()->Reset();
 }
 
+void CPWindow1::menu1_Code_Project_Wizard_EvMenuActive(CControl* control) {
+    Window6.Show();
+}
+
+void CPWindow1::menu1_Code_Open_Active_Project_EvMenuActive(CControl* control) {
+    Window6.OpenProject(lxString::FromUTF8((const char*)PICSimLab.GetBoard()->GetPWActiveProject().c_str()),
+                        lxString::FromUTF8((const char*)PICSimLab.GetBoard()->GetPWProjectType().c_str()));
+}
+
 // Change board
 
 void CPWindow1::menu1_EvBoard(CControl* control) {
@@ -1379,6 +1397,24 @@ void CPWindow1::menu1_EvBoard(CControl* control) {
         PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
         PICSimLab.SetNeedResize(1);
         label1.SetText(PICSimLab.GetBoard()->GetClkLabel());
+
+        if (!PICSimLab.GetBoard()->GetSupportedIDEs().compare("N/A,")) {
+            menu1_Code_Project_Wizard.SetEnable(0);
+            menu1_Code_Open_Active_Project.SetEnable(0);
+        } else {
+            menu1_Code_Project_Wizard.SetEnable(1);
+
+            if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
+                       PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
+                if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+                    menu1_Code_Open_Active_Project.SetEnable(1);
+                } else {
+                    menu1_Code_Open_Active_Project.SetEnable(0);
+                }
+            } else {
+                menu1_Code_Open_Active_Project.SetEnable(0);
+            }
+        }
     }
 }
 
@@ -1946,9 +1982,8 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
         PICSimLab.LoadWorkspace(fdemo);
         PICSimLab.SetWorkspaceFileName("");
     } else {
-        PICSimLab.RegisterError("Demo for board " + PICSimLab.GetBoard()->GetName() + " not found!");
-        printf("PICSimLab: Demo for board  %s not found! (%s)\n", PICSimLab.GetBoard()->GetName().c_str(),
-               (const char*)fdemo.c_str());
+        PICSimLab.RegisterError("PICSimLab",
+                                "Demo for board " + PICSimLab.GetBoard()->GetName() + " not found!" + fdemo);
     }
 }
 
@@ -2030,6 +2065,9 @@ void file_ready(const char* fname, const char* dir) {
         dir = tmp;
     }
 
+    char fullpath[1024];
+    snprintf(fullpath, 1023, "%s/%s", dir, fname);
+
     if (strstr(fname, ".pzw")) {
         printf("PICSimLab: Loading .pzw...\n");
         Window1.filedialog2.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
@@ -2040,7 +2078,7 @@ void file_ready(const char* fname, const char* dir) {
         printf("PICSimLab: Loading .hex...\n");
         Window1.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
         Window1.filedialog1.SetDir(dir);
-        Window1.filedialog1.SetFileName(fname);
+        Window1.filedialog1.SetFileName(fullpath);
         Window1.filedialog1_EvOnClose(1);
     } else if (strstr(fname, ".pcf")) {
         char buff[1024];
@@ -2090,10 +2128,10 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
             return lxExecute(Arg);
             break;
         case PSC_ZIPDIR:
-            return lxZipDir(Arg, lxString::FromUTF8((const char*)ReturnBuff));
+            return lxZipDir(lxString::FromUTF8(Arg), lxString::FromUTF8((const char*)ReturnBuff));
             break;
         case PSC_UNZIPDIR:
-            return lxUnzipDir(lxString::FromUTF8(Arg), (char*)ReturnBuff);
+            return lxUnzipDir(lxString::FromUTF8(Arg), lxString::FromUTF8((const char*)ReturnBuff));
             break;
         case PSC_RENAMEFILE:
             return lxRenameFile(Arg, (const char*)ReturnBuff);

@@ -158,8 +158,7 @@ void part::ReadInputMap(std::string fname) {
         }
         fclose(fin);
     } else {
-        printf("PICSimLab: (%s) Error open input.map \"%s\"!\n", (const char*)Name.c_str(), (const char*)fname.c_str());
-        PICSimLab.RegisterError(Name + ": Error open input.map:\n" + fname);
+        PICSimLab.RegisterError("PICSimLab", Name + ": Error open input.map:\n" + fname);
     }
 }
 
@@ -234,9 +233,7 @@ void part::ReadOutputMap(std::string fname) {
 
         fclose(fin);
     } else {
-        printf("PICSimLab: (%s) Error open output.map \"%s\"!\n", (const char*)Name.c_str(),
-               (const char*)fname.c_str());
-        PICSimLab.RegisterError(Name + ": Error open output.map:\n" + fname);
+        PICSimLab.RegisterError("PICSimLab", Name + ": Error open output.map:\n" + fname);
     }
 }
 
@@ -338,8 +335,7 @@ void part::LoadPartImage(void) {
             SpareParts.CanvasCmd({.partn = id, .cmd = CC_DESTROY});
             SpareParts.CanvasCmd({.partn = id, .cmd = CC_CREATE, .Create{BitmapId}});
 
-            printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
-            PICSimLab.RegisterError("Error loading image:\n " + iname);
+            PICSimLab.RegisterError("PICSimLab", "Error loading part [" + Name + "]image:\n " + iname);
         } else {
             printf("PICSimLab: (%s) Error loading image %s\n", (const char*)Name.c_str(), (const char*)iname.c_str());
             exit(-1);

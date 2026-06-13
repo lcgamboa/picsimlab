@@ -157,7 +157,7 @@ CPWindow1::CPWindow1(void) {
     menu1.SetClass(lxT("CMenu"));
     menu1.SetName(lxT("menu1"));
     menu1.SetTag(0);
-    menu1.SetMenuItems(lxT("File,Board,Microcontroller,Modules,Tools,Help,"));
+    menu1.SetMenuItems(lxT("File,Board,Microcontroller,Modules,Tools,Code,Help,"));
     CreateChild(&menu1);
     // menu1_File
     menu1_File.SetFOwner(this);
@@ -189,7 +189,7 @@ CPWindow1::CPWindow1(void) {
     menu1_Modules.SetName(lxT("menu1_Modules"));
     menu1_Modules.SetTag(0);
     menu1_Modules.SetText(lxT("Modules"));
-    menu1_Modules.SetMenuItems(lxT("Oscilloscope,Project Wizard,Spare parts,"));
+    menu1_Modules.SetMenuItems(lxT("Oscilloscope,Spare parts,"));
     menu1.CreateChild(&menu1_Modules);
     // menu1_Tools
     menu1_Tools.SetFOwner(this);
@@ -201,6 +201,14 @@ CPWindow1::CPWindow1(void) {
         lxT("Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,Arduino Bootloader,MPLABX Debugger Plugin,Pin "
             "Viewer,"));
     menu1.CreateChild(&menu1_Tools);
+    // menu1_Code
+    menu1_Code.SetFOwner(this);
+    menu1_Code.SetClass(lxT("CPMenu"));
+    menu1_Code.SetName(lxT("menu1_Code"));
+    menu1_Code.SetTag(0);
+    menu1_Code.SetText(lxT("Code"));
+    menu1_Code.SetMenuItems(lxT("Project Wizard,Open Active Project,"));
+    menu1.CreateChild(&menu1_Code);
     // menu1_Help
     menu1_Help.SetFOwner(this);
     menu1_Help.SetClass(lxT("CPMenu"));
@@ -299,16 +307,6 @@ CPWindow1::CPWindow1(void) {
     menu1_Modules_Oscilloscope.SetSubMenu(NULL);
     menu1_Modules_Oscilloscope.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Modules_Oscilloscope_EvMenuActive;
     menu1_Modules.CreateChild(&menu1_Modules_Oscilloscope);
-    // menu1_Modules_Project_Wizard
-    menu1_Modules_Project_Wizard.SetFOwner(this);
-    menu1_Modules_Project_Wizard.SetClass(lxT("CItemMenu"));
-    menu1_Modules_Project_Wizard.SetName(lxT("menu1_Modules_Project_Wizard"));
-    menu1_Modules_Project_Wizard.SetTag(0);
-    menu1_Modules_Project_Wizard.SetText(lxT("Project Wizard"));
-    menu1_Modules_Project_Wizard.SetEnable(1);
-    menu1_Modules_Project_Wizard.SetSubMenu(NULL);
-    menu1_Modules_Project_Wizard.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Modules_Project_Wizard_EvMenuActive;
-    menu1_Modules.CreateChild(&menu1_Modules_Project_Wizard);
     // menu1_Modules_Spareparts
     menu1_Modules_Spareparts.SetFOwner(this);
     menu1_Modules_Spareparts.SetClass(lxT("CItemMenu"));
@@ -381,6 +379,26 @@ CPWindow1::CPWindow1(void) {
     menu1_Tools_PinViewer.SetSubMenu(NULL);
     menu1_Tools_PinViewer.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Tools_PinViewer_EvMenuActive;
     menu1_Tools.CreateChild(&menu1_Tools_PinViewer);
+    // menu1_Code_Project_Wizard
+    menu1_Code_Project_Wizard.SetFOwner(this);
+    menu1_Code_Project_Wizard.SetClass(lxT("CItemMenu"));
+    menu1_Code_Project_Wizard.SetName(lxT("menu1_Code_Project_Wizard"));
+    menu1_Code_Project_Wizard.SetTag(0);
+    menu1_Code_Project_Wizard.SetText(lxT("Project Wizard"));
+    menu1_Code_Project_Wizard.SetEnable(1);
+    menu1_Code_Project_Wizard.SetSubMenu(NULL);
+    menu1_Code_Project_Wizard.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Code_Project_Wizard_EvMenuActive;
+    menu1_Code.CreateChild(&menu1_Code_Project_Wizard);
+    // menu1_Code_Open_Active_Project
+    menu1_Code_Open_Active_Project.SetFOwner(this);
+    menu1_Code_Open_Active_Project.SetClass(lxT("CItemMenu"));
+    menu1_Code_Open_Active_Project.SetName(lxT("menu1_Code_Open_Active_Project"));
+    menu1_Code_Open_Active_Project.SetTag(0);
+    menu1_Code_Open_Active_Project.SetText(lxT("Open Active Project"));
+    menu1_Code_Open_Active_Project.SetEnable(1);
+    menu1_Code_Open_Active_Project.SetSubMenu(NULL);
+    menu1_Code_Open_Active_Project.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Code_Open_Active_Project_EvMenuActive;
+    menu1_Code.CreateChild(&menu1_Code_Open_Active_Project);
     // menu1_Help_Contents
     menu1_Help_Contents.SetFOwner(this);
     menu1_Help_Contents.SetClass(lxT("CItemMenu"));

@@ -152,7 +152,7 @@ int mplabxd_init(board* mboard, unsigned short tcpport) {
             char stemp[100];
             snprintf(stemp, 100, "Can't open mplabxd TCP port %i\n It is already in use by another application!",
                      tcpport);
-            PICSimLab.RegisterError(stemp);
+            PICSimLab.RegisterError("mplabxd", stemp);
             return 1;
         }
 

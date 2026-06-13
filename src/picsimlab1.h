@@ -82,6 +82,7 @@ public:
     CPMenu menu1_Microcontroller;
     CPMenu menu1_Modules;
     CPMenu menu1_Tools;
+    CPMenu menu1_Code;
     CPMenu menu1_Help;
     CItemMenu menu1_File_LoadHex;
     CItemMenu menu1_File_ReloadLast;
@@ -92,7 +93,6 @@ public:
     CItemMenu menu1_File_LoadBoardDemo;
     CItemMenu menu1_File_Exit;
     CItemMenu menu1_Modules_Oscilloscope;
-    CItemMenu menu1_Modules_Project_Wizard;
     CItemMenu menu1_Modules_Spareparts;
     CItemMenu menu1_Tools_SerialTerm;
     CItemMenu menu1_Tools_SerialRemoteTank;
@@ -100,6 +100,8 @@ public:
     CItemMenu menu1_Tools_ArduinoBootloader;
     CItemMenu menu1_Tools_MPLABXDebuggerPlugin;
     CItemMenu menu1_Tools_PinViewer;
+    CItemMenu menu1_Code_Project_Wizard;
+    CItemMenu menu1_Code_Open_Active_Project;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_Board;
     CItemMenu menu1_Help_Examples;
@@ -137,7 +139,6 @@ public:
     void menu1_File_LoadBoardDemo_EvMenuActive(CControl* control);
     void menu1_File_Exit_EvMenuActive(CControl* control);
     void menu1_Modules_Oscilloscope_EvMenuActive(CControl* control);
-    void menu1_Modules_Project_Wizard_EvMenuActive(CControl* control);
     void menu1_Modules_Spareparts_EvMenuActive(CControl* control);
     void menu1_Tools_SerialTerm_EvMenuActive(CControl* control);
     void menu1_Tools_SerialRemoteTank_EvMenuActive(CControl* control);
@@ -145,6 +146,8 @@ public:
     void menu1_Tools_ArduinoBootloader_EvMenuActive(CControl* control);
     void menu1_Tools_MPLABXDebuggerPlugin_EvMenuActive(CControl* control);
     void menu1_Tools_PinViewer_EvMenuActive(CControl* control);
+    void menu1_Code_Project_Wizard_EvMenuActive(CControl* control);
+    void menu1_Code_Open_Active_Project_EvMenuActive(CControl* control);
     void menu1_Help_Contents_EvMenuActive(CControl* control);
     void menu1_Help_Examples_EvMenuActive(CControl* control);
     void menu1_Help_Board_EvMenuActive(CControl* control);

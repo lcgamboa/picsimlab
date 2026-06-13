@@ -80,6 +80,7 @@ CPICSimLab::CPICSimLab() {
     SHARE = "";
     pzwtmpdir[0] = 0;
     check_for_devel = 0;
+    pw_vscode_path = " ";
 
     OnUpdateStatus = NULL;
     OnConfigure = NULL;
@@ -287,7 +288,8 @@ void CPICSimLab::SetNeedReboot(int nr) {
 #endif
 }
 
-void CPICSimLab::RegisterError(const std::string error) {
+void CPICSimLab::RegisterError(const std::string module, const std::string error) {
+    printf("%s Error: %s\n", module.c_str(), error.c_str());
     Errors.push_back(error);
 }
 
@@ -362,6 +364,8 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         SavePrefs("picsimlab_lpath", " ");
     }
     SavePrefs("picsimlab_lfile", FNAME);
+
+    SavePrefs("picsimlab_pw_vscodep", pw_vscode_path);
 
     pboard->WritePreferences();
 
@@ -460,13 +464,11 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
     char fzip[1280];
 
     if (!SystemCmd(PSC_FILEEXISTS, fnpzw.c_str())) {
-        printf("PICSimLab: file %s not found!\n", (const char*)fnpzw.c_str());
-        RegisterError("PICSimLab: file " + fnpzw + " not found!");
+        RegisterError("PICSimLab", "File " + fnpzw + " not found!");
         return;
     }
     if (fnpzw.find(".pzw") == std::string::npos) {
-        printf("PICSimLab: file %s is not a .pzw file!\n", (const char*)fnpzw.c_str());
-        RegisterError("PICSimLab: file " + fnpzw + " is not a .pzw file!");
+        RegisterError("PICSimLab", "File " + fnpzw + " is not a .pzw file!");
         return;
     }
     // write options
@@ -529,9 +531,8 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 ser_ = maj_ * 10000 + min_ * 100 + rev_;
 
                 if (ser_ > ser) {
-                    printf("PICSimLab: .pzw file version %i newer than PICSimLab %i!\n", ser_, ser);
-                    RegisterError("The loaded workspace was made with a newer version " + pzw_ver +
-                                  ".\n Please update your PICSimLab " _VERSION_ " .");
+                    RegisterError("PicsimLab", "The loaded workspace was made with a newer version " + pzw_ver +
+                                                   ".\n Please update your PICSimLab " _VERSION_ " .");
                 }
 
                 continue;
@@ -898,7 +899,8 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                         }
                         SetLabs(i, i);
                         if (lab == BOARDS_LAST) {
-                            RegisterError(std::string("Invalid board ") + value + "!\n Using default board!");
+                            RegisterError("PICSimLab",
+                                          std::string("Invalid board ") + value + "!\n Using default board!");
                         }
                     }
                     SetBoard(create_board(&lab, &lab_));
@@ -962,6 +964,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     SetFNAME(std::string(value));
                 }
 
+                if (!strcmp(name, "picsimlab_pw_vscodep")) {
+                    SetPWVscodePath(std::string(value));
+                }
+
                 if (pboard) {
                     pboard->ReadPreferences(name, value);
                 }
@@ -1002,8 +1008,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
         if (SystemCmd(PSC_FILEEXISTS, lfile)) {
             strcpy(fname, lfile);
         } else {
-            printf("PICSimLab: File Not found \"%s\" loading default.\n", lfile);
-            RegisterError(std::string("File Not found \n\"") + lfile + "\"\n loading default.");
+            RegisterError("PICSimLab:", std::string("File Not found \n\"") + lfile + "\"\n loading default.");
             if (Instance && !HOME.compare(home)) {
                 sprintf(fname, "%s/mdump_%s_%s_%i.hex", home, boards_list[lab].name_,
                         (const char*)pboard->GetProcessorName().c_str(), Instance);
@@ -1171,11 +1176,11 @@ int CPICSimLab::LoadHexFile(std::string fname) {
 
     switch (GetBoard()->MInit(GetBoard()->GetProcessorName().c_str(), fname.c_str(), GetNSTEP() * NSTEPKF)) {
         case HEX_NFOUND:
-            RegisterError("Hex file not found!");
+            RegisterError("PICSimLab", "Hex file not found!");
             SetMcuRun(0);
             break;
         case HEX_CHKSUM:
-            RegisterError("Hex file checksum error!");
+            RegisterError("PICSimLab", "Hex file checksum error!");
             GetBoard()->MEraseFlash();
             SetMcuRun(0);
             break;

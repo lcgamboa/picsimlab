@@ -243,8 +243,8 @@ int cpart_VCD_Play::ReadPreferences(std::string value) {
         if (PICSimLab.SystemCmd(PSC_FILEEXISTS, f_vcd_name)) {
             LoadVCD(f_vcd_name);
         } else {
-            printf("PICSimLab: VCD_Play Error loading from file: %s \n", f_vcd_name);
-            PICSimLab.RegisterError(std::string("PICSimLab: VCD_Play Error loading from file: \n") + f_vcd_name);
+            PICSimLab.RegisterError("PICSimLab",
+                                    std::string("PICSimLab: VCD_Play Error loading from file: \n") + f_vcd_name);
             f_vcd_name[0] = '*';
             f_vcd_name[1] = 0;
             play = 0;

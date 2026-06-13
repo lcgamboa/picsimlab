@@ -760,7 +760,7 @@ void cboard_C3_DevKitC::board_ButtonEvent(const char* controlname, unsigned int 
                 PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
             }
         } else {
-            PICSimLab.RegisterError("File " + fname + " not found!");
+            PICSimLab.RegisterError("PICSimLab", "File " + fname + " not found!");
         }
     } else if (!strcmp(controlname, "button1")) {
         PICSimLab.WindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableWifi);

@@ -686,6 +686,26 @@ public:
      */
     virtual void MSetSimulationRun(int run) {};
 
+    /**
+     * @brief  Return the active project created by Project Wizard
+     */
+    std::string GetPWActiveProject(void) { return pw_active_project; };
+
+    /**
+     * @brief  Set the active project created by Project Wizard
+     */
+    void SetPWActiveProject(std::string path) { pw_active_project = path; };
+
+    /**
+     * @brief  Return the active project type created by Project Wizard
+     */
+    std::string GetPWProjectType(void) { return pw_project_type; };
+
+    /**
+     * @brief  Set the active project type created by Project Wizard
+     */
+    void SetPWProjectType(std::string type) { pw_project_type = type; };
+
 protected:
     /**
      * @brief Register remote control variables
@@ -730,6 +750,8 @@ private:
     int TimersCount;
     Timers_t Timers[MAX_TIMERS];
     Timers_t* TimersList[MAX_TIMERS];
+    std::string pw_active_project;
+    std::string pw_project_type;
 
     /**
      * @brief Read the Input Map

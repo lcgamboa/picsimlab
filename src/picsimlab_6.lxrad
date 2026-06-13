@@ -404,4 +404,13 @@
   <Tag type="int">0</Tag>
   <EvOnClose type="Event">True</EvOnClose>
 </dirdialog1>
+<filedialog1>
+  <Class type="lxString">CFileDialog</Class>
+  <Name type="lxString">filedialog1</Name>
+  <Tag type="int">0</Tag>
+  <FileName type="lxString">untitled.txt</FileName>
+  <Filter type="lxString">All Files (*.*)|*.*</Filter>
+  <Type type="int">129</Type>
+  <EvOnClose type="Event">TRUE</EvOnClose>
+</filedialog1>
 </window6>

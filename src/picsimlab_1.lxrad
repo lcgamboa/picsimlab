@@ -166,7 +166,7 @@
   <Class type="String">CMenu</Class>
   <Name type="String">menu1</Name>
   <Tag type="int">0</Tag>
-  <MenuItems type="MenuItems">File,Board,Microcontroller,Modules,Tools,Help,</MenuItems>
+  <MenuItems type="MenuItems">File,Board,Microcontroller,Modules,Tools,Code,Help,</MenuItems>
 </menu1>
 <menu1_File>
   <Class type="String">CPMenu</Class>
@@ -194,7 +194,7 @@
   <Name type="String">menu1_Modules</Name>
   <Tag type="int">0</Tag>
   <Text type="String">Modules</Text>
-  <MenuItems type="MenuItems">Oscilloscope,Project Wizard,Spare parts,</MenuItems>
+  <MenuItems type="MenuItems">Oscilloscope,Spare parts,</MenuItems>
 </menu1_Modules>
 <menu1_Tools>
   <Class type="String">CPMenu</Class>
@@ -203,6 +203,13 @@
   <Text type="String">Tools</Text>
   <MenuItems type="MenuItems">Serial Term,Serial Remote Tank,Esp8266 Modem Simulator,Arduino Bootloader,MPLABX Debugger Plugin,Pin Viewer,</MenuItems>
 </menu1_Tools>
+<menu1_Code>
+  <Class type="String">CPMenu</Class>
+  <Name type="String">menu1_Code</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Code</Text>
+  <MenuItems type="MenuItems">Project Wizard, Open Active Project,</MenuItems>
+</menu1_Code>
 <menu1_Help>
   <Class type="String">CPMenu</Class>
   <Name type="String">menu1_Help</Name>
@@ -291,15 +298,6 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Modules_Oscilloscope>
-<menu1_Modules_Project_Wizard>
-  <Class type="String">CItemMenu</Class>
-  <Name type="String">menu1_Modules_Project_Wizard</Name>
-  <Tag type="int">0</Tag>
-  <Text type="String">Project Wizard</Text>
-  <Enable type="bool">1</Enable>
-  <SubMenu type="SubMenu">NULL</SubMenu>
-  <EvMenuActive type="Event">TRUE</EvMenuActive>
-</menu1_Modules_Project_Wizard>
 <menu1_Modules_Spareparts>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Modules_Spareparts</Name>
@@ -363,6 +361,24 @@
   <SubMenu type="SubMenu">NULL</SubMenu>
   <EvMenuActive type="Event">TRUE</EvMenuActive>
 </menu1_Tools_PinViewer>
+<menu1_Code_Project_Wizard>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Code_Project_Wizard</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Project Wizard</Text>
+  <Enable type="bool">1</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Code_Project_Wizard>
+<menu1_Code_Open_Active_Project>
+  <Class type="String">CItemMenu</Class>
+  <Name type="String">menu1_Code_Open_Active_Project</Name>
+  <Tag type="int">0</Tag>
+  <Text type="String">Open Active Project</Text>
+  <Enable type="bool">0</Enable>
+  <SubMenu type="SubMenu">NULL</SubMenu>
+  <EvMenuActive type="Event">TRUE</EvMenuActive>
+</menu1_Code_Open_Active_Project>
 <menu1_Help_Contents>
   <Class type="String">CItemMenu</Class>
   <Name type="String">menu1_Help_Contents</Name>

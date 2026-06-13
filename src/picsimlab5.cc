@@ -425,9 +425,8 @@ void CPWindow5::pmenu2_Properties_EvMenuActive(CControl* control) {
             }
 
         } else {
-            PICSimLab.RegisterError(SpareParts.GetPart(PartSelected)->GetName() + ": File not found! \n" + fname);
-            printf("PICSimLab: (%s) File not found! %s\n",
-                   (const char*)SpareParts.GetPart(PartSelected)->GetName().c_str(), (const char*)fname.c_str());
+            PICSimLab.RegisterError("PICSimLab",
+                                    SpareParts.GetPart(PartSelected)->GetName() + ": File not found! \n" + fname);
         }
     }
 }

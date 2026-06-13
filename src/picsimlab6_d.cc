@@ -262,6 +262,16 @@ CPWindow6::CPWindow6(void) {
     dirdialog1.SetType(129);
     dirdialog1.EvOnClose = EVONCLOSE & CPWindow6::dirdialog1_EvOnClose;
     CreateChild(&dirdialog1);
+    // filedialog1
+    filedialog1.SetFOwner(this);
+    filedialog1.SetClass(lxT("CFileDialog"));
+    filedialog1.SetName(lxT("filedialog1"));
+    filedialog1.SetTag(0);
+    filedialog1.SetFileName(lxT("untitled.txt"));
+    filedialog1.SetFilter(lxT("All Files (*.*)|*.*"));
+    filedialog1.SetType(129);
+    filedialog1.EvOnClose = EVONCLOSE & CPWindow6::filedialog1_EvOnClose;
+    CreateChild(&filedialog1);
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 };
