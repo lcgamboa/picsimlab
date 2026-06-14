@@ -158,24 +158,56 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
 
                 // board selection
                 lxString pioboard = "";
+                lxString pioplatform = "";
                 lxString ledpin = "";
                 lxString env_extra = "";
+                lxString monitor_rst = "";
+                lxString ftype = "";
                 if (!bname.compare("Arduino Uno")) {
                     pioboard = "uno";
+                    pioplatform = "atmelavr";
                     ledpin = "13";
-                    env_extra = "";
+                    ftype = "hex";
                 } else if (!bname.compare("Arduino Nano")) {
                     pioboard = "nanoatmega328";
+                    pioplatform = "atmelavr";
                     ledpin = "13";
-                    env_extra = "";
+                    ftype = "hex";
                 } else if (!bname.compare("Arduino Mega")) {
                     pioboard = "megaatmega2560";
+                    pioplatform = "atmelavr";
                     ledpin = "13";
-                    env_extra = "";
+                    ftype = "hex";
                 } else if (!bname.compare("Franzininho DIY")) {
                     pioboard = "attiny85";
+                    pioplatform = "atmelavr";
                     ledpin = "1";
                     env_extra = "board_build.f_cpu = 16000000L\nbuild_flags = -DCLOCK_SOURCE=6\n";
+                    ftype = "hex";
+                } else if (!bname.compare("Blue Pill")) {
+                    pioboard = "bluepill_f103c8";
+                    pioplatform = "ststm32";
+                    ledpin = "PC13";
+                    monitor_rst = "       monitor system_reset\n";
+                    ftype = "bin";
+                } else if (!bname.compare("STM32 H103")) {
+                    pioboard = "olimex_f103";
+                    pioplatform = "ststm32";
+                    ledpin = "PC12";
+                    monitor_rst = "       monitor system_reset\n";
+                    ftype = "bin";
+                } else if (!bname.compare("ESP32-DevKitC")) {
+                    pioboard = "esp32dev";
+                    pioplatform = "espressif32";
+                    ledpin = "2";
+                    monitor_rst = "       monitor system_reset\n";
+                    ftype = "bin";
+                } else if (!bname.compare("ESP32-C3-DevKitC-02")) {
+                    pioboard = "esp32-c3-devkitc-02";
+                    pioplatform = "espressif32";
+                    ledpin = "2";
+                    monitor_rst = "       monitor system_reset\n";
+                    ftype = "bin";
                 }
 
                 // main
@@ -197,11 +229,16 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     return;
                 }
 #ifdef _WIN_
-                fprintf(fpio, platformio_ini, "Windows", (const char*)pioboard.c_str(), (const char*)pioboard.c_str(),
-                        (const char*)env_extra.c_str(), (const char*)pioboard.c_str());
+                fprintf(fpio, platformio_ini, "Windows", (const char*)pioboard.c_str(),
+                        (const char*)pioplatform.c_str(), (const char*)pioboard.c_str(), (const char*)env_extra.c_str(),
+                        (const char*)pioboard.c_str(), (const char*)monitor_rst.c_str(),
+                        (const char*)monitor_rst.c_str(), (const char*)ftype.c_str(), (const char*)ftype.c_str(),
+                        (const char*)ftype.c_str(), (const char*)ftype.c_str());
 #else
-                fprintf(fpio, platformio_ini, "Linux", (const char*)pioboard.c_str(), (const char*)pioboard.c_str(),
-                        (const char*)env_extra.c_str(), (const char*)pioboard.c_str());
+                fprintf(fpio, platformio_ini, "Linux", (const char*)pioboard.c_str(), (const char*)pioplatform.c_str(),
+                        (const char*)pioboard.c_str(), (const char*)env_extra.c_str(), (const char*)pioboard.c_str(),
+                        (const char*)monitor_rst.c_str(), (const char*)monitor_rst.c_str(), (const char*)ftype.c_str(),
+                        (const char*)ftype.c_str(), (const char*)ftype.c_str(), (const char*)ftype.c_str());
 #endif
                 fclose(fpio);
 
@@ -212,7 +249,6 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                 if (run_ide) {
                     OpenProject(prjdir, ide);
                 }
-
             } else {
                 PICSimLab.RegisterError(
                     "PICSimLab", (const char*)(lxString("Project dir ") + prjdir + " can't be created!").utf8_str());

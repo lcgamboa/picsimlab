@@ -325,6 +325,9 @@ void cboard_C3_DevKitC::WritePreferences(void) {
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cfguextra", std::to_string(use_cmdline_extra));
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_cmdextra", cmdline_extra);
     PICSimLab.SavePrefs("ESP32_C3_DevKitC_app_off", std::to_string(application_offset));
+
+    PICSimLab.SavePrefs("ESP32_C3_DevKitC_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("ESP32_C3_DevKitC_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -367,6 +370,14 @@ void cboard_C3_DevKitC::ReadPreferences(char* name, char* value) {
     }
     if (!strcmp(name, "ESP32_C3_DevKitC_app_off")) {
         application_offset = atoi(value);
+    }
+
+    if (!strcmp(name, "ESP32_C3_DevKitC_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "ESP32_C3_DevKitC_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 

@@ -58,6 +58,8 @@ public:
     void Run_CPU_ns(uint64_t time) override;
     // Return a list of board supported microcontrollers
     std::string GetSupportedDevices(void) override { return "ESP32-C3,"; };
+    // Return a list of supported IDEs in project wizard
+    std::string GetSupportedIDEs(void) override { return "PlatformIO IDE for VSCode,"; };
     // Reset board status
     void Reset(void) override;
     // Event on the board

@@ -342,6 +342,8 @@ void cboard_STM32_H103::WritePreferences(void) {
     PICSimLab.SavePrefs("STM32_H103_cfgwgdb", std::to_string(ConfigWaitGdb));
     PICSimLab.SavePrefs("STM32_H103_cfguextra", std::to_string(use_cmdline_extra));
     PICSimLab.SavePrefs("STM32_H103_cmdextra", cmdline_extra);
+    PICSimLab.SavePrefs("STM32_H103_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("STM32_H103_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -372,6 +374,14 @@ void cboard_STM32_H103::ReadPreferences(char* name, char* value) {
     }
     if (!strcmp(name, "STM32_H103_cmdextra")) {
         cmdline_extra = value;
+    }
+
+    if (!strcmp(name, "STM32_H103_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "STM32_H103_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 

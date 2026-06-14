@@ -318,6 +318,9 @@ void cboard_Blue_Pill::WritePreferences(void) {
     PICSimLab.SavePrefs("Blue_Pill_cfgwgdb", std::to_string(ConfigWaitGdb));
     PICSimLab.SavePrefs("Blue_Pill_cfguextra", std::to_string(use_cmdline_extra));
     PICSimLab.SavePrefs("Blue_Pill_cmdextra", cmdline_extra);
+
+    PICSimLab.SavePrefs("Blue_Pill_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("Blue_Pill_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -348,6 +351,14 @@ void cboard_Blue_Pill::ReadPreferences(char* name, char* value) {
     }
     if (!strcmp(name, "Blue_Pill_cmdextra")) {
         cmdline_extra = value;
+    }
+
+    if (!strcmp(name, "Blue_Pill_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "Blue_Pill_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 
