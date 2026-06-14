@@ -50,6 +50,8 @@ void cboard_Arduino_Mega::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs("Arduino_Mega_proc", Proc);
     PICSimLab.SavePrefs("Arduino_Mega_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Arduino_Mega_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("Arduino_Mega_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -62,6 +64,14 @@ void cboard_Arduino_Mega::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "Arduino_Mega_clock")) {
         PICSimLab.SetClock(atof(value));
+    }
+
+    if (!strcmp(name, "Arduino_Mega_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "Arduino_Mega_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 

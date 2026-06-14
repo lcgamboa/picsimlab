@@ -51,6 +51,8 @@ void cboard_Arduino_Nano::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs("Arduino_Nano_proc", Proc);
     PICSimLab.SavePrefs("Arduino_Nano_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Arduino_Nano_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("Arduino_Nano_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -63,6 +65,14 @@ void cboard_Arduino_Nano::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "Arduino_Nano_clock")) {
         PICSimLab.SetClock(atof(value));
+    }
+
+    if (!strcmp(name, "Arduino_Nano_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "Arduino_Nano_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 

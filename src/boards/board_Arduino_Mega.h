@@ -42,8 +42,6 @@ public:
     void WritePreferences(void) override;
     // Called whe configuration file load  preferences
     void ReadPreferences(char* name, char* value) override;
-    // Return a list of supported IDEs in project wizard
-    std::string GetSupportedIDEs(void) override { return "N/A,"; };
 };
 
 #endif /* BOARD_Arduino_Mega_H */

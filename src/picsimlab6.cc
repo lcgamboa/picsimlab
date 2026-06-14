@@ -69,6 +69,8 @@ void CPWindow6::_EvOnShow(CControl* control) {
     }
 
     combo3.SetEnable((combo3.GetItemsCount() == 1) ? 0 : 1);
+
+    edit1.SetText("Untitled");
 }
 
 void CPWindow6::button1_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
@@ -81,7 +83,7 @@ void CPWindow6::button1_EvMouseButtonClick(CControl* control, const uint button,
 void CPWindow6::button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
     dirdialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-    dirdialog1.SetDirName(PICSimLab.GetBoard()->GetPWActiveProject());
+    dirdialog1.SetDirName(PICSimLab.GetBoard()->GetPWActiveProject());  // TODO get platformio default project dir
     run_ide = 1;
     dirdialog1.Run();
 }
@@ -154,6 +156,29 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                 lxString fzip = PICSimLab.GetSharePath() + "prj_wizard/platformio.zip";
                 PICSimLab.SystemCmd(PSC_UNZIPDIR, fzip.utf8_str(), (void*)((const char*)prjdir.utf8_str()));
 
+                // board selection
+                lxString pioboard = "";
+                lxString ledpin = "";
+                lxString env_extra = "";
+                if (!bname.compare("Arduino Uno")) {
+                    pioboard = "uno";
+                    ledpin = "13";
+                    env_extra = "";
+                } else if (!bname.compare("Arduino Nano")) {
+                    pioboard = "nanoatmega328";
+                    ledpin = "13";
+                    env_extra = "";
+                } else if (!bname.compare("Arduino Mega")) {
+                    pioboard = "megaatmega2560";
+                    ledpin = "13";
+                    env_extra = "";
+                } else if (!bname.compare("Franzininho DIY")) {
+                    pioboard = "attiny85";
+                    ledpin = "1";
+                    env_extra = "board_build.f_cpu = 16000000L\nbuild_flags = -DCLOCK_SOURCE=6\n";
+                }
+
+                // main
                 FILE* fmain = fopen_UTF8((prjdir + "src/main.cpp").utf8_str(), "w");
                 if (fmain == NULL) {
                     PICSimLab.RegisterError(
@@ -161,9 +186,9 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                         (const char*)(lxString("File ") + prjdir + "src/main.cpp can't be open!").utf8_str());
                     return;
                 }
-                fprintf(fmain, blink_code, "13");
+                fprintf(fmain, blink_code, (const char*)ledpin.c_str());
                 fclose(fmain);
-
+                // platformio.ini
                 FILE* fpio = fopen_UTF8((prjdir + "platformio.ini").utf8_str(), "w");
                 if (fpio == NULL) {
                     PICSimLab.RegisterError(
@@ -172,9 +197,11 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     return;
                 }
 #ifdef _WIN_
-                fprintf(fpio, platformio_ini, "Windows");
+                fprintf(fpio, platformio_ini, "Windows", (const char*)pioboard.c_str(), (const char*)pioboard.c_str(),
+                        (const char*)env_extra.c_str(), (const char*)pioboard.c_str());
 #else
-                fprintf(fpio, platformio_ini, "Linux");
+                fprintf(fpio, platformio_ini, "Linux", (const char*)pioboard.c_str(), (const char*)pioboard.c_str(),
+                        (const char*)env_extra.c_str(), (const char*)pioboard.c_str());
 #endif
                 fclose(fpio);
 

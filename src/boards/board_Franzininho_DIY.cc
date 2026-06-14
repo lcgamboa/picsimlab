@@ -147,6 +147,8 @@ void cboard_Franzininho_DIY::WritePreferences(void) {
     // write selected microcontroller of board_x to preferences
     PICSimLab.SavePrefs("Franzininho_DIY_proc", Proc);
     PICSimLab.SavePrefs("Franzininho_DIY_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+    PICSimLab.SavePrefs("Franzininho_DIY_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("Franzininho_DIY_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -159,6 +161,14 @@ void cboard_Franzininho_DIY::ReadPreferences(char* name, char* value) {
 
     if (!strcmp(name, "Franzininho_DIY_clock")) {
         PICSimLab.SetClock(atof(value));
+    }
+
+    if (!strcmp(name, "Franzininho_DIY_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "Franzininho_DIY_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 
