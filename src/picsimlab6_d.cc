@@ -284,7 +284,6 @@ CPWindow6::CPWindow6(void) {
     button4.SetHint(lxT(""));
     button4.SetEnable(1);
     button4.SetVisible(1);
-    button4.SetColor(lxT("#000001"));
     button4.SetPopupMenu(NULL);
     button4.EvMouseButtonClick = EVMOUSEBUTTONCLICK & CPWindow6::button4_EvMouseButtonClick;
     button4.SetText(lxT("Open Existing"));

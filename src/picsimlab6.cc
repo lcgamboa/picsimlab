@@ -214,12 +214,14 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                         pioplatform = "espressif32";
                         ledpin = "2";
                         monitor_rst = "       monitor system_reset\n";
+                        env_extra = "board_build.flash_mode = dio\nboard_upload.flash_size = 4MB\n";
                         ftype = "bin";
                     } else if (!bname.compare("ESP32-C3-DevKitC-02")) {
                         pioboard = "esp32-c3-devkitc-02";
                         pioplatform = "espressif32";
                         ledpin = "2";
                         monitor_rst = "       monitor system_reset\n";
+                        env_extra = "board_build.flash_mode = dio\nboard_upload.flash_size = 4MB\n";
                         ftype = "bin";
                     }
 
