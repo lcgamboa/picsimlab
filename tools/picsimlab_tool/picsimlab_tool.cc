@@ -1,3 +1,27 @@
+/* ########################################################################
+
+   PICSimLab - Programmable IC Simulator Laboratory
+
+   ########################################################################
+
+   Copyright (c) : 2025-2026  Luis Claudio Gambôa Lopes <lcgamboa@yahoo.com>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+   For e-mail suggestions :  lcgamboa@yahoo.com
+   ######################################################################## */
 
 #ifndef _WIN_
 #include <arpa/inet.h>
@@ -51,18 +75,18 @@ int main(int argc, char **argv)
   char *cmd;
   int is_bin = 0;
 
-  if (argc < 3)
+  if (argc != 2)
   {
     printf("PICSimLab Tool:\n");
     printf("*************************************************\n");
     printf("* Developed by L.C. Gamboa <lcgamboa@yahoo.com> *\n");
     printf("* Version: %6s %6s %15s        *\n", _VERSION_, _DATE_, _ARCH_);
     printf("*************************************************\n");
-    printf("Use:\n%s {loadhex, loadbin} file\n", argv[0]);
+    printf("Use:\n%s file.[hex/bin]\n", argv[0]);
     return 0;
   }
 
-  if (!strcmp(argv[1], "loadbin"))
+  if (!strcmp(&argv[1][strlen(argv[1])-4], ".bin"))
   {
     is_bin = 1;
   }
@@ -110,7 +134,6 @@ int main(int argc, char **argv)
   else
   {
     recv(sockfd, buff, 200, 0);
-    // printf ("%s", buff);
 
     if (send_cmd("info") >= 0)
     {
@@ -120,11 +143,6 @@ int main(int argc, char **argv)
         printf("%s\n", tok);
         tok = strtok(NULL, "\r\n");
         printf("%s\n", tok);
-        if (!is_bin)
-        {
-          tok = strtok(NULL, "\r\n");
-          printf("%s\n\n", tok);
-        }
       }
       else
       {
@@ -187,7 +205,6 @@ int main(int argc, char **argv)
 
 int send_cmd(const char *message)
 {
-  // printf ("sending '%s'\n", message);
   int n = strlen(message);
   if (send(sockfd, message, n, MSG_NOSIGNAL) != n)
   {
@@ -212,7 +229,6 @@ int send_cmd(const char *message)
     {
       bp += n;
       buff[bp] = 0;
-      // printf ("%c", buff[bp-1]);
     }
     else
     {
