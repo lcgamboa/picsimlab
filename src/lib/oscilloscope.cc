@@ -225,6 +225,8 @@ void COscilloscope::CalculateStats(int channel) {
         ch_status[channel].Freq = -1;
         ch_status[channel].Duty = -1;
     }
+
+    ch_status_[channel] = ch_status[channel];
     /*
     printf ("================\n");
     printf ("avgPW %lf ms\n", ch_status[channel].PCycle_ms);
@@ -234,12 +236,13 @@ void COscilloscope::CalculateStats(int channel) {
     printf ("Vrms %lf V\n", ch_status[channel].Vrms);
     printf ("Vavr %lf V\n", ch_status[channel].Vavr);
     printf ("Vmax %lf V\n", ch_status[channel].Vmax);
-    printf ("Vmin %lf V\n", ch_status[channel].Vmax);
+    printf ("Vmin %lf V\n", ch_status[channel].Vmin);
      */
 }
 
 void COscilloscope::ClearStats(int channel) {
     memset(&ch_status[channel], 0, sizeof(ch_status_t));
+    memset(&ch_status_[channel], 0, sizeof(ch_status_t));
 }
 
 int COscilloscope::GetUpdate(void) {

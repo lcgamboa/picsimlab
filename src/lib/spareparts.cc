@@ -65,8 +65,8 @@ void CSpareParts::SetUpdateAll(const int update) {
     need_update = update;
 }
 
-part* CSpareParts::GetPart(const int partn) {
-    if (partn < partsc) {
+part* CSpareParts::GetPart(const unsigned int partn) {
+    if (partn < (uint)partsc) {
         return parts[partn];
     }
     return NULL;
@@ -88,13 +88,14 @@ part* CSpareParts::AddPart(const char* partname, const int x, const int y) {
 
 void CSpareParts::DeleteParts(void) {
     int partsc_ = partsc;
-    partsc = 0;  // for disable draw process
+    partsc = 0;
     partsc_aup = 0;
     useAlias = 0;
 
-    for (int i = 0; i < partsc_; i++) {
-        delete parts[i];
-        parts[i] = NULL;
+    for (int partn = partsc_ - 1; partn >= 0; partn--) {
+        delete parts[partn];
+        parts[partsc_] = NULL;
+        CanvasCmd({.partn = partn, .cmd = CC_DELETE});
     }
 }
 
@@ -538,6 +539,8 @@ void CSpareParts::DeletePart(const int partn) {
     parts[partsc_] = NULL;
 
     partsc = partsc_;
+
+    CanvasCmd({.partn = partn, .cmd = CC_DELETE});
 }
 
 void CSpareParts::PreProcess(void) {

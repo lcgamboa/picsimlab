@@ -324,6 +324,27 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
                 statusbar1.SetField(0, "Waiting for GDB...");
                 break;
         }
+
+        if (PICSimLab.GetBoard()->GetUseSpareParts()) {
+            if (Window5.GetVisible() == 0) {
+                Window5.Show();
+                Window5.timer1.SetRunState(1);
+            }
+        } else {
+            if (Window5.GetVisible() == 1) {
+                Window5.Hide();
+            }
+        }
+
+        if (PICSimLab.GetBoard()->GetUseOscilloscope()) {
+            if (Window4.GetVisible() == 0) {
+                Window4.Show();
+            }
+        } else {
+            if (Window4.GetVisible() == 1) {
+                Window4.Hide();
+            }
+        }
     }
 
     label2.SetText(FloatStrFormat("Spd: %3.2fx", ((float)BASETIMER) / timer1.GetTime()));

@@ -48,6 +48,7 @@ enum PICSimLabCanvasCmd {
     CC_GETBGCOLOR,
     CC_CREATE,
     CC_DESTROY,
+    CC_DELETE,
     CC_FREEBITMAP,
     CC_GETBITMAPSIZE,
     CC_LOADIMAGE,
@@ -175,6 +176,8 @@ typedef struct {
         } Create;
         struct {
         } Destroy;
+        struct {
+        } Delete;
         struct {
             const int BitmapId;
         } FreeBitmap;

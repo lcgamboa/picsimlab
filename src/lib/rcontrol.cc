@@ -61,6 +61,7 @@
 #include "../devices/lcd_hd44780.h"
 #include "../devices/ldd_max72xx.h"
 #include "../devices/vterm.h"
+#include "oscilloscope.h"
 #include "picsimlab.h"
 #include "rcontrol.h"
 #include "spareparts.h"
@@ -866,32 +867,35 @@ int rcontrol_loop(void) {
                             // Command help
                             // ========================================================
                             ret += sendtext(client_id, "List of supported commands:\r\n");
-                            ret += sendtext(client_id, "  blist        - list supported boards\r\n");
-                            ret += sendtext(client_id, "  buclist      - list board supported microcontrollers\n");
-                            ret += sendtext(client_id, "  clk [val MHz]- show or set simulation clock\r\n");
-                            ret += sendtext(client_id, "  dumpe [a] [s]- dump internal EEPROM memory\r\n");
-                            ret += sendtext(client_id, "  dumpf [a] [s]- dump Flash memory\r\n");
-                            ret += sendtext(client_id, "  dumpr [a] [s]- dump RAM memory\r\n");
-                            ret += sendtext(client_id, "  exit         - shutdown PICSimLab\r\n");
-                            ret += sendtext(client_id, "  get ob       - get object value\r\n");
-                            ret += sendtext(client_id, "  help         - show this message\r\n");
-                            ret += sendtext(client_id, "  info         - show actual setup info and objects\r\n");
-                            ret += sendtext(client_id, "  loadhex file - load hex file (use full path)\r\n");
-                            ret += sendtext(client_id, "  pins         - show pins directions and values\r\n");
-                            ret += sendtext(client_id, "  pinsl        - show pins formated info\r\n");
-                            ret += sendtext(client_id, "  quit         - exit remote control interface\r\n");
-                            ret += sendtext(client_id, "  reset        - reset the board\r\n");
-                            ret += sendtext(client_id, "  set ob vl    - set object with value\r\n");
-                            ret += sendtext(client_id, "  sim [cmd]    - show simulation status or execute\r\n");
-                            ret += sendtext(client_id, "                 cmd start/stop\r\n");
-                            ret += sendtext(client_id, "  spadd \"pname\" xpos ypos \r\n");
-                            ret += sendtext(client_id, "               - adds the named spare part\r\n");
-                            ret += sendtext(client_id, "  sprdcfg pid  - read spare part configuration\r\n");
-                            ret += sendtext(client_id, "  spwrcfg pid \"cfg\"  \r\n");
-                            ret += sendtext(client_id, "               - write spare part configuration\r\n");
-                            ret += sendtext(client_id, "  splist       - list supported spare parts\r\n");
-                            ret += sendtext(client_id, "  sync         - wait to synchronize with timer event\r\n");
-                            ret += sendtext(client_id, "  version      - show PICSimLab version\r\n");
+                            ret += sendtext(client_id, "  blist                - list supported boards\r\n");
+                            ret += sendtext(client_id, "  buclist              - list board supported MCUs\n");
+                            ret += sendtext(client_id, "  clk [val MHz]        - show or set simulation clock\r\n");
+                            ret += sendtext(client_id, "  dumpe [addr] [count] - dump internal EEPROM memory\r\n");
+                            ret += sendtext(client_id, "  dumpf [addr] [count] - dump Flash memory\r\n");
+                            ret += sendtext(client_id, "  dumpr [addr] [count] - dump RAM memory\r\n");
+                            ret += sendtext(client_id, "  exit                 - shutdown PICSimLab\r\n");
+                            ret += sendtext(client_id, "  get obj              - get object value\r\n");
+                            ret += sendtext(client_id, "  help                 - show this message\r\n");
+                            ret += sendtext(client_id, "  info                 - show actual setup info and objs\r\n");
+                            ret += sendtext(client_id, "  loadhex file         - load hex/bin file (full path)\r\n");
+                            ret += sendtext(client_id, "  oscmeasures ch       - read osc channel 1 or 2 measures\r\n");
+                            ret += sendtext(client_id, "  oscrdcfg             - read osc configuration\r\n");
+                            ret += sendtext(client_id, "  oscwrcfg idx \"cfg\"   - write osc configuration\r\n");
+                            ret += sendtext(client_id, "  oscshow [0/1]        - show status or toggle osc window\r\n");
+                            ret += sendtext(client_id, "  pins                 - show pins directions and values\r\n");
+                            ret += sendtext(client_id, "  pinsl                - show pins formatted info\r\n");
+                            ret += sendtext(client_id, "  quit                 - quit remote control interface\r\n");
+                            ret += sendtext(client_id, "  reset                - reset the board\r\n");
+                            ret += sendtext(client_id, "  set obj value        - set object with value\r\n");
+                            ret += sendtext(client_id, "  sim [start/stop]     - show status or start/stop sim\r\n");
+                            ret += sendtext(client_id, "  spadd \"pname\" x y    - adds the named spare part\r\n");
+                            ret += sendtext(client_id, "  spdel pid/all        - delete one spare part or all\r\n");
+                            ret += sendtext(client_id, "  sprdcfg pid          - read spare part configuration\r\n");
+                            ret += sendtext(client_id, "  spwrcfg pid \"cfg\"    - write spare part configuration\r\n");
+                            ret += sendtext(client_id, "  splist               - list supported spare parts\r\n");
+                            ret += sendtext(client_id, "  spshow [0/1]         - show status or toggle sp window\r\n");
+                            ret += sendtext(client_id, "  sync                 - wait to sync with timer event\r\n");
+                            ret += sendtext(client_id, "  version              - show PICSimLab version\r\n");
 
                             ret += sendtext(client_id, "Ok\r\n>");
                         } else {
@@ -980,6 +984,85 @@ int rcontrol_loop(void) {
                                 } else {
                                     ret += sendtext(client_id, "Ok\r\n>");
                                 }
+                            }
+                        } else {
+                            ret = sendtext(client_id, "ERROR\r\n>");
+                        }
+                        break;
+                    case 'o':
+                        if (!strncmp(cmd, "oscmeasures", 11)) {
+                            // Command oscmeasures =====================================================
+                            int ch = -1;
+                            char stemp[256];
+                            sscanf(cmd + 11, "%d", &ch);
+
+                            if ((ch < 1) || (ch > 2)) {
+                                ret = sendtext(client_id, "ERROR\r\n>");
+                            } else {
+                                ch_status_t st = Oscilloscope.GetChannelStatus(ch - 1);
+                                sprintf(stemp, "Channel %i:\r\n", ch);
+                                ret = sendtext(client_id, stemp);
+
+                                sprintf(stemp, "  Vmax= %7.3f V\r\n", st.Vmax);
+                                ret += sendtext(client_id, stemp);
+                                sprintf(stemp, "  Vmin= %7.3f V\r\n", st.Vmin);
+                                ret += sendtext(client_id, stemp);
+                                sprintf(stemp, "  Vavr= %7.3f V\r\n", st.Vavr);
+                                ret += sendtext(client_id, stemp);
+                                sprintf(stemp, "  Vrms= %7.3f V\r\n", st.Vrms);
+                                ret += sendtext(client_id, stemp);
+
+                                sprintf(stemp, "  Freq= %7.3f Hz\r\n", st.Freq);
+                                ret += sendtext(client_id, stemp);
+                                sprintf(stemp, "  Duty= %7.3f %%\r\n", st.Duty);
+                                ret += sendtext(client_id, stemp);
+
+                                sprintf(stemp, "  Pcyc= %7.3f ms\r\n", st.PCycle_ms);
+                                ret += sendtext(client_id, stemp);
+                                sprintf(stemp, "  Ncyc= %7.3f ms\r\n", st.FCycle_ms - st.PCycle_ms);
+                                ret += sendtext(client_id, stemp);
+                                sprintf(stemp, "  Fcyc= %7.3f ms\r\n", st.FCycle_ms);
+                                ret += sendtext(client_id, stemp);
+
+                                ret += sendtext(client_id, "Ok\r\n>");
+                            }
+                        } else if (!strcmp(cmd, "oscrdcfg")) {
+                            // Command oscrdcfg =====================================================
+                            char stemp[256];
+                            std::vector<std::string> osc_list = Oscilloscope.WritePreferencesList();
+                            for (unsigned int ol = 0; ol < osc_list.size(); ol++) {
+                                sprintf(stemp, "%i \"", ol);
+                                ret = sendtext(client_id, stemp);
+                                ret += sendtext(client_id, osc_list.at(ol).c_str());
+                                ret += sendtext(client_id, "\"\r\n");
+                            }
+                            ret += sendtext(client_id, "Ok\r\n>");
+                        } else if (!strncmp(cmd, "oscwrcfg", 8)) {
+                            // Command oscwrcfg =====================================================
+                            int idx = -1;
+                            char ocscfg[512];
+                            sscanf(cmd + 8, "%d \"%511[^\"]\"", &idx, ocscfg);
+
+                            if ((idx < 0) || (idx > 2)) {
+                                ret = sendtext(client_id, "ERROR\r\n>");
+                            } else {
+                                std::vector<std::string> osc_list = Oscilloscope.WritePreferencesList();
+                                osc_list.at(idx).assign(ocscfg);
+                                Oscilloscope.ReadPreferencesList(osc_list);
+                                ret = sendtext(client_id, "Ok\r\n>");
+                            }
+                        } else if (!strncmp(cmd, "oscshow", 7)) {
+                            // Command oscshow =====================================================
+
+                            if (strlen(cmd) < 8) {
+                                snprintf(lstemp, 100, "%i\r\nOk\r\n>", PICSimLab.GetBoard()->GetUseOscilloscope());
+                                ret = sendtext(client_id, lstemp);
+                            } else {
+                                int show;
+                                sscanf(cmd + 7, "%i", &show);
+                                PICSimLab.GetBoard()->SetUseOscilloscope(show);
+                                snprintf(lstemp, 100, "Set to %i\r\nOk\r\n>", show);
+                                ret = sendtext(client_id, lstemp);
                             }
                         } else {
                             ret = sendtext(client_id, "ERROR\r\n>");
@@ -1192,13 +1275,30 @@ int rcontrol_loop(void) {
                             } else {
                                 ret = sendtext(client_id, "ERROR\r\n>");
                             }
+                        } else if (!strncmp(cmd, "spdel ", 5)) {
+                            if (strstr(cmd + 5, "all")) {
+                                SpareParts.DeleteParts();
+                                SpareParts.SetUpdateAll(1);
+                                ret = sendtext(client_id, "Ok\r\n>");
+                            } else {
+                                int pid = -1;
+                                sscanf(cmd + 5, "%d", &pid);
+                                Part = SpareParts.GetPart(pid);
+                                if (Part) {
+                                    SpareParts.DeletePart(pid);
+                                    SpareParts.SetUpdateAll(1);
+                                    ret = sendtext(client_id, "Ok\r\n>");
+                                } else {
+                                    ret = sendtext(client_id, "ERROR\r\n>");
+                                }
+                            }
                         } else if (!strncmp(cmd, "sprdcfg ", 8)) {
                             int pid = -1;
                             sscanf(cmd + 8, "%d", &pid);
                             Part = SpareParts.GetPart(pid);
                             if (Part) {
                                 ret = sendtext(client_id, "\"");
-                                ret = sendtext(client_id, Part->WritePreferences().c_str());
+                                ret += sendtext(client_id, Part->WritePreferences().c_str());
                                 ret += sendtext(client_id, "\"\r\nOk\r\n>");
                             } else {
                                 ret = sendtext(client_id, "ERROR\r\n>");
@@ -1230,6 +1330,19 @@ int rcontrol_loop(void) {
                             }
                             ret += sendtext(client_id, "\r\n");
                             ret += sendtext(client_id, "Ok\r\n>");
+                        } else if (!strncmp(cmd, "spshow", 6)) {
+                            // Command spshow =====================================================
+
+                            if (strlen(cmd) < 7) {
+                                snprintf(lstemp, 100, "%i\r\nOk\r\n>", PICSimLab.GetBoard()->GetUseSpareParts());
+                                ret = sendtext(client_id, lstemp);
+                            } else {
+                                int show;
+                                sscanf(cmd + 6, "%i", &show);
+                                PICSimLab.GetBoard()->SetUseSpareParts(show);
+                                snprintf(lstemp, 100, "Set to %i\r\nOk\r\n>", show);
+                                ret = sendtext(client_id, lstemp);
+                            }
                         } else if (!strcmp(cmd, "sync")) {
                             // Command sync =====================================================
                             PICSimLab.SetSync(0);

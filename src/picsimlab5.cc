@@ -823,12 +823,6 @@ void CPWindow5::pmenu2_Rotate_EvMenuActive(CControl* control) {
 void CPWindow5::pmenu2_Delete_EvMenuActive(CControl* control) {
     PartToMove = -1;
     SpareParts.DeletePart(PartSelected);
-
-    Canvas[PartSelected].Destroy();
-    for (int i = PartSelected; i < SpareParts.GetCount(); i++) {
-        Canvas[i] = Canvas[i + 1];
-    }
-
     update_all = 1;
 }
 
@@ -1039,6 +1033,12 @@ int CPWindow5::OnCanvasCmd(const CanvasCmd_t cmd) {
             break;
         case CC_DESTROY:
             Window5.Canvas[cmd.partn].Destroy();
+            break;
+        case CC_DELETE:
+            Window5.Canvas[cmd.partn].Destroy();
+            for (int i = cmd.partn; i < SpareParts.GetCount() + 1; i++) {
+                Window5.Canvas[i] = Window5.Canvas[i + 1];
+            }
             break;
         case CC_FREEBITMAP:
             if (Window5.Bitmaps[cmd.FreeBitmap.BitmapId]) {

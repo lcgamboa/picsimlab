@@ -78,7 +78,7 @@ public:
     void CalculateStats(int channel);
     void ClearStats(int channel);
 
-    ch_status_t GetChannelStatus(int cn) { return ch_status[cn]; };
+    ch_status_t GetChannelStatus(int cn) { return ch_status_[cn]; };
 
     int GetUpdate(void);
 
@@ -132,6 +132,7 @@ private:
     int fp;                            // actual flip buffer
     double* ch[2];                     // actual channel data (pointer to databuffer)
     ch_status_t ch_status[2];          // channel measurament status
+    ch_status_t ch_status_[2];         // channel measurament status mirror
     double pins_[2];                   // last value of input pins
     int is;                            // input samples
     double t;                          // time

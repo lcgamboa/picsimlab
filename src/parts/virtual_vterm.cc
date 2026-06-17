@@ -191,6 +191,7 @@ void cpart_vterm::Event(const char* controlname) {
 void cpart_vterm::Reset(void) {
     vterm_rst(&vt);
     vterm_set_speed(&vt, vterm_speed);
+    show |= 0x80;
 
     SpareParts.WindowCmd(wvtermId, "combo2", PWA_COMBOSETTEXT, std::to_string(vterm_speed).c_str());
 
@@ -562,6 +563,10 @@ void cpart_vterm::filedialog_EvOnClose(int retId) {
         }
         output_ids[O_LOG]->update = 1;
     }
+}
+
+void cpart_vterm::Stop(void) {
+    SpareParts.WindowCmd(wvtermId, NULL, PWA_WINDOWHIDE, NULL);
 }
 
 part_init(PART_vterm_Name, cpart_vterm, "Virtual");

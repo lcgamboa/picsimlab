@@ -41,7 +41,7 @@ public:
     int GetUpdateAll(void) { return need_update; };
 
     int GetCount(void) { return partsc; };
-    part* GetPart(const int partn);
+    part* GetPart(const unsigned int partn);
     void DeleteParts(void);
     void ResetPullupBus(unsigned char pin);
     void SetPullupBus(unsigned char pin, unsigned char value);
