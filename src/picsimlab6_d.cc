@@ -114,7 +114,7 @@ CPWindow6::CPWindow6(void) {
     label4.SetTag(0);
     label4.SetX(73);
     label4.SetY(139);
-    label4.SetWidth(70);
+    label4.SetWidth(78);
     label4.SetHeight(20);
     label4.SetHint(lxT(""));
     label4.SetEnable(1);
@@ -179,9 +179,9 @@ CPWindow6::CPWindow6(void) {
     button1.SetClass(lxT("CButton"));
     button1.SetName(lxT("button1"));
     button1.SetTag(0);
-    button1.SetX(35);
+    button1.SetX(38);
     button1.SetY(246);
-    button1.SetWidth(124);
+    button1.SetWidth(120);
     button1.SetHeight(28);
     button1.SetHint(lxT(""));
     button1.SetEnable(1);
@@ -213,7 +213,7 @@ CPWindow6::CPWindow6(void) {
     button3.SetTag(0);
     button3.SetX(295);
     button3.SetY(246);
-    button3.SetWidth(119);
+    button3.SetWidth(120);
     button3.SetHeight(28);
     button3.SetHint(lxT(""));
     button3.SetEnable(1);
@@ -272,6 +272,23 @@ CPWindow6::CPWindow6(void) {
     filedialog1.SetType(129);
     filedialog1.EvOnClose = EVONCLOSE & CPWindow6::filedialog1_EvOnClose;
     CreateChild(&filedialog1);
+    // button4
+    button4.SetFOwner(this);
+    button4.SetClass(lxT("CButton"));
+    button4.SetName(lxT("button4"));
+    button4.SetTag(0);
+    button4.SetX(166);
+    button4.SetY(282);
+    button4.SetWidth(120);
+    button4.SetHeight(28);
+    button4.SetHint(lxT(""));
+    button4.SetEnable(1);
+    button4.SetVisible(1);
+    button4.SetColor(lxT("#000001"));
+    button4.SetPopupMenu(NULL);
+    button4.EvMouseButtonClick = EVMOUSEBUTTONCLICK & CPWindow6::button4_EvMouseButtonClick;
+    button4.SetText(lxT("Open Existing"));
+    CreateChild(&button4);
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 };

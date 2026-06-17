@@ -47,6 +47,7 @@ public:
     CEdit edit1;
     CDirDialog dirdialog1;
     CFileDialog filedialog1;
+    CButton button4;
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
@@ -57,6 +58,7 @@ public:
     void combo2_EvOnComboChange(CControl* control);
     void dirdialog1_EvOnClose(const int retId);
     void filedialog1_EvOnClose(const int retId);
+    void button4_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
 
     /*#Others*/
     CPWindow6(void);
@@ -70,7 +72,7 @@ private:
     lxString ide;
     lxString framework;
     lxString ctemplate;
-    int run_ide;
+    int operation;
 };
 
 extern CPWindow6 Window6;

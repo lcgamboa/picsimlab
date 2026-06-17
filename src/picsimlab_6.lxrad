@@ -151,7 +151,7 @@
   <Tag type="int">0</Tag>
   <X type="int">73</X>
   <Y type="int">139</Y>
-  <Width type="uint">70</Width>
+  <Width type="uint">78</Width>
   <Height type="uint">20</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
@@ -265,9 +265,9 @@
   <Class type="lxString">CButton</Class>
   <Name type="lxString">button1</Name>
   <Tag type="int">0</Tag>
-  <X type="int">35</X>
+  <X type="int">38</X>
   <Y type="int">246</Y>
-  <Width type="uint">124</Width>
+  <Width type="uint">120</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
@@ -321,7 +321,7 @@
   <Tag type="int">0</Tag>
   <X type="int">295</X>
   <Y type="int">246</Y>
-  <Width type="uint">119</Width>
+  <Width type="uint">120</Width>
   <Height type="uint">28</Height>
   <Hint type="lxString"></Hint>
   <Enable type="bool">1</Enable>
@@ -413,4 +413,31 @@
   <Type type="int">129</Type>
   <EvOnClose type="Event">TRUE</EvOnClose>
 </filedialog1>
+<button4>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button4</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">166</X>
+  <Y type="int">282</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">28</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">TRUE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
+  <Text type="lxString">Open Existing</Text>
+</button4>
 </window6>
