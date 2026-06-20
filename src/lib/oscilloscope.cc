@@ -254,7 +254,11 @@ int COscilloscope::GetUpdate(void) {
 }
 
 void COscilloscope::Reset(void) {
-    vmax = pboard->MGetVCC();
+    if (pboard) {
+        vmax = pboard->MGetVCC();
+    } else {
+        vmax = 5.0;
+    }
 }
 
 void COscilloscope::Init(void) {}
@@ -611,6 +615,9 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
 void COscilloscope::SetBaseTimer(void) {
     board* pboard = PICSimLab.GetBoard();
 
+    if (!pboard)
+        return;
+
     int created = 0;
     WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
 
@@ -618,21 +625,42 @@ void COscilloscope::SetBaseTimer(void) {
         return;
     }
 
-    if (!pboard)
-        return;
-
-    int PinCount = pboard->MGetPinCount();
-
     if (pboard->CpuInitialized() == 0)
         return;
 
     Dt = 1.0 / pboard->MGetInstClockFreq();
 
-    int chp[2];
-
     // printf("Dt=%e  Rt=%e  Rt/Dt=%f\n",Dt,Rt,Rt/Dt);
 
+    WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &tscale);
+
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMIN, std::to_string(-5 * tscale).c_str());
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMAX, std::to_string(5 * tscale).c_str());
+    WindowCmd(PW_MAIN, "spind6", PWA_SPINDGETVALUE, NULL, &toffset);
+
+    SetTimeScaleAndOffset(tscale, toffset);
+}
+
+void COscilloscope::UpdatePinList(void) {
+    int chp[2];
     char buff[128];
+    board* pboard = PICSimLab.GetBoard();
+
+    if (!pboard)
+        return;
+
+    int created = 0;
+    WindowCmd(PW_MAIN, NULL, PWA_WINDOWHASCREATED, NULL, &created);
+
+    if (created != 1) {
+        return;
+    }
+
+    if (pboard->CpuInitialized() == 0)
+        return;
+
+    int PinCount = pboard->MGetPinCount();
+
     WindowCmd(PW_MAIN, "combo2", PWA_COMBOGETTEXT, NULL, buff);
     chp[0] = atoi(buff);
     WindowCmd(PW_MAIN, "combo3", PWA_COMBOGETTEXT, NULL, buff);
@@ -669,14 +697,6 @@ void COscilloscope::SetBaseTimer(void) {
         spin = pboard->MGetPinName(chp[1]);
     }
     WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, (std::to_string(chp[1]) + "  " + spin).c_str());
-
-    WindowCmd(PW_MAIN, "spind5", PWA_SPINDGETVALUE, NULL, &tscale);
-
-    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMIN, std::to_string(-5 * tscale).c_str());
-    WindowCmd(PW_MAIN, "spind6", PWA_SPINDSETMAX, std::to_string(5 * tscale).c_str());
-    WindowCmd(PW_MAIN, "spind6", PWA_SPINDGETVALUE, NULL, &toffset);
-
-    SetTimeScaleAndOffset(tscale, toffset);
 }
 
 void COscilloscope::SetTimeScaleAndOffset(float tscale_, float toffset_) {

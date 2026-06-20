@@ -96,6 +96,9 @@ void CPWindow5::_EvOnCreate(CControl* control) {
 
     if (SpareParts.GetLoadConfigFile().length() > 0)
         SpareParts.LoadConfig(SpareParts.GetLoadConfigFile());
+
+    timer1.SetRunState(0);
+    SpareParts.SetUpdateAll(1);
 }
 
 void CPWindow5::draw1_EvMouseButtonPress(CControl* control, unsigned int button, unsigned int x, unsigned int y,
@@ -499,7 +502,7 @@ void CPWindow5::timer1_EvOnTime(CControl* control) {
         int h = GetClientHeight() - 10;
         draw1.SetWidth((w > 0) ? w : 1);
         draw1.SetHeight((h > 0) ? h : 1);
-        Oscilloscope.SetBaseTimer();
+        Oscilloscope.UpdatePinList();
         update_all = 1;
     }
 
@@ -607,7 +610,7 @@ void CPWindow5::draw1_EvKeyboardPress(CControl* control, const unsigned int key,
         case 'p':
             SpareParts.SetUseAlias(!SpareParts.GetUseAlias());
             update_all = 1;
-            Oscilloscope.SetBaseTimer();
+            Oscilloscope.UpdatePinList();
             break;
         case '=':  //+
             menu1_Edit_Zoomin_EvMenuActive(this);
@@ -649,7 +652,7 @@ void CPWindow5::draw1_EvKeyboardRelease(CControl* control, const unsigned int ke
 void CPWindow5::DeleteParts(void) {
     SpareParts.SetScale(1.0);
     if (Window4.GetVisible()) {
-        Oscilloscope.SetBaseTimer();
+        Oscilloscope.UpdatePinList();
     }
     // delete previous parts
     SpareParts.DeleteParts();
@@ -729,7 +732,7 @@ void CPWindow5::menu1_Edit_Clearpinalias_EvMenuActive(CControl* control) {
 void CPWindow5::menu1_Edit_Togglepinalias_EvMenuActive(CControl* control) {
     SpareParts.SetUseAlias(!SpareParts.GetUseAlias());
     update_all = 1;
-    Oscilloscope.SetBaseTimer();
+    Oscilloscope.UpdatePinList();
 }
 
 void CPWindow5::menu1_Edit_Editpinalias_EvMenuActive(CControl* control) {
@@ -796,7 +799,7 @@ void CPWindow5::_EvOnHide(CControl* control) {
         pboard->SetUseSpareParts(0);
     }
     if (Window4.GetVisible()) {
-        Oscilloscope.SetBaseTimer();
+        Oscilloscope.UpdatePinList();
     }
     for (int i = 0; i < SpareParts.GetCount(); i++) {
         SpareParts.GetPart(i)->Stop();

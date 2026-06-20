@@ -66,7 +66,7 @@ void CSpareParts::SetUpdateAll(const int update) {
 }
 
 part* CSpareParts::GetPart(const unsigned int partn) {
-    if (partn < (uint)partsc) {
+    if (partn < (unsigned int)partsc) {
         return parts[partn];
     }
     return NULL;
@@ -326,8 +326,8 @@ bool CSpareParts::LoadPinAlias(std::string fname, unsigned char show_error_msg) 
         if (show_error_msg) {
             useAlias = 1;
             SetUpdateAll(1);
-            Oscilloscope.SetBaseTimer();
         }
+        Oscilloscope.UpdatePinList();
         return 1;
     }
     return 0;
@@ -419,7 +419,7 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 unsigned char useAlias;
                 sscanf(temp, "%hhu", &useAlias);
                 SetUseAlias(useAlias);
-                Oscilloscope.SetBaseTimer();
+                Oscilloscope.UpdatePinList();
             } else if (!strcmp(name, "version")) {
                 // use planed in future
             } else if (!strcmp(name, "bgcolor")) {

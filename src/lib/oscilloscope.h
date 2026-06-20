@@ -105,6 +105,8 @@ public:
 
     void Reset(void);
 
+    void UpdatePinList(void);
+
     void SetBaseTimer(void);
 
     void WritePreferences(void);

@@ -383,6 +383,8 @@ void CPWindow4::_EvOnCreate(CControl* control) {
                   ? ("PICSimLab[" + std::to_string(PICSimLab.GetInstanceNumber()) + "] - ")
                   : ("PICSimLab - ")) +
              "Oscilloscope");
+    Oscilloscope.Reset();
+    timer1.SetRunState(0);
 }
 
 void CPWindow4::_EvOnShow(CControl* control) {

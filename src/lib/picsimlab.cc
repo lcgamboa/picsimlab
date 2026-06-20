@@ -1069,6 +1069,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
     Oscilloscope.SetBoard(pboard);
     Oscilloscope.SetBaseTimer();
+    Oscilloscope.UpdatePinList();
 
     pboard->SetUseOscilloscope(osc_on);
     pboard->SetUseSpareParts(spare_on);
