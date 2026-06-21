@@ -243,20 +243,10 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                             (const char*)(lxString("File ") + prjdir + "platformio.ini can't be open!").utf8_str());
                         return;
                     }
-#ifdef _WIN_
-                    fprintf(fpio, platformio_ini, "Windows", (const char*)pioboard.c_str(),
-                            (const char*)pioplatform.c_str(), (const char*)pioboard.c_str(),
-                            (const char*)env_extra.c_str(), (const char*)pioboard.c_str(),
-                            (const char*)monitor_rst.c_str(), (const char*)monitor_rst.c_str(),
-                            (const char*)ftype.c_str(), (const char*)ftype.c_str(), (const char*)ftype.c_str(),
-                            (const char*)ftype.c_str());
-#else
-                    fprintf(
-                        fpio, platformio_ini, "Linux", (const char*)pioboard.c_str(), (const char*)pioplatform.c_str(),
-                        (const char*)pioboard.c_str(), (const char*)env_extra.c_str(), (const char*)pioboard.c_str(),
-                        (const char*)monitor_rst.c_str(), (const char*)monitor_rst.c_str(), (const char*)ftype.c_str(),
-                        (const char*)ftype.c_str(), (const char*)ftype.c_str(), (const char*)ftype.c_str());
-#endif
+                    fprintf(fpio, platformio_ini, (const char*)pioboard.c_str(), (const char*)pioplatform.c_str(),
+                            (const char*)pioboard.c_str(), (const char*)env_extra.c_str(),
+                            (const char*)pioboard.c_str(), (const char*)ftype.c_str(), (const char*)monitor_rst.c_str(),
+                            (const char*)monitor_rst.c_str());
                     fclose(fpio);
 
                     PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
