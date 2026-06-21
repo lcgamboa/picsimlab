@@ -1,7 +1,7 @@
 ### FIXMEs
 | Filename | line # | FIXME |
 |:------|:------:|:------|
-| [src/picsimlab1.cc](src/picsimlab1.cc#L1109) | 1109 | remote control disabled |
+| [src/picsimlab1.cc](src/picsimlab1.cc#L1144) | 1144 | remote control disabled |
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L293) | 293 | NSTEP must be multiplied for 4 |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L132) | 132 | only for BANK=0; |
 | [src/parts/input_MPU6050.cc](src/parts/input_MPU6050.cc#L26) | 26 | remove lxrad |
@@ -12,9 +12,9 @@
 ### TODOs
 | Filename | line # | TODO |
 |:------|:------:|:------|
-| [src/picsimlab4.cc](src/picsimlab4.cc#L434) | 434 | select the better mode for channel trigguer |
-| [src/boards/board_Arduino_Mega.cc](src/boards/board_Arduino_Mega.cc#L68) | 68 | cboard_Arduino_Mega: add suport to analog inputs A6 and A7 |
-| [src/boards/board_Arduino_Nano.cc](src/boards/board_Arduino_Nano.cc#L69) | 69 | cboard_Arduino_Nano: add suport to analog inputs A6 and A7 |
+| [src/picsimlab4.cc](src/picsimlab4.cc#L436) | 436 | select the better mode for channel trigguer |
+| [src/boards/board_Arduino_Mega.cc](src/boards/board_Arduino_Mega.cc#L78) | 78 | cboard_Arduino_Mega: add suport to analog inputs A6 and A7 |
+| [src/boards/board_Arduino_Nano.cc](src/boards/board_Arduino_Nano.cc#L79) | 79 | cboard_Arduino_Nano: add suport to analog inputs A6 and A7 |
 | [src/boards/board_McLab2.cc](src/boards/board_McLab2.cc#L100) | 100 | jumper support |
 | [src/boards/board_PICGenios.cc](src/boards/board_PICGenios.cc#L238) | 238 | TEMP cooler must don't work with AQUE=0 |
 | [src/boards/board_RemoteTCP.cc](src/boards/board_RemoteTCP.cc#L176) | 176 | define pins |

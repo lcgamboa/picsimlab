@@ -87,7 +87,7 @@ void CPWindow6::button1_EvMouseButtonClick(CControl* control, const uint button,
 void CPWindow6::button2_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
     dirdialog1.SetType(lxFD_SAVE | lxFD_CHANGE_DIR);
-    dirdialog1.SetDirName(PICSimLab.GetBoard()->GetPWActiveProject());  // TODO get platformio default project dir
+    dirdialog1.SetDirName(lxGetDocumentsDir("picsimlab") + "/PlatformIO/Projects/");
     operation = OP_CREATE_AND_OPEN;
     dirdialog1.Run();
 }
@@ -100,6 +100,7 @@ void CPWindow6::button3_EvMouseButtonClick(CControl* control, const uint button,
 void CPWindow6::button4_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
     operation = OP_OPEN_EXISTING;
+    dirdialog1.SetDirName(lxGetDocumentsDir("picsimlab") + "/PlatformIO/Projects/");
     dirdialog1.Run();
 }
 
@@ -173,6 +174,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     lxString pioboard = "";
                     lxString pioplatform = "";
                     lxString ledpin = "";
+                    lxString hwpin = "";
                     lxString env_extra = "";
                     lxString monitor_rst = "";
                     lxString ftype = "";
@@ -180,39 +182,46 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                         pioboard = "uno";
                         pioplatform = "atmelavr";
                         ledpin = "13";
+                        hwpin = "19";
                         ftype = "hex";
                     } else if (!bname.compare("Arduino Nano")) {
                         pioboard = "nanoatmega328";
                         pioplatform = "atmelavr";
                         ledpin = "13";
+                        hwpin = "17";
                         ftype = "hex";
                     } else if (!bname.compare("Arduino Mega")) {
                         pioboard = "megaatmega2560";
                         pioplatform = "atmelavr";
                         ledpin = "13";
+                        hwpin = "26";
                         ftype = "hex";
                     } else if (!bname.compare("Franzininho DIY")) {
                         pioboard = "attiny85";
                         pioplatform = "atmelavr";
                         ledpin = "1";
+                        hwpin = "6";
                         env_extra = "board_build.f_cpu = 16000000L\nbuild_flags = -DCLOCK_SOURCE=6\n";
                         ftype = "hex";
                     } else if (!bname.compare("Blue Pill")) {
                         pioboard = "bluepill_f103c8";
                         pioplatform = "ststm32";
                         ledpin = "PC13";
+                        hwpin = "2";
                         monitor_rst = "       monitor system_reset\n";
                         ftype = "bin";
                     } else if (!bname.compare("STM32 H103")) {
                         pioboard = "olimex_f103";
                         pioplatform = "ststm32";
                         ledpin = "PC12";
+                        hwpin = "53";
                         monitor_rst = "       monitor system_reset\n";
                         ftype = "bin";
                     } else if (!bname.compare("ESP32-DevKitC")) {
                         pioboard = "esp32dev";
                         pioplatform = "espressif32";
                         ledpin = "2";
+                        hwpin = "24";
                         monitor_rst = "       monitor system_reset\n";
                         env_extra = "board_build.flash_mode = dio\nboard_upload.flash_size = 4MB\n";
                         ftype = "bin";
@@ -220,6 +229,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                         pioboard = "esp32-c3-devkitc-02";
                         pioplatform = "espressif32";
                         ledpin = "2";
+                        hwpin = "27";
                         monitor_rst = "       monitor system_reset\n";
                         env_extra = "board_build.flash_mode = dio\nboard_upload.flash_size = 4MB\n";
                         ftype = "bin";
@@ -235,6 +245,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     }
                     fprintf(fmain, blink_code, (const char*)ledpin.c_str());
                     fclose(fmain);
+
                     // platformio.ini
                     FILE* fpio = fopen_UTF8((prjdir + "platformio.ini").utf8_str(), "w");
                     if (fpio == NULL) {
@@ -252,6 +263,17 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
                     PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
                     Window1.menu1_Code_Open_Active_Project.SetEnable(1);
+
+                    // test
+                    FILE* ftest = fopen_UTF8((prjdir + "test/test_custom_runner.py").utf8_str(), "w");
+                    if (ftest == NULL) {
+                        PICSimLab.RegisterError("PICSimLab", (const char*)(lxString("File ") + prjdir +
+                                                                           "test/test_custom_runner.py can't be open!")
+                                                                 .utf8_str());
+                        return;
+                    }
+                    fprintf(ftest, blink_test, (const char*)hwpin.c_str());
+                    fclose(ftest);
 
                     if (operation == OP_CREATE_AND_OPEN) {
                         OpenProject(prjdir, ide);

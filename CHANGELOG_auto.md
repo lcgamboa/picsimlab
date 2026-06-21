@@ -2,6 +2,22 @@
 
 ### New
 
+* Add tests to project templates using rcontrol python library. [lcgamboa]
+
+* New rcontrol commands spshow, spdel, oscshow, oscmeasures, oscrdcfg and oscwrcdg. [lcgamboa]
+
+* Add support to open existent code project on project wizard window. [lcgamboa]
+
+* New support to boards Esp32 DevKit, Esp32-C3 Devkit, Blue Pill and STM32 H103 on Project Wizard. [lcgamboa]
+
+* New support to boards Arduino Mega, Arduino Nano and Franzininho DIY on Project Wizard. [lcgamboa]
+
+* The new Code menu, new option to load the active project and VScode auto detection. [lcgamboa]
+
+* New code generator Project Wizard module (Vscode+platformio Arduino Uno). [lcgamboa]
+
+* New rcontrol commnads blist (supported boards list) and buclist (board supported microcontrollers list). [lcgamboa]
+
 * Rcontrol added support for up to 4 simultaneous connections. [lcgamboa]
 
 * New rcontrols commands sprdcfg and spwrcfg to configure spare parts. [lcgamboa]
@@ -23,6 +39,12 @@
 * Version 0.9.2 realease! [lcgamboa]
 
 ### Changes
+
+* Change projects template to use picsimlab_tool.py. [lcgamboa]
+
+* Add flash memory size for ESP32 based boards on project wizard. [lcgamboa]
+
+* Remove picsimlab_tool first command line parameter. [lcgamboa]
 
 * Changing the logfile writing policy from block to line. [lcgamboa]
 
@@ -55,6 +77,10 @@
 * Github actions updated. [lcgamboa]
 
 ### Fix
+
+* Fix rcontrol oscwrcfg command crashing PICSimLab. [lcgamboa]
+
+* Fix the Drag and Drop support on the main window. [lcgamboa]
 
 * Fixes crashes that occurred when using an oscilloscope on qemu-based boards in Windows. [lcgamboa]
 

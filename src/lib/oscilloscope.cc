@@ -610,6 +610,14 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
     WindowCmd(PW_MAIN, "combo3", PWA_COMBOSETTEXT, tokens[9]);
     SetChannelPin(1, atoi(tokens[9]) - 1);
     SetBaseTimer();
+
+    // osc_stop
+    WindowCmd(PW_MAIN, "togglebutton6", PWA_TOGGLEBSETCHECK, "0");
+    SetRun(1);
+
+    // osc_single
+    WindowCmd(PW_MAIN, "togglebutton7", PWA_TOGGLEBSETCHECK, "0");
+    SetSingle(0);
 }
 
 void COscilloscope::SetBaseTimer(void) {

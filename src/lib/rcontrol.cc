@@ -1031,7 +1031,7 @@ int rcontrol_loop(void) {
                             char stemp[256];
                             std::vector<std::string> osc_list = Oscilloscope.WritePreferencesList();
                             for (unsigned int ol = 0; ol < osc_list.size(); ol++) {
-                                sprintf(stemp, "%i \"", ol);
+                                sprintf(stemp, "%i:\"", ol);
                                 ret = sendtext(client_id, stemp);
                                 ret += sendtext(client_id, osc_list.at(ol).c_str());
                                 ret += sendtext(client_id, "\"\r\n");
