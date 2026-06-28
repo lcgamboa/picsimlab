@@ -378,8 +378,8 @@ int bsim_qemu::MInit(const char* processor, const char* _fname, float freq_) {
 
     std::string sproc = GetSupportedDevices();
     if (sproc.find(processor) == std::string::npos) {
-        Proc = "stm32f103c8t6";
-        printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
+        PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
+        Proc = sproc.substr(0, sproc.find(','));
     }
 
     pins_reset();

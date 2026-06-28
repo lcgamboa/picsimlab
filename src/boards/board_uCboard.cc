@@ -353,10 +353,7 @@ int cboard_uCboard::MInit(const char* processor, const char* fname, float freq) 
     int ret = bsim_ucsim::MInit(processor, fname, freq);
 
     if (ret == -1) {
-        printf(
-            "PICSimLab: Unknown processor %s, loading "
-            "default !\n",
-            processor);
+        PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
         bsim_ucsim::MInit("C51", fname, freq);
         Proc = "C51";
     }

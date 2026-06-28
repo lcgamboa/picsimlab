@@ -259,6 +259,8 @@ public:
 
     char* GetPzwTmpdir(void) { return pzwtmpdir; };
 
+    std::string GetSupportedBoards(void);
+
     void UpdateStatus(const PICSimlabStatus field, const std::string msg);
 
     void* UpdateGUI(const int id, const PICSimlabGUIType type, const PICSimlabGUIAction action, const void* arg);

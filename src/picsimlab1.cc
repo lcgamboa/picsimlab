@@ -846,7 +846,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     fflush(stdout);
 
-    if (Application->Aargc == 2) {  // only .pzw file
+    if ((Application->Aargc == 2) && (strstr(Application->Aargv[1], ".pzw"))) {  // only .pzw file
 #ifdef wxUSE_UNICODE
         fn.Assign(Application->Aargvw[1]);
 #else
@@ -871,8 +871,8 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             PICSimLab.LoadWorkspace((const char*)fn.GetFullPath().utf8_str());
         }
 
-    } else if ((Application->Aargc >= 3) && (Application->Aargc <= 5)) {
-        // arguments: Board Processor File.hex(.bin) file.pcf
+    } else if ((Application->Aargc >= 2) && (Application->Aargc <= 5) && (!strstr(Application->Aargv[1], ".pzw"))) {
+        // arguments: Board [Processor] File.hex(.bin) file.pcf
 
         if (Application->Aargc >= 4) {
 #ifdef wxUSE_UNICODE
@@ -909,8 +909,10 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname)) {
                 if (PICSimLab.PrefsLoadFromFile(fname)) {
                     PICSimLab.SavePrefs("picsimlab_lab", boards_list[PICSimLab.GetLab()].name_);
-                    PICSimLab.SavePrefs(std::string(boards_list[PICSimLab.GetLab()].name_) + "_proc",
-                                        Application->Aargv[2]);
+                    if (Application->Aargc > 2) {
+                        PICSimLab.SavePrefs(std::string(boards_list[PICSimLab.GetLab()].name_) + "_proc",
+                                            Application->Aargv[2]);
+                    }
                     if (Application->Aargc == 5) {
                         PICSimLab.SavePrefs("spare_on", "1");
                     }
@@ -919,7 +921,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             }
         } else {
             Application->Aargc = 1;
-            printf("PICSimLab: Unknown board %s !\n", Application->Aargv[1]);
+            PICSimLab.RegisterError("PICSimLab", "Unknown board " + std::string(Application->Aargv[1]));
         }
 
         // search for file name

@@ -337,10 +337,7 @@ int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) 
     int ret = bsim_gpsim::MInit(processor, fname, freq);
 
     if (ret == -1) {
-        printf(
-            "PICSimLab: Unknown processor %s, loading "
-            "default !\n",
-            processor);
+        PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
         bsim_gpsim::MInit("pic16f628a", fname, freq);
         Proc = "pic16f628a";
     }

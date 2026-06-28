@@ -110,7 +110,7 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
     std::string sproc = GetSupportedDevices();
     if (sproc.find(processor) == std::string::npos) {
         Proc = "Ripes";
-        printf("PICSimLab: Unknown processor %s, loading default !\n", processor);
+        PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
     }
 
     sockfd = -1;

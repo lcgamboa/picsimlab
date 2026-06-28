@@ -50,7 +50,7 @@ int bsim_picsim::MInit(const char* processor, const char* fname, float freq) {
     }
 
     if (procn == 0) {
-        printf("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
+        PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
         int i = sproc.find("PIC");
         sproc = sproc.substr(i, sproc.length());
         i = sproc.find(",");

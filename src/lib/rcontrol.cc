@@ -516,10 +516,7 @@ int rcontrol_loop(void) {
                             // Command blist
                             // ========================================================
                             ret += sendtext(client_id, "Supported Boards:\r\n");
-                            for (int i = 0; i < BOARDS_LAST; i++) {
-                                ret += sendtext(client_id, boards_list[i].name_);
-                                ret += sendtext(client_id, ", ");
-                            }
+                            ret += sendtext(client_id, PICSimLab.GetSupportedBoards().c_str());
                             ret += sendtext(client_id, "\r\n");
                             ret += sendtext(client_id, "Ok\r\n>");
                         } else if (!strcmp(cmd, "buclist")) {

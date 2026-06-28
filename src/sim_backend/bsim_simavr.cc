@@ -292,7 +292,7 @@ int bsim_simavr::MInit(const char* processor, const char* fname, float freq) {
     }
 
     if (!avr) {
-        printf("PICSimLab: Unknown processor %s ! Loading Default\n", processor);
+        PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
         avr = avr_make_mcu_by_name("atmega328p");
         Proc = "atmega328p";
     }

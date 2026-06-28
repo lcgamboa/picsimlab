@@ -1147,6 +1147,16 @@ void CPICSimLab::SetToDestroy(int reason) {
     settodestroy = reason;
 }
 
+std::string CPICSimLab::GetSupportedBoards(void) {
+    std::string boards = "";
+    for (int i = 0; i < BOARDS_LAST; i++) {
+        boards += " ";
+        boards += boards_list[i].name_;
+        boards += ",";
+    }
+    return boards;
+}
+
 int CPICSimLab::LoadHexFile(std::string fname) {
     int pa;
     int ret = 0;
