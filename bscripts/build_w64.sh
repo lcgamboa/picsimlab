@@ -15,5 +15,8 @@ cl()("$@" 2>&1>&3|sed $'s,.*,\e[31m&\e[m,'>&2)3>&1
 
 cl wget https://github.com/lcgamboa/picsimlab/releases/download/${RELEASE}/picsimlab_${VERSION}_w64-dev.zip
 cl unzip -o picsimlab_${VERSION}_w64-dev.zip
+GCC_VERSION=$(x86_64-w64-mingw32-g++ -dumpversion)
+cp "/usr/lib/gcc/x86_64-w64-mingw32/${GCC_VERSION}/libgcc_s_seh-1.dll" picsimlab_win64/
+cp "/usr/lib/gcc/x86_64-w64-mingw32/${GCC_VERSION}/libstdc++-6.dll" picsimlab_win64/
 make clean
 make CXX="ccache x86_64-w64-mingw32-g++" FILE=Makefile.cross -j$(nproc) PKG=\"DEV\" ${1}
