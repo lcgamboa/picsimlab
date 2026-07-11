@@ -538,7 +538,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
                 continue;
             }
 #ifndef LEGACY081
-            SaveP Prefs(name, value);
+            SavePrefs(name, value);
 #else
             strncpy(name_, name, 99);
             strncpy(value_, value, 399);
@@ -901,6 +901,8 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                         if (lab == BOARDS_LAST) {
                             RegisterError("PICSimLab",
                                           std::string("Invalid board ") + value + "!\n Using default board!");
+                            SetLabs(DEFAULT_BOARD, DEFAULT_BOARD);
+                            SetWorkspaceFileName("");
                         }
                     }
                     SetBoard(create_board(&lab, &lab_));
@@ -946,10 +948,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     double s;
                     sscanf(value, "%lf", &s);
                     SetScale(s);
-                    if (create) {
+                    if (pboard) {
                         pboard->SetScale(GetScale());
-                        printf("PICSimLab: Window scale %5.2f \n", GetScale());
                     }
+                    printf("PICSimLab: Window scale %5.2f \n", GetScale());
                 }
 
                 if (!strcmp(name, "picsimlab_dsr_reset")) {
