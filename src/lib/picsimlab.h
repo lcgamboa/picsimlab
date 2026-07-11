@@ -233,7 +233,7 @@ public:
     int GetSimulationRun(void);
 
     double GetScale(void) { return scale; };
-    void SetScale(double s) { scale = s; };
+    void SetScale(double s) { scale = ((int)(100 * s)) / 100.0; };
 
     int GetNeedResize(void) { return need_resize; };
     void SetNeedResize(int nr) { need_resize = nr; };

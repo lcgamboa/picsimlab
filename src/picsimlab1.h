@@ -207,6 +207,7 @@ private:
     int crt;
     int zerocount;
     int need_clkupdate;
+    int force_resize;
 
     CThread thread1;  // main simulation
     CThread thread2;  // rcontrol

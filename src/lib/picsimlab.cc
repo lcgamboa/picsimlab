@@ -943,10 +943,10 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                 }
 
                 if (!strcmp(name, "picsimlab_scale")) {
+                    double s;
+                    sscanf(value, "%lf", &s);
+                    SetScale(s);
                     if (create) {
-                        double s;
-                        sscanf(value, "%lf", &s);
-                        SetScale(s);
                         pboard->SetScale(GetScale());
                         printf("PICSimLab: Window scale %5.2f \n", GetScale());
                     }

@@ -447,8 +447,8 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 sscanf(temp, "%i", &h);
                 PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETX, std::to_string(x).c_str());
                 PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETY, std::to_string(y).c_str());
-                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(w).c_str());
-                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(h).c_str());
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCWIDTH, std::to_string(w).c_str());
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCHEIGHT, std::to_string(h).c_str());
             } else if (!strcmp(name, "spare_on")) {
                 sscanf(temp, "%hhu", &spare_on);
                 PICSimLab.GetBoard()->SetUseSpareParts(spare_on);
@@ -655,8 +655,8 @@ bool CSpareParts::SaveConfig(std::string fname) {
 
     PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
     PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
-    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETWIDTH, NULL, &w);
-    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETHEIGHT, NULL, &h);
+    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWGETCWIDTH, NULL, &w);
+    PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWGETCHEIGHT, NULL, &h);
 
     snprintf(temp, 256, "boardp,%i,%i,%i:%i", x, y, w, h);
     prefs.push_back(temp);

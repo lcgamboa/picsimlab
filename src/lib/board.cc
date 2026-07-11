@@ -106,23 +106,23 @@ void board::ReadInputMap(std::string fname) {
                         sscanf(value, "%i", &board_w);
                         PICSimLab.SetplWidth(board_w);
 
-                        unsigned int ww = 185 + board_w * PICSimLab.GetScale();
+                        unsigned int ww = 175 + board_w * PICSimLab.GetScale();
                         unsigned int dwidth;
                         PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETDISPLAYWIDTH, NULL, &dwidth);
 
                         if (ww > dwidth) {
-                            float scalex = ((dwidth - 185) * 1.0) / board_w;
+                            float scalex = ((dwidth - 175) * 1.0) / board_w;
 
                             PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETWIDTH,
                                                 std::to_string(board_w * scalex).c_str());
-                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(dwidth).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCWIDTH, std::to_string(dwidth).c_str());
                             if (scalex < Scale) {
                                 Scale = scalex;
                             }
                         } else {
                             PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETWIDTH,
                                                 std::to_string(board_w * PICSimLab.GetScale()).c_str());
-                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH, std::to_string(ww).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCWIDTH, std::to_string(ww).c_str());
                         }
                     }
 
@@ -130,25 +130,25 @@ void board::ReadInputMap(std::string fname) {
                         sscanf(value, "%i", &board_h);
                         PICSimLab.SetplHeight(board_h);
 
-                        unsigned int wh = 90 + board_h * PICSimLab.GetScale();
+                        unsigned int wh = 10 + board_h * PICSimLab.GetScale();
                         unsigned int dheight;
                         PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETDISPLAYHEIGHT, NULL, &dheight);
 
                         if (wh > dheight) {
-                            float scaley = ((dheight - 90) * 1.0) / board_h;
+                            float scaley = ((dheight - 10) * 1.0) / board_h;
 
                             PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETHEIGHT,
                                                 std::to_string(board_h * scaley).c_str());
-                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(dheight).c_str());
-                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETWIDTH,
-                                                std::to_string(185 + board_w * scaley).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCHEIGHT, std::to_string(dheight).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCWIDTH,
+                                                std::to_string(175 + board_w * scaley).c_str());
                             if (scaley < Scale) {
                                 Scale = scaley;
                             }
                         } else {
                             PICSimLab.WindowCmd(PW_MAIN, "draw1", PWA_SETHEIGHT,
                                                 std::to_string(board_h * PICSimLab.GetScale()).c_str());
-                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_SETHEIGHT, std::to_string(wh).c_str());
+                            PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWSETCHEIGHT, std::to_string(wh).c_str());
                         }
                     }
 

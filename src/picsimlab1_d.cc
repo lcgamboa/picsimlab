@@ -527,6 +527,7 @@ CPWindow1::CPWindow1(void) {
     crt = 1;
     zerocount = 0;
     need_clkupdate = 0;
+    force_resize = 0;
 
 #ifdef NO_TOOLS
     menu1.DestroyChild(&menu1_Tools);

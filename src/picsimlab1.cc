@@ -168,8 +168,8 @@ void CPWindow1::DrawBoard(void) {
     if (PICSimLab.GetNeedResize()) {
         double scalex, scaley, scale_temp;
 
-        scalex = ((Window1.GetClientWidth() - 175) * 1.0) / PICSimLab.plWidth;
-        scaley = ((Window1.GetClientHeight() - 10) * 1.0) / PICSimLab.plHeight;
+        scalex = (((Window1.GetClientWidth() - 175) * 1.0) / PICSimLab.plWidth) + 0.005;
+        scaley = (((Window1.GetClientHeight() - 10) * 1.0) / PICSimLab.plHeight) + 0.005;
 
         if (scalex < 0.1)
             scalex = 0.1;
@@ -185,17 +185,15 @@ void CPWindow1::DrawBoard(void) {
         else
             scale_temp = scaley;
 
-        if (PICSimLab.GetScale() != scale_temp) {
+        if ((abs(PICSimLab.GetScale() - scale_temp) > 0.01) || force_resize) {
             PICSimLab.SetScale(scale_temp);
-
+            force_resize = 0;
             int nw = (PICSimLab.plWidth * PICSimLab.GetScale());
             if (nw == 0)
                 nw = 1;
             int nh = (PICSimLab.plHeight * PICSimLab.GetScale());
             if (nh == 0)
                 nh = 1;
-
-            PICSimLab.SetScale(((double)nw) / PICSimLab.plWidth);
 
             draw1.SetWidth(nw);
             draw1.SetHeight(nh);
@@ -1026,9 +1024,9 @@ void CPWindow1::OnReadPreferences(const char* name, const char* value, const int
     if (!strcmp(name, "picsimlab_scale")) {
         if (create) {
             Window1.draw1.SetWidth(PICSimLab.plWidth * PICSimLab.GetScale());
-            Window1.SetWidth(185 + PICSimLab.plWidth * PICSimLab.GetScale());
+            Window1.SetClientWidth(175 + PICSimLab.plWidth * PICSimLab.GetScale());
             Window1.draw1.SetHeight(PICSimLab.plHeight * PICSimLab.GetScale());
-            Window1.SetHeight(90 + PICSimLab.plHeight * PICSimLab.GetScale());
+            Window1.SetClientHeight(10 + PICSimLab.plHeight * PICSimLab.GetScale());
         }
     }
 
@@ -1117,6 +1115,7 @@ void CPWindow1::Configure(void) {
 
     filedialog1.SetDir(PICSimLab.GetPath());
 
+    force_resize = 1;
     draw1.SetVisible(0);
     draw1.SetImgFileName(
         GetLocalFile(PICSimLab.GetSharePath() + "boards/" + PICSimLab.GetBoard()->GetPictureFileName()),
@@ -2469,6 +2468,18 @@ int CPWindow1::WinCmd(CControl* ctrl, const PICSimLabWindowAction action, const 
             break;
         case PWA_WINDOWHASCREATED:
             *((int*)ReturnBuff) = (((CPWindow*)ctrl)->GetWin() != NULL);
+            break;
+        case PWA_WINDOWGETCWIDTH:
+            *((int*)ReturnBuff) = ((CPWindow*)ctrl)->GetClientWidth();
+            break;
+        case PWA_WINDOWGETCHEIGHT:
+            *((int*)ReturnBuff) = ((CPWindow*)ctrl)->GetClientHeight();
+            break;
+        case PWA_WINDOWSETCWIDTH:
+            ((CPWindow*)ctrl)->SetClientWidth(std::stoi(Value));
+            break;
+        case PWA_WINDOWSETCHEIGHT:
+            ((CPWindow*)ctrl)->SetClientHeight(std::stoi(Value));
             break;
 
         case PWA_GETDISPLAYWIDTH:
