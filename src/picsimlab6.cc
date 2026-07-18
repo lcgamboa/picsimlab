@@ -28,7 +28,7 @@
 #include "picsimlab6.h"
 #include "picsimlab1.h"
 #include "picsimlab6_d.cc"
-#include "picsimlab6_data.h"
+#include "picsimlab6_vspio.h"
 
 #include "lib/picsimlab.h"
 

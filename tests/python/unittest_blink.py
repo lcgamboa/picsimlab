@@ -32,16 +32,16 @@ class TestBlink(unittest.TestCase):
                 time.sleep(2)
                 try:
                     with PICSimLab_rcontrol(5000) as rc:
-
                         rc.debug = 0
-
                         rc.cmd_spshow(0)
                         rc.cmd_oscshow(1)
                         rc.cmd_oscwrcfg(0, "osc_cfg,100,400,0:20.000000,0.000000,1,1,2.500000,3,2,9,7,8")
                         rc.cmd_oscwrcfg(1, f"osc_ch1,0,0,0:2.000000,0.000000,1,#FF0000,0,{name_itens[3]}")
                         rc.cmd_oscwrcfg(2, "osc_ch2,0,0,0:2.000000,-6.000000,0,#00FF00,0,0")
-                        while True:
+                        cnt = 0
+                        while cnt < 5:
                             time.sleep(0.1)
+                            cnt = cnt + 0.1
                             rc.cmd_oscmeasures(1)
                             val = rc.get_cmd_response()
                             fcyc = float((val.split('\n')[9]).split()[1])

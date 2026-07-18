@@ -11,3 +11,4 @@ tools/srtank/srtank
 share/parts/Virtual/VCD Dump 16/
 src/parts/virtual_VCD_Dump2.cc
 src/parts/virtual_VCD_Dump2.h
+__pycache__
