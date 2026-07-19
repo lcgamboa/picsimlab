@@ -405,6 +405,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 
     if (GetNeedReboot()) {
         char cmd[1024];
+        char* ptr = NULL;
         printf("PICSimLab: Reboot !!!\n");
         rcontrol_server_end();
         pboard->EndServers();
@@ -419,10 +420,11 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
                 strcat(cmd, " ");
                 strcat(cmd, newpath);
             }
+            ptr = strstr((char*)newpath, "picsimlab_workspace");
         }
         printf("PICSimLab: Run cmd: %s\n", cmd);
 
-        if (strlen(pzwtmpdir)) {
+        if (strlen(pzwtmpdir) && !ptr) {
             SystemCmd(PSC_REMOVEDIR, pzwtmpdir);
         }
 
@@ -653,9 +655,22 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
     }
     PrefsSaveToFile(fzip);
 
-    Configure(home, 0, 0, NULL, 1);
+    // Configure(home, 0, 0, NULL, 1);
+    Configure(home);
 
     need_resize = 1;
+
+    char code_src[512];
+    strncpy(code_src, pboard->GetPWActiveProject().c_str(), 511);
+
+    char* ptr = strstr(code_src, "picsimlab_workspace");
+    if (ptr && PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetPzwTmpdir())) {
+        char buff[1023];
+        strcpy(buff, PICSimLab.GetPzwTmpdir());
+        strcat(buff, ptr - 1);
+        strcpy(code_src, buff);
+        pboard->SetPWActiveProject(code_src);
+    }
 
 #ifdef CONVERTER_MODE
     fnpzw.replace(fnpzw.Length() - 4, 5, "_.pzw");
@@ -692,31 +707,36 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
 void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     char tmpdir[1024];
     char home[1024];
-    char fname[1280];
+    char fname[2048];
+    char code_src[512];
 
 #if !defined(__EMSCRIPTEN__) && !defined(CONVERTER_MODE)
     if (SystemCmd(PSC_FILEEXISTS, fnpzw.c_str())) {
         char bname[512];
         SystemCmd(PSC_BASENAME, fnpzw.c_str(), bname);
-        if (!SystemCmd(PSC_SHOWDIALOG, (std::string("Overwriting file: ") + bname + "?").c_str()))
+        if (!SystemCmd(PSC_SHOWDIALOG, (std::string("Overwriting file: ") + bname + "?").c_str())) {
             return;
+        }
     }
 #endif
 
     SetWorkspaceFileName(fnpzw);
 
-    // write options
-
     SystemCmd(PSC_GETUSERDATADIR, "picsimlab", home);
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsSaveToFile(fname);
 
-    char btdir[256];
-    SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
-    snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", btdir);
-    close(mkstemp(tmpdir));
-    unlink(tmpdir);
-    SystemCmd(PSC_CREATEDIR, tmpdir);
+    if (strlen(pzwtmpdir) && SystemCmd(PSC_DIREXISTS, pzwtmpdir)) {
+        memcpy(tmpdir, pzwtmpdir, 1023);
+
+    } else {
+        char btdir[256];
+        SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
+        snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", btdir);
+        close(mkstemp(tmpdir));
+        unlink(tmpdir);
+        SystemCmd(PSC_CREATEDIR, tmpdir);
+    }
 
     memcpy(home, tmpdir, 1023);
     strncat(home, "/picsimlab_workspace/", 1023);
@@ -732,6 +752,37 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     SystemCmd(PSC_CREATEDIR, home);
 #endif
 
+    strncpy(code_src, pboard->GetPWActiveProject().c_str(), 511);
+
+    if ((strlen(code_src) > 2) && (SystemCmd(PSC_DIREXISTS, code_src))) {
+        char code_dst[512];
+
+        code_dst[0] = 0;
+        if (strlen(strrchr(code_src, '/')) > 2) {
+            strncpy(code_dst, strrchr(code_src, '/'), 511);
+        } else {
+            strncpy(fname, code_src, 512);
+            fname[strlen(fname) - 1] = 0;
+            strncpy(code_dst, strrchr(fname, '/') + 1, 511);
+        }
+        snprintf(fname, 2047, "%s/code/%s/", home, code_dst);
+
+        SystemCmd(PSC_CREATEDIRS, fname);
+        SystemCmd(PSC_COPYDIRS, code_src, fname);
+
+        pboard->SetPWActiveProject(fname);
+
+        if (!pboard->GetPWProjectType().compare("PlatformIO IDE for VSCode")) {
+            sprintf(fname, "%s/code/%s/.pio", home, code_dst);
+            SystemCmd(PSC_REMOVEDIR, fname);
+            sprintf(fname, "%s/code/%s/.vscode", home, code_dst);
+            SystemCmd(PSC_REMOVEDIR, fname);
+            sprintf(fname, "%s/code/%s/test/__pycache__", home, code_dst);
+            SystemCmd(PSC_REMOVEDIR, fname);
+        }
+    }
+
+    // write options
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsClear();
     SavePrefs("picsimlab_version", _VERSION_);
@@ -786,6 +837,7 @@ void CPICSimLab::SaveWorkspace(std::string fnpzw) {
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsClear();
     PrefsLoadFromFile(fname);
+    pboard->SetPWActiveProject(code_src);
 
 #ifdef __EMSCRIPTEN__
     EM_ASM_(

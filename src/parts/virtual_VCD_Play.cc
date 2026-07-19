@@ -234,10 +234,11 @@ int cpart_VCD_Play::ReadPreferences(std::string value) {
                      &output_pins[6], &output_pins[7], &play, f_vcd_name);
 
     if (f_vcd_name[0] != '*') {
-        if (!strncmp(f_vcd_name, "/tmp/picsimlab_workspace/", 25)) {
+        char* ptr = strstr(f_vcd_name, "picsimlab_workspace");
+        if (ptr && PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetPzwTmpdir())) {
             char buff[256];
             strcpy(buff, PICSimLab.GetPzwTmpdir());
-            strcat(buff, f_vcd_name + 4);
+            strcat(buff, ptr - 1);
             strcpy(f_vcd_name, buff);
         }
         if (PICSimLab.SystemCmd(PSC_FILEEXISTS, f_vcd_name)) {

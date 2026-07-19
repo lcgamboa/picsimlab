@@ -194,10 +194,11 @@ int cpart_SDCard::ReadPreferences(std::string value) {
     Reset();
 
     if (sdcard_fname[0] != '*') {
-        if (!strncmp(sdcard_fname, "/tmp/picsimlab_workspace/", 25)) {
+        char* ptr = strstr(sdcard_fname, "picsimlab_workspace");
+        if (ptr && PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetPzwTmpdir())) {
             char buff[256];
             strcpy(buff, PICSimLab.GetPzwTmpdir());
-            strcat(buff, sdcard_fname + 4);
+            strcat(buff, ptr - 1);
             strcpy(sdcard_fname, buff);
         }
 

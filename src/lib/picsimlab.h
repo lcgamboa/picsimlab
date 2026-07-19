@@ -214,6 +214,8 @@ public:
 
     void EndSimulation(int saveold = 0, const char* newpath = NULL);
 
+    std::string GetWorkspaceFileName(void) { return Workspacefn; };
+
     void SetWorkspaceFileName(const std::string fname) { Workspacefn = fname; };
 
     void SetLabs(const int lb, const int lb_) {

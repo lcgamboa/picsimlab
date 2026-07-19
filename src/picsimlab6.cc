@@ -289,6 +289,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
             lxString prjdir = dirdialog1.GetDirName();
             PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
             PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
+            Window1.menu1_Code_Open_Active_Project.SetEnable(1);
             OpenProject(prjdir, ide);
         }
     }

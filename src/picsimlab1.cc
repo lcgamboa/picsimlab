@@ -1469,7 +1469,12 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
 
     PICSimLab.SetDebugStatus(togglebutton1.GetCheck());
 
+    std::string wfn = PICSimLab.GetWorkspaceFileName();
+
+    PICSimLab.SetWorkspaceFileName("");
     PICSimLab.EndSimulation();
+    PICSimLab.SetWorkspaceFileName(wfn);
+
     PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
 
     if (osc_on)
@@ -2012,6 +2017,11 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
 void CPWindow1::filedialog2_EvOnClose(int retId) {
     if (retId && (filedialog2.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
         PICSimLab.LoadWorkspace((const char*)filedialog2.GetFileName().utf8_str());
+        if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+            menu1_Code_Open_Active_Project.SetEnable(1);
+        } else {
+            menu1_Code_Open_Active_Project.SetEnable(0);
+        }
         if (PICSimLab.GetOldPath().size() > 1) {
             filedialog2.SetDir(PICSimLab.GetOldPath());
             PICSimLab.SetOldPath("");
@@ -2136,12 +2146,14 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
             break;
         case PSC_CREATEDIR:
             return lxCreateDir(Arg);
+        case PSC_CREATEDIRS:
+            return lxCreateDirs(Arg);
             break;
         case PSC_REMOVEFILE:
             return lxRemoveFile(Arg);
             break;
         case PSC_EXECUTE:
-            return lxExecute(Arg);
+            return lxExecute(lxString::FromUTF8(Arg));
             break;
         case PSC_ZIPDIR:
             return lxZipDir(lxString::FromUTF8(Arg), lxString::FromUTF8((const char*)ReturnBuff));
@@ -2154,6 +2166,9 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
             break;
         case PSC_COPYFILE:
             return lxCopyFile(Arg, (const char*)ReturnBuff);
+            break;
+        case PSC_COPYDIRS:
+            return lxCopyDirs(Arg, (const char*)ReturnBuff);
             break;
         case PSC_LAUNCHDEFAULTBROWSER:
             return lxLaunchDefaultBrowser(Arg);
