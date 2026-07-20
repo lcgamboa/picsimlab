@@ -32,6 +32,13 @@
 #ifndef _POSIX_SOURCE
 #define _POSIX_SOURCE
 #endif
+
+#ifdef __APPLE__
+// MacOS workaround
+#define _XOPEN_SOURCE 700
+#define _DARWIN_C_SOURCE 1
+#endif
+
 // system headers dependent
 #ifndef _WIN_
 #include <arpa/inet.h>
@@ -52,6 +59,12 @@ static WSADATA wsaData;
 #endif
 #define MSG_NOSIGNAL 0
 #endif
+
+#ifndef MSG_NOSIGNAL
+// a workaround for BSD-based systems
+#define MSG_NOSIGNAL 0
+#endif
+
 // system headers independent
 #include <errno.h>
 #include <stdarg.h>
@@ -184,6 +197,14 @@ int mplabxd_start(void) {
     if ((sockfd = accept(listenfd, (sockaddr*)&cli, &clilen)) < 0) {
         return 1;
     }
+
+#ifdef SO_NOSIGPIPE
+    // a workaround for BSD-based systems
+    int opt = 1;
+    if (setsockopt(sockfd, SOL_SOCKET, SO_NOSIGPIPE, &opt, sizeof(opt)) < 0) {
+        return 1;
+    }
+#endif
 
     setnblock(sockfd);
     dprint("mplabxd: Debug connected!---------------------------------\n");
