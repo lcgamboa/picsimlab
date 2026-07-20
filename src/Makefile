@@ -16,6 +16,9 @@ sharedir= ${prefix}/share/picsimlab/
 libdir= ${prefix}/lib/picsimlab/
 execdir= ${prefix}/bin/
 
+# Suppose lxrad-config may be installed locally in DESTDIR
+export PATH := $(abspath ${execdir}):$(PATH)
+
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
@@ -33,13 +36,17 @@ LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS) -lucsim -ldl -lgp
 
 #lxrad automatic generated block end, don't edit above!
 
+check-lxrad-config:
+	@type lxrad-config >/dev/null 2>&1 || { echo "Cannot find lxrad-config"; exit 1; }
+	@touch $@
+
 all: picsimlab
 	
-picsimlab: $(OBJS)
+picsimlab: $(OBJS) check-lxrad-config
 	@echo "Linking picsimlab"
 	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab $(LIBS) 
 
-%.o: %.cc
+%.o: %.cc check-lxrad-config
 	@echo "Compiling $<"
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
@@ -87,4 +94,4 @@ run: all
 	./picsimlab
 
 clean:
-	$(RM) picsimlab *.o core */*.o 
+	$(RM) picsimlab *.o core */*.o check-lxrad-config

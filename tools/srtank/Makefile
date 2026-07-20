@@ -13,6 +13,9 @@ appdir= ${prefix}/share/applications/
 execdir= ${prefix}/bin/
 sharedir= ${prefix}/share/picsimlab/
 
+# Suppose lxrad-config may be installed locally in DESTDIR
+export PATH := $(abspath ${execdir}):$(PATH)
+
 #lxrad automatic generated block start, don't edit below!
 
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -g -O2 `lxrad-config --cxxflags`
@@ -26,11 +29,15 @@ OBJS = psrtank.o srtank1.o srtank2.o  serial.o
 
 exp: all
 
-all: $(OBJS)
+check-lxrad-config:
+	@type lxrad-config >/dev/null 2>&1 || { echo "Cannot find lxrad-config"; exit 1; }
+	@touch $@
+
+all: $(OBJS) check-lxrad-config
 	@echo "Linking srtank"
 	@$(CC) $(FLAGS) $(OBJS) -osrtank $(LIBS)
 
-%.o: %.cc
+%.o: %.cc check-lxrad-config
 	@echo "Compiling $<"
 	@$(CC) -c $(FLAGS) $< 
 
@@ -50,4 +57,4 @@ uninstall:
 
 
 clean:
-	rm -f srtank *.o core
+	rm -f srtank *.o core check-lxrad-config
