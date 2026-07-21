@@ -1,0 +1,197 @@
+diff --git a/include/cthread.h b/include/cthread.h
+index f948c3e..0a5663f 100644
+--- a/include/cthread.h
++++ b/include/cthread.h
+@@ -29,6 +29,7 @@
+ 
+ #include"ccontrol.h"
+ #include"cwindow.h"
++#include <atomic>
+ 
+ 
+ /** \brief Thread Control.
+@@ -42,8 +43,12 @@ protected:
+   pthread_t Thread;
+   int CEvent (int event);
+   // wxThread *Thread;
+-  bool runstate;
+-  bool tdestroy;
++  /* runstate/tdestroy are written by one thread and spin-read by another
++     (Destroy: while(runstate) usleep). As plain bools the reader can spin
++     on a stale or compiler-hoisted value forever on weakly-ordered CPUs
++     (deadlocks on Apple Silicon); atomics guarantee visibility. */
++  std::atomic<bool> runstate;
++  std::atomic<bool> tdestroy;
+   bool tcreated;
+ public:
+     CThread (void);
+diff --git a/lib/capplication.cc b/lib/capplication.cc
+index a67bef9..88a4c60 100644
+--- a/lib/capplication.cc
++++ b/lib/capplication.cc
+@@ -143,6 +143,12 @@ CApplication::Start(void)
+ {
+ 
+  eprint ("Application init ...\n");
++#ifdef __APPLE__
++ /* sdl2-compat's SDL3 Metal renderer crashes in SDL_CreateTextureFromSurface
++    on macOS; the software renderer is reliable and fast enough for this
++    CPU-drawn UI. SDL_setenv with overwrite=0 keeps a user override possible. */
++ SDL_setenv ("SDL_RENDER_DRIVER", "software", 0);
++#endif
+  if (SDL_Init (SDL_INIT_VIDEO) < 0)
+   {
+    printf ("SDL could not initialize! SDL_Error: %s\n", SDL_GetError ());
+@@ -380,7 +386,7 @@ CApplication::ProcessEvents(void)
+ 
+  while (1)
+   {
+-   //wait hint loop	    
++   //wait hint loop
+    ec = SDL_PollEvent (&AEvent);
+    if (ec == 0)
+     {
+@@ -521,9 +527,38 @@ CApplication::ProcessEvents(void)
+       }
+      else // modal window
+       {
+-#ifndef _ONEWIN   
++#ifndef _ONEWIN
+        MWindow->Draw ();
+-#endif   
++#endif
++#ifdef __APPLE__
++       /* On macOS the borderless popup window does not always receive its
++          own mouse events: SDL may deliver them with the parent's windowID
++          or with windowID 0. The strict windowID match below then swallows
++          every click, leaving an unclosable menu (app appears frozen).
++          Re-route button events by global mouse position: clicks inside the
++          modal window's frame are forwarded with translated coordinates,
++          clicks outside dismiss a dismissable popup (menu). */
++       if (((AEvent.type == SDL_MOUSEBUTTONDOWN) || (AEvent.type == SDL_MOUSEBUTTONUP)) &&
++           (AEvent.button.windowID != SDL_GetWindowID (MWindow->GetWWindow ())))
++        {
++         int gx, gy, wx, wy, ww, wh;
++         SDL_GetGlobalMouseState (&gx, &gy);
++         SDL_GetWindowPosition (MWindow->GetWWindow (), &wx, &wy);
++         SDL_GetWindowSize (MWindow->GetWWindow (), &ww, &wh);
++         if ((gx >= wx) && (gx < wx + ww) && (gy >= wy) && (gy < wy + wh))
++          {
++           AEvent.button.windowID = SDL_GetWindowID (MWindow->GetWWindow ());
++           AEvent.window.windowID = AEvent.button.windowID;
++           AEvent.button.x = gx - wx;
++           AEvent.button.y = gy - wy;
++          }
++         else if ((AEvent.type == SDL_MOUSEBUTTONDOWN) && (MWindow->GetCanExitExclusive ()))
++          {
++           MWindow->HideExclusive ();
++           return 1;
++          }
++        }
++#endif
+        if ((/*(AEvent.type == SDL_WINDOWEVENT) &&*/ ((AEvent.window.type == SDL_WINDOWEVENT_ENTER) || (AEvent.window.type == SDL_WINDOWEVENT_EXPOSED)))
+            && (AWindowCount >= 0) && (wn != NULL))
+         {
+diff --git a/lib/cfilelist.cc b/lib/cfilelist.cc
+index 6e72cc0..c8af76d 100644
+--- a/lib/cfilelist.cc
++++ b/lib/cfilelist.cc
+@@ -30,7 +30,7 @@
+ CFileList::CFileList (void)
+ {
+   SetClass ("CFileList");
+-  char *temp = get_current_dir_name ();
++  char *temp = getcwd (NULL, 0);
+   Dir = temp;
+   free(temp);
+   EvFileListSelectDir = NULL;
+@@ -52,7 +52,7 @@ int
+ CFileList::Create (CControl * control)
+ {
+   int ret=CList::Create (control);
+-  char *temp = get_current_dir_name ();
++  char *temp = getcwd (NULL, 0);
+   SetVisible (false, false);
+   SetDir (temp);
+   SetVisible (true, false);
+diff --git a/lib/lxutils.cc b/lib/lxutils.cc
+index 4a14e4d..4a244c3 100644
+--- a/lib/lxutils.cc
++++ b/lib/lxutils.cc
+@@ -34,6 +34,10 @@
+ #include <minizip/zip.h>
+ #include <minizip/unzip.h>
+ #include <fcntl.h>
++#ifdef __APPLE__
++#include <copyfile.h>
++#include <mach-o/dyld.h>
++#endif
+ 
+ #include <iostream>
+ #include <cstring>
+@@ -940,7 +944,11 @@ lxCopyFile(lxString srcfname, lxString dstfname)
+   }
+ 
+   do {
++#ifdef __APPLE__
++    ret = (fcopyfile(fd_in, fd_out, NULL, COPYFILE_ALL) == 0) ? size : -1;
++#else
+     ret = copy_file_range(fd_in, NULL, fd_out, NULL, size, 0);
++#endif
+     if (ret == -1) {
+       perror("copy_file_range");
+       return -1;
+@@ -1083,16 +1091,25 @@ lxListDirRec(const lxString & dirname)
+ 
+ }
+ 
++static lxString
++lxHomeDir(void)
++{
++ const char *home = getenv ("HOME");
++ if (home && home[0])
++  return lxString (home);
++ return lxString ("/home/") + getlogin ();
++}
++
+ lxString
+ lxGetDocumentsDir(lxString appname)
+ {
+- return lxString ("/home/") + getlogin () + "/Documents/";
++ return lxHomeDir () + "/Documents/";
+ }
+ 
+ lxString
+ lxGetUserDataDir(lxString appname)
+ {
+- return lxString ("/home/") + getlogin () + "/." + appname;
++ return lxHomeDir () + "/." + appname;
+ }
+ 
+ lxString
+@@ -1105,6 +1122,17 @@ lxString
+ lxGetExecutablePath(lxString appname)
+ {
+  char buff[1024];
++#ifdef __APPLE__
++ uint32_t bufsize = sizeof (buff);
++ if (_NSGetExecutablePath (buff, &bufsize) != 0)
++  {
++   return "";
++  }
++ char rbuff[PATH_MAX];
++ if (realpath (buff, rbuff))
++  return rbuff;
++ return buff;
++#else
+  int size = readlink ("/proc/self/exe", buff, 1023);
+  if (size == -1)
+   {
+@@ -1112,6 +1140,7 @@ lxGetExecutablePath(lxString appname)
+   }
+  buff[size] = 0;
+  return buff;
++#endif
+ }
+ 
+ 

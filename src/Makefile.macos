@@ -1,0 +1,58 @@
+# macOS native build (Apple Silicon) using the lxrad SDL2 backend.
+# Dependencies are staged by bscripts/build_deps_macos.sh into $(DEPS)
+# and the qemu dylibs by macos/scripts/build_qemu_macos.sh.
+# Build:  make -C src -f Makefile.macos -j$(sysctl -n hw.ncpu)
+include Makefile.Common
+
+CXX = clang++
+
+BREW ?= /opt/homebrew
+DEPS ?= ../../macos/deps
+
+RM= rm -f
+CP= cp
+MKDIR = mkdir -p
+
+PKG_CONFIG= `pkg-config --cflags glib-2.0`
+
+override CXXFLAGS+= -D_ARCH_=\"Darwin_arm64_SDL2\" -D_DATE_=\"${DATE}\"
+
+override CXXFLAGS+= -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -O2 -g \
+                    -D_SHARE_=\"../share/picsimlab/\" `sdl2-config --cflags` \
+                    -D_REENTRANT -D_LX_SDL2 -DNO_TOOLS \
+                    -D_LIB_=\"../lib/picsimlab/\"
+
+override CXXFLAGS+= -I$(DEPS)/lxrad_SDL2/include -I$(DEPS)/picsim/include \
+                    -I$(DEPS)/simavr/simavr/sim -I$(DEPS)/uCsim_picsimlab/picsimlab \
+                    -I$(DEPS)/gpsim-install/include \
+                    -I$(BREW)/include -I$(BREW)/opt/openal-soft/include
+
+LIBS = $(DEPS)/lxrad_SDL2/lib/liblxrad_SDL2.a \
+       $(DEPS)/picsim/src/libpicsim.a \
+       $(DEPS)/simavr/simavr/obj-${shell $(CC) -dumpmachine}/libsimavr.a \
+       $(DEPS)/lunasvg/build/liblunasvg.a \
+       $(DEPS)/uCsim_picsimlab/picsimlab/libucsim.a \
+       $(DEPS)/gpsim-install/lib/libgpsim.a \
+       -L$(BREW)/lib -L$(BREW)/opt/openal-soft/lib \
+       -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2 -lopenal -lminizip -lelf \
+       -lcurl -lpopt `pkg-config --libs glib-2.0` -lpthread -ldl
+
+all: $(OBJS)
+	@echo "Linking picsimlab_SDL2"
+	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab_SDL2 $(LIBS)
+
+%.o: %.cc
+	@echo "Compiling $<"
+	@$(CXX) -c $(CXXFLAGS) $< -o $@
+
+run: all
+	./picsimlab_SDL2
+
+install:
+	$(error install is not supported on macOS; run from the repo or use the Stage 2 app bundle)
+
+uninstall:
+	$(error uninstall is not supported on macOS)
+
+clean:
+	$(RM) picsimlab_SDL2 $(OBJS) $(OBJS_EXP)
