@@ -97,6 +97,11 @@ CPICSimLab::CPICSimLab() {
 }
 
 void CPICSimLab::Init(void) {
+#ifndef _WIN_
+    /* sockets use MSG_NOSIGNAL where available; on macOS it doesn't exist,
+       so a peer disconnect must not kill the process with SIGPIPE */
+    signal(SIGPIPE, SIG_IGN);
+#endif
     // check for other instances
     StartRControl();
 }

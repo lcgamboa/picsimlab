@@ -36,6 +36,9 @@
 #include <ws2tcpip.h>
 #define MSG_NOSIGNAL 0
 #endif
+#ifndef MSG_NOSIGNAL /* macOS: SIGPIPE is ignored at startup instead */
+#define MSG_NOSIGNAL 0
+#endif
 
 #include "../lib/picsimlab.h"
 #include "../lib/serial_port.h"

@@ -33,6 +33,11 @@
 #ifndef _POSIX_SOURCE
 #define _POSIX_SOURCE
 #endif
+#ifdef __APPLE__
+/* _POSIX_SOURCE puts macOS headers in strict POSIX mode, hiding M_PI and
+   usleep; keep the Darwin extensions visible */
+#define _DARWIN_C_SOURCE
+#endif
 // system headers dependent
 #ifndef _WIN_
 #include <arpa/inet.h>
@@ -47,6 +52,9 @@
 #ifndef MSG_WAITALL
 #define MSG_WAITALL (1 << 3)
 #endif
+#define MSG_NOSIGNAL 0
+#endif
+#ifndef MSG_NOSIGNAL /* macOS: SIGPIPE is ignored at startup instead */
 #define MSG_NOSIGNAL 0
 #endif
 // system headers independent
@@ -1342,9 +1350,15 @@ int rcontrol_loop(void) {
                             }
                         } else if (!strcmp(cmd, "sync")) {
                             // Command sync =====================================================
+                            /* bounded wait: the sync flag is set by the GUI timer, which stops
+                               during shutdown/board switch (and while a modal menu is open in
+                               the SDL backend). An unbounded spin here parks the rcontrol
+                               thread so CThread::Destroy deadlocks the board switch. */
+                            long timeout_us = 2000000;
                             PICSimLab.SetSync(0);
-                            while (!PICSimLab.GetSync()) {
-                                usleep(1);  // FIXME avoid use of usleep to reduce cpu usage
+                            while (!PICSimLab.GetSync() && (timeout_us > 0)) {
+                                usleep(100);  // FIXME avoid use of usleep to reduce cpu usage
+                                timeout_us -= 100;
                             }
                             ret = sendtext(client_id, "Ok\r\n>");
                         } else {

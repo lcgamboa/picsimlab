@@ -334,7 +334,10 @@ private:
     double scale;
     double idle_ms;
     int settodestroy;
-    unsigned char sync;
+    /* atomic: written by the GUI timer, spin-read by the rcontrol thread
+       (sync command); a plain byte can be hoisted/stale on weakly-ordered
+       CPUs (Apple Silicon) */
+    std::atomic<unsigned char> sync;
     char pzwtmpdir[1024];
     int check_for_devel;
     std::string pw_vscode_path;

@@ -40,6 +40,9 @@ typedef unsigned int u_int32_t;
 #define SHUT_RDWR SD_BOTH
 #define MSG_NOSIGNAL 0
 #endif
+#ifndef MSG_NOSIGNAL /* macOS: SIGPIPE is ignored at startup instead */
+#define MSG_NOSIGNAL 0
+#endif
 #define INVALID_SOCKET_VALUE -1
 
 #include <errno.h>
