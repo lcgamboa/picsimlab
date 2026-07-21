@@ -19,6 +19,16 @@ execdir= ${prefix}/bin/
 # Suppose lxrad-config may be installed locally in DESTDIR
 export PATH := $(abspath ${execdir}):$(PATH)
 
+ifeq ($(shell uname -s),Darwin)
+    ifeq ($(shell command -v brew 2>/dev/null),)
+        $(error Homebrew is required on macOS, but 'brew' was not found in PATH)
+    endif
+    override CXXFLAGS += -I$(shell brew --prefix)/include
+    LDFLAGS := -Wl,-rpath,@executable_path/../lib
+else
+    LDFLAGS := ""
+endif
+
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
@@ -44,7 +54,7 @@ all: picsimlab
 	
 picsimlab: $(OBJS) check-lxrad-config
 	@echo "Linking picsimlab"
-	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab $(LIBS) 
+	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) -opicsimlab $(LIBS)
 
 %.o: %.cc check-lxrad-config
 	@echo "Compiling $<"
