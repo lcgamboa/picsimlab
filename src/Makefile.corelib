@@ -1,0 +1,50 @@
+# Builds the GUI-toolkit-free simulation core as a static library for the
+# native macOS app (Stage 2). The lxrad windows (ppicsimlab.o picsimlab*.o)
+# are excluded; the Swift/ObjC++ bridge implements the CPICSimLab command
+# sinks instead. _SHARE_/_LIB_ are exe-relative for an app bundle layout:
+# Contents/MacOS/<exe> -> Contents/Resources/{share,lib}/picsimlab/.
+# Build:  make -C src -f Makefile.corelib -j$(sysctl -n hw.ncpu)
+include Makefile.Common
+
+CXX = clang++
+
+BREW ?= /opt/homebrew
+DEPS ?= ../../macos/deps
+
+RM= rm -f
+
+PKG_CONFIG= `pkg-config --cflags glib-2.0`
+
+# .core.o suffix keeps these apart from the SDL2 build's objects, which are
+# compiled with different flags (-D_LX_SDL2, exe-relative _SHARE_)
+OBJS_CORE = $(patsubst %.o,%.core.o,$(filter-out ppicsimlab.o picsimlab%.o,$(OBJS)))
+
+override CXXFLAGS+= -D_ARCH_=\"Darwin_arm64\" -D_DATE_=\"${DATE}\"
+
+override CXXFLAGS+= -DEXT_BROWSER -D_VERSION_=\"${VERSION}\" -Wall -O2 -g \
+                    -D_SHARE_=\"../Resources/share/picsimlab/\" \
+                    -D_LIB_=\"../Resources/lib/picsimlab/\" \
+                    -D_REENTRANT -DNO_TOOLS
+
+override CXXFLAGS+= -I$(DEPS)/picsim/include \
+                    -I$(DEPS)/simavr/simavr/sim -I$(DEPS)/uCsim_picsimlab/picsimlab \
+                    -I$(DEPS)/gpsim-install/include \
+                    -I$(BREW)/include -I$(BREW)/opt/openal-soft/include
+
+all: libpicsimlab_core.a
+
+libpicsimlab_core.a: $(OBJS_CORE)
+	@echo "Archiving libpicsimlab_core.a"
+	@$(RM) $@
+	@ar rcs $@ $(OBJS_CORE)
+
+%.core.o: %.cc
+	@echo "Compiling $<"
+	@$(CXX) -c $(CXXFLAGS) $< -o $@
+
+sim_backend/bridge_gpsim.core.o: sim_backend/bridge_gpsim.cc
+	@echo "Compiling $<"
+	@$(CXX) $(CXXFLAGS) $(PKG_CONFIG) sim_backend/bridge_gpsim.cc -c -o $@
+
+clean:
+	$(RM) libpicsimlab_core.a $(OBJS_CORE)
