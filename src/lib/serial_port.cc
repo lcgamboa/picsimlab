@@ -431,6 +431,19 @@ char* serial_port_list(void) {
         printf("glob error %i\n", ret);
         return resp;
     }
+#ifdef __APPLE__
+    ret = glob("/dev/cu.*", GLOB_APPEND, NULL, &globbuf);
+    if ((ret != 0) && (ret != GLOB_NOMATCH)) {
+        printf("glob error %i\n", ret);
+        return resp;
+    }
+    /* virtual serial pairs created by socat (tty0tty replacement) */
+    ret = glob("/tmp/tnt*", GLOB_APPEND, NULL, &globbuf);
+    if ((ret != 0) && (ret != GLOB_NOMATCH)) {
+        printf("glob error %i\n", ret);
+        return resp;
+    }
+#endif
 
     length = 0;
     for (i = 0; i < globbuf.gl_pathc; i++) {
