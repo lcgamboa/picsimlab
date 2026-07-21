@@ -71,6 +71,9 @@ uint32_t* (*qemu_picsimlab_get_internals)(int cfg);
 
 uint32_t (*qemu_picsimlab_get_TIOCM)(void);
 
+// optional: start the gdb stub on a running instance (runtime debug toggle)
+int (*gdbserver_start)(const char*);
+
 // global pointers to c callbacks
 static picpin* g_pins;
 static bsim_qemu* g_board = NULL;
@@ -320,6 +323,13 @@ int bsim_qemu::load_qemu_lib(const char* path) {
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_get_TIOCM);
     GET_SYMBOL_AND_CHECK(qemu_picsimlab_uart_receive);
 #undef GET_SYMBOL_AND_CHECK
+
+    // optional symbol: don't fail the whole load if the gdb stub isn't present
+#ifndef _WIN_
+    *((void**)(&gdbserver_start)) = dlsym(handle, "gdbserver_start");
+#else
+    *((void**)(&gdbserver_start)) = (void*)GetProcAddress(handle, "gdbserver_start");
+#endif
 
     return 1;
 }
@@ -1126,9 +1136,20 @@ int bsim_qemu::MDumpMemory(const char* fname) {
     return 0;
 }
 
-int bsim_qemu::DebugInit(int dtyppe)  // argument not used in picm only mplabx
+int bsim_qemu::DebugInit(int dtyppe)  // argument not used, qemu uses its own gdb stub
 {
-    return 0;  //! mplabxd_init (this, Window1.Get_debug_port ()) - 1;
+    // start (or refresh) the gdb stub on the already-running instance so debug
+    // can be toggled without recreating the machine (which macOS can't do
+    // in-process). Board creation still wires -gdb up front when debug is on.
+    if ((qemu_started != 1) || (gdbserver_start == NULL)) {
+        return 0;
+    }
+    char device[40];
+    snprintf(device, sizeof(device), "tcp::%i", PICSimLab.GetDebugPort());
+    qemu_mutex_lock_iothread();
+    gdbserver_start(device);
+    qemu_mutex_unlock_iothread();
+    return 0;
 }
 
 void bsim_qemu::pins_reset(void) {
