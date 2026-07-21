@@ -44,17 +44,21 @@ all: $(OBJS) check-lxrad-config
 run: all
 	./srtank
 
-install: all
-	$(CP) -dvf  ../../share/srtank.desktop ${appdir} 
-	$(CP) -dvf srtank ${execdir}
-
 install_app: all
-	$(CP) -dvf srtank ${execdir}
+	install -d ${execdir}
+	install -m 755 srtank ${execdir}
+
+install: install_app
+ifneq ($(shell uname),Darwin)
+	install -d ${appdir}
+	install -m 644 ../../share/srtank.desktop ${appdir}
+endif
 
 uninstall:
 	$(RM) -dvf ${execdir}srtank
+ifneq ($(shell uname),Darwin)
 	$(RM) -dvf ${appdir}srtank.desktop
-
+endif
 
 clean:
 	rm -f srtank *.o core check-lxrad-config

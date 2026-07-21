@@ -35,11 +35,11 @@ all: $(OBJS)
 run: all
 	./picsimlab_tool
 
-install: all
-	$(CP) -dvf picsimlab_tool ${execdir}
-
 install_app: all
-	$(CP) -dvf picsimlab_tool ${execdir}
+	install -d ${execdir}
+	install -m 755 picsimlab_tool ${execdir}
+
+install: install_app
 
 uninstall:
 	$(RM) -dvf ${execdir}picsimlab_tool

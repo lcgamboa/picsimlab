@@ -44,17 +44,21 @@ all: $(OBJS) check-lxrad-config
 run: all
 	./PinViewer
 
-install: all
-	$(CP) -dvf  ../../share/PinViewer.desktop ${appdir} 
-	$(CP) -dvf PinViewer ${execdir}
-
 install_app: all
-	$(CP) -dvf PinViewer ${execdir}
+	install -d ${execdir}
+	install -m 755 PinViewer ${execdir}
+
+install: install_app
+ifneq ($(shell uname),Darwin)
+	install -d ${appdir}
+	install -m 644 ../../share/PinViewer.desktop ${appdir}
+endif
 
 uninstall:
 	$(RM) -dvf ${execdir}PinViewer
+ifneq ($(shell uname),Darwin)
 	$(RM) -dvf ${appdir}PinViewer.desktop
-
+endif
 
 clean:
 	rm -f PinViewer *.o core check-lxrad-config

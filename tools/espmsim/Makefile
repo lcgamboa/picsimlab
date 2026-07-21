@@ -44,16 +44,21 @@ all: $(OBJS) check-lxrad-config
 run: all
 	./espmsim
 
-install: all
-	$(CP) -dvf  ../../share/espmsim.desktop ${appdir} 
-	$(CP) -dvf espmsim ${execdir}
-
 install_app: all
-	$(CP) -dvf espmsim ${execdir}
+	install -d ${execdir}
+	install -m 755 espmsim ${execdir}
+
+install: install_app
+ifneq ($(shell uname),Darwin)
+	install -d ${appdir}
+	install -m 644 ../../share/espmsim.desktop ${appdir}
+endif
 
 uninstall:
 	$(RM) -dvf ${execdir}espmsim
+ifneq ($(shell uname),Darwin)
 	$(RM) -dvf ${appdir}espmsim.desktop
+endif
 
 clean:
 	rm -f espmsim *.o core check-lxrad-config

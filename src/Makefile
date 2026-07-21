@@ -50,14 +50,23 @@ picsimlab: $(OBJS) check-lxrad-config
 	@echo "Compiling $<"
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
-install: all
-	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+install_app: all
+	install -d $(execdir) ${libdir}
+	install -m 755 picsimlab $(execdir)
+	strip ${execdir}picsimlab
+	$(CP) -PRvf ../lib/* ${libdir}
+ifneq ($(shell uname),Darwin)
+	install -d  $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
-	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
-	$(CP) -drvf ../share/* ${sharedir}
-	$(CP) -drvf ../lib/* ${libdir}
-	$(CP) -dvf picsimlab ${execdir}
-	strip ${execdir}picsimlab	
+	$(CP) -Pvf  ../share/picsimlab.desktop ${appdir}/
+	$(CP) -PRvf ../share/* ${sharedir}
+	$(CP) -PRvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
+	$(CP) -PRvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
+	$(CP) -PRvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
+endif
+
+install: install_app
+ifneq ($(shell uname),Darwin)
 	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
 	xdg-icon-resource install --context mimetypes --size 64 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	#no need for --mode system, xdg-mime will install to system if executed under root
@@ -65,30 +74,22 @@ install: all
 	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
 	update-mime-database /usr/share/mime &
 	update-desktop-database ${appdir} &
-
-install_app: all
-	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
-	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
-	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
-	$(CP) -drvf ../share/* ${sharedir} 
-	$(CP) -drvf ../lib/* ${libdir}
-	$(CP) -dvf picsimlab ${execdir}
-	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
-	$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
-	$(CP) -drvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
+endif
 
 install_docs:
-	$(CP) -drvf ../docs ${sharedir} 
+	$(CP) -PRvf ../docs ${sharedir}
 		
 
 uninstall:
-	$(RM) -drvf ${sharedir} 
-	$(RM) -drvf ${libdir} 
 	$(RM) -dvf ${execdir}picsimlab
+	$(RM) -drvf ${libdir}
+ifneq ($(shell uname),Darwin)
+	$(RM) -drvf ${sharedir}
 	$(RM) -dvf ${appdir}picsimlab.desktop
 	xdg-icon-resource uninstall  --size 64 --novendor picsimlab
 	xdg-icon-resource uninstall  --context mimetypes --size 64 application-x-picsimlab-workspace
 	xdg-mime uninstall  --mode system ../share/application-x-picsimlab-workspace.xml
+endif
 
 run: all
 	./picsimlab
