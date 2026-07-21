@@ -369,7 +369,7 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
             WDestroy();
             break;
         case RC_LOAD: {
-            PICSimLab.LoadHexFile(rcontrol_get_file_to_load());
+            PICSimLab.LoadHexFile(rcontrol_get_file_to_load(), 2);
             WDestroy();
         } break;
         default:
@@ -1469,11 +1469,7 @@ void CPWindow1::togglebutton1_EvOnToggleButton(CControl* control) {
 
     PICSimLab.SetDebugStatus(togglebutton1.GetCheck());
 
-    std::string wfn = PICSimLab.GetWorkspaceFileName();
-
-    PICSimLab.SetWorkspaceFileName("");
-    PICSimLab.EndSimulation();
-    PICSimLab.SetWorkspaceFileName(wfn);
+    PICSimLab.EndSimulation(2);
 
     PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
 

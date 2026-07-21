@@ -218,6 +218,10 @@ public:
 
     void SetWorkspaceFileName(const std::string fname) { Workspacefn = fname; };
 
+    std::string GetLastWorkspaceFileName(void) { return LastWorkspacefn; };
+
+    void SetLastWorkspaceFileName(const std::string fname) { LastWorkspacefn = fname; };
+
     void SetLabs(const int lb, const int lb_) {
         lab = lb;
         lab_ = lb_;
@@ -226,7 +230,7 @@ public:
     int GetLab(void) { return lab; };
     int GetLab_(void) { return lab_; };
 
-    int LoadHexFile(std::string fname);
+    int LoadHexFile(std::string fname, const int saveold = 0);
 
     void LoadWorkspace(std::string fnpzw, const int show_readme = 1);
     void SaveWorkspace(std::string fnpzw);
@@ -260,6 +264,8 @@ public:
     unsigned char GetSync(void) { return sync; };
 
     char* GetPzwTmpdir(void) { return pzwtmpdir; };
+
+    char* GetLastPzwTmpdir(void) { return lastpzwtmpdir; };
 
     std::string GetSupportedBoards(void);
 
@@ -331,11 +337,13 @@ private:
     int NeedReboot;
     std::vector<std::string> Errors;
     std::string Workspacefn;
+    std::string LastWorkspacefn;
     double scale;
     double idle_ms;
     int settodestroy;
     unsigned char sync;
     char pzwtmpdir[1024];
+    char lastpzwtmpdir[1024];
     int check_for_devel;
     std::string pw_vscode_path;
 };

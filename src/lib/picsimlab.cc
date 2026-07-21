@@ -68,6 +68,7 @@ CPICSimLab::CPICSimLab() {
     lab = DEFAULT_BOARD;
     lab_ = DEFAULT_BOARD;
     Workspacefn = "";
+    LastWorkspacefn = "";
     status = 0;
     scale = 1.0;
     need_resize = 0;
@@ -79,6 +80,7 @@ CPICSimLab::CPICSimLab() {
     sync = 0;
     SHARE = "";
     pzwtmpdir[0] = 0;
+    lastpzwtmpdir[0] = 0;
     check_for_devel = 0;
     pw_vscode_path = " ";
 
@@ -299,15 +301,22 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 
 #ifndef __EMSCRIPTEN__
     if (Workspacefn.length() > 0) {
-        if (saveold) {
-            const int labt = lab;
-            lab = lab_;
-            SaveWorkspace(Workspacefn);
-            lab = labt;
-        } else {
-            SaveWorkspace(Workspacefn);
+        switch (saveold) {
+            case 0:
+                SaveWorkspace(Workspacefn);
+                Workspacefn = "";
+                break;
+            case 1: {
+                const int labt = lab;
+                lab = lab_;
+                SaveWorkspace(Workspacefn);
+                lab = labt;
+                Workspacefn = "";
+                break;
+            }
+            default:
+                break;
         }
-        Workspacefn = "";
     }
 #endif
 
@@ -367,6 +376,18 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
 
     SavePrefs("picsimlab_pw_vscodep", pw_vscode_path);
 
+    if ((Workspacefn.length() > 0) && GetNeedReboot() && (saveold == 2)) {
+        SavePrefs("picsimlab_lwsfn", Workspacefn);
+    } else {
+        SavePrefs("picsimlab_lwsfn", " ");
+    }
+
+    if ((strlen(pzwtmpdir) > 0) && GetNeedReboot() && (saveold == 2)) {
+        SavePrefs("picsimlab_ltmpdir", pzwtmpdir);
+    } else {
+        SavePrefs("picsimlab_ltmpdir", " ");
+    }
+
     pboard->WritePreferences();
 
     Oscilloscope.WritePreferences();
@@ -424,7 +445,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         }
         printf("PICSimLab: Run cmd: %s\n", cmd);
 
-        if (strlen(pzwtmpdir) && !ptr) {
+        if (strlen(pzwtmpdir) && !ptr && (saveold != 2)) {
             SystemCmd(PSC_REMOVEDIR, pzwtmpdir);
         }
 
@@ -1022,6 +1043,22 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                     SetPWVscodePath(std::string(value));
                 }
 
+                if (!strcmp(name, "picsimlab_lwsfn")) {
+                    if (strlen(value) > 2) {
+                        SetLastWorkspaceFileName(value);
+                    } else {
+                        SetLastWorkspaceFileName("");
+                    }
+                }
+
+                if (!strcmp(name, "picsimlab_ltmpdir")) {
+                    if (strlen(value) > 2) {
+                        strncpy(lastpzwtmpdir, value, 1023);
+                    } else {
+                        lastpzwtmpdir[0] = 0;
+                    }
+                }
+
                 if (pboard) {
                     pboard->ReadPreferences(name, value);
                 }
@@ -1186,6 +1223,13 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
             LoadWorkspace(fdemo, 0);
             SetWorkspaceFileName("");
         }
+    } else if (GetNeedReboot()) {
+        if (Workspacefn.length() < 2) {
+            SetWorkspaceFileName(GetLastWorkspaceFileName());
+            SetLastWorkspaceFileName("");
+            strncpy(pzwtmpdir, lastpzwtmpdir, 1023);
+            lastpzwtmpdir[0] = 0;
+        }
     }
 }
 
@@ -1211,7 +1255,7 @@ std::string CPICSimLab::GetSupportedBoards(void) {
     return boards;
 }
 
-int CPICSimLab::LoadHexFile(std::string fname) {
+int CPICSimLab::LoadHexFile(std::string fname, const int saveold) {
     int pa;
     int ret = 0;
 
@@ -1233,7 +1277,7 @@ int CPICSimLab::LoadHexFile(std::string fname) {
         char cmd[4096];
         sprintf(cmd, " %s %s \"%s\"", boards_list[GetLab()].name_, (const char*)GetBoard()->GetProcessorName().c_str(),
                 (const char*)fname.c_str());
-        EndSimulation(0, cmd);
+        EndSimulation(saveold, cmd);
     }
 
     GetBoard()->MEnd();

@@ -970,7 +970,6 @@ int rcontrol_loop(void) {
                             }
 
                             if (PICSimLab.GetNeedReboot()) {
-                                PICSimLab.SetWorkspaceFileName("");
                                 PICSimLab.SetToDestroy(RC_LOAD);
                                 ret += sendtext(client_id, "Ok\r\n>");
                                 strcpy(file_to_load, cmd + 8);
