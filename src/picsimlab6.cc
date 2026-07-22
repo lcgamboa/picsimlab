@@ -103,6 +103,8 @@ void CPWindow6::combo1_EvOnComboChange(CControl* control) {
         if (!ide.compare("PlatformIO IDE for VSCode")) {
             if (!pname.compare("ESP32") || !pname.compare("ESP32-C3")) {
                 combo2.SetItems("Arduino,IDF,");
+            } else if (!pname.compare("stm32f103c8t6") || !pname.compare("stm32f103rbt6")) {
+                combo2.SetItems("Arduino,CMSIS,");
             } else {
                 combo2.SetItems("Arduino,");
             }
@@ -135,6 +137,8 @@ void CPWindow6::combo2_EvOnComboChange(CControl* control) {
             if (!framework.compare("Arduino")) {
                 combo3.SetItems("Blink,");
             } else if (!framework.compare("IDF")) {
+                combo3.SetItems("Blink,");
+            } else if (!framework.compare("CMSIS")) {
                 combo3.SetItems("Blink,");
             }
         }
@@ -217,7 +221,11 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     } else if (!bname.compare("Blue Pill")) {
                         pioboard = "bluepill_f103c8";
                         pioplatform = "ststm32";
-                        pioframework = "arduino";
+                        if (!framework.compare("Arduino")) {
+                            pioframework = "arduino";
+                        } else {
+                            pioframework = "cmsis";
+                        }
                         ledpin = "PC13";
                         hwpin = "2";
                         monitor_rst = "       monitor system_reset\n";
@@ -225,7 +233,11 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     } else if (!bname.compare("STM32 H103")) {
                         pioboard = "olimex_f103";
                         pioplatform = "ststm32";
-                        pioframework = "arduino";
+                        if (!framework.compare("Arduino")) {
+                            pioframework = "arduino";
+                        } else {
+                            pioframework = "cmsis";
+                        }
                         ledpin = "PC12";
                         hwpin = "53";
                         monitor_rst = "       monitor system_reset\n";
@@ -293,6 +305,20 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                         }
                         fprintf(fsdkcfg, "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y\n");
                         fclose(fsdkcfg);
+                    } else if (!framework.compare("CMSIS")) {
+                        PICSimLab.SystemCmd(PSC_RENAMEFILE, (prjdir + (const char*)"test/test_main.cpp").utf8_str(),
+                                            (void*)((const char*)(prjdir + "test/test_main.c").utf8_str()));
+                        PICSimLab.SystemCmd(PSC_RENAMEFILE, (const char*)(prjdir + "src/main.cpp").utf8_str(),
+                                            (void*)((const char*)(prjdir + "src/main.c").utf8_str()));
+                        FILE* fmain = fopen_UTF8((prjdir + "src/main.c").utf8_str(), "w");
+                        if (fmain == NULL) {
+                            PICSimLab.RegisterError(
+                                "PICSimLab",
+                                (const char*)(lxString("File ") + prjdir + "src/main.c can't be open!").utf8_str());
+                            return;
+                        }
+                        fprintf(fmain, blink_cmsis_code, (const char*)ledpin.c_str());
+                        fclose(fmain);
                     }
 
                     // platformio.ini
