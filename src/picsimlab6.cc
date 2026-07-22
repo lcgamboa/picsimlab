@@ -58,22 +58,6 @@ void CPWindow6::_EvOnShow(CControl* control) {
     combo1.SetText(combo1.GetItem(0));
     combo1_EvOnComboChange(NULL);
 
-    ctemplate = combo3.GetText();
-
-    if (ctemplate.compare("N/A")) {
-        combo3.SetEnable(1);
-        edit1.SetEnable(1);
-        button1.SetEnable(1);
-        button2.SetEnable(1);
-    } else {
-        combo3.SetEnable(0);
-        edit1.SetEnable(0);
-        button1.SetEnable(0);
-        button2.SetEnable(0);
-    }
-
-    combo3.SetEnable((combo3.GetItemsCount() == 1) ? 0 : 1);
-
     edit1.SetText("Untitled");
 }
 
@@ -107,12 +91,6 @@ void CPWindow6::button4_EvMouseButtonClick(CControl* control, const uint button,
 void CPWindow6::combo1_EvOnComboChange(CControl* control) {
     ide = combo1.GetText();
 
-    if (!ide.compare("PlatformIO IDE for VSCode")) {
-        combo2.SetItems("Arduino,");
-    } else {
-        combo2.SetItems("N/A,");
-    }
-
     if (!ide.compare("N/A")) {
         combo1.SetEnable(0);
         combo2.SetEnable(0);
@@ -121,6 +99,16 @@ void CPWindow6::combo1_EvOnComboChange(CControl* control) {
         combo1.SetEnable(1);
         combo2.SetEnable(1);
         combo3.SetEnable(1);
+
+        if (!ide.compare("PlatformIO IDE for VSCode")) {
+            if (!pname.compare("ESP32") || !pname.compare("ESP32-C3")) {
+                combo2.SetItems("Arduino,IDF,");
+            } else {
+                combo2.SetItems("Arduino,");
+            }
+        } else {
+            combo2.SetItems("N/A,");
+        }
     }
 
     combo1.SetEnable((combo1.GetItemsCount() == 1) ? 0 : 1);
@@ -134,12 +122,6 @@ void CPWindow6::combo2_EvOnComboChange(CControl* control) {
 
     combo3.SetItems("N/A,");
 
-    if (!ide.compare("PlatformIO IDE for VSCode")) {
-        if (!framework.compare("Arduino")) {
-            combo3.SetItems("Blink,");
-        }
-    }
-
     if (!framework.compare("N/A")) {
         combo2.SetEnable(0);
         combo3.SetEnable(0);
@@ -148,11 +130,35 @@ void CPWindow6::combo2_EvOnComboChange(CControl* control) {
         combo2.SetEnable(1);
         combo3.SetEnable(1);
         button4.SetEnable(1);
+
+        if (!ide.compare("PlatformIO IDE for VSCode")) {
+            if (!framework.compare("Arduino")) {
+                combo3.SetItems("Blink,");
+            } else if (!framework.compare("IDF")) {
+                combo3.SetItems("Blink,");
+            }
+        }
     }
 
     combo2.SetEnable((combo2.GetItemsCount() == 1) ? 0 : 1);
 
     combo3.SetText(combo3.GetItem(0));
+
+    ctemplate = combo3.GetText();
+
+    if (ctemplate.compare("N/A")) {
+        combo3.SetEnable(1);
+        edit1.SetEnable(1);
+        button1.SetEnable(1);
+        button2.SetEnable(1);
+    } else {
+        combo3.SetEnable(0);
+        edit1.SetEnable(0);
+        button1.SetEnable(0);
+        button2.SetEnable(0);
+    }
+
+    combo3.SetEnable((combo3.GetItemsCount() == 1) ? 0 : 1);
 }
 
 void CPWindow6::dirdialog1_EvOnClose(int retId) {
@@ -173,6 +179,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     // board selection
                     lxString pioboard = "";
                     lxString pioplatform = "";
+                    lxString pioframework = "";
                     lxString ledpin = "";
                     lxString hwpin = "";
                     lxString env_extra = "";
@@ -181,24 +188,28 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     if (!bname.compare("Arduino Uno")) {
                         pioboard = "uno";
                         pioplatform = "atmelavr";
+                        pioframework = "arduino";
                         ledpin = "13";
                         hwpin = "19";
                         ftype = "hex";
                     } else if (!bname.compare("Arduino Nano")) {
                         pioboard = "nanoatmega328";
                         pioplatform = "atmelavr";
+                        pioframework = "arduino";
                         ledpin = "13";
                         hwpin = "17";
                         ftype = "hex";
                     } else if (!bname.compare("Arduino Mega")) {
                         pioboard = "megaatmega2560";
                         pioplatform = "atmelavr";
+                        pioframework = "arduino";
                         ledpin = "13";
                         hwpin = "26";
                         ftype = "hex";
                     } else if (!bname.compare("Franzininho DIY")) {
                         pioboard = "attiny85";
                         pioplatform = "atmelavr";
+                        pioframework = "arduino";
                         ledpin = "1";
                         hwpin = "6";
                         env_extra = "board_build.f_cpu = 16000000L\nbuild_flags = -DCLOCK_SOURCE=6\n";
@@ -206,6 +217,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     } else if (!bname.compare("Blue Pill")) {
                         pioboard = "bluepill_f103c8";
                         pioplatform = "ststm32";
+                        pioframework = "arduino";
                         ledpin = "PC13";
                         hwpin = "2";
                         monitor_rst = "       monitor system_reset\n";
@@ -213,6 +225,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     } else if (!bname.compare("STM32 H103")) {
                         pioboard = "olimex_f103";
                         pioplatform = "ststm32";
+                        pioframework = "arduino";
                         ledpin = "PC12";
                         hwpin = "53";
                         monitor_rst = "       monitor system_reset\n";
@@ -220,6 +233,11 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     } else if (!bname.compare("ESP32-DevKitC")) {
                         pioboard = "esp32dev";
                         pioplatform = "espressif32";
+                        if (!framework.compare("Arduino")) {
+                            pioframework = "arduino";
+                        } else {
+                            pioframework = "espidf";
+                        }
                         ledpin = "2";
                         hwpin = "24";
                         monitor_rst = "       monitor system_reset\n";
@@ -228,6 +246,11 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     } else if (!bname.compare("ESP32-C3-DevKitC-02")) {
                         pioboard = "esp32-c3-devkitc-02";
                         pioplatform = "espressif32";
+                        if (!framework.compare("Arduino")) {
+                            pioframework = "arduino";
+                        } else {
+                            pioframework = "espidf";
+                        }
                         ledpin = "2";
                         hwpin = "27";
                         monitor_rst = "       monitor system_reset\n";
@@ -236,15 +259,41 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                     }
 
                     // main
-                    FILE* fmain = fopen_UTF8((prjdir + "src/main.cpp").utf8_str(), "w");
-                    if (fmain == NULL) {
-                        PICSimLab.RegisterError(
-                            "PICSimLab",
-                            (const char*)(lxString("File ") + prjdir + "src/main.cpp can't be open!").utf8_str());
-                        return;
+                    if (!framework.compare("Arduino")) {
+                        FILE* fmain = fopen_UTF8((prjdir + "src/main.cpp").utf8_str(), "w");
+                        if (fmain == NULL) {
+                            PICSimLab.RegisterError(
+                                "PICSimLab",
+                                (const char*)(lxString("File ") + prjdir + "src/main.cpp can't be open!").utf8_str());
+                            return;
+                        }
+                        fprintf(fmain, blink_code, (const char*)ledpin.c_str());
+                        fclose(fmain);
+                    } else if (!framework.compare("IDF")) {
+                        PICSimLab.SystemCmd(PSC_RENAMEFILE, (prjdir + (const char*)"test/test_main.cpp").utf8_str(),
+                                            (void*)((const char*)(prjdir + "test/test_main.c").utf8_str()));
+                        PICSimLab.SystemCmd(PSC_RENAMEFILE, (const char*)(prjdir + "src/main.cpp").utf8_str(),
+                                            (void*)((const char*)(prjdir + "src/main.c").utf8_str()));
+                        FILE* fmain = fopen_UTF8((prjdir + "src/main.c").utf8_str(), "w");
+                        if (fmain == NULL) {
+                            PICSimLab.RegisterError(
+                                "PICSimLab",
+                                (const char*)(lxString("File ") + prjdir + "src/main.c can't be open!").utf8_str());
+                            return;
+                        }
+                        fprintf(fmain, blink_idf_code, (const char*)ledpin.c_str());
+                        fclose(fmain);
+
+                        FILE* fsdkcfg = fopen_UTF8((prjdir + "sdkconfig.defaults").utf8_str(), "w");
+                        if (fsdkcfg == NULL) {
+                            PICSimLab.RegisterError("PICSimLab", (const char*)(lxString("File ") + prjdir +
+                                                                               "sdkconfig.defaults can't be open!")
+                                                                     .utf8_str());
+                            return;
+                        }
+                        fprintf(fsdkcfg, "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y\n");
+                        fclose(fsdkcfg);
                     }
-                    fprintf(fmain, blink_code, (const char*)ledpin.c_str());
-                    fclose(fmain);
 
                     // platformio.ini
                     FILE* fpio = fopen_UTF8((prjdir + "platformio.ini").utf8_str(), "w");
@@ -255,9 +304,9 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
                         return;
                     }
                     fprintf(fpio, platformio_ini, (const char*)pioboard.c_str(), (const char*)pioplatform.c_str(),
-                            (const char*)pioboard.c_str(), (const char*)env_extra.c_str(),
-                            (const char*)pioboard.c_str(), (const char*)ftype.c_str(), (const char*)monitor_rst.c_str(),
-                            (const char*)monitor_rst.c_str());
+                            (const char*)pioboard.c_str(), (const char*)pioframework.c_str(),
+                            (const char*)env_extra.c_str(), (const char*)pioboard.c_str(), (const char*)ftype.c_str(),
+                            (const char*)monitor_rst.c_str(), (const char*)monitor_rst.c_str());
                     fclose(fpio);
 
                     PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
