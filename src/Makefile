@@ -61,15 +61,15 @@ picsimlab: $(OBJS) check-lxrad-config
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
 install_app: all
-	install -d $(execdir) ${libdir}
+	install -d $(execdir) ${libdir} $(sharedir)
 	install -m 755 picsimlab $(execdir)
 	strip ${execdir}picsimlab
 	$(CP) -PRvf ../lib/* ${libdir}
+	$(CP) -PRvf ../share/* ${sharedir}
 ifneq ($(shell uname),Darwin)
-	install -d  $(sharedir) $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+	install -d $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
 	$(CP) -Pvf  ../share/picsimlab.desktop ${appdir}/
-	$(CP) -PRvf ../share/* ${sharedir}
 	$(CP) -PRvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
 	$(CP) -PRvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
 	$(CP) -PRvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
