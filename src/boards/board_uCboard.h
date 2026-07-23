@@ -50,6 +50,8 @@ public:
     int MInit(const char* processor, const char* fname, float freq) override;
     // Return a list of board supported microcontrollers
     std::string GetSupportedDevices(void) override { return "C51,STM8S103,Z80,"; };
+    // Return a list of supported IDEs in project wizard
+    std::string GetSupportedIDEs(void) override;
     // Reset board status
     void Reset(void) override;
     // Event on the board

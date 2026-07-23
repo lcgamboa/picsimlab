@@ -52,7 +52,7 @@ static const char blink_code[] =
     "  digitalWrite(LED_PIN, LOW);\n"
     "  delay(500);\n"
     "}\n"
-    "";
+    "\n";
 
 static const char blink_idf_code[] =
     "/*\n"
@@ -157,6 +157,38 @@ static const char blink_cmsis_code[] =
     "}\n"
     "\n";
 
+static const char blink_c51_code[] =
+    "/*\n"
+    "  Simple example to blinking an LED using Platformio IDE.\n"
+    "   To upload to PICSimLab:\n"
+    "     1- Check if PICSimLab is running;\n"
+    "     2- Use Ctrl+Alt+U in VS code.\n"
+    "*/\n"
+    "\n"
+    "#include <mcs51/8051.h>\n"
+    "\n"
+    "#define LED_PIN %s\n"
+    "\n"
+    "void delay_ms_1(int m)\n"
+    "{\n"
+    "  int i, j;\n"
+    "  for (i = 0; i < m; i++)\n"
+    "    for (j = 0; j < 114; j++)\n"
+    "      ;\n"
+    "}\n"
+    "\n"
+    "void main()\n"
+    "{\n"
+    "  while (1)\n"
+    "  {\n"
+    "    LED_PIN = 1;\n"
+    "    delay_ms_1(500);\n"
+    "    LED_PIN = 0;\n"
+    "    delay_ms_1(500);\n"
+    "  }\n"
+    "}\n"
+    "\n";
+
 static const char platformio_ini[] =
     "; PlatformIO Project Configuration File\n"
     ";\n"
@@ -182,11 +214,11 @@ static const char platformio_ini[] =
     "test_framework = custom\n"
     "test_build_src = yes\n"
     "upload_protocol = custom\n"
-    "upload_command = $PYTHONEXE python/picsimlab_tool.py \"$BUILD_DIR/firmware.%s\"\n"
-    "build_type = debug\n"
+    "upload_command = $PYTHONEXE python/picsimlab_tool.py \"$BUILD_DIR/firmware.%s\"\n";
+
+static const char platformio_ini_dbg[] =
     "debug_tool = custom\n"
     "debug_port = localhost:1234\n"
-    "debug_build_flags = -O2 -g\n"
     "debug_init_break = tbreak main\n"
     "debug_init_cmds =\n"
     "    define pio_reset_halt_target\n%s"

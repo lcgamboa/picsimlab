@@ -1457,6 +1457,24 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
         PICSimLab.Configure(PICSimLab.GetHomePath().c_str());
         PICSimLab.SetNeedResize(1);
         SpareParts.SetUseAlias(0);
+
+        if (!PICSimLab.GetBoard()->GetSupportedIDEs().compare("N/A,")) {
+            menu1_Code_Project_Wizard.SetEnable(0);
+            menu1_Code_Open_Active_Project.SetEnable(0);
+        } else {
+            menu1_Code_Project_Wizard.SetEnable(1);
+
+            if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
+                       PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
+                if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+                    menu1_Code_Open_Active_Project.SetEnable(1);
+                } else {
+                    menu1_Code_Open_Active_Project.SetEnable(0);
+                }
+            } else {
+                menu1_Code_Open_Active_Project.SetEnable(0);
+            }
+        }
     }
 }
 

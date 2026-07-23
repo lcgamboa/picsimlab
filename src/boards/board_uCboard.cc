@@ -107,6 +107,9 @@ void cboard_uCboard::WritePreferences(void) {
     PICSimLab.SavePrefs("uCboard_proc", Proc);
     // write microcontroller clock to preferences
     PICSimLab.SavePrefs("uCboard_clock", FloatStrFormat("%2.1f", PICSimLab.GetClock()));
+
+    PICSimLab.SavePrefs("uCboard_PWActivePrj", GetPWActiveProject());
+    PICSimLab.SavePrefs("uCboard_PWPrjType", GetPWProjectType());
 }
 
 // Called whe configuration file load  preferences
@@ -119,6 +122,14 @@ void cboard_uCboard::ReadPreferences(char* name, char* value) {
     // read microcontroller clock
     if (!strcmp(name, "uCboard_clock")) {
         PICSimLab.SetClock(atof(value));
+    }
+
+    if (!strcmp(name, "uCboard_PWActivePrj")) {
+        SetPWActiveProject(value);
+    }
+
+    if (!strcmp(name, "uCboard_PWPrjType")) {
+        SetPWProjectType(value);
     }
 }
 
@@ -410,6 +421,13 @@ void cboard_uCboard::SetScale(double scale) {
     if (micbmp)
         PICSimLab.CanvasCmd({.cmd = CC_FREEBITMAP, .FreeBitmap{micbmp}});
     micbmp = bmp;
+}
+
+std::string cboard_uCboard::GetSupportedIDEs(void) {
+    if (!Proc.compare("C51") || !Proc.compare("STM8S103")) {
+        return "PlatformIO IDE for VSCode,";
+    }
+    return "N/A,";
 }
 
 // Register the board in PICSimLab
