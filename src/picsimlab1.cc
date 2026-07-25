@@ -290,6 +290,8 @@ void CPWindow1::thread3_EvThreadRun(CControl*) {
     PICSimLab.GetBoard()->EvThreadRun();
 }
 
+static void reassert_signal_handler(void);
+
 void CPWindow1::timer2_EvOnTime(CControl* control) {
     // avoid run again before terminate previous
     if (PICSimLab.status & (ST_T2 | ST_DI))
@@ -362,6 +364,8 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
     if (GetNeedClkUpdate()) {
         PICSimLab.SetClock(PICSimLab.GetClock());
     }
+
+    reassert_signal_handler();
 
     int reason = PICSimLab.GetToDestroy();
     switch (reason) {
@@ -532,6 +536,8 @@ static LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo) 
 static void set_signal_handler(void) {
     SetUnhandledExceptionFilter(windows_exception_handler);
 }
+
+static void reassert_signal_handler(void) {};
 #else
 
 #define MAX_STACK_FRAMES 64
@@ -559,9 +565,21 @@ static void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
         case SIGSEGV:
             fputs("PICSimLab Caught SIGSEGV: Segmentation Fault\n", stderr);
             break;
+        /* termination requests are deferred to the GUI timer (the same path
+           used by the rcontrol quit command), so the workspace and
+           preferences are saved and the log gets the clean exit mark; the
+           default action is restored first so a second signal terminates
+           immediately if the clean shutdown hangs */
         case SIGINT:
             fputs("PICSimLab Caught SIGINT: Interactive attention signal, (usually ctrl+c)\n", stderr);
-            break;
+            signal(sig, SIG_DFL);
+            PICSimLab.SetToDestroy();
+            return;
+        case SIGHUP:
+            fputs("PICSimLab Caught SIGHUP: the controlling terminal was closed\n", stderr);
+            signal(sig, SIG_DFL);
+            PICSimLab.SetToDestroy();
+            return;
         case SIGFPE:
             switch (siginfo->si_code) {
                 case FPE_INTDIV:
@@ -625,7 +643,9 @@ static void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
             break;
         case SIGTERM:
             fputs("PICSimLab Caught SIGTERM: a termination request was sent to the program\n", stderr);
-            break;
+            signal(sig, SIG_DFL);
+            PICSimLab.SetToDestroy();
+            return;
         case SIGABRT:
             fputs("PICSimLab Caught SIGABRT: usually caused by an abort() or assert()\n", stderr);
             break;
@@ -683,14 +703,43 @@ static void set_signal_handler(void) {
         if (sigaction(SIGTERM, &sig_action, NULL) != 0) {
             err(1, "sigaction");
         }
+        if (sigaction(SIGHUP, &sig_action, NULL) != 0) {
+            err(1, "sigaction");
+        }
         if (sigaction(SIGABRT, &sig_action, NULL) != 0) {
             err(1, "sigaction");
         }
     }
 }
+
+/* backend libraries can install their own termination signal handlers (the
+   qemu based boards do when the machine starts) and steal the clean
+   shutdown path; the GUI timer calls this to take the termination signals
+   back. The crash signals are left alone: qemu needs its own SIGSEGV
+   handling for the guest */
+static void reassert_signal_handler(void) {
+    struct sigaction cur = {};
+
+    if ((sigaction(SIGTERM, NULL, &cur) == 0) && (cur.sa_sigaction != posix_signal_handler)) {
+        struct sigaction sig_action = {};
+        sig_action.sa_sigaction = posix_signal_handler;
+        sigemptyset(&sig_action.sa_mask);
+
+#ifdef __APPLE__
+        sig_action.sa_flags = SA_SIGINFO;
+#else
+        sig_action.sa_flags = SA_SIGINFO | SA_ONSTACK;
+#endif
+
+        sigaction(SIGINT, &sig_action, NULL);
+        sigaction(SIGTERM, &sig_action, NULL);
+        sigaction(SIGHUP, &sig_action, NULL);
+    }
+}
 #endif
 #else
 static void set_signal_handler(void) {};
+static void reassert_signal_handler(void) {};
 #endif
 
 void CPWindow1::_EvOnCreate(CControl* control) {
