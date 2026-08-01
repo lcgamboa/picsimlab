@@ -16,6 +16,12 @@ sharedir= ${prefix}/share/picsimlab/
 # Suppose lxrad-config may be installed locally in DESTDIR
 export PATH := $(abspath ${execdir}):$(PATH)
 
+ifeq ($(shell uname -s),Darwin)
+    LDFLAGS := -Wl,-rpath,@executable_path/../lib
+else
+    LDFLAGS := ""
+endif
+
 #lxrad automatic generated block start, don't edit below!
 
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -g -O2 `lxrad-config --cxxflags`
@@ -35,7 +41,7 @@ check-lxrad-config:
 
 all: $(OBJS) check-lxrad-config
 	@echo "Linking srtank"
-	@$(CC) $(FLAGS) $(OBJS) -osrtank $(LIBS)
+	@$(CC) $(FLAGS) $(LDFLAGS) $(OBJS) -osrtank $(LIBS)
 
 %.o: %.cc check-lxrad-config
 	@echo "Compiling $<"
