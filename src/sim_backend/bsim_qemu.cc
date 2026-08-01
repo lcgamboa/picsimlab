@@ -263,8 +263,15 @@ void bsim_qemu::MSetSimulationRun(int run) {
 }
 
 int bsim_qemu::load_qemu_lib(const char* path) {
-#ifndef _WIN_  // LINUX
-    std::string fullpath = PICSimLab.GetLibPath() + "qemu/" + path + ".so";
+#ifndef _WIN_  // LINUX or macOS
+    std::string fullpath = PICSimLab.GetLibPath() + "qemu/" + path;
+#ifdef __APPLE__
+    // macOS
+    fullpath += ".dylib";
+#else
+    // Linux
+    fullpath += ".so";
+#endif
 
     void* handle = dlopen((const char*)fullpath.c_str(), RTLD_NOW);
     if (handle == nullptr) {
