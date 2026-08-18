@@ -1,0 +1,37 @@
+name: macOS build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  buildMacOS:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-26
+          - macos-26-intel
+
+    steps:
+      - name: Job info
+        run: |
+          echo "GitHub Ref: ${{ github.ref }}"
+          echo "Event: ${{ github.event }}"
+
+      - name: Checkout sources
+        uses: actions/checkout@v7
+
+      - name: Set DESTDIR
+        run: echo "DESTDIR=${{ github.workspace }}/staging" >> $GITHUB_ENV
+
+      - name: Build and install
+        run: bscripts/build_all_and_install_macos.sh
+
+      - name: Build dmg
+        run: bscripts/make_macos_bundle_and_dmg.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.os }}
+          path: macos/PICSimLab.dmg
