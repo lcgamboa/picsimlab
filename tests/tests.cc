@@ -37,6 +37,9 @@
 #define SHUT_RDWR SD_BOTH
 #define MSG_NOSIGNAL 0
 #endif
+#ifndef MSG_NOSIGNAL /* macOS: SIGPIPE is ignored at startup instead */
+#define MSG_NOSIGNAL 0
+#endif
 // system headers independent
 #include <errno.h>
 #include <math.h>
@@ -172,7 +175,10 @@ int test_load(const char* fname) {
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    servaddr.sin_port = htons(5000);
+    /* PICSIMLAB_PORT overrides the rcontrol port; on macOS AirPlay occupies
+       5000, so PICSimLab typically ends up on 5001 (instance 1) */
+    const char* penv = getenv("PICSIMLAB_PORT");
+    servaddr.sin_port = htons(penv ? atoi(penv) : 5000);
 
     if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) < 0) {
 #ifdef _WIN_

@@ -52,6 +52,9 @@ static WSADATA wsaData;
 #endif
 #define MSG_NOSIGNAL 0
 #endif
+#ifndef MSG_NOSIGNAL /* macOS: SIGPIPE is ignored at startup instead */
+#define MSG_NOSIGNAL 0
+#endif
 // system headers independent
 #include <errno.h>
 #include <stdarg.h>

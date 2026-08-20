@@ -37,6 +37,14 @@
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \
     exit(-1);
 
+/* Non-fatal variant for memory-accessor stubs. Boards that do not expose
+   RAM/ROM/EEPROM (e.g. the uCsim/C51 backend) must degrade gracefully:
+   callers guard on a 0 size / NULL pointer. Calling exit(-1) here would tear
+   the process down from whatever thread invoked the accessor (rcontrol dump,
+   the VCD memory part, the MPLABX debugger), wedging or crashing the app. */
+#define INCOMPLETE_MEM \
+    printf("Unsupported: %s -> %s :%i\n", __func__, __FILE__, __LINE__);
+
 enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51, ARCH_Z80, ARCH_UNKNOWN };
 
 /**
@@ -479,7 +487,7 @@ public:
      * @brief  board microcontroller get RAM memory pointer
      */
     virtual unsigned char* DBGGetRAM_p(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return NULL;
     };
 
@@ -487,7 +495,7 @@ public:
      * @brief  board microcontroller get ROM (FLASH) memory pointer
      */
     virtual unsigned char* DBGGetROM_p(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return NULL;
     };
 
@@ -495,7 +503,7 @@ public:
      * @brief  board microcontroller  get CONFIG memory pointer
      */
     virtual unsigned char* DBGGetCONFIG_p(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return NULL;
     };
 
@@ -503,7 +511,7 @@ public:
      * @brief  board microcontroller  get internal IDS memory pointer
      */
     virtual unsigned char* DBGGetID_p(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return NULL;
     };
 
@@ -511,7 +519,7 @@ public:
      * @brief  board microcontroller get data EEPROM memory pointer
      */
     virtual unsigned char* DBGGetEEPROM_p(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return NULL;
     };
 
@@ -519,7 +527,7 @@ public:
      * @brief  board microcontroller get RAM memory size
      */
     virtual unsigned int DBGGetRAMSize(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 
@@ -527,7 +535,7 @@ public:
      * @brief  board microcontroller get ROM  (FLASH) memory size
      */
     virtual unsigned int DBGGetROMSize(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 
@@ -535,7 +543,7 @@ public:
      * @brief board microcontroller get CONFIG memory size
      */
     virtual unsigned int DBGGetCONFIGSize(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 
@@ -543,7 +551,7 @@ public:
      * @brief board microcontroller get internal IDS memory size
      */
     virtual unsigned int DBGGetIDSize(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 
@@ -551,7 +559,7 @@ public:
      * @brief  board microcontroller get data EEPROM memory size
      */
     virtual unsigned int DBGGetEEPROM_Size(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 
@@ -559,7 +567,7 @@ public:
      * @brief  board microcontroller get last ram write address
      */
     virtual unsigned int DBGGetRAMLAWR(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 
@@ -567,7 +575,7 @@ public:
      * @brief  board microcontroller get last ram read address
      */
     virtual unsigned int DBGGetRAMLARD(void) {
-        INCOMPLETE;
+        INCOMPLETE_MEM;
         return 0;
     };
 

@@ -36,8 +36,12 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#ifdef __APPLE__
+#include <termios.h>
+#else
 #include "/usr/include/asm-generic/ioctls.h"
 #include "/usr/include/asm-generic/termbits.h"
+#endif
 #else
 #include <windows.h>
 #endif
@@ -78,6 +82,20 @@ public:
     }
 
     int Config(unsigned int speed) {
+#ifdef __APPLE__
+        /* no termios2/BOTHER on macOS; PTYs accept any speed via cfsetspeed */
+        struct termios tio;
+        tcgetattr(serialfd, &tio);
+        tio.c_cflag |= CS8 | CLOCAL | CREAD;
+        tio.c_iflag = 0;
+        tio.c_oflag = 0;
+        tio.c_lflag = 0;
+        tio.c_cc[VTIME] = 0; /* inter-character timer unused */
+        tio.c_cc[VMIN] = 0;  /* blocking read until 5 chars received */
+        cfsetispeed(&tio, speed);
+        cfsetospeed(&tio, speed);
+        return tcsetattr(serialfd, TCSANOW, &tio);
+#else
         struct termios2 tio;
         ioctl(serialfd, TCGETS2, &tio);
         tio.c_cflag &= ~CBAUD;
@@ -91,6 +109,7 @@ public:
         tio.c_cc[VTIME] = 0; /* inter-character timer unused */
         tio.c_cc[VMIN] = 0;  /* blocking read until 5 chars received */
         return ioctl(serialfd, TCSETS2, &tio);
+#endif
     }
 
     int Send(unsigned char c) {
