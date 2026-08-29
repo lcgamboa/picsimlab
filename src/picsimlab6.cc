@@ -255,7 +255,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 lxString main_extra = "";
                 if (!board.compare("Arduino Uno")) {
                     pioboard = "uno";
-                    pioplatform = "atmelavr";
+                    pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
                     ledpin = "13";
                     hwpin = "19";
@@ -263,11 +263,11 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     tbreak = "setup";
                     if (!ctemplate.compare("Blink FreeRTOS")) {
                         include_extra = "#include <Arduino_FreeRTOS.h>\n";
-                        env_extra = "lib_deps =\n	feilipu/FreeRTOS\n";
+                        env_extra = "lib_deps =\n	feilipu/FreeRTOS @ 11.1.0-3\n";
                     }
                 } else if (!board.compare("Arduino Nano")) {
                     pioboard = "nanoatmega328";
-                    pioplatform = "atmelavr";
+                    pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
                     ledpin = "13";
                     hwpin = "17";
@@ -275,11 +275,11 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     tbreak = "setup";
                     if (!ctemplate.compare("Blink FreeRTOS")) {
                         include_extra = "#include <Arduino_FreeRTOS.h>\n";
-                        env_extra = "lib_deps =\n	feilipu/FreeRTOS\n";
+                        env_extra = "lib_deps =\n	feilipu/FreeRTOS @ 11.1.0-3\n";
                     }
                 } else if (!board.compare("Arduino Mega")) {
                     pioboard = "megaatmega2560";
-                    pioplatform = "atmelavr";
+                    pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
                     ledpin = "13";
                     hwpin = "26";
@@ -287,11 +287,11 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     tbreak = "setup";
                     if (!ctemplate.compare("Blink FreeRTOS")) {
                         include_extra = "#include <Arduino_FreeRTOS.h>\n";
-                        env_extra = "lib_deps =\n	feilipu/FreeRTOS\n";
+                        env_extra = "lib_deps =\n	feilipu/FreeRTOS @ 11.1.0-3\n";
                     }
                 } else if (!board.compare("Franzininho DIY")) {
                     pioboard = "attiny85";
-                    pioplatform = "atmelavr";
+                    pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
                     ledpin = "1";
                     hwpin = "6";
@@ -300,7 +300,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     tbreak = "setup";
                 } else if (!board.compare("Blue Pill")) {
                     pioboard = "bluepill_f103c8";
-                    pioplatform = "ststm32";
+                    pioplatform = "ststm32 @ 19.7.1";
                     if (!framework.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
@@ -320,7 +320,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     ftype = "bin";
                 } else if (!board.compare("STM32 H103")) {
                     pioboard = "olimex_f103";
-                    pioplatform = "ststm32";
+                    pioplatform = "ststm32 @ 19.7.1";
                     if (!framework.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
@@ -340,7 +340,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     ftype = "bin";
                 } else if (!board.compare("ESP32-DevKitC")) {
                     pioboard = "esp32dev";
-                    pioplatform = "espressif32";
+                    pioplatform = "espressif32 @ 7.0.1";
                     if (!framework.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
@@ -355,7 +355,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     ftype = "bin";
                 } else if (!board.compare("ESP32-C3-DevKitC-02")) {
                     pioboard = "esp32-c3-devkitc-02";
-                    pioplatform = "espressif32";
+                    pioplatform = "espressif32 @ 6.8.1";
                     if (!framework.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
@@ -371,14 +371,14 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 } else if (!board.compare("uCboard")) {
                     if (!processor.compare("C51")) {
                         pioboard = "Generic8051";
-                        pioplatform = "intel_mcs51";
+                        pioplatform = "intel_mcs51 @ 2.2.0";
                         pioframework = "";
                         ledpin = "P3_2";
                         hwpin = "12";
                         tbreak = "main";
                     } else if (!processor.compare("STM8S103")) {
                         pioboard = "stm8sblue";
-                        pioplatform = "ststm8";
+                        pioplatform = "ststm8 @ 2.1.0";
                         pioframework = "arduino";
                         ledpin = "4";
                         hwpin = "12";
