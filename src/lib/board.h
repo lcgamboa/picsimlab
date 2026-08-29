@@ -37,7 +37,7 @@
     printf("Incomplete: %s -> %s :%i\n", __func__, __FILE__, __LINE__); \
     exit(-1);
 
-enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51, ARCH_Z80, ARCH_UNKNOWN };
+enum { ARCH_P16, ARCH_P16E, ARCH_P18, ARCH_AVR8, ARCH_STM32, ARCH_STM8, ARCH_C51, ARCH_Z80, ARCH_ESP32, ARCH_UNKNOWN };
 
 /**
  * @brief input map struct

@@ -998,10 +998,17 @@ void bsim_qemu::MEnd(void) {
 }
 
 int bsim_qemu::MGetArchitecture(void) {
-    if (SimType == QEMU_SIM_STM32) {
-        return ARCH_STM32;
+    switch (SimType) {
+        case QEMU_SIM_STM32:
+            return ARCH_STM32;
+            break;
+        case QEMU_SIM_ESP32:
+        case QEMU_SIM_ESP32_C3:
+            return ARCH_ESP32;
+            break;
+        default:
+            break;
     }
-
     return ARCH_UNKNOWN;
 }
 

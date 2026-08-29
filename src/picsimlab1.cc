@@ -2111,12 +2111,25 @@ extern "C" {
 
 void file_ready(const char* fname, const char* dir) {
     const char tmp[] = "/tmp";
+    char fullpath[1024];
+    int is_bin = 0;
+    int is_hex = 0;
 
     if (!dir) {
         dir = tmp;
     }
 
-    char fullpath[1024];
+    int arch = PICSimLab.GetBoard()->MGetArchitecture();
+
+    if ((arch == ARCH_STM32) || (arch == ARCH_ESP32)) {
+        is_bin = 1;
+    }
+
+    if ((arch == ARCH_P16) || (arch == ARCH_P16E) || (arch == ARCH_P18) || (arch == ARCH_AVR8) || (arch == ARCH_C51) ||
+        (arch == ARCH_STM8) || (arch == ARCH_Z80)) {
+        is_hex = 1;
+    }
+
     snprintf(fullpath, 1023, "%s%s", dir, fname);
 
     if (strstr(fname, ".pzw")) {
@@ -2125,8 +2138,14 @@ void file_ready(const char* fname, const char* dir) {
         Window1.filedialog2.SetDir(dir);
         Window1.filedialog2.SetFileName(lxString::FromUTF8(fullpath));
         Window1.filedialog2_EvOnClose(1);
-    } else if (strstr(fname, ".hex")) {
+    } else if (strstr(fname, ".hex") && is_hex) {
         printf("PICSimLab: Loading .hex...\n");
+        Window1.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
+        Window1.filedialog1.SetDir(dir);
+        Window1.filedialog1.SetFileName(lxString::FromUTF8(fullpath));
+        Window1.filedialog1_EvOnClose(1);
+    } else if (strstr(fname, ".bin") && is_bin) {
+        printf("PICSimLab: Loading .bin...\n");
         Window1.filedialog1.SetType(lxFD_OPEN | lxFD_CHANGE_DIR);
         Window1.filedialog1.SetDir(dir);
         Window1.filedialog1.SetFileName(lxString::FromUTF8(fullpath));
