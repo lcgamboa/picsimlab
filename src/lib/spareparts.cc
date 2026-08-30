@@ -629,7 +629,7 @@ void CSpareParts::WritePreferences(void) {
 }
 
 bool CSpareParts::SaveConfig(std::string fname) {
-    char temp[256];
+    char temp[4096];
 
     std::vector<std::string> prefs;
 
@@ -638,9 +638,9 @@ bool CSpareParts::SaveConfig(std::string fname) {
 
     prefs.clear();
 
-    snprintf(temp, 256, "version,0,0,0:%s", _VERSION_);
+    snprintf(temp, 4096, "version,0,0,0:%s", _VERSION_);
     prefs.push_back(temp);
-    snprintf(temp, 256, "scale,0,0,0:%f", scale);
+    snprintf(temp, 4096, "scale,0,0,0:%f", scale);
     prefs.push_back(temp);
 
     int x, y, w, h;
@@ -650,7 +650,7 @@ bool CSpareParts::SaveConfig(std::string fname) {
     SpareParts.WindowCmd(PW_MAIN, NULL, PWA_GETWIDTH, NULL, &w);
     SpareParts.WindowCmd(PW_MAIN, NULL, PWA_GETHEIGHT, NULL, &h);
 
-    snprintf(temp, 256, "position,%i,%i,%i:%i", x, y, w, h);
+    snprintf(temp, 4096, "position,%i,%i,%i:%i", x, y, w, h);
     prefs.push_back(temp);
 
     PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
@@ -658,18 +658,18 @@ bool CSpareParts::SaveConfig(std::string fname) {
     PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWGETCWIDTH, NULL, &w);
     PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_WINDOWGETCHEIGHT, NULL, &h);
 
-    snprintf(temp, 256, "boardp,%i,%i,%i:%i", x, y, w, h);
+    snprintf(temp, 4096, "boardp,%i,%i,%i:%i", x, y, w, h);
     prefs.push_back(temp);
 
-    snprintf(temp, 256, "spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
+    snprintf(temp, 4096, "spare_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseSpareParts());
     prefs.push_back(temp);
-    snprintf(temp, 256, "osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
+    snprintf(temp, 4096, "osc_on,0,0,0:%i", PICSimLab.GetBoard()->GetUseOscilloscope());
     prefs.push_back(temp);
-    snprintf(temp, 256, "useAlias,0,0,0:%i", GetUseAlias());
+    snprintf(temp, 4096, "useAlias,0,0,0:%i", GetUseAlias());
     prefs.push_back(temp);
-    snprintf(temp, 256, "debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
+    snprintf(temp, 4096, "debug,%i,%i,0:", PICSimLab.GetDebugStatus(), PICSimLab.GetDebugType());
     prefs.push_back(temp);
-    snprintf(temp, 256, "bgcolor,0,0,0:%s", bgcolor.c_str());
+    snprintf(temp, 4096, "bgcolor,0,0,0:%s", bgcolor.c_str());
     prefs.push_back(temp);
 
     std::vector<std::string> osc_list = Oscilloscope.WritePreferencesList();
@@ -678,7 +678,7 @@ bool CSpareParts::SaveConfig(std::string fname) {
     }
 
     for (int i = 0; i < GetCount(); i++) {
-        snprintf(temp, 256, "%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
+        snprintf(temp, 4096, "%s,%i,%i,%i:%s", GetPart(i)->GetName().c_str(), GetPart(i)->GetX(), GetPart(i)->GetY(),
                  GetPart(i)->GetOrientation(), GetPart(i)->WritePreferences().c_str());
         prefs.push_back(temp);
     }
