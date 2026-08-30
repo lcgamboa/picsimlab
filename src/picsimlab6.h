@@ -68,6 +68,7 @@ public:
     const char* GetFrameworkList(const std::string ide);
     const char* GetExampleList(const std::string ide, const std::string framework);
     int OpenProject(lxString path, lxString type);
+    int OpenProjectDir(lxString path);
     int CreateProject(const std::string ide, const std::string framework, const std::string ctemplate,
                       const lxString prjdir, const int operation);
 

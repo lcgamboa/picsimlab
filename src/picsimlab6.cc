@@ -509,6 +509,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
                 PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
                 Window1.menu1_Code_Open_Active_Project.SetEnable(1);
+                Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(1);
 
                 if (operation == OP_CREATE_AND_OPEN) {
                     OpenProject(prjdir, ide);
@@ -791,6 +792,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
                 PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
                 Window1.menu1_Code_Open_Active_Project.SetEnable(1);
+                Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(1);
 
                 if (operation == OP_CREATE_AND_OPEN) {
                     OpenProject(prjdir, ide);
@@ -822,6 +824,7 @@ void CPWindow6::dirdialog1_EvOnClose(int retId) {
             PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
             PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
             Window1.menu1_Code_Open_Active_Project.SetEnable(1);
+            Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(1);
             OpenProject(prjdir, ide);
         }
     }
@@ -844,15 +847,16 @@ void CPWindow6::filedialog1_EvOnClose(const int retId) {
 }
 
 int CPWindow6::OpenProject(lxString path, lxString type) {
+    if (!PICSimLab.SystemCmd(PSC_DIREXISTS, path.utf8_str())) {
+        PICSimLab.RegisterError("PICSimLab", (const char*)("Project dir not found!\n" + path).utf8_str());
+        PICSimLab.GetBoard()->SetPWActiveProject(" ");
+        Window1.menu1_Code_Open_Active_Project.SetEnable(0);
+        Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(0);
+        return 1;
+    }
+
     if (!type.compare("PlatformIO IDE for VSCode")) {
         char vscode_path[1024];
-
-        if (!PICSimLab.SystemCmd(PSC_DIREXISTS, path.utf8_str())) {
-            PICSimLab.RegisterError("PICSimLab", (const char*)("Project dir not found!\n" + path).utf8_str());
-            PICSimLab.GetBoard()->SetPWActiveProject(" ");
-            Window1.menu1_Code_Open_Active_Project.SetEnable(0);
-            return 1;
-        }
 
         strncpy(vscode_path, PICSimLab.GetPWVscodePath().c_str(), 1023);
 
@@ -906,13 +910,6 @@ int CPWindow6::OpenProject(lxString path, lxString type) {
     } else if (!type.compare("MPLAB X IDE")) {
         char mplabx_path[1024];
 
-        if (!PICSimLab.SystemCmd(PSC_DIREXISTS, path.utf8_str())) {
-            PICSimLab.RegisterError("PICSimLab", (const char*)("Project dir not found!\n" + path).utf8_str());
-            PICSimLab.GetBoard()->SetPWActiveProject(" ");
-            Window1.menu1_Code_Open_Active_Project.SetEnable(0);
-            return 1;
-        }
-
         strncpy(mplabx_path, PICSimLab.GetPWMplabxPath().c_str(), 1023);
 
         if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, mplabx_path)) {
@@ -953,7 +950,28 @@ int CPWindow6::OpenProject(lxString path, lxString type) {
     } else {
         PICSimLab.RegisterError("PICSimLab", "Project type not supported!");
         Window1.menu1_Code_Open_Active_Project.SetEnable(0);
+        Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(0);
         Window1.menu1_Code_Project_Wizard.SetEnable(0);
     }
     return -1;
+}
+
+int CPWindow6::OpenProjectDir(lxString path) {
+    if (!PICSimLab.SystemCmd(PSC_DIREXISTS, path.utf8_str())) {
+        PICSimLab.RegisterError("PICSimLab", (const char*)("Project dir not found!\n" + path).utf8_str());
+        PICSimLab.GetBoard()->SetPWActiveProject(" ");
+        Window1.menu1_Code_Open_Active_Project.SetEnable(0);
+        Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(0);
+        return 1;
+    }
+
+#ifdef _WIN_
+    std::string cmd = "explorer ";
+#else
+    std::string cmd = "xdg-open ";
+#endif
+    cmd += path;
+    lxExecute(cmd);
+
+    return 0;
 }

@@ -973,6 +973,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
     if (!PICSimLab.GetBoard()->GetSupportedIDEs().compare("N/A,")) {
         menu1_Code_Project_Wizard.SetEnable(0);
         menu1_Code_Open_Active_Project.SetEnable(0);
+        menu1_Code_Open_Active_Project_Dir.SetEnable(0);
     } else {
         menu1_Code_Project_Wizard.SetEnable(1);
 
@@ -980,11 +981,14 @@ void CPWindow1::_EvOnCreate(CControl* control) {
                    PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
             if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
                 menu1_Code_Open_Active_Project.SetEnable(1);
+                menu1_Code_Open_Active_Project_Dir.SetEnable(1);
             } else {
                 menu1_Code_Open_Active_Project.SetEnable(0);
+                menu1_Code_Open_Active_Project_Dir.SetEnable(0);
             }
         } else {
             menu1_Code_Open_Active_Project.SetEnable(0);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(0);
         }
     }
 }
@@ -1408,6 +1412,10 @@ void CPWindow1::menu1_Code_Open_Active_Project_EvMenuActive(CControl* control) {
                         lxString::FromUTF8((const char*)PICSimLab.GetBoard()->GetPWProjectType().c_str()));
 }
 
+void CPWindow1::menu1_Code_Open_Active_Project_Dir_EvMenuActive(CControl* control) {
+    Window6.OpenProjectDir(lxString::FromUTF8((const char*)PICSimLab.GetBoard()->GetPWActiveProject().c_str()));
+}
+
 // Change board
 
 void CPWindow1::menu1_EvBoard(CControl* control) {
@@ -1422,6 +1430,7 @@ void CPWindow1::menu1_EvBoard(CControl* control) {
         if (!PICSimLab.GetBoard()->GetSupportedIDEs().compare("N/A,")) {
             menu1_Code_Project_Wizard.SetEnable(0);
             menu1_Code_Open_Active_Project.SetEnable(0);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(0);
         } else {
             menu1_Code_Project_Wizard.SetEnable(1);
 
@@ -1429,11 +1438,14 @@ void CPWindow1::menu1_EvBoard(CControl* control) {
                        PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
                 if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
                     menu1_Code_Open_Active_Project.SetEnable(1);
+                    menu1_Code_Open_Active_Project_Dir.SetEnable(1);
                 } else {
                     menu1_Code_Open_Active_Project.SetEnable(0);
+                    menu1_Code_Open_Active_Project_Dir.SetEnable(0);
                 }
             } else {
                 menu1_Code_Open_Active_Project.SetEnable(0);
+                menu1_Code_Open_Active_Project_Dir.SetEnable(0);
             }
         }
     }
@@ -1467,17 +1479,21 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
         if (!PICSimLab.GetBoard()->GetSupportedIDEs().compare("N/A,")) {
             menu1_Code_Project_Wizard.SetEnable(0);
             menu1_Code_Open_Active_Project.SetEnable(0);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(0);
         } else {
             menu1_Code_Project_Wizard.SetEnable(1);
             if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
                        PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
                 if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
                     menu1_Code_Open_Active_Project.SetEnable(1);
+                    menu1_Code_Open_Active_Project_Dir.SetEnable(1);
                 } else {
                     menu1_Code_Open_Active_Project.SetEnable(0);
+                    menu1_Code_Open_Active_Project_Dir.SetEnable(0);
                 }
             } else {
                 menu1_Code_Open_Active_Project.SetEnable(0);
+                menu1_Code_Open_Active_Project_Dir.SetEnable(0);
             }
         }
     }
@@ -2038,8 +2054,10 @@ void CPWindow1::filedialog2_EvOnClose(int retId) {
         PICSimLab.LoadWorkspace((const char*)filedialog2.GetFileName().utf8_str());
         if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
             menu1_Code_Open_Active_Project.SetEnable(1);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(1);
         } else {
             menu1_Code_Open_Active_Project.SetEnable(0);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(0);
         }
         if (PICSimLab.GetOldPath().size() > 1) {
             filedialog2.SetDir(PICSimLab.GetOldPath());

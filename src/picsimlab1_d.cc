@@ -207,7 +207,7 @@ CPWindow1::CPWindow1(void) {
     menu1_Code.SetName(lxT("menu1_Code"));
     menu1_Code.SetTag(0);
     menu1_Code.SetText(lxT("Code"));
-    menu1_Code.SetMenuItems(lxT("Project Wizard,Open Active Project,"));
+    menu1_Code.SetMenuItems(lxT("Project Wizard,Open Active Project,Open Active Project Dir,"));
     menu1.CreateChild(&menu1_Code);
     // menu1_Help
     menu1_Help.SetFOwner(this);
@@ -399,6 +399,17 @@ CPWindow1::CPWindow1(void) {
     menu1_Code_Open_Active_Project.SetSubMenu(NULL);
     menu1_Code_Open_Active_Project.EvMenuActive = EVMENUACTIVE & CPWindow1::menu1_Code_Open_Active_Project_EvMenuActive;
     menu1_Code.CreateChild(&menu1_Code_Open_Active_Project);
+    // menu1_Code_Open_Active_Project_Dir
+    menu1_Code_Open_Active_Project_Dir.SetFOwner(this);
+    menu1_Code_Open_Active_Project_Dir.SetClass(lxT("CItemMenu"));
+    menu1_Code_Open_Active_Project_Dir.SetName(lxT("menu1_Code_Open_Active_Project_Dir"));
+    menu1_Code_Open_Active_Project_Dir.SetTag(0);
+    menu1_Code_Open_Active_Project_Dir.SetText(lxT("Open Active Project Dir"));
+    menu1_Code_Open_Active_Project_Dir.SetEnable(1);
+    menu1_Code_Open_Active_Project_Dir.SetSubMenu(NULL);
+    menu1_Code_Open_Active_Project_Dir.EvMenuActive =
+        EVMENUACTIVE & CPWindow1::menu1_Code_Open_Active_Project_Dir_EvMenuActive;
+    menu1_Code.CreateChild(&menu1_Code_Open_Active_Project_Dir);
     // menu1_Help_Contents
     menu1_Help_Contents.SetFOwner(this);
     menu1_Help_Contents.SetClass(lxT("CItemMenu"));

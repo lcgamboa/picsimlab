@@ -102,6 +102,7 @@ public:
     CItemMenu menu1_Tools_PinViewer;
     CItemMenu menu1_Code_Project_Wizard;
     CItemMenu menu1_Code_Open_Active_Project;
+    CItemMenu menu1_Code_Open_Active_Project_Dir;
     CItemMenu menu1_Help_Contents;
     CItemMenu menu1_Help_Board;
     CItemMenu menu1_Help_Examples;
@@ -148,6 +149,7 @@ public:
     void menu1_Tools_PinViewer_EvMenuActive(CControl* control);
     void menu1_Code_Project_Wizard_EvMenuActive(CControl* control);
     void menu1_Code_Open_Active_Project_EvMenuActive(CControl* control);
+    void menu1_Code_Open_Active_Project_Dir_EvMenuActive(CControl* control);
     void menu1_Help_Contents_EvMenuActive(CControl* control);
     void menu1_Help_Examples_EvMenuActive(CControl* control);
     void menu1_Help_Board_EvMenuActive(CControl* control);
