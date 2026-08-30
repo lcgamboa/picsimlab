@@ -970,7 +970,7 @@ int CPWindow6::OpenProjectDir(lxString path) {
 #else
     std::string cmd = "xdg-open ";
 #endif
-    cmd += path;
+    cmd += path.utf8_str();
     lxExecute(cmd);
 
     return 0;
