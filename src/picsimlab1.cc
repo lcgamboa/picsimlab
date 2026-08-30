@@ -2043,6 +2043,13 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
     if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fdemo.c_str())) {
         PICSimLab.LoadWorkspace(fdemo);
         PICSimLab.SetWorkspaceFileName("");
+        if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+            menu1_Code_Open_Active_Project.SetEnable(1);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(1);
+        } else {
+            menu1_Code_Open_Active_Project.SetEnable(0);
+            menu1_Code_Open_Active_Project_Dir.SetEnable(0);
+        }
     } else {
         PICSimLab.RegisterError("PICSimLab",
                                 "Demo for board " + PICSimLab.GetBoard()->GetName() + " not found!" + fdemo);
