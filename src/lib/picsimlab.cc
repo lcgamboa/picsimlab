@@ -912,6 +912,11 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
     fname_[strlen(fname) - 3] = 0;
     strcat(fname_, "bak");
     SystemCmd(PSC_REMOVEFILE, fname_);
+    // change .hex to .efuse
+    strncpy(fname_, fname, 2048);
+    fname_[strlen(fname) - 3] = 0;
+    strcat(fname_, "efuse");
+    SystemCmd(PSC_REMOVEFILE, fname_);
 
     pboard->MDumpMemory(fname);
 
