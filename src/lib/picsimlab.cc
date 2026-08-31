@@ -513,7 +513,7 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
     strncat(fzip, "/", 1023);
 
     memcpy(home, pzwtmpdir, 1023);
-    strncat(home, "/picsimlab_workspace/", 1023);
+    strncat(home, "/picsimlab_workspace", 1023);
 
     SystemCmd(PSC_UNZIPDIR, fnpzw.c_str(), fzip);
 
@@ -769,7 +769,7 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
     }
 
     memcpy(home, tmpdir, 1023);
-    strncat(home, "/picsimlab_workspace/", 1023);
+    strncat(home, "/picsimlab_workspace", 1023);
 
 #ifdef CONVERTER_MODE
     snprintf(fname, 1279, "rm -rf %s/*.ini", home);
@@ -799,7 +799,7 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
 
         code_dst[0] = 0;
         if (strlen(strrchr(code_src, '/')) > 2) {
-            strncpy(code_dst, strrchr(code_src, '/'), 511);
+            strncpy(code_dst, strrchr(code_src, '/') + 1, 511);
         } else {
             strncpy(fname, code_src, 512);
             fname[strlen(fname) - 1] = 0;

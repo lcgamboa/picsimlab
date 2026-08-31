@@ -966,12 +966,16 @@ int CPWindow6::OpenProjectDir(lxString path) {
     }
 
 #ifdef _WIN_
-    std::string cmd = "explorer ";
+    std::string cmd = "explorer \"";
+    cmd += (path + "\"").utf8_str();
+    std::replace(cmd.begin(), cmd.end(), '/', '\\');
 #else
-    std::string cmd = "xdg-open ";
+    std::string cmd = "xdg-open \"";
+    cmd += (path + "\"").utf8_str();
 #endif
-    cmd += path.utf8_str();
+
     lxExecute(cmd);
+    printf("cmd =[%s]\n", cmd.c_str());
 
     return 0;
 }
