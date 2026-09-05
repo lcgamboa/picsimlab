@@ -975,7 +975,7 @@ int CPWindow6::OpenProjectDir(lxString path) {
 #endif
 
     lxExecute(cmd);
-    printf("cmd =[%s]\n", cmd.c_str());
+    printf("PICSimLab: Execute: %s\n", cmd.c_str());
 
     return 0;
 }

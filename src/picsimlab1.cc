@@ -979,7 +979,8 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
         if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
                    PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
-            if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+            if ((PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) &&
+                PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetBoard()->GetPWActiveProject().c_str())) {
                 menu1_Code_Open_Active_Project.SetEnable(1);
                 menu1_Code_Open_Active_Project_Dir.SetEnable(1);
             } else {
@@ -1436,7 +1437,8 @@ void CPWindow1::menu1_EvBoard(CControl* control) {
 
             if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
                        PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
-                if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+                if ((PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) &&
+                    PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetBoard()->GetPWActiveProject().c_str())) {
                     menu1_Code_Open_Active_Project.SetEnable(1);
                     menu1_Code_Open_Active_Project_Dir.SetEnable(1);
                 } else {
@@ -1484,7 +1486,8 @@ void CPWindow1::menu1_EvMicrocontroller(CControl* control) {
             menu1_Code_Project_Wizard.SetEnable(1);
             if (strstr(PICSimLab.GetBoard()->GetSupportedIDEs().c_str(),
                        PICSimLab.GetBoard()->GetPWProjectType().c_str())) {
-                if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+                if ((PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) &&
+                    PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetBoard()->GetPWActiveProject().c_str())) {
                     menu1_Code_Open_Active_Project.SetEnable(1);
                     menu1_Code_Open_Active_Project_Dir.SetEnable(1);
                 } else {
@@ -2043,7 +2046,8 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
     if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fdemo.c_str())) {
         PICSimLab.LoadWorkspace(fdemo);
         PICSimLab.SetWorkspaceFileName("");
-        if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+        if ((PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) &&
+            PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetBoard()->GetPWActiveProject().c_str())) {
             menu1_Code_Open_Active_Project.SetEnable(1);
             menu1_Code_Open_Active_Project_Dir.SetEnable(1);
         } else {
@@ -2059,7 +2063,8 @@ void CPWindow1::menu1_File_LoadBoardDemo_EvMenuActive(CControl* control) {
 void CPWindow1::filedialog2_EvOnClose(int retId) {
     if (retId && (filedialog2.GetType() == (lxFD_OPEN | lxFD_CHANGE_DIR))) {
         PICSimLab.LoadWorkspace((const char*)filedialog2.GetFileName().utf8_str());
-        if (PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) {
+        if ((PICSimLab.GetBoard()->GetPWActiveProject().length() > 2) &&
+            PICSimLab.SystemCmd(PSC_DIREXISTS, PICSimLab.GetBoard()->GetPWActiveProject().c_str())) {
             menu1_Code_Open_Active_Project.SetEnable(1);
             menu1_Code_Open_Active_Project_Dir.SetEnable(1);
         } else {
