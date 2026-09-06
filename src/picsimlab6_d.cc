@@ -289,6 +289,22 @@ CPWindow6::CPWindow6(void) {
     button4.EvMouseButtonClick = EVMOUSEBUTTONCLICK & CPWindow6::button4_EvMouseButtonClick;
     button4.SetText(lxT("Open Existing"));
     CreateChild(&button4);
+    // button5
+    button5.SetFOwner(this);
+    button5.SetClass(lxT("CButton"));
+    button5.SetName(lxT("button5"));
+    button5.SetTag(0);
+    button5.SetX(38);
+    button5.SetY(282);
+    button5.SetWidth(120);
+    button5.SetHeight(28);
+    button5.SetHint(lxT(""));
+    button5.SetEnable(1);
+    button5.SetVisible(1);
+    button5.SetPopupMenu(NULL);
+    button5.EvMouseButtonClick = EVMOUSEBUTTONCLICK & CPWindow6::button5_EvMouseButtonClick;
+    button5.SetText(lxT("Help"));
+    CreateChild(&button5);
     /*#Others*/
     // lxrad automatic generated block end, don't edit above!
 };

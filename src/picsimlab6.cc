@@ -97,6 +97,13 @@ void CPWindow6::button4_EvMouseButtonClick(CControl* control, const uint button,
     dirdialog1.Run();
 }
 
+void CPWindow6::button5_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
+                                           const uint state) {
+    char stemp[256];
+    snprintf(stemp, 255, "https://lcgamboa.github.io/picsimlab_docs/%s/ProjectWizardWindow.html", _VERSION_);
+    lxLaunchDefaultBrowser(stemp);
+}
+
 const char* CPWindow6::GetFrameworkList(const std::string ide) {
     std::string board = PICSimLab.GetBoard()->GetName();
     std::string processor = PICSimLab.GetBoard()->GetProcessorName();

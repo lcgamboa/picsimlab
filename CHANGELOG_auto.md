@@ -2,6 +2,34 @@
 
 ### New
 
+* Add project source code to board demonstration examples. [lcgamboa]
+
+* New menu item code->Open Active Project Dir. [lcgamboa]
+
+* Add rcontrol support to enable/disable debug on exit command. [lcgamboa]
+
+* Add support to Project Wizard MPLAB X IDE for boards: Curiosity, Curiosity_HPC, K16F, PQDB, Xpress ,X ,and Breadboard. [lcgamboa]
+
+* New rcontrol commands: bblist, bdlist, bilist, pwtlist, pwtlist, pwcreate, and saveworkspace. [lcgamboa]
+
+* New Project Wizard templates FreeRTOS and PICGenios library. [lcgamboa]
+
+* New Project Wizard example Blink FreeRTOS for Vscode+Platformio. [lcgamboa]
+
+* Add MPLAB X Project Wizard support to boards McLab1 and McLab2. [lcgamboa]
+
+* New support to MPLAB X in Project Wizard for PICGenios board. [lcgamboa]
+
+* New support to Arduino/SDCC in Project Wizard for C51 and STM8S103. [lcgamboa]
+
+* New support to CMSIS in Project Wizard for STM32. [lcgamboa]
+
+* New support to IDF in Project Wizard for ESP32 and ESP32-C3. [lcgamboa]
+
+* Support to save/load active project code in workspace file. [lcgamboa]
+
+* New python tests using rcontrol interface. [lcgamboa]
+
 * Add tests to project templates using rcontrol python library. [lcgamboa]
 
 * New rcontrol commands spshow, spdel, oscshow, oscmeasures, oscrdcfg and oscwrcdg. [lcgamboa]
@@ -40,6 +68,20 @@
 
 ### Changes
 
+* Change the method SaveWorkspace to remove .efuse files from .pzw. [lcgamboa]
+
+* Add version numbers to platformio platforms and libs of PrjWizard. [lcgamboa]
+
+* New methods to get boards backends and debugger support. [lcgamboa]
+
+* Test for compatible VCD files used in VCD Play spare part. [lcgamboa]
+
+* Add support to set the initial gdb tbreak function name. [lcgamboa]
+
+* Project Wizard Python test updated. [lcgamboa]
+
+* Modify command line to pass board or pzw file as first parameter. [lcgamboa]
+
 * Change projects template to use picsimlab_tool.py. [lcgamboa]
 
 * Add flash memory size for ESP32 based boards on project wizard. [lcgamboa]
@@ -77,6 +119,24 @@
 * Github actions updated. [lcgamboa]
 
 ### Fix
+
+* Fix the drag and drop of .bin files. [lcgamboa]
+
+* Fix ProjecWizard MPLAB X templates. [lcgamboa]
+
+* Fix the flash size for PIC18F67J60. [lcgamboa]
+
+* Fix Virtual Term spare part windows size saving. [lcgamboa]
+
+* Fix string parser to deal with return character. [lcgamboa]
+
+* Fix Windows debug sockets errors replacing close() for socketclose() [lcgamboa]
+
+* Fix the temporary and workspace files persistence for qemu based boards. [lcgamboa]
+
+* Fix freeze on use invalid boar name. [lcgamboa]
+
+* Fix windows change scale every run. [lcgamboa]
 
 * Fix rcontrol oscwrcfg command crashing PICSimLab. [lcgamboa]
 

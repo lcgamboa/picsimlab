@@ -440,4 +440,31 @@
   <EvOnDropFile type="Event">FALSE</EvOnDropFile>
   <Text type="lxString">Open Existing</Text>
 </button4>
+<button5>
+  <Class type="lxString">CButton</Class>
+  <Name type="lxString">button5</Name>
+  <Tag type="int">0</Tag>
+  <X type="int">38</X>
+  <Y type="int">282</Y>
+  <Width type="uint">120</Width>
+  <Height type="uint">28</Height>
+  <Hint type="lxString"></Hint>
+  <Enable type="bool">1</Enable>
+  <Visible type="bool">1</Visible>
+  <Color type="lxString">#000001</Color>
+  <PopupMenu type="PopupMenu">NULL</PopupMenu>
+  <EvMouseMove type="Event">FALSE</EvMouseMove>
+  <EvMouseButtonPress type="Event">FALSE</EvMouseButtonPress>
+  <EvMouseButtonRelease type="Event">FALSE</EvMouseButtonRelease>
+  <EvMouseButtonClick type="Event">TRUE</EvMouseButtonClick>
+  <EvMouseButtonDoubleClick type="Event">FALSE</EvMouseButtonDoubleClick>
+  <EvKeyboardPress type="Event">FALSE</EvKeyboardPress>
+  <EvKeyboardRelease type="Event">FALSE</EvKeyboardRelease>
+  <EvOnDraw type="Event">FALSE</EvOnDraw>
+  <EvOnFocusIn type="Event">FALSE</EvOnFocusIn>
+  <EvOnFocusOut type="Event">FALSE</EvOnFocusOut>
+  <EvMouseWheel type="Event">FALSE</EvMouseWheel>
+  <EvOnDropFile type="Event">FALSE</EvOnDropFile>
+  <Text type="lxString">Help</Text>
+</button5>
 </window6>

@@ -48,6 +48,7 @@ public:
     CDirDialog dirdialog1;
     CFileDialog filedialog1;
     CButton button4;
+    CButton button5;
     /*#Events*/
     void _EvOnCreate(CControl* control);
     void _EvOnShow(CControl* control);
@@ -60,6 +61,7 @@ public:
     void dirdialog1_EvOnClose(const int retId);
     void filedialog1_EvOnClose(const int retId);
     void button4_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
+    void button5_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y, const uint state);
 
     /*#Others*/
     CPWindow6(void);
