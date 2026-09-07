@@ -14,7 +14,7 @@ exp: all
 
 all: $(OBJS)
 	@echo "Linking picsimlab_tool"
-	@$(CC) $(FLAGS) $(OBJS) -opicsimlab_tool.exe $(LIBS)
+	@$(CC) $(FLAGS) $(OBJS) -opicsimlab_tool.exe $(LIBS) -static-libgcc -static-libstdc++
 	@mv *.exe ../../picsimlab_win64/
 
 %.o: %.cc

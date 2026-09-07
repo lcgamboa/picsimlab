@@ -20,7 +20,7 @@ exp: all
 all: $(OBJS)
 	@echo "Linking PinViewer"
 	@$(WINDRES) PinViewer_res.rc  -O coff -o PinViewer_res.o
-	@$(CC) $(FLAGS) $(OBJS) PinViewer_res.o  -oPinViewer.exe $(LIBS)
+	@$(CC) $(FLAGS) $(OBJS) PinViewer_res.o  -oPinViewer.exe $(LIBS) -static-libgcc -static-libstdc++
 	@mv *.exe ../../picsimlab_win64/
 
 %.o: %.cc

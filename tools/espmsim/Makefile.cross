@@ -23,7 +23,7 @@ exp: all
 all: $(OBJS)
 	@echo "Linking espmsim"
 	@$(WINDRES) espmsim_res.rc  -O coff -o espmsim_res.o
-	@$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS)
+	@$(CC) $(FLAGS) $(OBJS) espmsim_res.o -oespmsim.exe $(LIBS) -static-libgcc -static-libstdc++
 	@mv *.exe ../../picsimlab_win64/
 
 %.o: %.cc

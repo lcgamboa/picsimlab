@@ -19,7 +19,7 @@ exp: all
 all: $(OBJS)
 	@echo "Linking srtank"
 	@$(WINDRES) srtank_res.rc  -O coff -o srtank_res.o
-	@$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS)
+	@$(CC) $(FLAGS) $(OBJS) srtank_res.o  -osrtank.exe $(LIBS) -static-libgcc -static-libstdc++
 	@mv *.exe ../../picsimlab_win64/
 
 %.o: %.cc

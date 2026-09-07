@@ -28,7 +28,7 @@ exp: LIBS+= -Wl,--subsystem,console -mconsole
 all: $(OBJS)
 	@echo "Linking picsimlab"
 	@$(WINDRES) picsimlab_res.rc  -O coff -o picsimlab_res.o
-	@$(CXX) $(CXXFLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS)
+	@$(CXX) $(CXXFLAGS) $(OBJS) picsimlab_res.o -opicsimlab.exe $(LIBS) -static-libgcc -static-libstdc++
 	@$(STRIP) picsimlab.exe
 	@mv *.exe ../picsimlab_win64/
 
