@@ -59,6 +59,7 @@ private:
     int JUMPSTEPS_;
     io_74xx595_t sr8;
     unsigned short _ret;
+    unsigned int pins_connected;
 };
 
 #endif /* PART_IO_74XX595_H */

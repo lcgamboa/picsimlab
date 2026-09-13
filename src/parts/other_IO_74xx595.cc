@@ -89,6 +89,7 @@ cpart_IO_74xx595::cpart_IO_74xx595(const unsigned x, const unsigned y, const cha
 
     PinCtrlCount = 9;
     PinsCtrl = output_pins;
+    pins_connected = 0;
 }
 
 cpart_IO_74xx595::~cpart_IO_74xx595(void) {
@@ -278,6 +279,8 @@ void cpart_IO_74xx595::PreProcess(void) {
 
     JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
+
+    pins_connected = (input_pins[0] != 0) && (input_pins[1] != 0) && (input_pins[2] != 0) && (input_pins[3] != 0);
 }
 
 void cpart_IO_74xx595::Process(void) {
@@ -285,45 +288,47 @@ void cpart_IO_74xx595::Process(void) {
 
     unsigned short ret;
 
-    ret = io_74xx595_io(&sr8, ppins[input_pins[3] - 1].value, ppins[input_pins[1] - 1].value,
-                        ppins[input_pins[2] - 1].value, ppins[input_pins[0] - 1].value);
+    if (pins_connected) {
+        ret = io_74xx595_io(&sr8, ppins[input_pins[3] - 1].value, ppins[input_pins[1] - 1].value,
+                            ppins[input_pins[2] - 1].value, ppins[input_pins[0] - 1].value);
 
-    if (_ret != ret) {
-        SpareParts.WritePin(output_pins[0], (ret & 0x01) != 0);
-        SpareParts.WritePin(output_pins[1], (ret & 0x02) != 0);
-        SpareParts.WritePin(output_pins[2], (ret & 0x04) != 0);
-        SpareParts.WritePin(output_pins[3], (ret & 0x08) != 0);
-        SpareParts.WritePin(output_pins[4], (ret & 0x10) != 0);
-        SpareParts.WritePin(output_pins[5], (ret & 0x20) != 0);
-        SpareParts.WritePin(output_pins[6], (ret & 0x40) != 0);
-        SpareParts.WritePin(output_pins[7], (ret & 0x80) != 0);
-        SpareParts.WritePin(output_pins[8], (ret & 0x100) != 0);
-    }
-    _ret = ret;
+        if (_ret != ret) {
+            SpareParts.WritePin(output_pins[0], (ret & 0x01) != 0);
+            SpareParts.WritePin(output_pins[1], (ret & 0x02) != 0);
+            SpareParts.WritePin(output_pins[2], (ret & 0x04) != 0);
+            SpareParts.WritePin(output_pins[3], (ret & 0x08) != 0);
+            SpareParts.WritePin(output_pins[4], (ret & 0x10) != 0);
+            SpareParts.WritePin(output_pins[5], (ret & 0x20) != 0);
+            SpareParts.WritePin(output_pins[6], (ret & 0x40) != 0);
+            SpareParts.WritePin(output_pins[7], (ret & 0x80) != 0);
+            SpareParts.WritePin(output_pins[8], (ret & 0x100) != 0);
+        }
+        _ret = ret;
 
-    mcount++;
-    if (mcount >= JUMPSTEPS_) {
-        if (ppins[output_pins[0] - 1].value)
-            output_pins_alm[0]++;
-        if (ppins[output_pins[1] - 1].value)
-            output_pins_alm[1]++;
-        if (ppins[output_pins[2] - 1].value)
-            output_pins_alm[2]++;
-        if (ppins[output_pins[3] - 1].value)
-            output_pins_alm[3]++;
-        if (ppins[output_pins[4] - 1].value)
-            output_pins_alm[4]++;
-        if (ppins[output_pins[5] - 1].value)
-            output_pins_alm[5]++;
-        if (ppins[output_pins[6] - 1].value)
-            output_pins_alm[6]++;
-        if (ppins[output_pins[7] - 1].value)
-            output_pins_alm[7]++;
+        mcount++;
+        if (mcount >= JUMPSTEPS_) {
+            if (ppins[output_pins[0] - 1].value)
+                output_pins_alm[0]++;
+            if (ppins[output_pins[1] - 1].value)
+                output_pins_alm[1]++;
+            if (ppins[output_pins[2] - 1].value)
+                output_pins_alm[2]++;
+            if (ppins[output_pins[3] - 1].value)
+                output_pins_alm[3]++;
+            if (ppins[output_pins[4] - 1].value)
+                output_pins_alm[4]++;
+            if (ppins[output_pins[5] - 1].value)
+                output_pins_alm[5]++;
+            if (ppins[output_pins[6] - 1].value)
+                output_pins_alm[6]++;
+            if (ppins[output_pins[7] - 1].value)
+                output_pins_alm[7]++;
 
-        if (ppins[output_pins[8] - 1].value)
-            output_pins_alm[8]++;
+            if (ppins[output_pins[8] - 1].value)
+                output_pins_alm[8]++;
 
-        mcount = -1;
+            mcount = -1;
+        }
     }
 }
 

@@ -108,6 +108,8 @@ cpart_IO_74xx573::cpart_IO_74xx573(const unsigned x, const unsigned y, const cha
 
     PinCount = 9;
     Pins = input_pins;
+
+    pins_connected = 0;
 }
 
 cpart_IO_74xx573::~cpart_IO_74xx573(void) {
@@ -314,6 +316,10 @@ void cpart_IO_74xx573::PreProcess(void) {
 
     JUMPSTEPS_ = PICSimLab.GetJUMPSTEPS() * 4.0 / PICSimLab.GetBoard()->MGetClocksPerInstructions();
     mcount = JUMPSTEPS_;
+
+    pins_connected = (input_pins[0] != 0) && (input_pins[1] != 0) && (input_pins[2] != 0) && (input_pins[3] != 0) &&
+                     (input_pins[4] != 0) && (input_pins[5] != 0) && (input_pins[6] != 0) && (input_pins[7] != 0) &&
+                     (input_pins[8] != 0);
 }
 
 void cpart_IO_74xx573::Process(void) {
@@ -322,49 +328,51 @@ void cpart_IO_74xx573::Process(void) {
     unsigned short ret;
     unsigned char data = 0;
 
-    data |= ppins[input_pins[7] - 1].value;
-    data |= (ppins[input_pins[6] - 1].value << 1);
-    data |= (ppins[input_pins[5] - 1].value << 2);
-    data |= (ppins[input_pins[4] - 1].value << 3);
-    data |= (ppins[input_pins[3] - 1].value << 4);
-    data |= (ppins[input_pins[2] - 1].value << 5);
-    data |= (ppins[input_pins[1] - 1].value << 6);
-    data |= (ppins[input_pins[0] - 1].value << 7);
+    if (pins_connected) {
+        data |= ppins[input_pins[7] - 1].value;
+        data |= (ppins[input_pins[6] - 1].value << 1);
+        data |= (ppins[input_pins[5] - 1].value << 2);
+        data |= (ppins[input_pins[4] - 1].value << 3);
+        data |= (ppins[input_pins[3] - 1].value << 4);
+        data |= (ppins[input_pins[2] - 1].value << 5);
+        data |= (ppins[input_pins[1] - 1].value << 6);
+        data |= (ppins[input_pins[0] - 1].value << 7);
 
-    ret = io_74xx573_io(&lt8, ppins[input_pins[8] - 1].value, data);
+        ret = io_74xx573_io(&lt8, ppins[input_pins[8] - 1].value, data);
 
-    if (_ret != ret) {
-        SpareParts.WritePin(output_pins[0], (ret & 0x01) != 0);
-        SpareParts.WritePin(output_pins[1], (ret & 0x02) != 0);
-        SpareParts.WritePin(output_pins[2], (ret & 0x04) != 0);
-        SpareParts.WritePin(output_pins[3], (ret & 0x08) != 0);
-        SpareParts.WritePin(output_pins[4], (ret & 0x10) != 0);
-        SpareParts.WritePin(output_pins[5], (ret & 0x20) != 0);
-        SpareParts.WritePin(output_pins[6], (ret & 0x40) != 0);
-        SpareParts.WritePin(output_pins[7], (ret & 0x80) != 0);
-    }
-    _ret = ret;
+        if (_ret != ret) {
+            SpareParts.WritePin(output_pins[0], (ret & 0x01) != 0);
+            SpareParts.WritePin(output_pins[1], (ret & 0x02) != 0);
+            SpareParts.WritePin(output_pins[2], (ret & 0x04) != 0);
+            SpareParts.WritePin(output_pins[3], (ret & 0x08) != 0);
+            SpareParts.WritePin(output_pins[4], (ret & 0x10) != 0);
+            SpareParts.WritePin(output_pins[5], (ret & 0x20) != 0);
+            SpareParts.WritePin(output_pins[6], (ret & 0x40) != 0);
+            SpareParts.WritePin(output_pins[7], (ret & 0x80) != 0);
+        }
+        _ret = ret;
 
-    mcount++;
-    if (mcount >= JUMPSTEPS_) {
-        if (ppins[output_pins[0] - 1].value)
-            output_pins_alm[0]++;
-        if (ppins[output_pins[1] - 1].value)
-            output_pins_alm[1]++;
-        if (ppins[output_pins[2] - 1].value)
-            output_pins_alm[2]++;
-        if (ppins[output_pins[3] - 1].value)
-            output_pins_alm[3]++;
-        if (ppins[output_pins[4] - 1].value)
-            output_pins_alm[4]++;
-        if (ppins[output_pins[5] - 1].value)
-            output_pins_alm[5]++;
-        if (ppins[output_pins[6] - 1].value)
-            output_pins_alm[6]++;
-        if (ppins[output_pins[7] - 1].value)
-            output_pins_alm[7]++;
+        mcount++;
+        if (mcount >= JUMPSTEPS_) {
+            if (ppins[output_pins[0] - 1].value)
+                output_pins_alm[0]++;
+            if (ppins[output_pins[1] - 1].value)
+                output_pins_alm[1]++;
+            if (ppins[output_pins[2] - 1].value)
+                output_pins_alm[2]++;
+            if (ppins[output_pins[3] - 1].value)
+                output_pins_alm[3]++;
+            if (ppins[output_pins[4] - 1].value)
+                output_pins_alm[4]++;
+            if (ppins[output_pins[5] - 1].value)
+                output_pins_alm[5]++;
+            if (ppins[output_pins[6] - 1].value)
+                output_pins_alm[6]++;
+            if (ppins[output_pins[7] - 1].value)
+                output_pins_alm[7]++;
 
-        mcount = -1;
+            mcount = -1;
+        }
     }
 }
 
