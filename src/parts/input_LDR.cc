@@ -47,6 +47,7 @@ cpart_LDR::cpart_LDR(const unsigned x, const unsigned y, const char* name, const
     vthreshold = 2.5;
     value = 0;
     active = 0;
+    lux = 0;
 
     SetPCWProperties(pcwprop);
 

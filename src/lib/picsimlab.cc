@@ -151,7 +151,7 @@ void CPICSimLab::StartRControl(void) {
 
     int lc;
 
-    std::string status;
+    std::string sstatus;
 
     mcurun = 1;
     mcupwr = 1;
@@ -1002,7 +1002,7 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     int osc_on = 0;
     int spare_on = 0;
 
-    std::string status;
+    std::string sstatus;
 
     if (Instance && !HOME.compare(home)) {
         snprintf(fname, 1023, "%s/picsimlab_%i.ini", home, Instance);
@@ -1073,20 +1073,20 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
                 }
 
                 if (!strcmp(name, "picsimlab_debug")) {
-                    int debug = 0;
+                    int debug_ = 0;
 #ifndef NO_DEBUG
-                    sscanf(value, "%i", &debug);
+                    sscanf(value, "%i", &debug_);
                     if (disable_debug) {
-                        debug = 0;
+                        debug_ = 0;
                     }
 #endif
-                    SetDebugStatus(debug);
+                    SetDebugStatus(debug_);
                 }
 
                 if (!strcmp(name, "picsimlab_debugt")) {
-                    int debug_type;
-                    sscanf(value, "%i", &debug_type);
-                    SetDebugType(debug_type);
+                    int debug_type_;
+                    sscanf(value, "%i", &debug_type_);
+                    SetDebugType(debug_type_);
                 }
 
                 if (!strcmp(name, "picsimlab_c_dev")) {
@@ -1235,11 +1235,11 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
 
 #ifdef _USE_PICSTARTP_
     if (prog_init() >= 0)
-        status = "PStart:  Ok ";
+        sstatus = "PStart:  Ok ";
     else
-        status = "PStart:Error";
+        sstatus = "PStart:Error";
 #else
-    status = "";
+    sstatus = "";
 #endif
 
     UpdateStatus(PS_RUN, "Running...");
@@ -1280,12 +1280,12 @@ void CPICSimLab::Configure(const char* home, int use_default_board, int create, 
     if (GetDebugStatus()) {
         int ret = pboard->DebugInit(GetDebugType());
         if (ret < 0) {
-            UpdateStatus(PS_DEBUG, status + "Debug: Error");
+            UpdateStatus(PS_DEBUG, sstatus + "Debug: Error");
         } else {
-            UpdateStatus(PS_DEBUG, status + "Debug: " + pboard->GetDebugName() + ":" + std::to_string(GetDebugPort()));
+            UpdateStatus(PS_DEBUG, sstatus + "Debug: " + pboard->GetDebugName() + ":" + std::to_string(GetDebugPort()));
         }
     } else {
-        UpdateStatus(PS_DEBUG, status + "Debug: Off");
+        UpdateStatus(PS_DEBUG, sstatus + "Debug: Off");
     }
 #endif
 
@@ -1401,8 +1401,8 @@ int CPICSimLab::LoadHexFile(std::string fname, const int saveold) {
     UpdateStatus(PS_DEBUG, " ");
 #else
     if (GetDebugStatus()) {
-        int ret = GetBoard()->DebugInit(GetDebugType());
-        if (ret < 0) {
+        int dret = GetBoard()->DebugInit(GetDebugType());
+        if (dret < 0) {
             UpdateStatus(PS_DEBUG, "Debug: Error");
         } else {
             UpdateStatus(PS_DEBUG, "Debug: " + GetBoard()->GetDebugName() + ":" +

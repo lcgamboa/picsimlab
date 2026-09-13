@@ -62,10 +62,10 @@ static const int id[3] = {0, 1, 2};
 
 static void picsimlab_uart_rx_event(bitbang_uart_t* bu, void* arg) {
     if (bu->ctrl_on) {
-        const int id = *((const int*)arg);
+        const int id_ = *((const int*)arg);
         unsigned char data = bitbang_uart_recv(bu);
-        printf("uart[%i] data recv [%c]\n", id, data);
-        // qemu_picsimlab_uart_receive(id, &data, 1);
+        printf("uart[%i] data recv [%c]\n", id_, data);
+        // qemu_picsimlab_uart_receive(id_, &data, 1);
     }
 }
 
@@ -101,7 +101,7 @@ void bsim_remote::MSetSerial(const char* port) {
      */
 }
 
-int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
+int bsim_remote::MInit(const char* processor, const char* fname, float freq_) {
 #ifdef _TCP_
     struct sockaddr_in serv;
 #else
@@ -736,57 +736,57 @@ float* bsim_remote::MGetPinOAVPtr(int pin) {
 
 void bsim_remote::MStep() {
     if (ioupdated) {
-        for (int id = 0; id < 2; id++) {
-            if (master_i2c[id].ctrl_on) {
-                if (master_i2c[id].scl_pin) {
-                    pins[master_i2c[id].scl_pin - 1].dir = PD_OUT;
-                    pins[master_i2c[id].scl_pin - 1].value = master_i2c[id].scl_value;
+        for (int id_ = 0; id_ < 2; id_++) {
+            if (master_i2c[id_].ctrl_on) {
+                if (master_i2c[id_].scl_pin) {
+                    pins[master_i2c[id_].scl_pin - 1].dir = PD_OUT;
+                    pins[master_i2c[id_].scl_pin - 1].value = master_i2c[id_].scl_value;
                 }
-                if (master_i2c[id].sda_pin) {
-                    if (master_i2c[id].sda_dir == PD_OUT) {
-                        pins[master_i2c[id].sda_pin - 1].dir = PD_OUT;
-                        pins[master_i2c[id].sda_pin - 1].value = master_i2c[id].sda_value;
+                if (master_i2c[id_].sda_pin) {
+                    if (master_i2c[id_].sda_dir == PD_OUT) {
+                        pins[master_i2c[id_].sda_pin - 1].dir = PD_OUT;
+                        pins[master_i2c[id_].sda_pin - 1].value = master_i2c[id_].sda_value;
                     } else {
-                        pins[master_i2c[id].sda_pin - 1].dir = PD_IN;
-                        master_i2c[id].sda_value = pins[master_i2c[id].sda_pin - 1].value;
+                        pins[master_i2c[id_].sda_pin - 1].dir = PD_IN;
+                        master_i2c[id_].sda_value = pins[master_i2c[id_].sda_pin - 1].value;
                     }
                 }
             }
-            if (master_spi[id].ctrl_on) {
-                if (master_spi[id].sck_pin) {
-                    pins[master_spi[id].sck_pin - 1].dir = PD_OUT;
-                    pins[master_spi[id].sck_pin - 1].value = master_spi[id].sck_value;
+            if (master_spi[id_].ctrl_on) {
+                if (master_spi[id_].sck_pin) {
+                    pins[master_spi[id_].sck_pin - 1].dir = PD_OUT;
+                    pins[master_spi[id_].sck_pin - 1].value = master_spi[id_].sck_value;
                 }
-                if (master_spi[id].copi_pin) {
-                    pins[master_spi[id].copi_pin - 1].dir = PD_OUT;
-                    pins[master_spi[id].copi_pin - 1].value = master_spi[id].copi_value;
+                if (master_spi[id_].copi_pin) {
+                    pins[master_spi[id_].copi_pin - 1].dir = PD_OUT;
+                    pins[master_spi[id_].copi_pin - 1].value = master_spi[id_].copi_value;
                 }
-                if (master_spi[id].cipo_pin) {
-                    pins[master_spi[id].cipo_pin - 1].dir = PD_IN;
-                    master_spi[id].cipo_value = pins[master_spi[id].cipo_pin - 1].value;
+                if (master_spi[id_].cipo_pin) {
+                    pins[master_spi[id_].cipo_pin - 1].dir = PD_IN;
+                    master_spi[id_].cipo_value = pins[master_spi[id_].cipo_pin - 1].value;
                 }
-                if (master_spi[id].cs_pin[0]) {
-                    pins[master_spi[id].cs_pin[0] - 1].dir = PD_OUT;
-                    pins[master_spi[id].cs_pin[0] - 1].value = master_spi[id].cs_value[0];
+                if (master_spi[id_].cs_pin[0]) {
+                    pins[master_spi[id_].cs_pin[0] - 1].dir = PD_OUT;
+                    pins[master_spi[id_].cs_pin[0] - 1].value = master_spi[id_].cs_value[0];
                 }
-                if (master_spi[id].cs_pin[1]) {
-                    pins[master_spi[id].cs_pin[1] - 1].dir = PD_OUT;
-                    pins[master_spi[id].cs_pin[1] - 1].value = master_spi[id].cs_value[1];
+                if (master_spi[id_].cs_pin[1]) {
+                    pins[master_spi[id_].cs_pin[1] - 1].dir = PD_OUT;
+                    pins[master_spi[id_].cs_pin[1] - 1].value = master_spi[id_].cs_value[1];
                 }
-                if (master_spi[id].cs_pin[2]) {
-                    pins[master_spi[id].cs_pin[2] - 1].dir = PD_OUT;
-                    pins[master_spi[id].cs_pin[2] - 1].value = master_spi[id].cs_value[2];
+                if (master_spi[id_].cs_pin[2]) {
+                    pins[master_spi[id_].cs_pin[2] - 1].dir = PD_OUT;
+                    pins[master_spi[id_].cs_pin[2] - 1].value = master_spi[id_].cs_value[2];
                 }
             }
-            if (master_uart[id].ctrl_on) {
-                if (master_uart[id].tx_pin) {
-                    pins[master_uart[id].tx_pin - 1].dir = PD_OUT;
-                    pins[master_uart[id].tx_pin - 1].value = master_uart[id].tx_value;
+            if (master_uart[id_].ctrl_on) {
+                if (master_uart[id_].tx_pin) {
+                    pins[master_uart[id_].tx_pin - 1].dir = PD_OUT;
+                    pins[master_uart[id_].tx_pin - 1].value = master_uart[id_].tx_value;
                 }
-                if (master_uart[id].rx_pin) {
-                    pins[master_uart[id].rx_pin - 1].dir = PD_IN;
-                    master_uart[id].rx_value = pins[master_uart[id].rx_pin - 1].value;
-                    bitbang_uart_io(&master_uart[id], master_uart[id].rx_value);
+                if (master_uart[id_].rx_pin) {
+                    pins[master_uart[id_].rx_pin - 1].dir = PD_IN;
+                    master_uart[id_].rx_value = pins[master_uart[id_].rx_pin - 1].value;
+                    bitbang_uart_io(&master_uart[id_], master_uart[id_].rx_value);
                 }
             }
         }

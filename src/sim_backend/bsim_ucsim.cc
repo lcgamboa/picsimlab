@@ -55,7 +55,7 @@ bsim_ucsim::bsim_ucsim(void) {
 
 void bsim_ucsim::MSetSerial(const char* port) {}
 
-int bsim_ucsim::MInit(const char* processor, const char* fname, float freq) {
+int bsim_ucsim::MInit(const char* processor, const char* fname, float freq_) {
     char fbuff[20];
     int ret = -1;
 
@@ -72,7 +72,7 @@ int bsim_ucsim::MInit(const char* processor, const char* fname, float freq) {
 
         pins_reset();
 
-        sprintf(fbuff, "%i", (int)freq);
+        sprintf(fbuff, "%i", (int)freq_);
 
         ret = ucsim_init(processor, fbuff, fname, SERIALDEVICE, PICSimLab.GetDebugPort());
     }

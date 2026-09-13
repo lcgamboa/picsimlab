@@ -344,7 +344,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
     int i;
     // int j;
     unsigned char pi;
-    const picpin* pins;
+    const picpin* pins_;
     unsigned int alm[100];
 
     // int JUMPSTEPS =
@@ -366,10 +366,10 @@ void cboard_Arduino_Uno::Run_CPU(void) {
 
     memset(alm, 0, pinc * sizeof(unsigned int));
 
-    // read pic.pins to a local
+    // read pic.pins_ to a local
     // variable to speed up
 
-    pins = MGetPinsValues();
+    pins_ = MGetPinsValues();
 
     if (use_spare)
         SpareParts.PreProcess();
@@ -414,7 +414,7 @@ void cboard_Arduino_Uno::Run_CPU(void) {
             // increment mean
             // value counter if
             // pin is high
-            alm[pi] += pins[pi].value;
+            alm[pi] += pins_[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
@@ -450,16 +450,16 @@ void cboard_Arduino_Uno::Run_CPU(void) {
 
     // verifiy if LEDS need
     // update
-    if (output_ids[O_RX]->value != pins[1].oavalue) {
-        output_ids[O_RX]->value = pins[1].oavalue;
+    if (output_ids[O_RX]->value != pins_[1].oavalue) {
+        output_ids[O_RX]->value = pins_[1].oavalue;
         output_ids[O_RX]->update = 1;
     }
-    if (output_ids[O_TX]->value != pins[2].oavalue) {
-        output_ids[O_TX]->value = pins[2].oavalue;
+    if (output_ids[O_TX]->value != pins_[2].oavalue) {
+        output_ids[O_TX]->value = pins_[2].oavalue;
         output_ids[O_TX]->update = 1;
     }
-    if (output_ids[O_L]->value != pins[LED_pin].oavalue) {
-        output_ids[O_L]->value = pins[LED_pin].oavalue;
+    if (output_ids[O_L]->value != pins_[LED_pin].oavalue) {
+        output_ids[O_L]->value = pins_[LED_pin].oavalue;
         output_ids[O_L]->update = 1;
     }
 }

@@ -409,10 +409,10 @@ void COscilloscope::ReadPreferences(char* name, char* value) {
     }
 
     if (!strcmp(name, "osc_measures")) {
-        int measures[5];
-        sscanf(value, "%i,%i,%i,%i,%i", &measures[0], &measures[1], &measures[2], &measures[3], &measures[4]);
+        int measures_[5];
+        sscanf(value, "%i,%i,%i,%i,%i", &measures_[0], &measures_[1], &measures_[2], &measures_[3], &measures_[4]);
         for (int i = 0; i < 5; i++) {
-            SetMeasure(i, measures[i]);
+            SetMeasure(i, measures_[i]);
         }
         SetBaseTimer();
     }
@@ -621,7 +621,7 @@ void COscilloscope::ReadPreferencesList(std::vector<std::string>& pl) {
 }
 
 void COscilloscope::SetBaseTimer(void) {
-    board* pboard = PICSimLab.GetBoard();
+    pboard = PICSimLab.GetBoard();
 
     if (!pboard)
         return;
@@ -652,7 +652,8 @@ void COscilloscope::SetBaseTimer(void) {
 void COscilloscope::UpdatePinList(void) {
     int chp[2];
     char buff[128];
-    board* pboard = PICSimLab.GetBoard();
+
+    pboard = PICSimLab.GetBoard();
 
     if (!pboard)
         return;

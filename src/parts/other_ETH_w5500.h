@@ -59,6 +59,7 @@ private:
     unsigned char link;
     unsigned short _ret;
     unsigned int sts[8][4];
+    unsigned int pins_connected;
 };
 
 #endif /* PART_ETH_W5500_H */

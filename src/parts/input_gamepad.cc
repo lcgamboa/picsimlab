@@ -504,8 +504,8 @@ std::string cpart_gamepad::WritePreferences(void) {
     return prefs;
 };
 
-int cpart_gamepad::ReadPreferences(std::string value) {
-    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
+int cpart_gamepad::ReadPreferences(std::string svalue) {
+    return sscanf(svalue.c_str(), "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1],
                   &output_pins[2], &output_pins[3], &output_pins[4], &output_pins[5], &output_pins[6], &output_pins[7]);
 }
 

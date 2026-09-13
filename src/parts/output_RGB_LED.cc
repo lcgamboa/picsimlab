@@ -114,17 +114,17 @@ void cpart_rgb_led::DrawOutput(const unsigned int i) {
 void cpart_rgb_led::PostProcess(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    unsigned int color = 0;
+    unsigned int color_idx = 0;
 
     if (input_pins[0])
-        color |= ((unsigned char)ppins[input_pins[0] - 1].oavalue);
+        color_idx |= ((unsigned char)ppins[input_pins[0] - 1].oavalue);
     if (input_pins[1])
-        color |= (((unsigned char)ppins[input_pins[1] - 1].oavalue) << 8);
+        color_idx |= (((unsigned char)ppins[input_pins[1] - 1].oavalue) << 8);
     if (input_pins[2])
-        color |= (((unsigned char)ppins[input_pins[2] - 1].oavalue) << 16);
+        color_idx |= (((unsigned char)ppins[input_pins[2] - 1].oavalue) << 16);
 
-    if (output_ids[O_L1]->value_f != color) {
-        output_ids[O_L1]->value_f = color;
+    if (output_ids[O_L1]->value_f != color_idx) {
+        output_ids[O_L1]->value_f = color_idx;
         output_ids[O_L1]->update = 1;
     }
 }

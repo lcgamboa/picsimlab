@@ -405,7 +405,7 @@ int cpart_VCD_Play::LoadVCD(std::string fname) {
     fvcd = fopen_UTF8(fname.c_str(), "r");
     char buff[256];
     int data = 0;
-    char* id;
+    char* did;
     char* value;
     char signal[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     int signal_count = 0;
@@ -429,18 +429,18 @@ int cpart_VCD_Play::LoadVCD(std::string fname) {
 
             if (!data)  // option read
             {
-                id = strtok(buff, " \n\r");
-                if (id == NULL) {
+                did = strtok(buff, " \n\r");
+                if (did == NULL) {
                     PICSimLab.RegisterError("VCD play", "Invalid VCD file " + fname);
                     f_vcd_name[0] = '*';
                     return 1;
                 }
-                if (!strcmp(id, "$timescale")) {
+                if (!strcmp(did, "$timescale")) {
                     int itimescale;
                     value = strtok(NULL, " ");
                     sscanf(value, "%ips", &itimescale);
                     timescale = itimescale;
-                } else if (!strcmp(id, "$var")) {
+                } else if (!strcmp(did, "$var")) {
                     value = strtok(NULL, " ");  // wire
                     if (strcmp(value, "wire")) {
                         PICSimLab.RegisterError("VCD play", "VCD var type [" + std::string(value) + "] not supported!");
@@ -450,7 +450,7 @@ int cpart_VCD_Play::LoadVCD(std::string fname) {
                     value = strtok(NULL, " ");  // 1
                     value = strtok(NULL, " ");  // const
                     signal[signal_count++] = value[0];
-                } else if (!strcmp(id, "$end") || (id[0] == '#')) {
+                } else if (!strcmp(did, "$end") || (did[0] == '#')) {
                     data = 1;
                 }
             }
@@ -478,8 +478,8 @@ int cpart_VCD_Play::LoadVCD(std::string fname) {
         while (fgets(buff, 255, fvcd)) {
             if (!data)  // option read
             {
-                id = strtok(buff, " \n\r");
-                if (!strcmp(id, "$end") || (id[0] == '#')) {
+                did = strtok(buff, " \n\r");
+                if (!strcmp(did, "$end") || (did[0] == '#')) {
                     data = 1;
                 }
             } else  // data read

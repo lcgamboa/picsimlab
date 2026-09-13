@@ -360,12 +360,12 @@ void cboard_uCboard::Run_CPU(void) {
         SpareParts.PostProcess();
 }
 
-int cboard_uCboard::MInit(const char* processor, const char* fname, float freq) {
-    int ret = bsim_ucsim::MInit(processor, fname, freq);
+int cboard_uCboard::MInit(const char* processor, const char* fname, float freq_) {
+    int ret = bsim_ucsim::MInit(processor, fname, freq_);
 
     if (ret == -1) {
         PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
-        bsim_ucsim::MInit("C51", fname, freq);
+        bsim_ucsim::MInit("C51", fname, freq_);
         Proc = "C51";
     }
 

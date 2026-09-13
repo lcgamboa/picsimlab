@@ -135,8 +135,8 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
             strncpy(eq, "[", 99);
-            for (int i = 0; i < ordern; i++) {
-                snprintf(buff, 19, "%+6.3f ", num[i]);
+            for (int it = 0; it < ordern; it++) {
+                snprintf(buff, 19, "%+6.3f ", num[it]);
                 strncat(eq, buff, 99);
             }
             strncat(eq, "]", 99);
@@ -151,8 +151,8 @@ void cpart_dtfunc::DrawOutput(const unsigned int i) {
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
 
             strncpy(eq, "[", 99);
-            for (int i = 0; i < orderd; i++) {
-                snprintf(buff, 19, "%+6.3f ", den[i]);
+            for (int it = 0; it < orderd; it++) {
+                snprintf(buff, 19, "%+6.3f ", den[it]);
                 strncat(eq, buff, 99);
             }
             strncat(eq, "]", 99);

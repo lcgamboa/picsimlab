@@ -43,7 +43,7 @@ set_serial (&pic,0, port, 0, 0, 0);
 set_serial (&pic,1, "", 0, 0, 0);
  */ }
 
-int bsim_gpsim::MInit(const char* processor, const char* fname, float freq) {
+int bsim_gpsim::MInit(const char* processor, const char* fname, float freq_) {
     int ret = -1;
 
     std::string sproc = GetSupportedDevices();
@@ -61,7 +61,7 @@ int bsim_gpsim::MInit(const char* processor, const char* fname, float freq) {
                 exit(-1);
             }
         }
-        ret = bridge_gpsim_init(processor, fname, freq);
+        ret = bridge_gpsim_init(processor, fname, freq_);
         pins_reset();
     }
 

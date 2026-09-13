@@ -220,10 +220,10 @@ void cboard_RemoteTCP::Reset(void) {
     RegisterRemoteControl();
 }
 
-int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq) {
+int cboard_RemoteTCP::MInit(const char* processor, const char* fname, float freq_) {
     int ret = 0;
 
-    ret = bsim_remote::MInit(processor, fname, freq);
+    ret = bsim_remote::MInit(processor, fname, freq_);
 
     int bmp = PICSimLab.CanvasCmd(
         {.cmd = CC_LOADIMAGE,

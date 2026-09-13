@@ -55,7 +55,7 @@ public:
 private:
     void ChangeType(unsigned char tp);
     void RegisterRemoteControl(void) override;
-    unsigned char type;
+    unsigned char ktype;
     unsigned char pull;
     unsigned char output_pins[8];
     unsigned char keys[4][4];

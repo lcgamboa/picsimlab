@@ -540,13 +540,13 @@ unsigned short sdcard_io(sdcard_t* sd, unsigned char mosi, unsigned char clk, un
                                     sd->bb_spi.outsr = (sd->bb_spi.outsr & 0xFF00) | buff[512 - sd->data_rc];
                                     sd->data_rc--;
                                     if (!sd->data_rc) {
-                                        unsigned short crc16 = 0xFFFF;
+                                        unsigned short crc16_ = 0xFFFF;
                                         if (sd->crc_on) {
-                                            crc16 = CRC16(buff, 512);
+                                            crc16_ = CRC16(buff, 512);
                                         }
                                         sd->bb_spi.byte = 6;
-                                        sd->reply[0] = crc16 >> 8;
-                                        sd->reply[1] = crc16 & 0xFF;
+                                        sd->reply[0] = crc16_ >> 8;
+                                        sd->reply[1] = crc16_ & 0xFF;
                                         sd->replyc = 3;
 
                                         if (sd->multi_rd) {

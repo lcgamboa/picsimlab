@@ -316,7 +316,6 @@ void cpart_leds::ReadPropertiesWindow(void) {
         char cname[100];
         snprintf(cname, 100, "combo_%i", 1 + i);
 
-        char buff[64];
         SpareParts.WPropCmd(cname, PWA_COMBOGETTEXT, NULL, buff);
         std::string val = buff;
         for (int j = 0; j < C_END; j++) {

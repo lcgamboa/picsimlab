@@ -78,7 +78,7 @@ static PCWProp pcwprop[13] = {{PCW_COMBO, "P1 -L1"},
                               {PCW_END, ""}};
 
 std::string cpart_keypad::GetPictureFileName(void) {
-    switch (type) {
+    switch (ktype) {
         case KT4x4:
             return "Keypad/keypad_4x4.svg";
             break;
@@ -93,7 +93,7 @@ std::string cpart_keypad::GetPictureFileName(void) {
 }
 
 std::string cpart_keypad::GetMapFile(void) {
-    switch (type) {
+    switch (ktype) {
         case KT4x4:
             return "Keypad/keypad_4x4.map";
             break;
@@ -112,7 +112,7 @@ cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name,
     : part(x, y, name, type, pboard_, id_, 9) {
     always_update = 1;
     pull = 0;
-    type = 0;
+    ktype = 0;
 
     output_pins[0] = 0;
     output_pins[1] = 0;
@@ -137,7 +137,7 @@ cpart_keypad::cpart_keypad(const unsigned x, const unsigned y, const char* name,
 }
 
 void cpart_keypad::RegisterRemoteControl(void) {
-    if ((type == KT4x3) || (type == KT4x4)) {
+    if ((ktype == KT4x3) || (ktype == KT4x4)) {
         input_ids[I_K1]->status = &keys[0][0];
         input_ids[I_K1]->update = &output_ids[O_K1]->update;
         input_ids[I_K2]->status = &keys[0][1];
@@ -170,7 +170,7 @@ void cpart_keypad::RegisterRemoteControl(void) {
         input_ids[I_KC]->update = &output_ids[O_KC]->update;
         input_ids[I_KD]->status = &keys[3][3];
         input_ids[I_KD]->update = &output_ids[O_KD]->update;
-    } else if (type == KT2x5) {
+    } else if (ktype == KT2x5) {
         input_ids[I_K1]->status = &keys2[0][0];
         input_ids[I_K1]->update = &output_ids[O_K1]->update;
         input_ids[I_K2]->status = &keys2[0][1];
@@ -206,7 +206,7 @@ void cpart_keypad::ChangeType(unsigned char tp) {
         tp = KT4x4;
 
     // if same
-    if (tp == type)
+    if (tp == ktype)
         return;
 
     if (BitmapId >= 0) {
@@ -214,7 +214,7 @@ void cpart_keypad::ChangeType(unsigned char tp) {
         BitmapId = -1;
     }
 
-    type = tp;
+    ktype = tp;
 
     ReadMaps();
 
@@ -239,18 +239,18 @@ void cpart_keypad::DrawOutput(const unsigned int i) {
                  .Rectangle{1, output[i].x1, output[i].y1, output[i].x2 - output[i].x1, output[i].y2 - output[i].y1}});
             SpareParts.CanvasCmd({.partn = id, .cmd = CC_SETFGCOLOR, .SetFgColor{255, 255, 255}});
 
-            int id = output[i].id - O_L1;
-            if ((type == KT2x5) && (id > 1)) {
-                id -= 2;
+            int kid = output[i].id - O_L1;
+            if ((ktype == KT2x5) && (kid > 1)) {
+                kid -= 2;
             }
-            if (output_pins[id] == 0)
+            if (output_pins[kid] == 0)
                 SpareParts.CanvasCmd(
                     {.partn = id, .cmd = CC_ROTATEDTEXT, .RotatedText{"NC", output[i].x1, output[i].y2, 90.0}});
             else
                 SpareParts.CanvasCmd(
                     {.partn = id,
                      .cmd = CC_ROTATEDTEXT,
-                     .RotatedText{SpareParts.GetPinName(output_pins[id]).c_str(), output[i].x1, output[i].y2, 90.0}});
+                     .RotatedText{SpareParts.GetPinName(output_pins[kid]).c_str(), output[i].x1, output[i].y2, 90.0}});
         } break;
         case O_K1 ... O_KD:
             if (output[i].value) {
@@ -282,13 +282,15 @@ void cpart_keypad::Process(void) {
         for (int i = 0; i < 8; i++)
             SpareParts.SetPin(output_pins[i], !pull);
 
-        switch (type) {
+        switch (ktype) {
             case KT4x4:
                 for (int c = 0; c < 4; c++) {
                     for (int l = 0; l < 4; l++) {
                         if (keys[l][c]) {
-                            SpareParts.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
-                            SpareParts.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
+                            if (output_pins[4 + c])
+                                SpareParts.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
+                            if (output_pins[l])
+                                SpareParts.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
                         }
                     }
                 }
@@ -297,8 +299,10 @@ void cpart_keypad::Process(void) {
                 for (int c = 0; c < 3; c++) {
                     for (int l = 0; l < 4; l++) {
                         if (keys[l][c]) {
-                            SpareParts.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
-                            SpareParts.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
+                            if (output_pins[4 + c])
+                                SpareParts.SetPin(output_pins[l], ppins[output_pins[4 + c] - 1].value);
+                            if (output_pins[l])
+                                SpareParts.SetPin(output_pins[4 + c], ppins[output_pins[l] - 1].value);
                         }
                     }
                 }
@@ -307,8 +311,10 @@ void cpart_keypad::Process(void) {
                 for (int c = 0; c < 5; c++) {
                     for (int l = 0; l < 2; l++) {
                         if (keys2[l][c]) {
-                            SpareParts.SetPin(output_pins[l], ppins[output_pins[2 + c] - 1].value);
-                            SpareParts.SetPin(output_pins[2 + c], ppins[output_pins[l] - 1].value);
+                            if (output_pins[2 + c])
+                                SpareParts.SetPin(output_pins[l], ppins[output_pins[2 + c] - 1].value);
+                            if (output_pins[l])
+                                SpareParts.SetPin(output_pins[2 + c], ppins[output_pins[l] - 1].value);
                         }
                     }
                 }
@@ -615,7 +621,7 @@ std::string cpart_keypad::WritePreferences(void) {
     char prefs[256];
 
     sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu,%hhu", output_pins[0], output_pins[1], output_pins[2],
-            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], pull, type);
+            output_pins[3], output_pins[4], output_pins[5], output_pins[6], output_pins[7], pull, ktype);
 
     return prefs;
 }
@@ -650,7 +656,7 @@ void cpart_keypad::ConfigurePropertiesWindow(void) {
     SpareParts.WPropCmd("combo12", PWA_COMBOSETITEMS, "4x4,4x3,2x5,");
     SpareParts.WPropCmd("combo12", PWA_COMBOPROPEV, "1");
 
-    switch (type) {
+    switch (ktype) {
         case KT4x4:
             SpareParts.WPropCmd("label1", PWA_LABELSETTEXT, "P1 - L1");
             SpareParts.WPropCmd("label2", PWA_LABELSETTEXT, "P2 - L2");

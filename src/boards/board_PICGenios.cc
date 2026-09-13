@@ -1715,10 +1715,10 @@ void cboard_PICGenios::EvMouseButtonPress(unsigned int button, unsigned int x, u
                     FILE* fout;
                     fout = fopen_UTF8(mi2c_tmp_name, "w");
                     if (fout) {
-                        for (unsigned int i = 0; i < mi2c.SIZE; i += 16) {
-                            fprintf(fout, "%04X: ", i);
+                        for (unsigned int im = 0; im < mi2c.SIZE; im += 16) {
+                            fprintf(fout, "%04X: ", im);
                             for (int j = 0; j < 16; j++) {
-                                fprintf(fout, "%02X ", mi2c.data[j + i]);
+                                fprintf(fout, "%02X ", mi2c.data[j + im]);
                             }
                             fprintf(fout, "\r\n");
                         }

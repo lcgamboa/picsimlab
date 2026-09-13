@@ -58,7 +58,7 @@ cpart_SignalGenerator::cpart_SignalGenerator(const unsigned x, const unsigned y,
     active[1] = 0;
     active[2] = 0;
 
-    type = 0;
+    wtype = 0;
     ts = 0;
     maxfreq = 1;
     lastd = 2;
@@ -130,7 +130,7 @@ void cpart_SignalGenerator::DrawOutput(const unsigned int i) {
 
             for (j = 1; j < sizex; j++) {
                 v[1] = v[0];
-                switch (type) {
+                switch (wtype) {
                     case 0:
                         v[0] = (sin(tsi));
                         break;
@@ -214,7 +214,7 @@ void cpart_SignalGenerator::Process(void) {
         float v = 0;
         float wt = freq * 2.0 * M_PI * ts;
 
-        switch (type) {
+        switch (wtype) {
             case 0:
                 v = (ampl * sin(wt)) + offs;
                 break;
@@ -272,9 +272,9 @@ void cpart_SignalGenerator::OnMouseButtonPress(unsigned int inputId, unsigned in
             output_ids[O_OFFS]->update = 1;
             break;
         case I_TP:
-            type++;
-            if (type > 2)
-                type = 0;
+            wtype++;
+            if (wtype > 2)
+                wtype = 0;
             output_ids[O_TP]->update = 1;
             break;
         case I_MF:
@@ -393,14 +393,14 @@ unsigned short cpart_SignalGenerator::GetOutputId(char* name) {
 std::string cpart_SignalGenerator::WritePreferences(void) {
     char prefs[256];
 
-    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", input_pins[0], values[0], values[1], type, maxfreq,
+    sprintf(prefs, "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", input_pins[0], values[0], values[1], wtype, maxfreq,
             input_pins[1], values[2]);
 
     return prefs;
 }
 
 int cpart_SignalGenerator::ReadPreferences(std::string value) {
-    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1], &type,
+    return sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu,%u,%hhu,%hhu", &input_pins[0], &values[0], &values[1], &wtype,
                   &maxfreq, &input_pins[1], &values[2]);
 }
 

@@ -58,7 +58,7 @@ private:
     unsigned char input_pins[2];
     unsigned char values[3];
     unsigned char active[3];
-    unsigned char type;
+    unsigned char wtype;
     float ts;
     long int mcount;
     int JUMPSTEPS_;

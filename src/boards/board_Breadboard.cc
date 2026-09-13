@@ -357,7 +357,7 @@ void cboard_Breadboard::Run_CPU(void) {
     int i;
     int j;
     unsigned char pi;
-    const picpin* pins;
+    const picpin* pins_;
     unsigned int alm[100];
 
     switch (ptype) {
@@ -376,10 +376,10 @@ void cboard_Breadboard::Run_CPU(void) {
             // reset mean value
             memset(alm, 0, 100 * sizeof(unsigned int));
 
-            // read pic.pins to a
+            // read pic.pins_ to a
             // local variable to
             // speed up
-            pins = MGetPinsValues();
+            pins_ = MGetPinsValues();
             if (use_spare)
                 SpareParts.PreProcess();
 
@@ -429,7 +429,7 @@ void cboard_Breadboard::Run_CPU(void) {
                     // mean value
                     // counter if
                     // pin is high
-                    alm[pi] += pins[pi].value;
+                    alm[pi] += pins_[pi].value;
                     pi++;
                     if (pi == pic.PINCOUNT)
                         pi = 0;
@@ -480,11 +480,11 @@ void cboard_Breadboard::Run_CPU(void) {
 
             memset(alm, 0, pinc * sizeof(unsigned int));
 
-            // read pic.pins to a
+            // read pic.pins_ to a
             // local variable to
             // speed up
 
-            pins = bsim_simavr::MGetPinsValues();
+            pins_ = bsim_simavr::MGetPinsValues();
 
             if (use_spare)
                 SpareParts.PreProcess();
@@ -532,7 +532,7 @@ void cboard_Breadboard::Run_CPU(void) {
                     // mean value
                     // counter if
                     // pin is high
-                    alm[pi] += pins[pi].value;
+                    alm[pi] += pins_[pi].value;
                     pi++;
                     if (pi == pinc)
                         pi = 0;
@@ -692,10 +692,10 @@ int cboard_Breadboard::MGetArchitecture(void) {
     return ARCH_UNKNOWN;
 }
 
-std ::string cboard_Breadboard::GetSimBackends(void) {
+std::string cboard_Breadboard::GetSimBackends(void) {
     return bsim_picsim::GetSimBackends() + bsim_simavr::GetSimBackends();
 }
-std ::string cboard_Breadboard::GetDebuggers(void) {
+std::string cboard_Breadboard::GetDebuggers(void) {
     return bsim_simavr::GetDebuggers();
 }
 

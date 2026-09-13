@@ -51,6 +51,9 @@ cpart_gamepad_an::cpart_gamepad_an(const unsigned x, const unsigned y, const cha
     output_value[3] = 1;
     output_value[4] = 1;
 
+    output_value_an = 0;
+    output_value_an_ = 1;
+
     output_pins[0] = 0;
 
     vmax = 5.0;

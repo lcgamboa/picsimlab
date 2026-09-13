@@ -416,9 +416,9 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
             if (!strcmp(name, "scale")) {
                 sscanf(temp, "%f", &scale);
             } else if (!strcmp(name, "useAlias")) {
-                unsigned char useAlias;
-                sscanf(temp, "%hhu", &useAlias);
-                SetUseAlias(useAlias);
+                unsigned char useAlias_;
+                sscanf(temp, "%hhu", &useAlias_);
+                SetUseAlias(useAlias_);
                 Oscilloscope.UpdatePinList();
             } else if (!strcmp(name, "version")) {
                 // use planed in future
@@ -493,10 +493,10 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
 
                 int pfc = parts[partsc_]->ReadPreferences(temp);
                 if (pfc != parts[partsc_]->PreferencesNumberFields()) {
-                    char temp[512];
-                    sprintf(temp, " parts[%02i] (%s) Error reading preferences! Readed(%i) != Expected(%i)", partsc_,
+                    char stemp[512];
+                    sprintf(stemp, " parts[%02i] (%s) Error reading preferences! Readed(%i) != Expected(%i)", partsc_,
                             name, pfc, parts[partsc_]->PreferencesNumberFields());
-                    PICSimLab.RegisterError("Spare parts", temp);
+                    PICSimLab.RegisterError("Spare parts", stemp);
                 }
 
                 if (newformat) {
@@ -507,9 +507,9 @@ bool CSpareParts::LoadConfig(std::string fname, const int disable_debug) {
                 }
                 partsc_++;
             } else {
-                char temp[512];
-                snprintf(temp, 512, "Error loading part: %s \n", name);
-                PICSimLab.RegisterError("Spare parts", temp);
+                char temp_[512];
+                snprintf(temp_, 512, "Error loading part: %s \n", name);
+                PICSimLab.RegisterError("Spare parts", temp_);
             }
         }
         partsc = partsc_;

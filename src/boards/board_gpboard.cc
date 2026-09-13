@@ -333,12 +333,12 @@ void cboard_gpboard::Run_CPU(void) {
         SpareParts.PostProcess();
 }
 
-int cboard_gpboard::MInit(const char* processor, const char* fname, float freq) {
-    int ret = bsim_gpsim::MInit(processor, fname, freq);
+int cboard_gpboard::MInit(const char* processor, const char* fname, float freq_) {
+    int ret = bsim_gpsim::MInit(processor, fname, freq_);
 
     if (ret == -1) {
         PICSimLab.RegisterError("PICSimLab", "Unknown processor " + std::string(processor) + "! Loading Default.");
-        bsim_gpsim::MInit("pic16f628a", fname, freq);
+        bsim_gpsim::MInit("pic16f628a", fname, freq_);
         Proc = "pic16f628a";
     }
 

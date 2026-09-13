@@ -257,35 +257,35 @@ int part::PointInside(int x, int y) {
     return 0;
 }
 
-int part::PointInside(int x, int y, input_t input) {
+int part::PointInside(int x, int y, input_t input_) {
     int temp;
     int X1 = 0, X2 = 0;
     int Y1 = 0, Y2 = 0;
 
     switch (Orientation) {
         case 0:
-            X1 = input.x1;
-            Y1 = input.y1;
-            X2 = input.x2;
-            Y2 = input.y2;
+            X1 = input_.x1;
+            Y1 = input_.y1;
+            X2 = input_.x2;
+            Y2 = input_.y2;
             break;
         case 1:
-            X1 = Height - input.y1;
-            Y1 = input.x1;
-            X2 = Height - input.y2;
-            Y2 = input.x2;
+            X1 = Height - input_.y1;
+            Y1 = input_.x1;
+            X2 = Height - input_.y2;
+            Y2 = input_.x2;
             break;
         case 2:
-            X1 = Width - input.x1;
-            Y1 = Height - input.y1;
-            X2 = Width - input.x2;
-            Y2 = Height - input.y2;
+            X1 = Width - input_.x1;
+            Y1 = Height - input_.y1;
+            X2 = Width - input_.x2;
+            Y2 = Height - input_.y2;
             break;
         case 3:
-            X1 = input.y1;
-            Y1 = Width - input.x1;
-            X2 = input.y2;
-            Y2 = Width - input.x2;
+            X1 = input_.y1;
+            Y1 = Width - input_.x1;
+            X2 = input_.y2;
+            Y2 = Width - input_.x2;
             break;
         default:
             break;

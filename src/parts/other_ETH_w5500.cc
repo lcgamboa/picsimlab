@@ -78,7 +78,6 @@ cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char*
                                  const int id_)
     : part(x, y, name, type, pboard_, id_) {
     eth_w5500_init(&ethw);
-    eth_w5500_rst(&ethw);
 
     pins[0] = 0;
     pins[1] = 0;
@@ -94,6 +93,10 @@ cpart_ETH_w5500::cpart_ETH_w5500(const unsigned x, const unsigned y, const char*
 
     PinCount = 6;
     Pins = pins;
+
+    pins_connected = 0;
+
+    memset(&sts, 0, 8 * 4 * sizeof(unsigned int));
 }
 
 cpart_ETH_w5500::~cpart_ETH_w5500(void) {
@@ -370,23 +373,29 @@ void cpart_ETH_w5500::ReadPropertiesWindow(void) {
 
 void cpart_ETH_w5500::PreProcess(void) {
     eth_w5500_process(&ethw);
+
+    pins_connected = (pins[0] != 0) && (pins[2] != 0) && (pins[3] != 0);
 }
 
 void cpart_ETH_w5500::Process(void) {
-    const picpin* ppins = SpareParts.GetPinsValues();
+    if (pins_connected) {
+        const picpin* ppins = SpareParts.GetPinsValues();
 
-    unsigned short ret = 0;
+        unsigned short ret = 0;
 
-    ret = eth_w5500_io(&ethw, ppins[pins[0] - 1].value, ppins[pins[3] - 1].value, ppins[pins[2] - 1].value,
-                       ppins[pins[1] - 1].value);
+        ret = eth_w5500_io(&ethw, ppins[pins[0] - 1].value, ppins[pins[3] - 1].value, ppins[pins[2] - 1].value,
+                           ppins[pins[1] - 1].value);
 
-    if (!ppins[pins[2] - 1].value)  // if CS is active, update output
-    {
-        if (_ret != ret) {
-            SpareParts.SetPin(pins[4], (ret & 0x01) > 0);
-            SpareParts.SetPin(pins[5], (ret & 0x02) > 0);
+        if (!ppins[pins[2] - 1].value)  // if CS is active, update output
+        {
+            if (_ret != ret) {
+                SpareParts.SetPin(pins[4], (ret & 0x01) > 0);
+                SpareParts.SetPin(pins[5], (ret & 0x02) > 0);
+            }
+            _ret = ret;
+        } else {
+            _ret = 0xFF;  // invalid value
         }
-        _ret = ret;
     } else {
         _ret = 0xFF;  // invalid value
     }

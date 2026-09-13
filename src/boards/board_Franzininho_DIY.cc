@@ -351,7 +351,7 @@ void cboard_Franzininho_DIY::Draw(void) {
 void cboard_Franzininho_DIY::Run_CPU(void) {
     int i;
     unsigned char pi;
-    const picpin* pins;
+    const picpin* pins_;
     unsigned int alm[40];
 
     const int pinc = MGetPinCount();
@@ -365,9 +365,9 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
 
     memset(alm, 0, pinc * sizeof(unsigned int));
 
-    // read pic.pins to a local variable to speed up
+    // read pic.pins_ to a local variable to speed up
 
-    pins = MGetPinsValues();
+    pins_ = MGetPinsValues();
 
     if (use_spare)
         SpareParts.PreProcess();
@@ -404,7 +404,7 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
             ioupdated = 0;
 
             // increment mean value counter if pin is high
-            alm[pi] += pins[pi].value;
+            alm[pi] += pins_[pi].value;
             pi++;
             if (pi == pinc)
                 pi = 0;
@@ -419,39 +419,39 @@ void cboard_Franzininho_DIY::Run_CPU(void) {
         SpareParts.PostProcess();
 
     // verifiy if LEDS need update
-    if (output_ids[O_PB0]->value != pins[4].oavalue) {
-        output_ids[O_PB0]->value = pins[4].oavalue;
+    if (output_ids[O_PB0]->value != pins_[4].oavalue) {
+        output_ids[O_PB0]->value = pins_[4].oavalue;
         output_ids[O_PB0]->update = 1;
         output_ids[O_PPB0]->update = 1;
     }
 
-    if (output_ids[O_PB1]->value != pins[5].oavalue) {
-        output_ids[O_PB1]->value = pins[5].oavalue;
+    if (output_ids[O_PB1]->value != pins_[5].oavalue) {
+        output_ids[O_PB1]->value = pins_[5].oavalue;
         output_ids[O_PB1]->update = 1;
         output_ids[O_PPB1]->update = 1;
         output_ids[O_L]->update = 1;
     }
 
-    if (output_ids[O_PB2]->value != pins[6].oavalue) {
-        output_ids[O_PB2]->value = pins[6].oavalue;
+    if (output_ids[O_PB2]->value != pins_[6].oavalue) {
+        output_ids[O_PB2]->value = pins_[6].oavalue;
         output_ids[O_PB2]->update = 1;
         output_ids[O_PPB2]->update = 1;
     }
 
-    if (output_ids[O_PB3]->value != pins[1].oavalue) {
-        output_ids[O_PB3]->value = pins[1].oavalue;
+    if (output_ids[O_PB3]->value != pins_[1].oavalue) {
+        output_ids[O_PB3]->value = pins_[1].oavalue;
         output_ids[O_PB3]->update = 1;
         output_ids[O_PPB3]->update = 1;
     }
 
-    if (output_ids[O_PB4]->value != pins[2].oavalue) {
-        output_ids[O_PB4]->value = pins[2].oavalue;
+    if (output_ids[O_PB4]->value != pins_[2].oavalue) {
+        output_ids[O_PB4]->value = pins_[2].oavalue;
         output_ids[O_PB4]->update = 1;
         output_ids[O_PPB4]->update = 1;
     }
 
-    if (output_ids[O_PB5]->value != pins[0].oavalue) {
-        output_ids[O_PB5]->value = pins[0].oavalue;
+    if (output_ids[O_PB5]->value != pins_[0].oavalue) {
+        output_ids[O_PB5]->value = pins_[0].oavalue;
         output_ids[O_PB5]->update = 1;
         output_ids[O_PPB5]->update = 1;
     }

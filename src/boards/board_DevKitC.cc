@@ -734,13 +734,13 @@ void cboard_DevKitC::BoardOptions(int* argc, char** argv) {
 void cboard_DevKitC::board_ButtonEvent(const char* controlname, unsigned int button, unsigned int x, unsigned int y,
                                        unsigned int state) {
     if (!strcmp(controlname, "b_button2")) {
-        std::string fname = PICSimLab.GetSharePath() +
-                            "boards"
-                            "/" BOARD_DevKitC_Name +
-                            "/config.lxrad";
+        std::string cfgname = PICSimLab.GetSharePath() +
+                              "boards"
+                              "/" BOARD_DevKitC_Name +
+                              "/config.lxrad";
 
-        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, fname.c_str())) {
-            if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, fname.c_str())) {
+        if (PICSimLab.SystemCmd(PSC_FILEEXISTS, cfgname.c_str())) {
+            if (PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWLOADXML, cfgname.c_str())) {
                 char buff[2048];
                 char line[1024];
                 strncpy(buff, (const char*)cmdline.c_str(), 2047);
@@ -825,17 +825,17 @@ void cboard_DevKitC::board_ButtonEvent(const char* controlname, unsigned int but
                 PICSimLab.WindowCmd(wconfigId, "button1", PWA_BUTTONBOARDEV, "1");
                 PICSimLab.WindowCmd(wconfigId, "button2", PWA_BUTTONBOARDEV, "1");
 
-                int x, y;
-                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
-                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
+                int x_, y_;
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x_);
+                PICSimLab.WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y_);
 
-                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETX, std::to_string(x + 50).c_str());
-                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETY, std::to_string(y + 50).c_str());
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETX, std::to_string(x_ + 50).c_str());
+                PICSimLab.WindowCmd(wconfigId, NULL, PWA_SETY, std::to_string(y_ + 50).c_str());
 
                 PICSimLab.WindowCmd(wconfigId, NULL, PWA_WINDOWSHOWEX, NULL);
             }
         } else {
-            PICSimLab.RegisterError("PICSimLab", "File " + fname + " not found!");
+            PICSimLab.RegisterError("PICSimLab", "File " + cfgname + " not found!");
         }
     } else if (!strcmp(controlname, "button1")) {
         PICSimLab.WindowCmd(wconfigId, "checkbox1", PWA_CHECKBOXGETCHECK, NULL, &ConfEnableWifi);

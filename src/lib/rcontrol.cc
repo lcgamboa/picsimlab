@@ -500,8 +500,8 @@ int rcontrol_loop(void) {
                 }
                 cmd[cmdsize] = 0;
 
-                for (int i = 0; i < BSIZE - cmdsize - 1; i++) {
-                    client->buffer[i] = client->buffer[i + cmdsize + 1];
+                for (int it = 0; it < BSIZE - cmdsize - 1; it++) {
+                    client->buffer[it] = client->buffer[it + cmdsize + 1];
                 }
                 client->bp -= cmdsize - n + 1;
 
@@ -581,15 +581,15 @@ int rcontrol_loop(void) {
                             Board = PICSimLab.GetBoard();
                             unsigned int addr;
                             unsigned int size;
-                            int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
+                            int sret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
 
-                            if (ret == -1)  // all
+                            if (sret == -1)  // all
                             {
-                                for (unsigned int i = 0; i < Board->DBGGetRAMSize(); i += 16) {
-                                    snprintf(lstemp, 100, "%04X: ", i);
+                                for (unsigned int it = 0; it < Board->DBGGetRAMSize(); it += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", it);
                                     ret += sendtext(client_id, lstemp);
-                                    for (int j = 0; j < 16; j++) {
-                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[j + i]);
+                                    for (int jt = 0; jt < 16; jt++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[jt + it]);
                                         ret += sendtext(client_id, lstemp);
                                     }
                                     snprintf(lstemp, 100, "\r\n");
@@ -597,7 +597,7 @@ int rcontrol_loop(void) {
                                 }
                                 snprintf(lstemp, 100, "\r\nOk\r\n>");
                                 ret += sendtext(client_id, lstemp);
-                            } else if (ret == 1)  // only one addr
+                            } else if (sret == 1)  // only one addr
                             {
                                 if (addr < Board->DBGGetRAMSize()) {
                                     snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetRAM_p()[addr]);
@@ -607,14 +607,15 @@ int rcontrol_loop(void) {
                                 }
                             } else  // vector from addr
                             {
-                                for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetRAMSize();
-                                     i += 16) {
-                                    snprintf(lstemp, 100, "%04X: ", i);
+                                for (unsigned int it = addr; (it < (addr + size)) && it < Board->DBGGetRAMSize();
+                                     it += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", it);
                                     ret += sendtext(client_id, lstemp);
 
-                                    for (unsigned int j = 0;
-                                         (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetRAMSize(); j++) {
-                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[j + i]);
+                                    for (unsigned int jt = 0;
+                                         (jt < 16) && (jt < size - (it - addr)) && (it + jt) < Board->DBGGetRAMSize();
+                                         jt++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetRAM_p()[jt + it]);
                                         ret += sendtext(client_id, lstemp);
                                     }
 
@@ -630,15 +631,15 @@ int rcontrol_loop(void) {
                             Board = PICSimLab.GetBoard();
                             unsigned int addr;
                             unsigned int size;
-                            int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
+                            int sret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
 
-                            if (ret == -1)  // all
+                            if (sret == -1)  // all
                             {
-                                for (unsigned int i = 0; i < Board->DBGGetEEPROM_Size(); i += 16) {
-                                    snprintf(lstemp, 100, "%04X: ", i);
+                                for (unsigned int it = 0; it < Board->DBGGetEEPROM_Size(); it += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", it);
                                     ret += sendtext(client_id, lstemp);
-                                    for (int j = 0; j < 16; j++) {
-                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[j + i]);
+                                    for (int jt = 0; jt < 16; jt++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[jt + it]);
                                         ret += sendtext(client_id, lstemp);
                                     }
                                     snprintf(lstemp, 100, "\r\n");
@@ -646,7 +647,7 @@ int rcontrol_loop(void) {
                                 }
                                 snprintf(lstemp, 100, "\r\nOk\r\n>");
                                 ret += sendtext(client_id, lstemp);
-                            } else if (ret == 1)  // only one addr
+                            } else if (sret == 1)  // only one addr
                             {
                                 if (addr < Board->DBGGetEEPROM_Size()) {
                                     snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr,
@@ -657,15 +658,15 @@ int rcontrol_loop(void) {
                                 }
                             } else  // vector from addr
                             {
-                                for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetEEPROM_Size();
-                                     i += 16) {
-                                    snprintf(lstemp, 100, "%04X: ", i);
+                                for (unsigned int it = addr; (it < (addr + size)) && it < Board->DBGGetEEPROM_Size();
+                                     it += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", it);
                                     ret += sendtext(client_id, lstemp);
 
-                                    for (unsigned int j = 0;
-                                         (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetEEPROM_Size();
-                                         j++) {
-                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[j + i]);
+                                    for (unsigned int jt = 0; (jt < 16) && (jt < size - (it - addr)) &&
+                                                              (it + jt) < Board->DBGGetEEPROM_Size();
+                                         jt++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetEEPROM_p()[jt + it]);
                                         ret += sendtext(client_id, lstemp);
                                     }
 
@@ -681,15 +682,15 @@ int rcontrol_loop(void) {
                             Board = PICSimLab.GetBoard();
                             unsigned int addr;
                             unsigned int size;
-                            int ret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
+                            int sret = sscanf(cmd + 5, "%x %u \n", &addr, &size);
 
-                            if (ret == -1)  // all
+                            if (sret == -1)  // all
                             {
-                                for (unsigned int i = 0; i < Board->DBGGetROMSize(); i += 16) {
-                                    snprintf(lstemp, 100, "%04X: ", i);
+                                for (unsigned int it = 0; it < Board->DBGGetROMSize(); it += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", it);
                                     ret += sendtext(client_id, lstemp);
-                                    for (int j = 0; j < 16; j++) {
-                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[j + i]);
+                                    for (int jt = 0; jt < 16; jt++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[jt + it]);
                                         ret += sendtext(client_id, lstemp);
                                     }
                                     snprintf(lstemp, 100, "\r\n");
@@ -697,7 +698,7 @@ int rcontrol_loop(void) {
                                 }
                                 snprintf(lstemp, 100, "\r\nOk\r\n>");
                                 ret += sendtext(client_id, lstemp);
-                            } else if (ret == 1)  // only one addr
+                            } else if (sret == 1)  // only one addr
                             {
                                 if (addr < Board->DBGGetROMSize()) {
                                     snprintf(lstemp, 100, "%04X: %02X \r\nOk\r\n>", addr, Board->DBGGetROM_p()[addr]);
@@ -707,14 +708,15 @@ int rcontrol_loop(void) {
                                 }
                             } else  // vector from addr
                             {
-                                for (unsigned int i = addr; (i < (addr + size)) && i < Board->DBGGetROMSize();
-                                     i += 16) {
-                                    snprintf(lstemp, 100, "%04X: ", i);
+                                for (unsigned int it = addr; (it < (addr + size)) && it < Board->DBGGetROMSize();
+                                     it += 16) {
+                                    snprintf(lstemp, 100, "%04X: ", it);
                                     ret += sendtext(client_id, lstemp);
 
-                                    for (unsigned int j = 0;
-                                         (j < 16) && (j < size - (i - addr)) && (i + j) < Board->DBGGetROMSize(); j++) {
-                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[j + i]);
+                                    for (unsigned int jt = 0;
+                                         (jt < 16) && (jt < size - (it - addr)) && (it + jt) < Board->DBGGetROMSize();
+                                         jt++) {
+                                        snprintf(lstemp, 100, "%02X ", Board->DBGGetROM_p()[jt + it]);
                                         ret += sendtext(client_id, lstemp);
                                     }
 
@@ -1470,9 +1472,9 @@ int rcontrol_loop(void) {
                             // Command splist
                             // ========================================================
                             ret += sendtext(client_id, "Supported Spare Parts:\r\n");
-                            for (int i = 0; i < NUM_PARTS; i++) {
+                            for (int it = 0; it < NUM_PARTS; it++) {
                                 ret += sendtext(client_id, "\"");
-                                ret += sendtext(client_id, parts_list[i].name);
+                                ret += sendtext(client_id, parts_list[it].name);
                                 ret += sendtext(client_id, "\", ");
                             }
                             ret += sendtext(client_id, "\r\n");

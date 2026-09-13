@@ -84,7 +84,7 @@ public:
 
     void SetUpdate(int up) { update = up; };
 
-    void SetChannelPin(int ch, int pin) { chpin[ch] = pin; };
+    void SetChannelPin(int ch_, int pin) { chpin[ch_] = pin; };
 
     int GetSampleOffset(void) { return soffset; };
 

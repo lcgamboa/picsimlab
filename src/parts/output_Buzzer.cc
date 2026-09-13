@@ -297,7 +297,7 @@ void cpart_Buzzer::Process(void) {
 void cpart_Buzzer::PostProcess(void) {
     const picpin* ppins = SpareParts.GetPinsValues();
 
-    if (btype == ACTIVE) {
+    if ((btype == ACTIVE) && (input_pins[0])) {
         if (active) {
             if (ppins[input_pins[0] - 1].oavalue > 65) {
                 PICSimLab.SystemCmd(PSC_AUDIOCHBEEPSTART, (const char*)&buzzerId);

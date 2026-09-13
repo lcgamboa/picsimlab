@@ -62,7 +62,7 @@ cpart_encoder::cpart_encoder(const unsigned x, const unsigned y, const char* nam
     active = 0;
 
     count = 0;
-    state = 0;
+    estate = 0;
 
     SetPCWProperties(pcwprop);
 
@@ -152,9 +152,9 @@ void cpart_encoder::PreProcess(void) {
         if (da == 0) {
             step = 0;
         } else if (fabs(da) < 1.0) {
-            state = (((value_old) % 10) * 10) / 25;
+            estate = (((value_old) % 10) * 10) / 25;
 
-            switch (state) {
+            switch (estate) {
                 case 0:
                     if (output_pins[0])
                         SpareParts.SetPin(output_pins[0], 0);
@@ -178,7 +178,7 @@ void cpart_encoder::PreProcess(void) {
             step = pboard->MGetInstClockFreq() / ((da > 0) ? da * 10 : -da * 10);
         }
 
-        dprintf("state=%i da=%f  %3i  %3i  dir=%i step=%i\n", state, da, value_, value_old, dir, step);
+        dprintf("estate=%i da=%f  %3i  %3i  dir=%i step=%i\n", estate, da, value_, value_old, dir, step);
 
         value_old = value_;
     } else {
@@ -197,18 +197,18 @@ void cpart_encoder::Process(void) {
             count = 0;
 
             if (dir) {
-                state++;
-                if (state > 3)
-                    state = 0;
+                estate++;
+                if (estate > 3)
+                    estate = 0;
 
             } else {
-                state--;
-                if (state < 0)
-                    state = 3;
+                estate--;
+                if (estate < 0)
+                    estate = 3;
             }
 
-            dprintf("state=%i\n", state);
-            switch (state) {
+            dprintf("estate=%i\n", estate);
+            switch (estate) {
                 case 0:
                     if (output_pins[0])
                         SpareParts.SetPin(output_pins[0], 0);
@@ -332,9 +332,9 @@ std::string cpart_encoder::WritePreferences(void) {
     return prefs;
 }
 
-int cpart_encoder::ReadPreferences(std::string value) {
+int cpart_encoder::ReadPreferences(std::string svalue) {
     int ret =
-        sscanf(value.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &this->value);
+        sscanf(svalue.c_str(), "%hhu,%hhu,%hhu,%hhu", &output_pins[0], &output_pins[1], &output_pins[2], &this->value);
 
     value_old = this->value;
     return ret;

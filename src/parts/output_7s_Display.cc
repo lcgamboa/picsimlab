@@ -94,10 +94,14 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
     always_update = 1;
 
     active = 1;
+    dtype = 0;
 
     ReadMaps();
 
     LoadPartImage();
+
+    dtype = 1;  // to force dtype change
+    ChangeType(0);
 
     input_pins[0] = 0;
     input_pins[1] = 0;
@@ -125,9 +129,6 @@ cpart_7s_display::cpart_7s_display(const unsigned x, const unsigned y, const cha
     memset(alm2, 0, 8 * sizeof(unsigned int));
     memset(alm3, 0, 8 * sizeof(unsigned int));
     memset(alm4, 0, 8 * sizeof(unsigned int));
-
-    dtype = 1;  // to force dtype change
-    ChangeType(0);
 
     SetPCWProperties(pcwprop);
 

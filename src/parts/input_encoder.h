@@ -63,7 +63,7 @@ private:
     unsigned char p_BTN;
     int step;
     int count;
-    int state;
+    int estate;
     int dir;
 };
 
