@@ -104,22 +104,22 @@ void CPWindow6::button5_EvMouseButtonClick(CControl* control, const uint button,
     lxLaunchDefaultBrowser(stemp);
 }
 
-const char* CPWindow6::GetFrameworkList(const std::string ide) {
-    std::string board = PICSimLab.GetBoard()->GetName();
-    std::string processor = PICSimLab.GetBoard()->GetProcessorName();
+const char* CPWindow6::GetFrameworkList(const std::string ide_) {
+    // std::string board_ = PICSimLab.GetBoard()->GetName();
+    std::string processor_ = PICSimLab.GetBoard()->GetProcessorName();
 
-    if (!ide.compare("PlatformIO IDE for VSCode")) {
-        if (!processor.compare("ESP32") || !processor.compare("ESP32-C3")) {
+    if (!ide_.compare("PlatformIO IDE for VSCode")) {
+        if (!processor_.compare("ESP32") || !processor_.compare("ESP32-C3")) {
             return "Arduino,IDF,";
-        } else if (!processor.compare("stm32f103c8t6") || !processor.compare("stm32f103rbt6")) {
+        } else if (!processor_.compare("stm32f103c8t6") || !processor_.compare("stm32f103rbt6")) {
             return "Arduino,CMSIS,";
 
-        } else if (!processor.compare("C51")) {
+        } else if (!processor_.compare("C51")) {
             return "None,";
         } else {
             return "Arduino,";
         }
-    } else if (!ide.compare("MPLAB X IDE")) {
+    } else if (!ide_.compare("MPLAB X IDE")) {
         return "XC8,";
     } else {
         return "N/A,";
@@ -147,34 +147,34 @@ void CPWindow6::combo1_EvOnComboChange(CControl* control) {
     combo2_EvOnComboChange(NULL);
 }
 
-const char* CPWindow6::GetExampleList(const std::string ide, const std::string framework) {
-    std::string board = PICSimLab.GetBoard()->GetName();
-    std::string processor = PICSimLab.GetBoard()->GetProcessorName();
+const char* CPWindow6::GetExampleList(const std::string ide_, const std::string framework_) {
+    std::string board_ = PICSimLab.GetBoard()->GetName();
+    std::string processor_ = PICSimLab.GetBoard()->GetProcessorName();
 
-    if (!ide.compare("PlatformIO IDE for VSCode")) {
-        if (!framework.compare("Arduino")) {
-            if (!processor.compare("attiny85") || !processor.compare("STM8S103")) {
+    if (!ide_.compare("PlatformIO IDE for VSCode")) {
+        if (!framework_.compare("Arduino")) {
+            if (!processor_.compare("attiny85") || !processor_.compare("STM8S103")) {
                 return "Blink,";
             } else {
                 return "Blink,Blink FreeRTOS,";
             }
-        } else if (!framework.compare("IDF")) {
+        } else if (!framework_.compare("IDF")) {
             return "Blink,";
-        } else if (!framework.compare("CMSIS")) {
+        } else if (!framework_.compare("CMSIS")) {
             return "Blink,";
-        } else if (!framework.compare("None")) {
+        } else if (!framework_.compare("None")) {
             return "Blink,";
         }
-    } else if (!ide.compare("MPLAB X IDE")) {
-        if (!framework.compare("XC8")) {
-            if (strstr(processor.c_str(), "PIC18F")) {
-                if (!board.compare("PICGenios")) {
+    } else if (!ide_.compare("MPLAB X IDE")) {
+        if (!framework_.compare("XC8")) {
+            if (strstr(processor_.c_str(), "PIC18F")) {
+                if (!board_.compare("PICGenios")) {
                     return "Blink,Blink FreeRTOS,Blink PICGenios,";
                 } else {
                     return "Blink,Blink FreeRTOS,";
                 }
             } else {
-                if (!board.compare("PICGenios")) {
+                if (!board_.compare("PICGenios")) {
                     return "Blink,Blink PICGenios,";
                 } else {
                     return "Blink,";
@@ -226,13 +226,14 @@ void CPWindow6::combo3_EvOnComboChange(CControl* control) {
     ctemplate = combo3.GetText();
 }
 
-int CPWindow6::CreateProject(const std::string ide, const std::string framework, const std::string ctemplate,
-                             const lxString prjdir, const int operation) {
-    std::string board = PICSimLab.GetBoard()->GetName();
-    std::string processor = PICSimLab.GetBoard()->GetProcessorName();
+int CPWindow6::CreateProject(const std::string ide_, const std::string framework_, const std::string ctemplate_,
+                             const lxString prjdir, const int operation_) {
+    std::string board_ = PICSimLab.GetBoard()->GetName();
+    std::string processor_ = PICSimLab.GetBoard()->GetProcessorName();
 
-    if (!strstr(GetExampleList(ide, framework), ctemplate.c_str()) || !ctemplate.compare("N/A")) {
-        PICSimLab.RegisterError("PICSimLab", (const char*)(lxString("Invalid code template: ") + ctemplate).utf8_str());
+    if (!strstr(GetExampleList(ide_, framework_), ctemplate_.c_str()) || !ctemplate_.compare("N/A")) {
+        PICSimLab.RegisterError("PICSimLab",
+                                (const char*)(lxString("Invalid code template: ") + ctemplate_).utf8_str());
         return 1;
     }
 
@@ -242,7 +243,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
         return 1;
     } else {
         if (PICSimLab.SystemCmd(PSC_CREATEDIR, prjdir.utf8_str()) == 0) {
-            if (!ide.compare("PlatformIO IDE for VSCode")) {
+            if (!ide_.compare("PlatformIO IDE for VSCode")) {
                 lxString fzip = PICSimLab.GetSharePath() + "prj_wizard/platformio.zip";
                 PICSimLab.SystemCmd(PSC_UNZIPDIR, fzip.utf8_str(), (void*)((const char*)prjdir.utf8_str()));
 
@@ -260,7 +261,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 lxString tbreak = "";
                 lxString include_extra = "";
                 lxString main_extra = "";
-                if (!board.compare("Arduino Uno")) {
+                if (!board_.compare("Arduino Uno")) {
                     pioboard = "uno";
                     pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
@@ -268,11 +269,11 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     hwpin = "19";
                     ftype = "hex";
                     tbreak = "setup";
-                    if (!ctemplate.compare("Blink FreeRTOS")) {
+                    if (!ctemplate_.compare("Blink FreeRTOS")) {
                         include_extra = "#include <Arduino_FreeRTOS.h>\n";
                         env_extra = "lib_deps =\n	feilipu/FreeRTOS @ 11.1.0-3\n";
                     }
-                } else if (!board.compare("Arduino Nano")) {
+                } else if (!board_.compare("Arduino Nano")) {
                     pioboard = "nanoatmega328";
                     pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
@@ -280,11 +281,11 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     hwpin = "17";
                     ftype = "hex";
                     tbreak = "setup";
-                    if (!ctemplate.compare("Blink FreeRTOS")) {
+                    if (!ctemplate_.compare("Blink FreeRTOS")) {
                         include_extra = "#include <Arduino_FreeRTOS.h>\n";
                         env_extra = "lib_deps =\n	feilipu/FreeRTOS @ 11.1.0-3\n";
                     }
-                } else if (!board.compare("Arduino Mega")) {
+                } else if (!board_.compare("Arduino Mega")) {
                     pioboard = "megaatmega2560";
                     pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
@@ -292,11 +293,11 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     hwpin = "26";
                     ftype = "hex";
                     tbreak = "setup";
-                    if (!ctemplate.compare("Blink FreeRTOS")) {
+                    if (!ctemplate_.compare("Blink FreeRTOS")) {
                         include_extra = "#include <Arduino_FreeRTOS.h>\n";
                         env_extra = "lib_deps =\n	feilipu/FreeRTOS @ 11.1.0-3\n";
                     }
-                } else if (!board.compare("Franzininho DIY")) {
+                } else if (!board_.compare("Franzininho DIY")) {
                     pioboard = "attiny85";
                     pioplatform = "atmelavr @ 5.3.0";
                     pioframework = "arduino";
@@ -305,13 +306,13 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     env_extra = "board_build.f_cpu = 16000000L\nbuild_flags = -DCLOCK_SOURCE=6\n";
                     ftype = "hex";
                     tbreak = "setup";
-                } else if (!board.compare("Blue Pill")) {
+                } else if (!board_.compare("Blue Pill")) {
                     pioboard = "bluepill_f103c8";
                     pioplatform = "ststm32 @ 19.7.1";
-                    if (!framework.compare("Arduino")) {
+                    if (!framework_.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
-                        if (!ctemplate.compare("Blink FreeRTOS")) {
+                        if (!ctemplate_.compare("Blink FreeRTOS")) {
                             include_extra = "#include <STM32FreeRTOS.h>\n";
                             env_extra = "lib_deps =\n	stm32duino/STM32duino FreeRTOS\n";
                             main_extra = "\n  vTaskStartScheduler();\n  while(1);\n";
@@ -325,13 +326,13 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     hwpin = "2";
                     monitor_rst = "       monitor system_reset\n";
                     ftype = "bin";
-                } else if (!board.compare("STM32 H103")) {
+                } else if (!board_.compare("STM32 H103")) {
                     pioboard = "olimex_f103";
                     pioplatform = "ststm32 @ 19.7.1";
-                    if (!framework.compare("Arduino")) {
+                    if (!framework_.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
-                        if (!ctemplate.compare("Blink FreeRTOS")) {
+                        if (!ctemplate_.compare("Blink FreeRTOS")) {
                             include_extra = "#include <STM32FreeRTOS.h>\n";
                             env_extra = "lib_deps =\n	stm32duino/STM32duino FreeRTOS\n";
                             main_extra = "\n  vTaskStartScheduler();\n  while(1);\n";
@@ -345,10 +346,10 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     hwpin = "53";
                     monitor_rst = "       monitor system_reset\n";
                     ftype = "bin";
-                } else if (!board.compare("ESP32-DevKitC")) {
+                } else if (!board_.compare("ESP32-DevKitC")) {
                     pioboard = "esp32dev";
-                    pioplatform = "espressif32 @ 7.0.1";
-                    if (!framework.compare("Arduino")) {
+                    pioplatform = "espressif32 @ 7.1.3";
+                    if (!framework_.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
                     } else {
@@ -360,10 +361,10 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     monitor_rst = "       monitor system_reset\n";
                     env_extra = "board_build.flash_mode = dio\nboard_upload.flash_size = 4MB\n";
                     ftype = "bin";
-                } else if (!board.compare("ESP32-C3-DevKitC-02")) {
+                } else if (!board_.compare("ESP32-C3-DevKitC-02")) {
                     pioboard = "esp32-c3-devkitc-02";
-                    pioplatform = "espressif32 @ 6.8.1";
-                    if (!framework.compare("Arduino")) {
+                    pioplatform = "espressif32 @ 7.1.3";
+                    if (!framework_.compare("Arduino")) {
                         pioframework = "arduino";
                         tbreak = "setup";
                     } else {
@@ -375,15 +376,15 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     monitor_rst = "       monitor system_reset\n";
                     env_extra = "board_build.flash_mode = dio\nboard_upload.flash_size = 4MB\n";
                     ftype = "bin";
-                } else if (!board.compare("uCboard")) {
-                    if (!processor.compare("C51")) {
+                } else if (!board_.compare("uCboard")) {
+                    if (!processor_.compare("C51")) {
                         pioboard = "Generic8051";
                         pioplatform = "intel_mcs51 @ 2.2.0";
                         pioframework = "";
                         ledpin = "P3_2";
                         hwpin = "12";
                         tbreak = "main";
-                    } else if (!processor.compare("STM8S103")) {
+                    } else if (!processor_.compare("STM8S103")) {
                         pioboard = "stm8sblue";
                         pioplatform = "ststm8 @ 2.1.0";
                         pioframework = "arduino";
@@ -396,14 +397,14 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     pio_test = 0;
                     ftype = "hex";
                 } else {
-                    PICSimLab.RegisterError("PICSimLab", (const char*)("Not supported board: " + board).c_str());
+                    PICSimLab.RegisterError("PICSimLab", (const char*)("Not supported board: " + board_).c_str());
                     PICSimLab.SystemCmd(PSC_REMOVEDIR, (const char*)prjdir.utf8_str());
                     WDestroy();
                     return 1;
                 }
 
                 // main
-                if (!framework.compare("Arduino")) {
+                if (!framework_.compare("Arduino")) {
                     FILE* fmain = fopen_UTF8((prjdir + "src/main.cpp").utf8_str(), "w");
                     if (fmain == NULL) {
                         PICSimLab.RegisterError(
@@ -411,19 +412,19 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                             (const char*)(lxString("File ") + prjdir + "src/main.cpp can't be open!").utf8_str());
                         return 1;
                     }
-                    if (!ctemplate.compare("Blink FreeRTOS")) {
+                    if (!ctemplate_.compare("Blink FreeRTOS")) {
                         fprintf(fmain, blink_RTOS_code, (const char*)include_extra.c_str(), (const char*)ledpin.c_str(),
                                 (const char*)main_extra.c_str());
                     } else {
                         fprintf(fmain, blink_code, (const char*)ledpin.c_str());
                     }
                     fclose(fmain);
-                    if (!processor.compare("STM8S103")) {
+                    if (!processor_.compare("STM8S103")) {
                         PICSimLab.SystemCmd(PSC_RENAMEFILE, (const char*)(prjdir + "src/main.cpp").utf8_str(),
                                             (void*)((const char*)(prjdir + "src/main.c").utf8_str()));
                         PICSimLab.SystemCmd(PSC_REMOVEFILE, (const char*)(prjdir + "test/test_main.cpp").utf8_str());
                     }
-                } else if (!framework.compare("IDF")) {
+                } else if (!framework_.compare("IDF")) {
                     PICSimLab.SystemCmd(PSC_RENAMEFILE, (prjdir + (const char*)"test/test_main.cpp").utf8_str(),
                                         (void*)((const char*)(prjdir + "test/test_main.c").utf8_str()));
                     PICSimLab.SystemCmd(PSC_RENAMEFILE, (const char*)(prjdir + "src/main.cpp").utf8_str(),
@@ -447,7 +448,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     }
                     fprintf(fsdkcfg, "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y\n");
                     fclose(fsdkcfg);
-                } else if (!framework.compare("CMSIS")) {
+                } else if (!framework_.compare("CMSIS")) {
                     PICSimLab.SystemCmd(PSC_RENAMEFILE, (const char*)(prjdir + "src/main.cpp").utf8_str(),
                                         (void*)((const char*)(prjdir + "src/main.c").utf8_str()));
                     FILE* fmain = fopen_UTF8((prjdir + "src/main.c").utf8_str(), "w");
@@ -461,7 +462,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     fclose(fmain);
 
                     PICSimLab.SystemCmd(PSC_REMOVEFILE, (const char*)(prjdir + "test/test_main.cpp").utf8_str());
-                } else if (!framework.compare("None")) {
+                } else if (!framework_.compare("None")) {
                     PICSimLab.SystemCmd(PSC_RENAMEFILE, (const char*)(prjdir + "src/main.cpp").utf8_str(),
                                         (void*)((const char*)(prjdir + "src/main.c").utf8_str()));
                     FILE* fmain = fopen_UTF8((prjdir + "src/main.c").utf8_str(), "w");
@@ -514,18 +515,18 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 }
 
                 PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
-                PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
+                PICSimLab.GetBoard()->SetPWProjectType((const char*)ide_.c_str());
                 Window1.menu1_Code_Open_Active_Project.SetEnable(1);
                 Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(1);
 
-                if (operation == OP_CREATE_AND_OPEN) {
-                    OpenProject(prjdir, ide);
+                if (operation_ == OP_CREATE_AND_OPEN) {
+                    OpenProject(prjdir, ide_);
                 }
-            } else if (!ide.compare("MPLAB X IDE")) {
-                if (!ctemplate.compare("Blink FreeRTOS")) {
+            } else if (!ide_.compare("MPLAB X IDE")) {
+                if (!ctemplate_.compare("Blink FreeRTOS")) {
                     lxString fzip = PICSimLab.GetSharePath() + "prj_wizard/mplabx_freertos.zip";
                     PICSimLab.SystemCmd(PSC_UNZIPDIR, fzip.utf8_str(), (void*)((const char*)prjdir.utf8_str()));
-                } else if (!ctemplate.compare("Blink PICGenios")) {
+                } else if (!ctemplate_.compare("Blink PICGenios")) {
                     lxString fzip = PICSimLab.GetSharePath() + "prj_wizard/mplabx_picgenios.zip";
                     PICSimLab.SystemCmd(PSC_UNZIPDIR, fzip.utf8_str(), (void*)((const char*)prjdir.utf8_str()));
                 } else {
@@ -554,12 +555,12 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 lxString cfg_root_lst = "";
                 lxString cfg_include_dirs = "";
                 lxString cfg_stack_type = "compiled";
-                if (!board.compare("PICGenios")) {
-                    if (strstr(processor.c_str(), "PIC18F")) {
-                        if (!processor.compare("PIC18F45K50")) {
+                if (!board_.compare("PICGenios")) {
+                    if (strstr(processor_.c_str(), "PIC18F")) {
+                        if (!processor_.compare("PIC18F45K50")) {
                             mplabx_cfg = "#pragma config WDTEN = OFF";
                             mplabx_tris = "ANSELDbits.ANSD3 = 0;\n    TRISDbits.TRISD0";
-                        } else if (!processor.compare("PIC18F47K40")) {
+                        } else if (!processor_.compare("PIC18F47K40")) {
                             mplabx_cfg = "#pragma config WDTE = OFF";
                             mplabx_tris = "ANSELDbits.ANSELD0 = 0;\n    TRISDbits.TRISD0";
                         } else {
@@ -569,7 +570,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                         mplabx_pin = "LATDbits.LD0";
                     } else {
                         mplabx_cfg = "#pragma config WDTE = OFF";
-                        if (!processor.compare("PIC16F1789") || !processor.compare("PIC16F1939")) {
+                        if (!processor_.compare("PIC16F1789") || !processor_.compare("PIC16F1939")) {
                             mplabx_tris = "ANSELDbits.ANSD0 = 0;\n    TRISDbits.TRISD0";
                         } else {
                             mplabx_tris = "ADCON1 |= 0x0F;\n    TRISDbits.TRISD0";
@@ -577,12 +578,12 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                         mplabx_pin = "PORTDbits.RD0";
                     }
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("McLab2")) {
-                    if (strstr(processor.c_str(), "PIC18F")) {
-                        if (!processor.compare("PIC18F45K50")) {
+                } else if (!board_.compare("McLab2")) {
+                    if (strstr(processor_.c_str(), "PIC18F")) {
+                        if (!processor_.compare("PIC18F45K50")) {
                             mplabx_cfg = "#pragma config WDTEN = OFF";
                             mplabx_tris = "ANSELBbits.ANSB3 = 0;\n    TRISBbits.TRISB3";
-                        } else if (!processor.compare("PIC18F47K40")) {
+                        } else if (!processor_.compare("PIC18F47K40")) {
                             mplabx_cfg = "#pragma config WDTE = OFF";
                             mplabx_tris = "ANSELBbits.ANSELB3 = 0;\n    TRISBbits.TRISB3";
                         } else {
@@ -592,7 +593,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                         mplabx_pin = "LATBbits.LB3";
                     } else {
                         mplabx_cfg = "#pragma config WDTE = OFF";
-                        if (!processor.compare("PIC16F1789") || !processor.compare("PIC16F1939")) {
+                        if (!processor_.compare("PIC16F1789") || !processor_.compare("PIC16F1939")) {
                             mplabx_tris = "ANSELBbits.ANSB3 = 0;\n    TRISBbits.TRISB3";
                         } else {
                             mplabx_tris = "ADCON1 |= 0x0F;\n    TRISBbits.TRISB3";
@@ -600,38 +601,38 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                         mplabx_pin = "PORTBbits.RB3";
                     }
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("McLab1")) {
+                } else if (!board_.compare("McLab1")) {
                     mplabx_cfg = "#pragma config WDTE = OFF";
                     mplabx_tris = "TRISBbits.TRISB0";
                     mplabx_pin = "PORTBbits.RB0";
                     mplabx_freq = "4000000L";
-                } else if (!board.compare("K16F")) {
+                } else if (!board_.compare("K16F")) {
                     mplabx_cfg = "#pragma config WDTE = OFF";
                     mplabx_tris = "TRISAbits.TRISA1";
                     mplabx_pin = "PORTAbits.RA1";
                     mplabx_freq = "4000000L";
-                } else if (!board.compare("Curiosity")) {
+                } else if (!board_.compare("Curiosity")) {
                     mplabx_cfg = "#pragma config WDTE = OFF";
                     mplabx_tris = "TRISCbits.TRISC5";
                     mplabx_pin = "PORTCbits.RC5";
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("Curiosity HPC")) {
+                } else if (!board_.compare("Curiosity HPC")) {
                     mplabx_cfg = "#pragma config WDTE = OFF";
                     mplabx_tris = "ANSELAbits.ANSELA7 = 0;\nTRISAbits.TRISA7";
                     mplabx_pin = "PORTAbits.RA7";
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("Xpress")) {
+                } else if (!board_.compare("Xpress")) {
                     mplabx_cfg = "#pragma config WDTE = OFF";
                     mplabx_tris = "ANSELAbits.ANSA0 = 0;\nTRISAbits.TRISA0";
                     mplabx_pin = "PORTAbits.RA0";
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("PQDB")) {
+                } else if (!board_.compare("PQDB")) {
                     mplabx_cfg = "#pragma config WDT = OFF";
                     mplabx_tris = "ADCON1 |= 0x0F;\nTRISAbits.TRISA5";
                     mplabx_pin = "LATAbits.LA5";
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("X")) {
-                    if (strstr(processor.c_str(), "PIC18F")) {
+                } else if (!board_.compare("X")) {
+                    if (strstr(processor_.c_str(), "PIC18F")) {
                         mplabx_cfg = "#pragma config WDT = OFF";
                         mplabx_tris = "ADCON1 |= 0x0F;\n    TRISBbits.TRISB0";
                         mplabx_pin = "LATBbits.LB0";
@@ -641,18 +642,18 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                         mplabx_pin = "PORTBbits.RB0";
                     }
                     mplabx_freq = "8000000L";
-                } else if (!board.compare("Breadboard")) {
-                    if (strstr(processor.c_str(), "PIC")) {
-                        if (strstr(processor.c_str(), "PIC18F")) {
-                            if (!processor.compare("PIC18F45K50") || !processor.compare("PIC18F26K80") ||
-                                !processor.compare("PIC18F46J50") || !processor.compare("PIC18F67J94")) {
+                } else if (!board_.compare("Breadboard")) {
+                    if (strstr(processor_.c_str(), "PIC")) {
+                        if (strstr(processor_.c_str(), "PIC18F")) {
+                            if (!processor_.compare("PIC18F45K50") || !processor_.compare("PIC18F26K80") ||
+                                !processor_.compare("PIC18F46J50") || !processor_.compare("PIC18F67J94")) {
                                 mplabx_cfg = "#pragma config WDTEN = OFF\n#pragma config XINST = OFF";
                                 mplabx_tris = "TRISCbits.TRISC0";
-                            } else if (!processor.compare("PIC18F47K40") || !processor.compare("PIC18F24Q10") ||
-                                       !processor.compare("PIC18F27K40")) {
+                            } else if (!processor_.compare("PIC18F47K40") || !processor_.compare("PIC18F24Q10") ||
+                                       !processor_.compare("PIC18F27K40")) {
                                 mplabx_cfg = "#pragma config WDTE = OFF\n#pragma config XINST = OFF";
                                 mplabx_tris = "ANSELCbits.ANSELC0 = 0;\nTRISCbits.TRISC0";
-                            } else if (!processor.compare("PIC18F452")) {
+                            } else if (!processor_.compare("PIC18F452")) {
                                 mplabx_cfg = "#pragma config WDT = OFF";
                                 mplabx_tris = "TRISCbits.TRISC0";
                             } else {
@@ -663,14 +664,14 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                             mplabx_pin = "LATCbits.LC0";
                         } else {  // PIC16F
                             mplabx_cfg = "#pragma config WDTE = OFF";
-                            if (!processor.compare("PIC16F1827") || !processor.compare("PIC16F1847") ||
-                                !processor.compare("PIC16F628A") || !processor.compare("PIC16F648A") ||
-                                !processor.compare("PIC16F84A") || !processor.compare("PIC16F819")) {
+                            if (!processor_.compare("PIC16F1827") || !processor_.compare("PIC16F1847") ||
+                                !processor_.compare("PIC16F628A") || !processor_.compare("PIC16F648A") ||
+                                !processor_.compare("PIC16F84A") || !processor_.compare("PIC16F819")) {
                                 mplabx_tris = "TRISBbits.TRISB0";
                                 mplabx_pin = "PORTBbits.RB0";
 
-                            } else if (!processor.compare("PIC16F1619") || !processor.compare("PIC16F1829") ||
-                                       !processor.compare("PIC16F18324")) {
+                            } else if (!processor_.compare("PIC16F1619") || !processor_.compare("PIC16F1829") ||
+                                       !processor_.compare("PIC16F18324")) {
                                 mplabx_tris = "ANSELCbits.ANSC0 = 0;\nTRISCbits.TRISC0";
                                 mplabx_pin = "PORTCbits.RC0";
                             } else {
@@ -683,7 +684,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     }
                     mplabx_freq = "8000000L";
                 } else {
-                    PICSimLab.RegisterError("PICSimLab", (const char*)("Not supported board: " + board).c_str());
+                    PICSimLab.RegisterError("PICSimLab", (const char*)("Not supported board: " + board_).c_str());
                     PICSimLab.SystemCmd(PSC_REMOVEDIR, (const char*)prjdir.utf8_str());
                     WDestroy();
                     return 1;
@@ -697,14 +698,14 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     return 1;
                 }
 
-                if (!ctemplate.compare("Blink FreeRTOS")) {
+                if (!ctemplate_.compare("Blink FreeRTOS")) {
                     fprintf(fmain, blink_mplabx_freertos, (const char*)mplabx_cfg.c_str(),
                             (const char*)mplabx_freq.c_str(), (const char*)mplabx_tris.c_str(),
                             (const char*)mplabx_pin.c_str(), (const char*)mplabx_pin.c_str());
-                } else if (!ctemplate.compare("Blink PICGenios")) {
+                } else if (!ctemplate_.compare("Blink PICGenios")) {
                     fprintf(fmain, blink_mplabx_picgenios);
                 } else {
-                    if (strstr(processor.c_str(), "PIC")) {
+                    if (strstr(processor_.c_str(), "PIC")) {
                         fprintf(fmain, blink_mplabx, (const char*)mplabx_cfg.c_str(), (const char*)mplabx_freq.c_str(),
                                 (const char*)mplabx_tris.c_str(), (const char*)mplabx_pin.c_str(),
                                 (const char*)mplabx_pin.c_str());
@@ -733,7 +734,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                                                              .utf8_str());
                     return 1;
                 }
-                if (!ctemplate.compare("Blink FreeRTOS")) {
+                if (!ctemplate_.compare("Blink FreeRTOS")) {
                     cfg_headers = "      <itemPath>FreeRTOSConfig.h</itemPath>\n";
                     cfg_sources =
                         "      <itemPath>FreeRTOS/Source/tasks.c</itemPath>\n"
@@ -744,7 +745,7 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                     cfg_root_lst = "    <Elem>FreeRTOS/Source</Elem>\n    <Elem>portable</Elem>\n";
                     cfg_include_dirs = "FreeRTOS/Source/include;.;portable";
                     cfg_stack_type = "reentrant";
-                } else if (!ctemplate.compare("Blink PICGenios")) {
+                } else if (!ctemplate_.compare("Blink PICGenios")) {
                     cfg_headers =
                         "      <itemPath>lib/adc.h</itemPath>\n"
                         "      <itemPath>lib/config.h</itemPath>\n"
@@ -792,22 +793,22 @@ int CPWindow6::CreateProject(const std::string ide, const std::string framework,
                 }
 
                 fprintf(fconf, configurations_xml, (const char*)cfg_headers.c_str(), (const char*)cfg_sources.c_str(),
-                        (const char*)cfg_root_lst.c_str(), (const char*)processor.c_str(),
+                        (const char*)cfg_root_lst.c_str(), (const char*)processor_.c_str(),
                         (const char*)cfg_include_dirs.c_str(), (const char*)cfg_stack_type.c_str());
                 fclose(fconf);
 
                 PICSimLab.GetBoard()->SetPWActiveProject((const char*)prjdir.utf8_str());
-                PICSimLab.GetBoard()->SetPWProjectType((const char*)ide.c_str());
+                PICSimLab.GetBoard()->SetPWProjectType((const char*)ide_.c_str());
                 Window1.menu1_Code_Open_Active_Project.SetEnable(1);
                 Window1.menu1_Code_Open_Active_Project_Dir.SetEnable(1);
 
-                if (operation == OP_CREATE_AND_OPEN) {
-                    OpenProject(prjdir, ide);
+                if (operation_ == OP_CREATE_AND_OPEN) {
+                    OpenProject(prjdir, ide_);
                 }
 
             } else {
-                PICSimLab.RegisterError("PICSimLab",
-                                        (const char*)(lxString("IDE of type [") + ide + "] not supported!").utf8_str());
+                PICSimLab.RegisterError(
+                    "PICSimLab", (const char*)(lxString("IDE of type [") + ide_ + "] not supported!").utf8_str());
                 WDestroy();
                 return 1;
             }
