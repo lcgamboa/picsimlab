@@ -114,6 +114,30 @@ FILE* fopen_UTF8(const char* fname, const char* mode) {
 #endif
 }
 
+FILE* freopen_UTF8(const char* fname, const char* mode, FILE* stream) {
+#ifndef _WIN_
+    return freopen(fname, mode, stream);
+#else
+    int newSize;
+
+    std::string filePath(fname);
+    std::wstring filePathW;
+    filePathW.resize(filePath.size());
+    newSize = MultiByteToWideChar(CP_UTF8, 0, filePath.c_str(), filePath.length(),
+                                  const_cast<wchar_t*>(filePathW.c_str()), filePath.length());
+    filePathW.resize(newSize);
+
+    std::string fileMode(mode);
+    std::wstring fileModeW;
+    fileModeW.resize(fileMode.size());
+    newSize = MultiByteToWideChar(CP_UTF8, 0, fileMode.c_str(), fileMode.length(),
+                                  const_cast<wchar_t*>(fileModeW.c_str()), fileMode.length());
+    fileModeW.resize(newSize);
+
+    return _wfreopen(filePathW.c_str(), fileModeW.c_str(), stream);
+#endif
+}
+
 std::string GetLocalFile(const std::string file) {
     /*
     #ifndef __WXMSW__

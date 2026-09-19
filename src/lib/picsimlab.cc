@@ -454,13 +454,13 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: End Board Simulation.\n");
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
         fflush(stdout);
-        freopen(NULLFILE, "w", stdout);
+        freopen_UTF8(NULLFILE, "w", stdout);
         fflush(stderr);
-        freopen(NULLFILE, "w", stderr);
-        char fname[1200];
-        snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)HOME.c_str(), Instance);
+        freopen_UTF8(NULLFILE, "w", stderr);
+        char fnamel[1200];
+        snprintf(fnamel, 1199, "%s/picsimlab_log%i.txt", (const char*)HOME.c_str(), Instance);
         FILE* flog;
-        flog = fopen_UTF8(fname, "a");
+        flog = fopen_UTF8(fnamel, "a");
         if (flog) {
             fprintf(flog, "PICSimLab: Finish Ok\n");
             fclose(flog);

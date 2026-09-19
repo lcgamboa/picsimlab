@@ -703,10 +703,10 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     set_signal_handler();
 
-    strncpy(home, (const char*)lxGetUserDataDir("picsimlab").c_str(), 1023);
+    strncpy(home, (const char*)lxGetUserDataDir("picsimlab").utf8_str(), 1023);
     PICSimLab.SetWorkspaceFileName("");
     PICSimLab.SetHomePath(home);
-    PICSimLab.SetPath((const char*)lxGetCwd().c_str());
+    PICSimLab.SetPath((const char*)lxGetCwd().utf8_str());
 
     PICSimLab.OnUpdateStatus = &CPWindow1::OnUpdateStatus;
     PICSimLab.OnConfigure = &CPWindow1::OnConfigure;
@@ -775,7 +775,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 #error Define the _PKG_ path is necessary
 #endif
 
-    PICSimLab.SetLibPath((const char*)(dirname(lxGetExecutablePath()) + "/" + std::string(_LIB_)).c_str());
+    PICSimLab.SetLibPath((const char*)(dirname(lxGetExecutablePath()) + "/" + lxString(_LIB_)).utf8_str());
     fn.Assign(PICSimLab.GetLibPath());
     fn.MakeAbsolute();
     PICSimLab.SetLibPath((const char*)(fn.GetFullPath() + "/").c_str());
@@ -798,20 +798,20 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             if (finishok != 1) {
                 close_error = 1;
                 snprintf(fname_error, 1199, "%s/picsimlab_error%i.txt", home, PICSimLab.GetInstanceNumber());
-                lxRenameFile(fname, fname_error);
+                lxRenameFile(lxString::FromUTF8(fname), lxString::FromUTF8(fname_error));
             }
         }
     }
 
 #ifdef _WIN_
     if (AllocConsole()) {
-        freopen("CONOUT$", "w", stdout);
-        freopen("CONOUT$", "w", stderr);
+        freopen_UTF8("CONOUT$", "w", stdout);
+        freopen_UTF8("CONOUT$", "w", stderr);
         ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false);
     }
 #endif
-    lxCreateDir(home);
-    if (freopen(fname, "w", stdout) == NULL) {
+
+    if (freopen_UTF8(fname, "w", stdout) == NULL) {
         printf("PICSimLab: stdout redirect error [%i] %s \n", errno, strerror(errno));
     }
 
@@ -829,6 +829,12 @@ void CPWindow1::_EvOnCreate(CControl* control) {
 
     printf("PICSimLab: Console output redirected to file: \"%s\"\n", fname);
 #endif
+
+    if (!PICSimLab.SystemCmd(PSC_DIREXISTS, home)) {
+        if (!lxCreateDirs(home)) {
+            printf("PICSimLab: Error creating home dir: %s\n", home);
+        }
+    }
 
     printf("PICSimLab: Version \"%s %s %s %s\"\n", _VERSION_, _DATE_, _ARCH_, _PKG_);
 
@@ -940,7 +946,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             fname_error);
 
         FILE* ferror;
-        ferror = fopen(fname_error, "a");
+        ferror = fopen_UTF8(fname_error, "a");
 
         if (ferror) {
             char btdir[256];
@@ -956,7 +962,7 @@ void CPWindow1::_EvOnCreate(CControl* control) {
             fclose(ferror);
         }
 
-        lxLaunchDefaultApplication(fname_error);
+        lxLaunchDefaultApplication(lxString::FromUTF8(fname_error));
 
         // force use demo
         PICSimLab.Configure(home, 2, 1);
@@ -1185,21 +1191,21 @@ void CPWindow1::_EvOnDestroy(CControl* control) {
 
 #if !defined(__EMSCRIPTEN__) && !defined(_CONSOLE_LOG_)
     fflush(stdout);
-    freopen(NULLFILE, "w", stdout);
+    freopen_UTF8(NULLFILE, "w", stdout);
     fflush(stderr);
-    freopen(NULLFILE, "w", stderr);
+    freopen_UTF8(NULLFILE, "w", stderr);
     char fname[1200];
     snprintf(fname, 1199, "%s/picsimlab_log%i.txt", (const char*)PICSimLab.GetHomePath().c_str(),
              PICSimLab.GetInstanceNumber());
 
     // redirect
     char tmpname[1200];
-    snprintf(tmpname, 1200, "%s/picsimlab_log%i-XXXXXX", (const char*)lxGetTempDir("PICSimLab").c_str(),
+    snprintf(tmpname, 1200, "%s/picsimlab_log%i-XXXXXX", (const char*)lxGetTempDir("PICSimLab").utf8_str(),
              PICSimLab.GetInstanceNumber());
     close(mkstemp(tmpname));
     unlink(tmpname);
     strncat(tmpname, ".txt", 1199);
-    lxRenameFile(fname, tmpname);
+    lxRenameFile(lxString::FromUTF8(fname), lxString::FromUTF8(tmpname));
 
     FILE* flog;
     FILE* ftmp;
@@ -2084,7 +2090,7 @@ void CPWindow1::filedialog2_EvOnClose(int retId) {
 
 void CPWindow1::menu1_Tools_SerialTerm_EvMenuActive(CControl* control) {
     char stfname[1024];
-    snprintf(stfname, 1024, "%s/open_w_cutecom_or_gtkterm.sterm", (const char*)lxGetTempDir("PICSimLab").c_str());
+    snprintf(stfname, 1024, "%s/open_w_cutecom_or_gtkterm.sterm", (const char*)lxGetTempDir("PICSimLab").utf8_str());
 
     if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, stfname)) {
         // create one dumb file to associate whit serial terminal
@@ -2230,10 +2236,10 @@ int CPWindow1::OnSystemCmd(const PICSimLabSystemCmd cmd, const char* Arg, void* 
             return lxUnzipDir(lxString::FromUTF8(Arg), lxString::FromUTF8((const char*)ReturnBuff));
             break;
         case PSC_RENAMEFILE:
-            return lxRenameFile(Arg, (const char*)ReturnBuff);
+            return lxRenameFile(lxString::FromUTF8(Arg), lxString::FromUTF8((const char*)ReturnBuff));
             break;
         case PSC_COPYFILE:
-            return lxCopyFile(Arg, (const char*)ReturnBuff);
+            return lxCopyFile(lxString::FromUTF8(Arg), lxString::FromUTF8((const char*)ReturnBuff));
             break;
         case PSC_COPYDIRS:
             return lxCopyDirs(Arg, (const char*)ReturnBuff);

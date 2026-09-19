@@ -33,6 +33,7 @@ std::string FloatStrFormat(const char* str, const float value);
 int LoadFromFile(std::vector<std::string>& strlist, const char* fname);
 int SaveToFile(std::vector<std::string> strlist, const char* fname);
 FILE* fopen_UTF8(const char* fname, const char* mode);
+FILE* freopen_UTF8(const char* fname, const char* mode, FILE* stream);
 std::string GetLocalFile(const std::string file);
 
 #endif  // UTIL
