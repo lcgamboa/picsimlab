@@ -28,6 +28,10 @@
 #include "../lib/picsimlab.h"
 #include "../lib/spareparts.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 /* outputs */
 enum { O_RX, O_TX, O_LTX, O_LRX, O_VT, O_LOG };
 
@@ -508,7 +512,7 @@ void cpart_vterm::OnMouseButtonPress(unsigned int inputId, unsigned int button, 
                             document.body.removeChild(element);
                             URL.revokeObjectURL(text);
                         },
-                        log_fname);
+                        log_fname.c_str());
 #else
                     PICSimLab.SystemCmd(PSC_LAUNCHDEFAULAPPLICATION, log_fname.c_str());
 #endif

@@ -25,8 +25,6 @@
 
 // main window
 
-// #define CONVERTER_MODE
-
 // print timer debug info
 // #define TDEBUG
 
@@ -60,18 +58,14 @@ CPWindow1 Window1;
 #include <execinfo.h>
 #include <signal.h>
 #endif
-#endif
 #include <curl/curl.h>
+#endif
 
 #ifdef _USE_PICSTARTP_
 // picstart plus
 int prog_init(void);
 int prog_loop(_pic* pic);
 int prog_end(void);
-#endif
-
-#ifdef CONVERTER_MODE
-static std::string cvt_fname;
 #endif
 
 #ifdef _WIN_
@@ -352,12 +346,6 @@ void CPWindow1::timer2_EvOnTime(CControl* control) {
         PICSimLab.DeleteError(0);
     }
     PICSimLab.status &= ~ST_T2;
-
-#ifdef CONVERTER_MODE
-    if (cvt_fname.Length() > 3) {
-        SaveWorkspace(cvt_fname);
-    }
-#endif
 
     if (GetNeedClkUpdate()) {
         PICSimLab.SetClock(PICSimLab.GetClock());

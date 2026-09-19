@@ -702,10 +702,6 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
         pboard->SetPWActiveProject(code_src);
     }
 
-#ifdef CONVERTER_MODE
-    fnpzw.replace(fnpzw.Length() - 4, 5, "_.pzw");
-    cvt_fname = fnpzw;
-#else  // CONVERTER_MODE
     if (show_readme) {
         snprintf(fzip, 1279, "%s/Readme.html", home);
         if (SystemCmd(PSC_FILEEXISTS, fzip)) {
@@ -731,7 +727,6 @@ void CPICSimLab::LoadWorkspace(std::string fnpzw, const int show_readme) {
             }
         }
     }
-#endif  // CONVERTER_MODE
 }
 
 int CPICSimLab::SaveWorkspace(std::string fnpzw) {
@@ -741,7 +736,7 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
     char fname_[2048];
     char code_src[512];
 
-#if !defined(__EMSCRIPTEN__) && !defined(CONVERTER_MODE)
+#if !defined(__EMSCRIPTEN__)
     if (SystemCmd(PSC_FILEEXISTS, fnpzw.c_str())) {
         char bname[512];
         SystemCmd(PSC_BASENAME, fnpzw.c_str(), bname);
@@ -771,16 +766,7 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
     memcpy(home, tmpdir, 1023);
     strncat(home, "/picsimlab_workspace", 1023);
 
-#ifdef CONVERTER_MODE
-    snprintf(fname, 1279, "rm -rf %s/*.ini", home);
-    system(fname);
-    snprintf(fname, 1279, "rm -rf %s/*.pcf", home);
-    system(fname);
-    snprintf(fname, 1279, "rm -rf %s/*.hex", home);
-    system(fname);
-#else
     SystemCmd(PSC_CREATEDIR, home);
-#endif
 
     strncpy(code_src, pboard->GetPWActiveProject().c_str(), 511);
 
@@ -963,10 +949,6 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
             URL.revokeObjectURL(text);
         },
         fnpzw.c_str());
-#endif
-
-#ifdef CONVERTER_MODE
-    WDestroy();
 #endif
 
     return 0;
