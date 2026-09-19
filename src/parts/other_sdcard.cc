@@ -225,21 +225,27 @@ void cpart_SDCard::ReadPropertiesWindow(void) {
     pins[2] = GetPWCComboSelectedPin("combo6");
 }
 
+void cpart_SDCard::PreProcess(void) {
+    pins_connected = (pins[0] != 0) && (pins[1] != 0) && (pins[2] != 0) && (pins[3] != 0);
+}
+
 void cpart_SDCard::Process(void) {
-    const picpin* ppins = SpareParts.GetPinsValues();
+    if (pins_connected) {
+        const picpin* ppins = SpareParts.GetPinsValues();
 
-    unsigned short ret = 0;
+        unsigned short ret = 0;
 
-    ret = sdcard_io(&sd, ppins[pins[0] - 1].value, ppins[pins[1] - 1].value, ppins[pins[2] - 1].value);
+        ret = sdcard_io(&sd, ppins[pins[0] - 1].value, ppins[pins[1] - 1].value, ppins[pins[2] - 1].value);
 
-    if (!ppins[pins[2] - 1].value)  // if SS is active, update output
-    {
-        if (_ret != ret) {
-            SpareParts.SetPin(pins[3], ret);
+        if (!ppins[pins[2] - 1].value)  // if SS is active, update output
+        {
+            if (_ret != ret) {
+                SpareParts.SetPin(pins[3], ret);
+            }
+            _ret = ret;
+        } else {
+            _ret = 0xFF;  // invalid value
         }
-        _ret = ret;
-    } else {
-        _ret = 0xFF;  // invalid value
     }
 }
 

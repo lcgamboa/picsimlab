@@ -37,6 +37,7 @@ public:
     cpart_SDCard(const unsigned x, const unsigned y, const char* name, const char* type, board* pboard_, const int id_);
     ~cpart_SDCard(void);
     void DrawOutput(const unsigned int index) override;
+    void PreProcess(void) override;
     void Process(void) override;
     void Reset(void) override;
     void OnMouseButtonPress(unsigned int inputId, unsigned int button, unsigned int x, unsigned int y,
@@ -55,6 +56,7 @@ private:
     sdcard_t sd;
     unsigned short _ret;
     char sdcard_fname[200];
+    unsigned int pins_connected;
 };
 
 #endif /* PART_SDCARD_H */
