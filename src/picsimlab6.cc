@@ -100,7 +100,7 @@ void CPWindow6::button4_EvMouseButtonClick(CControl* control, const uint button,
 void CPWindow6::button5_EvMouseButtonClick(CControl* control, const uint button, const uint x, const uint y,
                                            const uint state) {
     char stemp[256];
-    snprintf(stemp, 255, "https://lcgamboa.github.io/picsimlab_docs/%s/ProjectWizardWindow.html", _VERSION_);
+    snprintf(stemp, 255, "https://lcgamboa.github.io/picsimlab_docs/%s/ProjectWizard.html", _VERSION_);
     lxLaunchDefaultBrowser(stemp);
 }
 
@@ -921,32 +921,50 @@ int CPWindow6::OpenProject(lxString path, lxString type) {
         strncpy(mplabx_path, PICSimLab.GetPWMplabxPath().c_str(), 1023);
 
         if (!PICSimLab.SystemCmd(PSC_FILEEXISTS, mplabx_path)) {
+#define MPLABX_N_PATHS 8
+            int path_found = 0;
 #ifdef _WIN_
-            if (PICSimLab.SystemCmd(PSC_FILEEXISTS,
-                                    "C:/Program Files/Microchip/MPLABX/v6.20/mplab_platform/bin/mplab_ide64.exe")) {
-                strncpy(mplabx_path, "C:/Program Files/Microchip/MPLABX/v6.20/mplab_platform/bin/mplab_ide64.exe",
-                        1023);
-            } else {
+            const char* mplabx_ide_paths[MPLABX_N_PATHS] = {
+                "C:/Program Files/Microchip/MPLABX/v6.35/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.30/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.25/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.20/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.15/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.10/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/bin/mplab_ide64.exe",
+                "C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/bin/mplab_ide64.exe"};
+#else
+            const char* mplabx_ide_paths[MPLABX_N_PATHS] = {"/opt/microchip/mplabx/v6.35/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.30/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.25/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.20/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.15/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.10/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.05/mplab_platform/bin/mplab_ide",
+                                                            "/opt/microchip/mplabx/v6.00/mplab_platform/bin/mplab_ide"};
+#endif
+            for (int mi = 0; mi < MPLABX_N_PATHS; mi++) {
+                if (PICSimLab.SystemCmd(PSC_FILEEXISTS, mplabx_ide_paths[mi])) {
+                    strncpy(mplabx_path, mplabx_ide_paths[mi], 1023);
+                    path_found = 1;
+                    break;
+                }
+            }
+
+            if (!path_found) {
                 if (Dialog_sz("MPLAB X IDE executable not found!\n Search on disk?", 400, 200)) {
+#ifdef _WIN_
                     filedialog1.SetDir("C:/Program Files/Microchip/MPLABX/");
                     filedialog1.SetFilter(lxT("All Files (*.exe)|*.exe"));
-                    filedialog1.Run();
-                }
-                return 1;
-            }
 #else
-            if (PICSimLab.SystemCmd(PSC_FILEEXISTS, "/opt/microchip/mplabx/v6.20/mplab_platform/bin/mplab_ide")) {
-                strncpy(mplabx_path, "/opt/microchip/mplabx/v6.20/mplab_platform/bin/mplab_ide", 1023);
-            } else {
-                if (Dialog_sz("MPLAB X IDE executable not found!\n Search on disk?", 400, 200)) {
                     filedialog1.SetDir("/opt/microchip/mplabx/");
                     filedialog1.SetFilter(lxT("All Files (*)|*"));
+#endif
                     filedialog1.Run();
                 }
                 return 1;
             }
 
-#endif
             PICSimLab.SetPWMplabxPath(mplabx_path);
         }
 
