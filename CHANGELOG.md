@@ -1,3 +1,187 @@
+## v0.9.3 (2026-09-20)
+
+### New
+
+* New menu item code->Open Active Project Dir. [lcgamboa]
+
+* New spare parts VCD Dump 16. [lcgamboa]
+
+* New PrjWizard help button. [lcgamboa]
+
+* Add project source code to board demonstration examples. [lcgamboa]
+
+* Add rcontrol support to enable/disable debug on exit command. [lcgamboa]
+
+* Add support to Project Wizard MPLAB X IDE for boards: Curiosity, Curiosity_HPC, K16F, PQDB, Xpress, X , and Breadboard. [lcgamboa]
+
+* New rcontrol commands: bblist, bdlist, bilist, pwtlist, pwflist, pwcreate, and saveworkspace. [lcgamboa]
+
+* New Project Wizard templates FreeRTOS and PICGenios library. [lcgamboa]
+
+* New Project Wizard example Blink FreeRTOS for Vscode+Platformio. [lcgamboa]
+
+* Add MPLAB X Project Wizard support to boards McLab1 and McLab2. [lcgamboa]
+
+* New support to MPLAB X in Project Wizard for PICGenios board. [lcgamboa]
+
+* New support to Arduino/SDCC in Project Wizard for C51 and STM8S103. [lcgamboa]
+
+* New support to CMSIS in Project Wizard for STM32. [lcgamboa]
+
+* New support to IDF in Project Wizard for ESP32 and ESP32-C3. [lcgamboa]
+
+* Support to save/load active project code in workspace file. [lcgamboa]
+
+* New python tests using rcontrol interface. [lcgamboa]
+
+* Add tests to project templates using rcontrol python library. [lcgamboa]
+
+* New rcontrol commands spshow, spdel, oscshow, oscmeasures, oscrdcfg and oscwrcdg. [lcgamboa]
+
+* Add support to open existent code project on project wizard window. [lcgamboa]
+
+* New support to boards Esp32 DevKit, Esp32-C3 Devkit, Blue Pill and STM32 H103 on Project Wizard. [lcgamboa]
+
+* New support to boards Arduino Mega, Arduino Nano and Franzininho DIY on Project Wizard. [lcgamboa]
+
+* The new Code menu, new option to load the active project and VScode auto detection. [lcgamboa]
+
+* New code generator Project Wizard module (Vscode+platformio Arduino Uno). [lcgamboa]
+
+* New rcontrol commnads blist (supported boards list) and buclist (board supported microcontrollers list). [lcgamboa]
+
+* Rcontrol added support for up to 4 simultaneous connections. [lcgamboa]
+
+* New rcontrols commands sprdcfg and spwrcfg to configure spare parts. [lcgamboa]
+
+* New rcontrol commands splist and spadd. [lcgamboa]
+
+* Support to change Spare Parts Window background color. [lcgamboa]
+
+* Add option for check for development version update. [lcgamboa]
+
+* Support to check version update. [lcgamboa]
+
+* IO Virtual Term support to write to logfile. [lcgamboa]
+
+* New spare part VCD Dump Memory (RAM). [lcgamboa]
+
+### Changes
+
+* Improve Project Wizard MPLABX IDE detection. [lcgamboa]
+
+* Improve support to UTF8 file paths. [lcgamboa]
+
+* Update the boards demonstrations. [lcgamboa]
+
+* Update ESP32 demonstration code to ESP IDF 6.0. [lcgamboa]
+
+* Change the method SaveWorkspace to remove .efuse files from .pzw. [lcgamboa]
+
+* Add version numbers to platformio platforms and libs of PrjWizard. [lcgamboa]
+
+* New methods to get boards backends and debugger support. [lcgamboa]
+
+* Test for compatible VCD files used in VCD Play spare part. [lcgamboa]
+
+* Add support to set the initial gdb tbreak function name. [lcgamboa]
+
+* Project Wizard Python test updated. [lcgamboa]
+
+* Modify command line to pass board or pzw file as first parameter. [lcgamboa]
+
+* Change projects template to use picsimlab_tool.py. [lcgamboa]
+
+* Add flash memory size for ESP32 based boards on project wizard. [lcgamboa]
+
+* Remove picsimlab_tool first command line parameter. [lcgamboa]
+
+* Changing the logfile writing policy from block to line. [lcgamboa]
+
+* More information has been added to the about and the update windows. [lcgamboa]
+
+* Using SO_EXCLUSIVEADDRUSE instead of SO_REUSEADDR to correct Windows behavior. [lcgamboa]
+
+* Updated to use qemu-esp32 0.9.2. [lcgamboa]
+
+* Use system certificates instead local. [lcgamboa]
+
+* Add support to check spare parts fields count on configuration load. [lcgamboa]
+
+* Led matrix rcontrol and Boot Button ESP32C3 support added. [lcgamboa]
+
+* Add support to show messages when unknown opcodes are detected in PIC based boards. [lcgamboa]
+
+* Add support to choose do not use Hardware Serial Port. [lcgamboa]
+
+* Support to 16 bit memory in VCD Dump Memory part added. [lcgamboa]
+
+### Fix
+
+* Fix parts IO_74xx573 and IO_74xx595 running with invalid pins. [lcgamboa]
+
+* Check if active project exists before enable menus. [lcgamboa]
+
+* Fix the drag and drop of .bin files. [lcgamboa]
+
+* Fix ProjecWizard MPLAB X templates. [lcgamboa]
+
+* Fix the flash size for PIC18F67J60. [lcgamboa]
+
+* Fix Virtual Term spare part windows size saving. [lcgamboa]
+
+* Fix string parser to deal with return character. [lcgamboa]
+
+* Fix Windows debug sockets errors replacing close() for socketclose() [lcgamboa]
+
+* Fix the temporary and workspace files persistence for qemu based boards. [lcgamboa]
+
+* Fix freeze on use invalid board name. [lcgamboa]
+
+* Fix windows change scale every run. [lcgamboa]
+
+* Fix rcontrol oscwrcfg command crashing PICSimLab. [lcgamboa]
+
+* Fix the Drag and Drop support on the main window. [lcgamboa]
+
+* Fixes crashes that occurred when using an oscilloscope on qemu-based boards in Windows. [lcgamboa]
+
+* Test if the test number is valid. [lcgamboa]
+
+* Fix the error of using file paths with space in some spare parts. [lcgamboa]
+
+* Fix code to work with old ubuntu versions. [lcgamboa]
+
+* Fixes flash memory and configuration bits corruption (in .hex file) when switching between PIC processors. [lcgamboa]
+
+* Fix the empty spare parts config in backup when errors are detected. [lcgamboa]
+
+* Remove error log message when None HWSerial is selected. [lcgamboa]
+
+* Fix IO Virtual terminal window controls response when one part deleted. [lcgamboa]
+
+* Fix LCD hd44780 and Virtual terminal to update on debug stepping. [lcgamboa]
+
+* Fix gpboard write to input pins bug. [lcgamboa]
+
+* Fix I2C memory 24CXXX part Save button (https://github.com/lcgamboa/picsimlab/issues/139). Thanks to @kjellc. [lcgamboa]
+
+* Fix ili9341 with "spi+touch" crashes. Thanks to  m-meltner  https://github.com/lcgamboa/picsimlab/issues/131. [lcgamboa]
+
+* Fix BluePill board PWM outputs. [lcgamboa]
+
+* Implemented qemu sim stop/start. [fariouche]
+
+* Fixed compilation issues when building using non system dir (local build only) [fariouche]
+
+* Fix led matrix not exposed to rcontrol and register pBoot to be able to set the gpio0 state. [fariouche]
+
+* Moved pin update before cpu update to have latest pin updated in spare parts. [fariouche]
+
+* Fixed pinviewer not correctly displaying with highdpi font, by scaling verything depending on the font size and not hardcoded font size in pixels. [fariouche]
+
+
+
 ## v0.9.2 (2024-10-05)
 
 ### New

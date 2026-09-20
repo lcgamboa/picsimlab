@@ -1,6 +1,8 @@
-## (unreleased)
+## v0.9.3 (2026-09-20)
 
 ### New
+
+* New stable version 0.9.3. [lcgamboa]
 
 * New spare parts VCD Dump 16. [lcgamboa]
 
@@ -71,6 +73,8 @@
 * Version 0.9.2 realease! [lcgamboa]
 
 ### Changes
+
+* New stable version 0.9.3. [lcgamboa]
 
 * Improve Project Wizard MPLABX IDE detection. [lcgamboa]
 

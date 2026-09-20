@@ -1,7 +1,7 @@
 ### FIXMEs
 | Filename | line # | FIXME |
 |:------|:------:|:------|
-| [src/picsimlab1.cc](src/picsimlab1.cc#L1156) | 1156 | remote control disabled |
+| [src/picsimlab1.cc](src/picsimlab1.cc#L1144) | 1144 | remote control disabled |
 | [src/boards/board_uCboard.cc](src/boards/board_uCboard.cc#L304) | 304 | NSTEP must be multiplied for 4 |
 | [src/devices/io_MCP23X17.cc](src/devices/io_MCP23X17.cc#L132) | 132 | only for BANK=0; |
 | [src/parts/input_MPU6050.cc](src/parts/input_MPU6050.cc#L26) | 26 | remove lxrad |
