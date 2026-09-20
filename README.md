@@ -2,6 +2,8 @@
 [![Linux release](https://github.com/lcgamboa/picsimlab/actions/workflows/linux-release.yml/badge.svg)](https://github.com/lcgamboa/picsimlab/actions/workflows/linux-release.yml)
 [![Windows release](https://github.com/lcgamboa/picsimlab/actions/workflows/windows-release.yml/badge.svg)](https://github.com/lcgamboa/picsimlab/actions/workflows/windows-release.yml)
 
+⚠️ Please note: The official distribution of the PICSimLab simulator binaries is available on github.com and SourceForge.net. Be cautious of unofficial sites, such as picsimlab.com, which do not disclose the owner.
+
 # PICSimLab - Programmable IC Simulator Laboratory
 
 PICSimLab is a realtime emulator of [development boards](https://lcgamboa.github.io/picsimlab_docs/stable/Boards.html) with MPLABX/avr-gdb debugger integration. 
@@ -33,9 +35,6 @@ The complete list of parts can be accessed in the [documentation](https://lcgamb
 
 [Changelog](./CHANGELOG.md)
 
-[PICSimLab on Twitter](https://twitter.com/PICSimLab)
-
-[PICSimLab on Discord](https://discord.com/invite/fMT8szFYq7)
 
 ### For developers
 
@@ -213,7 +212,7 @@ If the problem is not in either of the previous two options, the problem is prob
   - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=lcgamboa&repository=picsimlab) (grouped per release)
 
 - SourceForge [`picsimlab`](https://sourceforge.net/projects/picsim/) repo
-  - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.9.2)](https://sourceforge.net/projects/picsim/files/v0.9.2/)
+  - latest PICSimLab release [![Sourceforge Latest Relesases](https://img.shields.io/sourceforge/dt/picsim/v0.9.3)](https://sourceforge.net/projects/picsim/files/v0.9.3/)
   - all PICSimLab releases [![Sourceforge All Relesases](https://img.shields.io/sourceforge/dt/picsim)](https://sourceforge.net/projects/picsim/files/)
 
 Credit to [Shields IO](https://shields.io) for the badges and to

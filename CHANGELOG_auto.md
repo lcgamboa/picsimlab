@@ -2,6 +2,10 @@
 
 ### New
 
+* New spare parts VCD Dump 16. [lcgamboa]
+
+* New PrjWizard help button. [lcgamboa]
+
 * Add project source code to board demonstration examples. [lcgamboa]
 
 * New menu item code->Open Active Project Dir. [lcgamboa]
@@ -68,6 +72,14 @@
 
 ### Changes
 
+* Improve Project Wizard MPLABX IDE detection. [lcgamboa]
+
+* Improve support to UTF8 file paths. [lcgamboa]
+
+* Update the boards demonstrations. [lcgamboa]
+
+* Update ESP32 demonstration code to ESP IDF 6.0 . [lcgamboa]
+
 * Change the method SaveWorkspace to remove .efuse files from .pzw. [lcgamboa]
 
 * Add version numbers to platformio platforms and libs of PrjWizard. [lcgamboa]
@@ -119,6 +131,14 @@
 * Github actions updated. [lcgamboa]
 
 ### Fix
+
+* Fix invalid memory access when pins are not set. [lcgamboa]
+
+* Fix parts IO_74xx573 and IO_74xx595 running with invalid pins. [lcgamboa]
+
+* Remove all shadowed vars. [lcgamboa]
+
+* Check if active project exists before enable menus. [lcgamboa]
 
 * Fix the drag and drop of .bin files. [lcgamboa]
 

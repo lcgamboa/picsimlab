@@ -542,6 +542,7 @@ CPWindow1::CPWindow1(void) {
 
 #ifdef NO_TOOLS
     menu1.DestroyChild(&menu1_Tools);
+    menu1.DestroyChild(&menu1_Code);
     menu1_Help.DestroyChild(&menu1_Help_Check_for_Update);
 #endif
 
