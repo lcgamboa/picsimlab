@@ -19,7 +19,7 @@ export PATH := $(abspath ${execdir}):$(PATH)
 ifeq ($(shell uname -s),Darwin)
     LDFLAGS := -Wl,-rpath,@executable_path/../lib
 else
-    LDFLAGS := ""
+    LDFLAGS :=
 endif
 
 #lxrad automatic generated block start, don't edit below!

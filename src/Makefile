@@ -26,7 +26,7 @@ ifeq ($(shell uname -s),Darwin)
     override CXXFLAGS += -I$(shell brew --prefix)/include
     LDFLAGS := -Wl,-rpath,@executable_path/../lib
 else
-    LDFLAGS := ""
+    LDFLAGS :=
 endif
 
 #lxrad automatic generated block start, don't edit below!
