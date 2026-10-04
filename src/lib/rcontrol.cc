@@ -25,6 +25,12 @@
 
 #define _USE_MATH_DEFINES
 
+#ifdef __APPLE__
+// MacOS workaround
+#define _XOPEN_SOURCE 700
+#define _DARWIN_C_SOURCE 1
+#endif
+
 #define dprint \
     if (1) {   \
     } else     \
@@ -50,6 +56,12 @@
 #endif
 #define MSG_NOSIGNAL 0
 #endif
+
+#ifndef MSG_NOSIGNAL
+// a workaround for BSD-based systems
+#define MSG_NOSIGNAL 0
+#endif
+
 // system headers independent
 #include <errno.h>
 #include <math.h>
@@ -209,6 +221,14 @@ static int rcontrol_start(const int client_id) {
     if ((clients[client_id].sockfd = accept(listenfd, (sockaddr*)&cli, &clilen)) < 0) {
         return 1;
     }
+
+#ifdef SO_NOSIGPIPE
+    // a workaround for BSD-based systems
+    int opt = 1;
+    if (setsockopt(clients[client_id].sockfd, SOL_SOCKET, SO_NOSIGPIPE, &opt, sizeof(opt)) < 0) {
+        return 1;
+    }
+#endif
 
     setnblock(clients[client_id].sockfd);
     dprint("rcontrol: Client connected [%i]!---------------------------------\n", client_id);

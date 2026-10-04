@@ -13,6 +13,15 @@ appdir= ${prefix}/share/applications/
 execdir= ${prefix}/bin/
 sharedir= ${prefix}/share/picsimlab/
 
+# Suppose lxrad-config may be installed locally in DESTDIR
+export PATH := $(abspath ${execdir}):$(PATH)
+
+ifeq ($(shell uname -s),Darwin)
+    LDFLAGS := -Wl,-rpath,@executable_path/../lib
+else
+    LDFLAGS :=
+endif
+
 #lxrad automatic generated block start, don't edit below!
 
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -g -O2 `lxrad-config --cxxflags`
@@ -26,28 +35,36 @@ OBJS = psrtank.o srtank1.o srtank2.o  serial.o
 
 exp: all
 
-all: $(OBJS)
-	@echo "Linking srtank"
-	@$(CC) $(FLAGS) $(OBJS) -osrtank $(LIBS)
+check-lxrad-config:
+	@type lxrad-config >/dev/null 2>&1 || { echo "Cannot find lxrad-config"; exit 1; }
+	@touch $@
 
-%.o: %.cc
+all: $(OBJS) check-lxrad-config
+	@echo "Linking srtank"
+	@$(CC) $(FLAGS) $(LDFLAGS) $(OBJS) -osrtank $(LIBS)
+
+%.o: %.cc check-lxrad-config
 	@echo "Compiling $<"
 	@$(CC) -c $(FLAGS) $< 
 
 run: all
 	./srtank
 
-install: all
-	$(CP) -dvf  ../../share/srtank.desktop ${appdir} 
-	$(CP) -dvf srtank ${execdir}
-
 install_app: all
-	$(CP) -dvf srtank ${execdir}
+	install -d ${execdir}
+	install -m 755 srtank ${execdir}
+
+install: install_app
+ifneq ($(shell uname),Darwin)
+	install -d ${appdir}
+	install -m 644 ../../share/srtank.desktop ${appdir}
+endif
 
 uninstall:
 	$(RM) -dvf ${execdir}srtank
+ifneq ($(shell uname),Darwin)
 	$(RM) -dvf ${appdir}srtank.desktop
-
+endif
 
 clean:
-	rm -f srtank *.o core
+	rm -f srtank *.o core check-lxrad-config

@@ -16,6 +16,19 @@ sharedir= ${prefix}/share/picsimlab/
 libdir= ${prefix}/lib/picsimlab/
 execdir= ${prefix}/bin/
 
+# Suppose lxrad-config may be installed locally in DESTDIR
+export PATH := $(abspath ${execdir}):$(PATH)
+
+ifeq ($(shell uname -s),Darwin)
+    ifeq ($(shell command -v brew 2>/dev/null),)
+        $(error Homebrew is required on macOS, but 'brew' was not found in PATH)
+    endif
+    override CXXFLAGS += -I$(shell brew --prefix)/include
+    LDFLAGS := -Wl,-rpath,@executable_path/../lib
+else
+    LDFLAGS :=
+endif
+
 #lxrad automatic generated block start, don't edit below!
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
@@ -33,24 +46,37 @@ LIBS =  `lxrad-config --libs` -lpicsim -lsimavr -lelf $(ELIBS) -lucsim -ldl -lgp
 
 #lxrad automatic generated block end, don't edit above!
 
+check-lxrad-config:
+	@type lxrad-config >/dev/null 2>&1 || { echo "Cannot find lxrad-config"; exit 1; }
+	@touch $@
+
 all: picsimlab
 	
-picsimlab: $(OBJS)
+picsimlab: $(OBJS) check-lxrad-config
 	@echo "Linking picsimlab"
-	@$(CXX) $(CXXFLAGS) $(OBJS) -opicsimlab $(LIBS) 
+	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) -opicsimlab $(LIBS)
 
-%.o: %.cc
+%.o: %.cc check-lxrad-config
 	@echo "Compiling $<"
 	@$(CXX) -c $(CXXFLAGS) $< -o $@ 
 
-install: all
-	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
+install_app: all
+	install -d $(execdir) ${libdir} $(sharedir)
+	install -m 755 picsimlab $(execdir)
+	strip ${execdir}picsimlab
+	$(CP) -PRvf ../lib/* ${libdir}
+	$(CP) -PRvf ../share/* ${sharedir}
+ifneq ($(shell uname),Darwin)
+	install -d $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
 	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
-	$(CP) -dvf  ../share/picsimlab.desktop ${appdir} 
-	$(CP) -drvf ../share/* ${sharedir}
-	$(CP) -drvf ../lib/* ${libdir}
-	$(CP) -dvf picsimlab ${execdir}
-	strip ${execdir}picsimlab	
+	$(CP) -Pvf  ../share/picsimlab.desktop ${appdir}/
+	$(CP) -PRvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
+	$(CP) -PRvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
+	$(CP) -PRvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
+endif
+
+install: install_app
+ifneq ($(shell uname),Darwin)
 	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
 	xdg-icon-resource install --context mimetypes --size 64 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
 	#no need for --mode system, xdg-mime will install to system if executed under root
@@ -58,33 +84,25 @@ install: all
 	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
 	update-mime-database /usr/share/mime &
 	update-desktop-database ${appdir} &
-
-install_app: all
-	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \
-	${sharedir}/../icons/hicolor/64x64/mimetypes/ ${sharedir}/../mime/application/
-	$(CP) -dvf  ../share/picsimlab.desktop ${appdir}/
-	$(CP) -drvf ../share/* ${sharedir} 
-	$(CP) -drvf ../lib/* ${libdir}
-	$(CP) -dvf picsimlab ${execdir}
-	$(CP) -drvf ../share/picsimlab.png ${sharedir}/../icons/hicolor/64x64/apps/
-	$(CP) -drvf ../share/application-x-picsimlab-workspace.png  ${sharedir}/../icons/hicolor/64x64/mimetypes/
-	$(CP) -drvf ../share/application-x-picsimlab-workspace.xml ${sharedir}/../mime/application/x-picsimlab-workspace.xml
+endif
 
 install_docs:
-	$(CP) -drvf ../docs ${sharedir} 
+	$(CP) -PRvf ../docs ${sharedir}
 		
 
 uninstall:
-	$(RM) -drvf ${sharedir} 
-	$(RM) -drvf ${libdir} 
 	$(RM) -dvf ${execdir}picsimlab
+	$(RM) -drvf ${libdir}
+ifneq ($(shell uname),Darwin)
+	$(RM) -drvf ${sharedir}
 	$(RM) -dvf ${appdir}picsimlab.desktop
 	xdg-icon-resource uninstall  --size 64 --novendor picsimlab
 	xdg-icon-resource uninstall  --context mimetypes --size 64 application-x-picsimlab-workspace
 	xdg-mime uninstall  --mode system ../share/application-x-picsimlab-workspace.xml
+endif
 
 run: all
 	./picsimlab
 
 clean:
-	$(RM) picsimlab *.o core */*.o 
+	$(RM) picsimlab *.o core */*.o check-lxrad-config
