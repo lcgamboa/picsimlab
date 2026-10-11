@@ -11,6 +11,7 @@ PICSimLab supports microcontrollers from [picsim](https://github.com/lcgamboa/pi
 PICSimLab has integration with MPLABX/Arduino IDE for programming the microcontroller's boards.
 As the purpose of PICSimLab is to emulate real hardware it does not have any source code editing support.
 For code editing and debugging the same tools used for a real board should be used with PICSimLab, such as MPLABX, Arduino IDE, or VSCode with PlatformIO.
+Using the PICSimLab Code Project Wizard, you can quickly create pre-configured code templates for both writing and debugging a wide range of boards. For boards based on the PIC16F and PIC18F microcontrollers, the wizard generates projects that utilize MPLAB X.  For boards based on AVR, STM32, and ESP32, the wizard generates projects that utilize VSCode+PlatformIO.
 
 PICSimLab supports several devices (spare parts) that can be connected to the boards for simulation. 
 Such as example LEDs and push buttons for simple outputs and inputs and some more complex ones like the ethernet 
@@ -44,15 +45,10 @@ The complete list of parts can be accessed in the [documentation](https://lcgamb
 
 ## Stable version executables download 
 
-If you are on Linux or Windows you can download the last version at:
+If you are on Linux, macOS or Windows you can download the last version at:
 
 https://github.com/lcgamboa/picsimlab/releases
 
-If you are on macOS you can run PICSimLab using Wine:
-
-- Download and install [`xquartz`](https://www.xquartz.org)
-- Download and install [Wine](https://dl.winehq.org/wine-builds/macosx/download.html)
-- Download the executable and double-click it to run the installer
 
 ## Unstable last code version executables download 
 
@@ -111,8 +107,20 @@ make FILE=Makefile.cross_32 -j$(nproc)
 
 ### macOS from source
 
-Theoretically it is possible to compile PICSimLab natively on macOS. But I do not have access to any computer
- with macOS to try to compile and until today nobody has communicated that they managed to do it. (help wanted) 
+Thanks to @valentingorelov, we now have macOS support.
+
+In first time build:
+```
+git clone --depth=1 https://github.com/lcgamboa/picsimlab.git
+cd picsimlab
+bscripts/build_all_and_install_macos.sh
+bscripts/make_macos_bundle_and_dmg.sh
+```
+
+To recompile use:
+```
+make -j$(nproc)
+```
 
 
 ## Troubleshooting:
