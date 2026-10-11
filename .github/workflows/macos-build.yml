@@ -1,7 +1,9 @@
 name: macOS build
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Linux release"]
+    types: [completed]
 
 jobs:
   buildMacOS:
@@ -19,7 +21,7 @@ jobs:
           echo "Event: ${{ github.event }}"
 
       - name: Checkout sources
-        uses: actions/checkout@v7
+        uses: actions/checkout@v2
 
       - name: Set DESTDIR
         run: echo "DESTDIR=${{ github.workspace }}/staging" >> $GITHUB_ENV
@@ -31,7 +33,7 @@ jobs:
         run: bscripts/make_macos_bundle_and_dmg.sh
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}
-          path: macos/PICSimLab.dmg
+          name: picsimlab_pkg-${{ matrix.os }}
+          path: release*/*

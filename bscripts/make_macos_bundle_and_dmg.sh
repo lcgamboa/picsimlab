@@ -2,6 +2,10 @@
 #show errors in color red
 set -euo pipefail
 
+. ./VERSION
+
+VERSION_="${VERSION}_${DATE}"
+
 # We do not support installation into system directories on macOS
 if [ -z "${DESTDIR-}" ]; then
     echo "Error: DESTDIR environment variable is not set." >&2
@@ -149,3 +153,7 @@ create-dmg \
   "PICSimLab.app"
 
 codesign --force --sign - "PICSimLab.dmg"
+
+lversion=$(echo "macOS_$(sw_vers -productVersion)_$(uname -m)" | sed -e 's/ /_/g' | sed -e 's/\//_/g')
+ 
+mv PICSimLab.dmg  PICSimLab_${VERSION_}_${lversion}.deb 

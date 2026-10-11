@@ -20,24 +20,22 @@ jobs:
           path: release_assets
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Rename dmg images
-        run: |
-          mkdir release_assets_ready
-          mv release_assets/macos-26/PICSimLab.dmg release_assets_ready/PICSimLab-nightly-arm64.dmg
-          mv release_assets/macos-26-intel/PICSimLab.dmg release_assets_ready/PICSimLab-nightly-x86_64.dmg
-
-      - name: Remove the old nightly release
-        uses: ClementTsang/delete-tag-and-release@v0.3.1
+      - name: Latest code build release
+        uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/master' 
         with:
-          delete_release: true
-          tag_name: latestbuild_macos
+          prerelease: true
+          files: release_*/*
+          tag_name: latestbuild
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Latest code build release
-        uses: softprops/action-gh-release@v3
+      - if: (startsWith(github.ref, 'refs/tags/')) 
+        name: tagged release
+        uses: softprops/action-gh-release@v1
         with:
-          prerelease: true
-          files: release_assets_ready/*
-          tag_name: latestbuild_macos
-          target_commitish: ${{ github.event.workflow_run.head_sha }}
+          files: release_*/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
