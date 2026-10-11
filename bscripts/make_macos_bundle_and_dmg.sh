@@ -154,6 +154,8 @@ create-dmg \
 
 codesign --force --sign - "PICSimLab.dmg"
 
+DESTDIR=release_${VERSION_}
+mkdir ../${DESTDIR}
 lversion=$(echo "macOS_$(sw_vers -productVersion)_$(uname -m)" | sed -e 's/ /_/g' | sed -e 's/\//_/g')
  
-mv PICSimLab.dmg  PICSimLab_${VERSION_}_${lversion}.deb 
+mv PICSimLab.dmg  ../${DESTDIR}/PICSimLab_${VERSION_}_${lversion}.deb
