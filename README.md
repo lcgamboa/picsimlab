@@ -107,7 +107,7 @@ make FILE=Makefile.cross_32 -j$(nproc)
 
 ### macOS from source
 
-Thanks to @valentingorelov, we now have macOS support.
+Thanks to [@valentingorelov](https://github.com/valentingorelov), we now have macOS support.
 
 In first time build:
 ```
@@ -121,7 +121,6 @@ To recompile use:
 ```
 make -j$(nproc)
 ```
-
 
 ## Troubleshooting:
 The simulation in PICSimLab consists of 3 parts:
