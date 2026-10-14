@@ -94,6 +94,8 @@ extern uint32_t* (*qemu_picsimlab_get_internals)(int cfg);
 
 extern uint32_t (*qemu_picsimlab_get_TIOCM)(void);
 
+extern int (*gdbserver_start)(const char*);
+
 typedef struct {
     void (*picsimlab_write_pin)(int pin, int value);
     void (*picsimlab_dir_pin)(int pin, int value);
