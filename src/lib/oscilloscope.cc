@@ -311,9 +311,9 @@ void COscilloscope::WritePreferences(void) {
     WindowCmd(PW_MAIN, "spind7", PWA_SPINDGETVALUE, NULL, &fvalue);
     PICSimLab.SavePrefs("osc_tlevel", std::to_string(fvalue));
 
-    int x, y;
-    WindowCmd(PW_MAIN, "NULL", PWA_GETX, NULL, &x);
-    WindowCmd(PW_MAIN, "NULL", PWA_GETY, NULL, &y);
+    int x = 0, y = 0;
+    WindowCmd(PW_MAIN, NULL, PWA_GETX, NULL, &x);
+    WindowCmd(PW_MAIN, NULL, PWA_GETY, NULL, &y);
 
     PICSimLab.SavePrefs("osc_position", std::to_string(x) + "," + std::to_string(y));
 

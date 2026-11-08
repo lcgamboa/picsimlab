@@ -624,7 +624,7 @@ static void posix_signal_handler(int sig, siginfo_t* siginfo, void* context) {
     _Exit(1);
 }
 
-static uint8_t* alternate_stack;
+static uint8_t* volatile alternate_stack;
 static void set_signal_handler(void) {
     /* setup alternate stack */
     {
