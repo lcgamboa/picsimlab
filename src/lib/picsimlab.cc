@@ -752,7 +752,7 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
     snprintf(fname, 1279, "%s/picsimlab.ini", home);
     PrefsSaveToFile(fname);
 
-    char btdir[256];
+    char btdir[512];
     SystemCmd(PSC_GETTEMPDIR, "PICSimLab", btdir);
     snprintf(tmpdir, 1023, "%s/picsimlab-XXXXXX", btdir);
     close(mkstemp(tmpdir));
@@ -760,7 +760,10 @@ int CPICSimLab::SaveWorkspace(std::string fnpzw) {
     SystemCmd(PSC_CREATEDIR, tmpdir);
 
     if (strlen(pzwtmpdir) && SystemCmd(PSC_DIREXISTS, pzwtmpdir)) {
+        char codedir[2048];
         SystemCmd(PSC_COPYDIRS, pzwtmpdir, tmpdir);
+        snprintf(codedir, 2047, "%s/picsimlab_workspace/code/", tmpdir);
+        SystemCmd(PSC_REMOVEDIR, codedir);
     }
 
     memcpy(home, tmpdir, 1023);
