@@ -297,6 +297,35 @@ void CPICSimLab::RegisterError(const std::string module, const std::string error
     Errors.push_back(error);
 }
 
+std::string CPICSimLab::GetAppImagePath(void) {
+    if (!(strcmp(_PKG_, "Appimage") == 0)) {
+        return "";
+    }
+
+    const char* appimage = getenv("APPIMAGE");
+    if (appimage && appimage[0]) {
+        return appimage;
+    }
+
+    const char* argv0 = getenv("ARGV0");
+    if (argv0 && argv0[0]) {
+        if (argv0[0] == '/') {
+            return argv0;
+        } else {
+            const char* owd = getenv("OWD");
+            if (owd && owd[0]) {
+                return std::string(owd) + "/" + argv0;
+            }
+            char cwd[4096];
+            if (getcwd(cwd, sizeof(cwd))) {
+                return std::string(cwd) + "/" + argv0;
+            }
+        }
+    }
+
+    return "";
+}
+
 void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     char home[1024];
     char fname[1280];
@@ -428,24 +457,44 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
     scale = 1.0;
 
     if (GetNeedReboot()) {
-        char cmd[1024];
+        std::string cmd;
         char* ptr = NULL;
+        const std::string appimage = GetAppImagePath();
+        const char* appdir = getenv("APPDIR");
+        int internal_path = 0;
+
         printf("PICSimLab: Reboot !!!\n");
         rcontrol_server_end();
         DeleteBoard();
-        SystemCmd(PSC_GETEXECUTABLEPATH, NULL, cmd);
-        if (newpath) {
+
+        if (!appimage.empty()) {
+            cmd = "\"" + appimage + "\"";
+        } else {
+            char exe[4096];
+            SystemCmd(PSC_GETEXECUTABLEPATH, NULL, exe);
+            cmd = "\"" + std::string(exe) + "\"";
+        }
+
+        if (!appimage.empty() && appdir && newpath && (newpath[0] == '/')) {
+            const size_t appdir_len = strlen(appdir);
+            internal_path =
+                (!strncmp(newpath, appdir, appdir_len) && ((newpath[appdir_len] == '/') || (newpath[appdir_len] == 0)));
+        }
+
+        if (newpath && !internal_path) {
             if (strstr(newpath, ".pzw")) {
-                strcat(cmd, " \"");
-                strcat(cmd, newpath);
-                strcat(cmd, "\"");
+                cmd += " \"";
+                cmd += newpath;
+                cmd += "\"";
             } else {
-                strcat(cmd, " ");
-                strcat(cmd, newpath);
+                cmd += " ";
+                cmd += newpath;
             }
             ptr = strstr((char*)newpath, "picsimlab_workspace");
+        } else if (internal_path) {
+            printf("PICSimLab: Ignoring AppImage internal path on restart: %s\n", newpath);
         }
-        printf("PICSimLab: Run cmd: %s\n", cmd);
+        printf("PICSimLab: Run cmd: %s\n", cmd.c_str());
 
         if (strlen(pzwtmpdir) && !ptr && (saveold != 2)) {
             SystemCmd(PSC_REMOVEDIR, pzwtmpdir);
@@ -469,7 +518,7 @@ void CPICSimLab::EndSimulation(int saveold, const char* newpath) {
         printf("PICSimLab: Finish Ok\n");
         fflush(stdout);
 #endif
-        SystemCmd(PSC_EXECUTE, cmd);
+        SystemCmd(PSC_EXECUTE, cmd.c_str());
         exit(0);
     } else {
         printf("PICSimLab: End Board Simulation.\n");

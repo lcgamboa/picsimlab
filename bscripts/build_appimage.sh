@@ -35,10 +35,10 @@ echo "#!/usr/bin/bash" >> /tmp/AppRun
 echo "" >> /tmp/AppRun
 echo "export APPDIR=\"\$(dirname \"\$(readlink -f \"\$0\")\")\"" >> /tmp/AppRun
 echo "export PATH=\"\$APPDIR/usr/bin/:\$PATH\"" >> /tmp/AppRun
-echo "export LD_LIBRARY_PATH=\"\$APPDIR/usr/lib:\$PATH\"" >> /tmp/AppRun
+echo "export LD_LIBRARY_PATH=\"\$APPDIR/usr/lib\${LD_LIBRARY_PATH:+:\$LD_LIBRARY_PATH}\"" >> /tmp/AppRun
 echo "export XDG_DATA_DIRS=\"\$APPDIR/usr/share/:/usr/share/:\$XDG_DATA_DIRS\"" >> /tmp/AppRun
 echo "" >> /tmp/AppRun
-echo "\$APPDIR/usr/bin/picsimlab \$@" >> /tmp/AppRun
+echo "exec \$APPDIR/usr/bin/picsimlab \$@" >> /tmp/AppRun
 chmod a+x /tmp/AppRun
 /tmp/linuxdeploy-x86_64.AppImage --appimage-extract-and-run --plugin gtk --custom-apprun=/tmp/AppRun --appdir AppDir --output appimage
 install -d "release_${VERSION}"

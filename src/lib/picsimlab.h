@@ -311,6 +311,7 @@ public:
 
 private:
     void StartRControl(void);
+    std::string GetAppImagePath(void);
     board* pboard;
     int lab;
     int lab_;
