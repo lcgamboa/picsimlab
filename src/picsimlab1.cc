@@ -807,12 +807,12 @@ void CPWindow1::_EvOnCreate(CControl* control) {
         printf("PICSimLab: stderr redirect error [%i] %s \n", errno, strerror(errno));
     }
 
-    if (setvbuf(stdout, NULL, _IOLBF, 0) != 0) {
-        printf("PICSimLab: Error setting stdout in line-buffer mode \n");
+    if (setvbuf(stdout, NULL, _IONBF, 0) != 0) {
+        printf("PICSimLab: Error disabling stdout buffer \n");
     }
 
-    if (setvbuf(stderr, NULL, _IOLBF, 0) != 0) {
-        printf("PICSimLab: Error setting stderr in line-buffer mode \n");
+    if (setvbuf(stderr, NULL, _IONBF, 0) != 0) {
+        printf("PICSimLab: Error disabling stderr buffer \n");
     }
 
     printf("PICSimLab: Console output redirected to file: \"%s\"\n", fname);
